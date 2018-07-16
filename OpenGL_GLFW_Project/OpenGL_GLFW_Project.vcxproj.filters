@@ -19,6 +19,9 @@
     <Filter Include="glad">
       <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Setup">
+      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>glad</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFW_Init.cpp">
+      <Filter>Source Files\Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,9 +49,6 @@
     <ClInclude Include="khrplatform.h">
       <Filter>glad</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectSetup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +60,15 @@
     </ClInclude>
     <ClInclude Include="ProjectParameters.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFW_Init.h">
+      <Filter>Source Files\Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectSetup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

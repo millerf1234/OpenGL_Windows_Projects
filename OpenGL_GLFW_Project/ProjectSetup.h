@@ -16,7 +16,7 @@
 #include "glfw3.h"
 
 
-//Use the gl math library
+//Use the gl math library 
 #include "glm/glm/glm.hpp"  //Well... It works so I am not going to fix it  //see: https://stackoverflow.com/questions/17905794/how-to-setup-the-glm-library-in-visual-studio-2012
 
 

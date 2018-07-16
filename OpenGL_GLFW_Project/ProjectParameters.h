@@ -8,9 +8,19 @@
 #ifndef PROJECT_PARAMETERS
 #define PROJECT_PARAMETERS
 
-#include "ProjectConstants.h"
+#include "ProjectSetup.h"
 
 
+
+static constexpr bool USE_FULLSCREEN = true;
+
+static constexpr bool USE_VSYNC = true;
+
+static constexpr int DEFAULT_AA_SAMPLES = 2;
+
+
+
+	
 
 
 
