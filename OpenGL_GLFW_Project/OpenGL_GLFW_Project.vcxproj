@@ -84,7 +84,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -108,13 +112,29 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="glfw3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="glad.h" />
+    <ClInclude Include="glfw3.h" />
+    <ClInclude Include="glfw_config.h" />
+    <ClInclude Include="khrplatform.h" />
+    <ClInclude Include="ProjectConstants.h" />
+    <ClInclude Include="ProjectParameters.h" />
+    <ClInclude Include="ProjectSetup.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
