@@ -11,12 +11,14 @@
 #include "ProjectSetup.h"
 
 
+static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
+
 
 static constexpr bool USE_FULLSCREEN = true;
 
 static constexpr bool USE_VSYNC = true;
 
-static constexpr int DEFAULT_AA_SAMPLES = 2;
+static constexpr int DEFAULT_AA_SAMPLES = 4;
 
 
 

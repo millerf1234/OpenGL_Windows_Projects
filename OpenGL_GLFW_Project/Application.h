@@ -8,6 +8,7 @@
 #define APPLICATION_H
 
 #include <memory>
+#include <fstream>
 
 #include "ProjectSetup.h"
 #include "ProjectConstants.h"
@@ -20,7 +21,23 @@ public:
 	Application();
 	~Application();
 
-	void run();
+	void launch();
+
+private:
+	bool mApplicationValid;
+	std::shared_ptr<MonitorData> mDisplayInfo;
+
+	void setupGLFW();
+
+	//for now:
+	bool loop();
+
+
+	//eventually:
+	//void renderLoop(void *);
+	//void logicLoop(void *);
+
+	//void getInput(void * inputFlags);
 };
 
 

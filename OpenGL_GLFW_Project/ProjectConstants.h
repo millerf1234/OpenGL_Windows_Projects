@@ -12,6 +12,12 @@
 
 #include "ProjectSetup.h"
 
+///For logging 
+#define MSGLOG stdout
+#define ERRLOG stderr
+#define WRNLOG stderr
+
+
 
 static const char * NAME_OF_GAME = "OpenGL Practice Test\0";
 
@@ -25,6 +31,10 @@ static const std::array<int, 2> SCREEN_RESOLUTION_HD =  { 1280,  720 };    //Hig
 static const std::array<int, 2> SCREEN_RESOLUTION_FHD = { 1920, 1080 };  // Full High Definition
 static const std::array<int, 2> SCREEN_RESOLUTION_QHD = { 2560, 1440 };  // Quad High Definition
 static const std::array<int, 2> SCREEN_RESOLUTION_UHD = { 3840, 2160 };  // Ultra High Definition
+
+
+
+
 
 
 
