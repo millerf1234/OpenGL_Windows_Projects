@@ -21,7 +21,8 @@
 
 
 
-
+//HarfBuzz text library
+#include "HarfBuzz/hb.h"
 
 
 

@@ -85,9 +85,11 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;harfbuzz.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,11 +115,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;harfbuzz.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -125,12 +129,14 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderProject1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </Library>
+    <Library Include="harfbuzz.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -138,10 +144,38 @@
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
+    <ClInclude Include="HarfBuzz\hb-blob.h" />
+    <ClInclude Include="HarfBuzz\hb-buffer.h" />
+    <ClInclude Include="HarfBuzz\hb-common.h" />
+    <ClInclude Include="HarfBuzz\hb-deprecated.h" />
+    <ClInclude Include="HarfBuzz\hb-face.h" />
+    <ClInclude Include="HarfBuzz\hb-font.h" />
+    <ClInclude Include="HarfBuzz\hb-ft.h" />
+    <ClInclude Include="HarfBuzz\hb-map.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-font.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-layout.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-math.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-shape.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-tag.h" />
+    <ClInclude Include="HarfBuzz\hb-ot-var.h" />
+    <ClInclude Include="HarfBuzz\hb-ot.h" />
+    <ClInclude Include="HarfBuzz\hb-set.h" />
+    <ClInclude Include="HarfBuzz\hb-shape-plan.h" />
+    <ClInclude Include="HarfBuzz\hb-shape.h" />
+    <ClInclude Include="HarfBuzz\hb-unicode.h" />
+    <ClInclude Include="HarfBuzz\hb-version.h" />
+    <ClInclude Include="HarfBuzz\hb.h" />
+    <ClInclude Include="InputFlags.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectSetup.h" />
+    <ClInclude Include="RenderProject1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="constantcolor.frag" />
+    <None Include="passthrough2D.vert" />
+    <None Include="passthrough3D.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

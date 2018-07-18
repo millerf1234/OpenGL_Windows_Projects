@@ -15,6 +15,8 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 
+#include "RenderProject1.h"
+
 class Application
 {
 public:
@@ -26,12 +28,23 @@ public:
 private:
 	bool mApplicationValid;
 	std::shared_ptr<MonitorData> mDisplayInfo;
+	std::unique_ptr<GLFW_Init> mGLFWInitializer;
 
+	//Initialization Helper Functions:
 	void setupGLFW();
+	void loadGraphicsLanguageFunctions();
+
+	void checkMSAA(); //Prints MSAA config to MSGLOG
+
+	void playIntroMovie();
+
+	
+	void runRenderProject1();
+
+
 
 	//for now:
-	bool loop();
-
+	//bool loop();
 
 	//eventually:
 	//void renderLoop(void *);

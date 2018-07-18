@@ -22,11 +22,20 @@
     <Filter Include="Source Files\Setup">
       <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RenderProject1">
+      <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Generic">
+      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HarfBuzz">
+      <UniqueIdentifier>{33c2c045-52f5-4e25-b6e3-8480c9046c78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>glad</Filter>
     </ClCompile>
@@ -36,10 +45,19 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProject1.cpp">
+      <Filter>Source Files\RenderProject1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib">
       <Filter>GLFW</Filter>
+    </Library>
+    <Library Include="harfbuzz.lib">
+      <Filter>HarfBuzz</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
@@ -70,5 +88,85 @@
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderProject1.h">
+      <Filter>Source Files\RenderProject1</Filter>
+    </ClInclude>
+    <ClInclude Include="InputFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-blob.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-buffer.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-common.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-deprecated.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-face.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-font.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ft.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-map.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-font.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-layout.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-math.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-shape.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-tag.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-ot-var.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-set.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-shape.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-shape-plan.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-unicode.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzz\hb-version.h">
+      <Filter>HarfBuzz</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="passthrough2D.vert">
+      <Filter>Shaders\Generic</Filter>
+    </None>
+    <None Include="passthrough3D.vert">
+      <Filter>Shaders\Generic</Filter>
+    </None>
+    <None Include="constantcolor.frag">
+      <Filter>Shaders\Generic</Filter>
+    </None>
   </ItemGroup>
 </Project>

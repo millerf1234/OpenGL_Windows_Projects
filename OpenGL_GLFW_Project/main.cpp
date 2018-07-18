@@ -1,5 +1,7 @@
 
 
+//see: https://github.com/Microsoft/vcpkg/blob/master/README.md  
+
 #include "Application.h"
 
 int main() {

@@ -5,73 +5,52 @@
 Application::Application() {
 	mApplicationValid = true;
 	mDisplayInfo = nullptr;
+	mGLFWInitializer = nullptr;
 
 
 	fprintf(MSGLOG, "Application is loading...\n");
 	setupGLFW();
-
-	
+	loadGraphicsLanguageFunctions();
+	checkMSAA();
+	if (!mApplicationValid) {
+		fprintf(ERRLOG, "The application encountered an error while loading!\n");
+		return;
+	}
+	else {
+		fprintf(MSGLOG, "Application loading complete!\nPlaying Intro Movie...\n");
+		playIntroMovie(); //Make intro movie a std::future while the rest of the application loads?
+		//keep loading?
+	}
 }
 
 
 Application::~Application() {
-
+	if (mGLFWInitializer) {
+		mGLFWInitializer->terminate();
+	}
 }
 
 
 
 void Application::launch() {
 	if (!mApplicationValid) {
-		fprintf(ERRLOG, "Error launching application, Application is invalid!\n");
+		fprintf(ERRLOG, "\nError launching Application, Application is invalid!\n");
 		return;
 	}
-
-	fprintf(MSGLOG, "Application loop is running...\n");
 	
-	loop();
+	fprintf(MSGLOG, "Loading Main Menu...\n");
+	//have a function here that runs a main menu...
+
+	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
+	
+	runRenderProject1();
+
+	//loop();
 
 	//std::cin.get();
-	return;
-}
+	
 
-void Application::setupGLFW() {
-	fprintf(MSGLOG, "Loading GLFW...\n");
-	std::unique_ptr<GLFW_Init> glfwInitializer = std::make_unique<GLFW_Init>();
-	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
-	mDisplayInfo = glfwInitializer->initialize();
-	if (!mDisplayInfo) {
-		mApplicationValid = false;
-		return;
-	}
-
-
-	//Copyed from the main() of my space game project:
-	/*
-	GLFW_Init windowSetupRoutines; //Create a GLFW_Init object to handle window creation
-	//windowSetupRoutines.openWindowed();//Uncomment this line to open program in windowed mode
-	windowSetupRoutines.setDefaultMonitor(DEFAULT_MONITOR);//Monitors start at 0, so 1 is a secondary display plugged in
-	MonitorData detectedDisplayInfo = windowSetupRoutines.initialize(); //Run window creation routines
-
-	if (detectedDisplayInfo.validContext != true) { //If something went wrong in the window setup routines
-	std::cout << "\n\nAn error occured while setting the context for the display. Program will now crash... \n";
-	return EXIT_FAILURE;
-	}
-
-	//Load OpenGL functions once window context has been set
-	std::cout << "\nLoading Graphics Language..." << std::endl;
-	gladLoadGL();
-
-	fprintf(stderr, "    Graphics Language loaded.\n    Graphics Language version: OpenGL %s", glGetString(GL_VERSION));
-	//set OpenGl global state parameters
-	fprintf(stderr, "\nInitializing GL StateMachine...\n");
-	std::cout << "    Activating GL depth-test\n";
-	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
-	//std::cout << "    Activating GL scissor-test\n";
-	//glEnable(GL_SCISSOR_TEST);
-
-
-	//looks like glGetString comes with a terminating new line. To remove this newline, do:
-	//      str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());  //where str is a string
+	/*  From Space Game's main()
 
 	std::cout << std::endl << std::endl << "Preparing To Launch Game..." << std::endl;
 
@@ -110,12 +89,73 @@ void Application::setupGLFW() {
 	*/
 }
 
-bool Application::loop() {
-	bool loopShouldEnd = false;
-	while (!loopShouldEnd) {
-
-		std::cin.get();
-		loopShouldEnd = true;
+void Application::setupGLFW() {
+	fprintf(MSGLOG, "Loading GLFW...\n");
+	mGLFWInitializer = std::make_unique<GLFW_Init>();
+	mGLFWInitializer->setDefaultMonitor(MONITOR_TO_USE);
+	mDisplayInfo = mGLFWInitializer->initialize();
+	if (!mDisplayInfo) {
+		mApplicationValid = false;
+		return;
 	}
-	return true;
 }
+
+void Application::loadGraphicsLanguageFunctions() {
+	//Load OpenGL functions once window context has been set
+	fprintf(MSGLOG, "Loading Graphics Language Functions...\n");
+	int success = gladLoadGL();
+	if (!success) {
+		fprintf(ERRLOG, "\nERROR OCCURED LOADING GRAPHICS LANGUAGE FUNCTIONS!\n");
+		mApplicationValid = false;
+		return;
+	}
+
+	fprintf(MSGLOG, "\tGraphics Language loaded.\n\tGraphics Language version: OpenGL %s", glGetString(GL_VERSION));
+	
+	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
+	std::cout << "\tActivating GL depth-test\n";
+	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
+	std::cout << "\tActivating GL scissor-test\n";
+	glEnable(GL_SCISSOR_TEST);
+}
+
+void Application::checkMSAA() { //hmm
+	if (mApplicationValid) {
+		//glad_glEnable(GL_MULTISAMPLE);
+		GLint bufs = -1;
+		GLint samples = -1;
+		glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+		glad_glGetIntegerv(GL_SAMPLES, &samples);
+		fprintf(MSGLOG, "\n\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+	}
+}
+
+void Application::playIntroMovie() {
+	/*if ((nullptr != mDisplayInfo->activeMonitor) && (nullptr != glfwGetCurrentContext())) {
+		glfwMakeContextCurrent(mDisplayInfo->activeMonitor);
+	}*/
+	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
+}
+
+void Application::runRenderProject1() {
+	fprintf(MSGLOG, "Loading RenderProject1...\n");
+	if (mDisplayInfo && mApplicationValid) {
+		std::unique_ptr<RenderProject1> rp1 = std::make_unique<RenderProject1>(mDisplayInfo);
+		rp1->run();
+	}
+	else {
+		fprintf(ERRLOG, "Error loading RenderProject1! The Application is"
+			"\ninvalid or the display information is null!\n");
+
+	}
+}
+
+//bool Application::loop() {
+//	bool loopShouldEnd = false;
+//	while (!loopShouldEnd) {
+//
+//		std::cin.get();
+//		loopShouldEnd = true;
+//	}
+//	return true;
+//}

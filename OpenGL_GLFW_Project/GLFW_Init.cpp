@@ -128,11 +128,11 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 			 << "\n    Resolution of this Display: " << this->width << "x" << this->height 
 			 << "\n   Display Refresh Rate: " << this->refreshRate << "\n";
 
-			fprintf(MSGLOG, "%sOpening Window...\n", displayInfoString.str().c_str());
+			fprintf(MSGLOG, "%s\nOpening Window...\n", displayInfoString.str().c_str());
 
 			mWindow = glfwCreateWindow(width, height, NAME_OF_GAME, monitors[defaultMonitor], nullptr);
 			if (mWindow) {
-				fprintf(MSGLOG, "Window Successfully Created!\n");
+				fprintf(MSGLOG, "Window Successfully Created!\n\n");
 			}
 			else {
 				fprintf(ERRLOG, "Error occured creating GLFW window in fullscreen mode on monitor!\n");
@@ -171,11 +171,11 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		//}
 	}
 	else { //Open windowed
-		fprintf(MSGLOG, "Window Context set to open in windowed mode...\nOpening Window\n");
+		fprintf(MSGLOG, "\nWindow Context set to open in windowed mode...\n\nOpening Window\n");
 		mWindow = glfwCreateWindow(1670, 960, NAME_OF_GAME, nullptr, nullptr); //Open as window
 		defaultMonitor = 0;
 		if (mWindow)
-			fprintf(MSGLOG, "Window Successfully Opened!\n");
+			fprintf(MSGLOG, "Window Successfully Opened!\n\n");
 		else {
 			fprintf(ERRLOG, "Error opening a GLFW window in windowed mode (i.e. not fullscreen)!\n");
 			contextIsValid = false;
@@ -183,13 +183,14 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		}
 	}
 
+	//I do one additional check to make sure mWindow definitly is not nullptr (this check is surpurfulous but doesn't hurt)
 	if (mWindow == nullptr) {
 		fprintf(ERRLOG, "Failed Creating OpenGL Context and Window\n");
 		contextIsValid = false;
 		return nullptr;
 	}
 	else {
-		glfwMakeContextCurrent(mWindow);
+		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
 		contextIsValid = true;
 	}
 	return (generateDetectedMonitorsStruct());
