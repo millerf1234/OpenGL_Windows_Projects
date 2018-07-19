@@ -22,7 +22,8 @@ static constexpr int DEFAULT_AA_SAMPLES = 4;
 
 
 
-	
+static constexpr int FONT_SIZE = 24;
+static constexpr float MARGIN = FONT_SIZE * 0.5f;
 
 
 

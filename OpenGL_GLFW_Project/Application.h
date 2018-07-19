@@ -2,6 +2,8 @@
 //Created by Forrest Miller on July 16, 2018
 
 
+//RANDOM NOTE: To see vcpkg commands, go to the link: https://docs.microsoft.com/en-us/cpp/vcpkg#command-line-reference
+
 #pragma once
 
 #ifndef APPLICATION_H
@@ -37,6 +39,7 @@ private:
 	void checkMSAA(); //Prints MSAA config to MSGLOG
 
 	void playIntroMovie();
+	
 
 	
 	void runRenderProject1();
@@ -55,4 +58,4 @@ private:
 
 
 
-#endif //define APPLICATION_H
+#endif //#define APPLICATION_H

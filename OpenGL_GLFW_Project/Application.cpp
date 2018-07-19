@@ -38,8 +38,8 @@ void Application::launch() {
 		return;
 	}
 	
-	fprintf(MSGLOG, "Loading Main Menu...\n");
-	//have a function here that runs a main menu...
+	//fprintf(MSGLOG, "Loading Main Menu...\n");
+	//have a function here that runs a main menu...  this menu returns a struct consisting of an enum for which mode/sim to launch and then additional configuration parameters (num_players, control scheme, etc...)
 
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	

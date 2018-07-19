@@ -31,7 +31,7 @@
 
 #include "hb.h"
 
-#include <ft2build.h>
+#include "ft2build.h"
 #include FT_FREETYPE_H
 
 HB_BEGIN_DECLS
