@@ -49,6 +49,15 @@
     <Filter Include="Source Files\Projects\RenderProject1">
       <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Projects\HarfBuzzTest">
+      <UniqueIdentifier>{ff7f58ca-f085-4504-8bf9-60606d1c660a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{ed0ef0ff-dece-473a-91eb-cf8eb2074bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\TextEngine">
+      <UniqueIdentifier>{b6fdd42c-2e77-4d36-bb3c-5090900d250a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -67,7 +76,13 @@
       <Filter>Source Files\Projects\RenderProject1</Filter>
     </ClCompile>
     <ClCompile Include="HarfBuzzTester.cpp">
-      <Filter>Source Files\Projects\RenderProject1</Filter>
+      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+    </ClCompile>
+    <ClCompile Include="HarfBuzzSetupTest.cpp">
+      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+    </ClCompile>
+    <ClCompile Include="TextEngine.cpp">
+      <Filter>Source Files\Utility\TextEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +192,6 @@
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-version.h">
       <Filter>HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzzTester.h">
-      <Filter>Source Files\Projects\RenderProject1</Filter>
     </ClInclude>
     <ClInclude Include="ft2build.h">
       <Filter>FreeType</Filter>
@@ -337,6 +349,15 @@
     <ClInclude Include="freetype\config\ftstdlib.h">
       <Filter>FreeType\freetype\config</Filter>
     </ClInclude>
+    <ClInclude Include="HarfBuzzTester.h">
+      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+    </ClInclude>
+    <ClInclude Include="HarfBuzzSetupTest.h">
+      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+    </ClInclude>
+    <ClInclude Include="TextEngine.h">
+      <Filter>Source Files\Utility\TextEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="passthrough2D.vert">
@@ -360,5 +381,61 @@
     <None Include="glfw3dll.exp">
       <Filter>GLFW</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Fonts\Roboto-Black.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-BlackItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Bold.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-BoldItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-Bold.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-BoldItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-Italic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-Light.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-LightItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\RobotoCondensed-Regular.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Italic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Light.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-LightItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Medium.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-MediumItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Regular.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-Thin.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\Roboto-ThinItalic.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

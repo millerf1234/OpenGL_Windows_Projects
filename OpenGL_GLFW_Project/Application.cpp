@@ -43,6 +43,9 @@ void Application::launch() {
 
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	
+	runHarfBuzzSetupTest();
+
+	fprintf(MSGLOG, "Application is ready to switch to a new program...\n");
 	runRenderProject1();
 
 	//loop();
@@ -145,6 +148,19 @@ void Application::runRenderProject1() {
 	}
 	else {
 		fprintf(ERRLOG, "Error loading RenderProject1! The Application is"
+			"\ninvalid or the display information is null!\n");
+
+	}
+}
+
+void Application::runHarfBuzzSetupTest() {
+	fprintf(MSGLOG, "Loading HarfBuzzTest...\n");
+	if (mDisplayInfo && mApplicationValid) {
+		std::unique_ptr<HarfBuzzSetupTest> hbst1 = std::make_unique<HarfBuzzSetupTest>(mDisplayInfo);
+		hbst1->run();
+	}
+	else {
+		fprintf(ERRLOG, "Error loading HarfBuzzSetupTest! The Application is"
 			"\ninvalid or the display information is null!\n");
 
 	}

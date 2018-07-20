@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef RENDER_PROJECT_1
-#define RENDER_PROJECT_1
+#ifndef HARFBUZZ_SETUP_TEST
+#define HARFBUZZ_SETUP_TEST
 
 #include <limits>
 
@@ -18,27 +18,27 @@
 
 
 
-class RenderProject1 {
+class HarfBuzzSetupTest {
 public:
-	RenderProject1() = delete;
-	RenderProject1(std::shared_ptr<MonitorData> screenInfo);
-	~RenderProject1();
+	HarfBuzzSetupTest() = delete;
+	HarfBuzzSetupTest(std::shared_ptr<MonitorData> screenInfo);
+	~HarfBuzzSetupTest();
 
 	void run();
-	
+
 
 private:
 	bool error;
 	GLFWwindow * window;
-	unsigned long long frameNumber, frameUnpaused;
-	float counter;
+	//unsigned long long frameNumber, frameUnpaused;
+	//float counter;
 
 
 
 	void initialize();
-	void loadAssets(); 
+	//void loadAssets();
 
 
 };
 
-#endif //RENDER_PROJECT_1
+#endif //#ifndef HARFBUZZ_SETUP_TEST

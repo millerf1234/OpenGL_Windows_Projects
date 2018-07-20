@@ -17,6 +17,8 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 
+#include "HarfBuzzSetupTest.h"
+
 #include "RenderProject1.h"
 
 class Application
@@ -41,7 +43,7 @@ private:
 	void playIntroMovie();
 	
 
-	
+	void runHarfBuzzSetupTest();
 	void runRenderProject1();
 
 

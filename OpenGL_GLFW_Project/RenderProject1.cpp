@@ -39,8 +39,16 @@ RenderProject1::~RenderProject1() {
 void RenderProject1::run() {
 	if (error) {
 		fprintf(MSGLOG, "An error occured while loading RenderProject1");
+		return;
 	}
 	fprintf(MSGLOG, "\nRENDER PROJECT 1 IS LOADED AND RUNNING!\n");
+	//fprintf(MSGLOG, "\nRender PROJECT 1 will attempt a HarfBuzz test...\n");
+	//std::unique_ptr<HarfBuzzTester> hbTest = std::make_unique<HarfBuzzTester>();
+
+	//hbTest->runTest();
+
+
+	
 
 	std::cin.get(); //keep the screen open
 

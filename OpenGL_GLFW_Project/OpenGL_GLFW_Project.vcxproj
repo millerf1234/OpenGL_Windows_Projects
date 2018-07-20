@@ -135,9 +135,11 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
+    <ClCompile Include="HarfBuzzSetupTest.cpp" />
     <ClCompile Include="HarfBuzzTester.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
+    <ClCompile Include="TextEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -202,6 +204,7 @@
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
+    <ClInclude Include="HarfBuzzSetupTest.h" />
     <ClInclude Include="HarfBuzzTester.h" />
     <ClInclude Include="HarfBuzz\hb-blob.h" />
     <ClInclude Include="HarfBuzz\hb-buffer.h" />
@@ -230,6 +233,7 @@
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectSetup.h" />
     <ClInclude Include="RenderProject1.h" />
+    <ClInclude Include="TextEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="constantcolor.frag" />
@@ -239,6 +243,26 @@
     <None Include="harfbuzz.dll" />
     <None Include="passthrough2D.vert" />
     <None Include="passthrough3D.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Fonts\Roboto-Black.ttf" />
+    <Font Include="Fonts\Roboto-BlackItalic.ttf" />
+    <Font Include="Fonts\Roboto-Bold.ttf" />
+    <Font Include="Fonts\Roboto-BoldItalic.ttf" />
+    <Font Include="Fonts\Roboto-Italic.ttf" />
+    <Font Include="Fonts\Roboto-Light.ttf" />
+    <Font Include="Fonts\Roboto-LightItalic.ttf" />
+    <Font Include="Fonts\Roboto-Medium.ttf" />
+    <Font Include="Fonts\Roboto-MediumItalic.ttf" />
+    <Font Include="Fonts\Roboto-Regular.ttf" />
+    <Font Include="Fonts\Roboto-Thin.ttf" />
+    <Font Include="Fonts\Roboto-ThinItalic.ttf" />
+    <Font Include="Fonts\RobotoCondensed-Bold.ttf" />
+    <Font Include="Fonts\RobotoCondensed-BoldItalic.ttf" />
+    <Font Include="Fonts\RobotoCondensed-Italic.ttf" />
+    <Font Include="Fonts\RobotoCondensed-Light.ttf" />
+    <Font Include="Fonts\RobotoCondensed-LightItalic.ttf" />
+    <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

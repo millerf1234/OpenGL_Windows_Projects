@@ -23,6 +23,7 @@
 
 //FreeType is required for HarfBuzz
 #include "ft2build.h"
+
 //HarfBuzz text library  //see: https://harfbuzz.github.io/
 #include "HarfBuzz/hb.h"
 #include "HarfBuzz/hb-ft.h"  //Font
