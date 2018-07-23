@@ -1,6 +1,10 @@
 //A simple structure for tracking uniform locations. Copying is allowed
 //Note that these buckets just hold a number representing a uniform's location and don't store any information on the uniforms value(s)
 //
+// NOTE: The difference between this struct and the CachedUniformLocation class is this struct is just a wrapper for data and is
+//		 mostly intended for internal-use-only by a UniformLocationTracker. Whilestwhile, the UniformLocationTracker comes with an
+//		 interface for allowing calls to bypass the UniformLocationTracker to result in faster updates.
+//
 // Actually I tweaked my implementation slightly right after first writing this, so having these buckets know their uniform type is probably surpurfulous since they
 // will be arranged in their containers by type. 
 //
