@@ -9,7 +9,7 @@ public:
 	TextEngine();
 	~TextEngine();
 
-private:
+private: 
 
 };
 
