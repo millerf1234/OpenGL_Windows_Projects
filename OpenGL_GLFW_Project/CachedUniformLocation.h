@@ -16,24 +16,36 @@
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "UniformLocationBucket.h"
+#include "UniformLocationTracker.h"
+
+class UniformLocationTracker; //Defined later, declared here to let that class be friend of this one
 
 class CachedUniformLocation {
 public:
-	CachedUniformLocation() = delete;
-	CachedUniformLocation(const UniformLocationBucket& ulBucket, GLuint programID, UniformType type, GLsizei count = 1, GLboolean transpose = false);
-	CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count = 1, GLboolean transpose = false);
+	friend class UniformLocationTracker; //Based off example at https://www.codingunit.com/cplusplus-tutorial-friend-function-and-friend-class
+										 //friend bool UniformLocationTracker::checkIfInitialized() const { return mWasInitialized; }
+
+	CachedUniformLocation(); //Default Constructs an invalid object that needs to be validated. See UniformLocationTracker
+	CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose);
 	~CachedUniformLocation();
 
+	//Nothing fancy to do when it comes to copying...
+	CachedUniformLocation(const CachedUniformLocation &) = default;
+	CachedUniformLocation(CachedUniformLocation&&) = default;
+	CachedUniformLocation& operator=(const CachedUniformLocation&) = default;
+	CachedUniformLocation& operator=(CachedUniformLocation&&) = delete;
+
+	//Can use this CachedLocation object to update shader-code uniforms directly with the following function calls
 	void updateUniform(void * data);
-	void updateUniform(void * xPtr, void * yPtr);
-	void updateUniform(void * xPtr, void * yPtr, void * zPtr);
-	void updateUniform(void * xPtr, void * yPtr, void * zPtr, void * wPtr);
+	void updateUniform(void * xPtr, void * yPtr); //For uniform2i, uniform2ui, uniform2f only
+	void updateUniform(void * xPtr, void * yPtr, void * zPtr); //For uniform3i, uniform3ui, uniform3f only
+	void updateUniform(void * xPtr, void * yPtr, void * zPtr, void * wPtr); ////For uniform4i, uniform4ui, uniform4f only
 
 	const GLchar * getUniformName() const { return mUniformName; }
+	GLint uniformLocation() const { return mUniformLocation;  }
 	GLuint programID() const { return mProgramID; }
 	bool checkIfValidUniformLocation() { return mValidLocation; }
 	UniformType getType() const { return mUniformType; }
-
 
 	//Matrix and Vector only:
 	GLsizei getCount() const { return mCount; }
@@ -45,11 +57,12 @@ public:
 
 
 
-
 private:
 	const GLchar * mUniformName;
-	const GLuint mProgramID;
-	const UniformType mUniformType;
+	GLint mUniformLocation;
+	GLuint mProgramID;
+	UniformType mUniformType;
+	bool mWasInitialized;
 	bool mValidLocation;
 	bool mTranspose; //Only matters for matrices
 	GLsizei mCount; //Only for vectors and matrices

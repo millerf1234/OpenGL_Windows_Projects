@@ -1,4 +1,8 @@
 //This class is intented to help a ShaderProgram object manage it's tracked uniform locations. 
+//Note that this class is a friend of CachedUniformLocation
+
+//Created by Forrest Miller on July 20, 2018 
+//Completed on July 23, 2018 by Forrest Miller
 
 #pragma once
 
@@ -143,7 +147,8 @@ private: //See .cpp file for implementation details
 	GLint findInList(uint8_t, const char *); //Returns a uniform location or -2 if not found in list  (-1 already has meaning within OpenGL)
 
 	//Helper functions for managing cachedUniformLocations
-
+	bool seeIfUniformLocationHasAlreadyBeenCached(const GLchar *);
+	std::shared_ptr<CachedUniformLocation> addCachedUniformLocation(const GLchar * uniformName, UniformType, GLsizei count = 1, GLboolean transpose = false);
 	
 
 

@@ -19,12 +19,15 @@
 
 static const uint8_t NOT_IN_VECTOR = 255u;
 static const GLint NOT_IN_LIST = -2;
+static constexpr size_t CACHED_UNIFORM_LOCATION_HASH_SIZE = 107; //Should be prime number?
 
 
 UniformLocationTracker::UniformLocationTracker(const GLuint& programID) {
 	mProgramID = programID;
 	mTrackedLocationsCount = mCachedLocationsCount = 0u;
 	
+	mCachedUniformLocations.rehash(CACHED_UNIFORM_LOCATION_HASH_SIZE);
+
 	initializeListLocations();
 }
 
@@ -143,13 +146,127 @@ void UniformLocationTracker::updateUniformMat4x3(const GLchar * uniformName, con
 	glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, transpose, valPtr);
 }
 void UniformLocationTracker::updateUniformMat4x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-	glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, transpose, valPtr);
+	glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, transpose, valPtr); 
 }
 
 
 
 
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1i(const GLchar * uniformName) {
+	if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+		return mCachedUniformLocations[uniformName];
+	else {
+		return addCachedUniformLocation(uniformName, mProgramID, UniformType::INT1); //const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose
+	}
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1u(const GLchar * uniformName) {
 
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1f(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1iv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1uv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1fv(const GLchar * uniformName, GLsizei count) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2i(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2u(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2f(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2iv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2uv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2fv(const GLchar * uniformName, GLsizei count) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3i(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3u(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3f(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3iv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3uv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3fv(const GLchar * uniformName, GLsizei count) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4i(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4u(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4f(const GLchar * uniformName) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4iv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4uv(const GLchar * uniformName, GLsizei count) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4fv(const GLchar * uniformName, GLsizei count) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	 
+}
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+
+}
 
 
 
@@ -222,5 +339,33 @@ GLint UniformLocationTracker::findInList(uint8_t listIndex, const char * name) {
 
 
 
-//To check OpenGL for errors, I could have a special error-check function I call after each of my OpenGL functions. Or,
-//instead do: https://www.khronos.org/opengl/wiki/Debug_Output
+
+bool UniformLocationTracker::seeIfUniformLocationHasAlreadyBeenCached(const GLchar * uniformName) {
+	std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
+	//Important Note: This function's implementation relies on the behavior of 'operator[]' of an unordered_map. When using
+	//'operator[]' on an unordered_map, the map is searched using the provided key. If an element exists at that key, then
+	//the unordered_map returns a reference to that element. However, if an element is not found associated with the key, the 
+	//unordered_map creates a new element of that type using the elements default constructor (in this case shared_ptr's default
+	//constructor is called, which in turn calls the default CachedUniformLocation constructor). Thus in the following code,
+	//to tell if a CachedUniformLocation already exists, it suffices to just see if the object has been properly initialized.
+
+	if (cachedLocation->mWasInitialized) { //I am able to access the CachedUniformLocation's private parts directly because this class is friends with the CachedUniformLocation class.
+		return true;
+	}
+	return false;
+}
+
+std::shared_ptr<CachedUniformLocation> UniformLocationTracker::addCachedUniformLocation(const GLchar * uniformName, UniformType type, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
+	if (cachedLocation->mWasInitialized) {
+		if (cachedLocation->mUniformType == UniformType::UNSPECIFIED) {
+			throw std::logic_error("Error! For some reason a cachedUniformLocation was initialized while its type was still set to unspecified!\n");
+		}
+		else {
+			fprintf(WRNLOG, "\nWARNING! An initialized CachedUniformLocation for the variable %s\nhas already been initialized, but is now getting re-initialized!\n", cachedLocation->mUniformName);
+		}
+	}
+	cachedLocation.reset(new CachedUniformLocation(uniformName, mProgramID, type, count, transpose)); //Re-initialize with the proper data
+	return cachedLocation;
+}
+
