@@ -58,6 +58,24 @@
     <Filter Include="Source Files\Utility\TextEngine">
       <UniqueIdentifier>{b6fdd42c-2e77-4d36-bb3c-5090900d250a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Billboard">
+      <UniqueIdentifier>{2684fc34-2780-4205-a060-9b57c71940e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Geometry">
+      <UniqueIdentifier>{9929ec1c-74f1-416e-91da-d7a94e059712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader">
+      <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader\Old">
+      <UniqueIdentifier>{4f352d95-9b74-4770-a821-bbfd956edb7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader\Helper">
+      <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader\Helper\Uniform">
+      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -83,6 +101,27 @@
     </ClCompile>
     <ClCompile Include="TextEngine.cpp">
       <Filter>Source Files\Utility\TextEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Source Files\Utility\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Source Files\Utility\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\Utility\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderWrapper.cpp">
+      <Filter>Source Files\Utility\Shader\Old</Filter>
+    </ClCompile>
+    <ClCompile Include="CompiledShader.cpp">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformLocationTracker.cpp">
+      <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
+    </ClCompile>
+    <ClCompile Include="CachedUniformLocation.cpp">
+      <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +396,33 @@
     </ClInclude>
     <ClInclude Include="TextEngine.h">
       <Filter>Source Files\Utility\TextEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLine.h">
+      <Filter>Source Files\Utility\TextEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Source Files\Utility\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Source Files\Utility\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderWrapper.h">
+      <Filter>Source Files\Utility\Shader\Old</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Source Files\Utility\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="CompiledShader.h">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformLocationBucket.h">
+      <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformLocationTracker.h">
+      <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
+    </ClInclude>
+    <ClInclude Include="CachedUniformLocation.h">
+      <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

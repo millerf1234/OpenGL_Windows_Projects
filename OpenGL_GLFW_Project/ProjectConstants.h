@@ -9,16 +9,24 @@
 
 #include <array>
 #include <string>
+#include <stdexcept>  //For exceptions
 
 #include "ProjectSetup.h"
 
 
 
 ///For logging 
+#ifndef MSGLOG
 #define MSGLOG stdout
-#define ERRLOG stderr
-#define WRNLOG stderr
+#endif
 
+#ifndef ERRLOG
+#define ERRLOG stderr
+#endif 
+
+#ifndef WRNLOG
+#define WRNLOG stderr
+#endif 
 
 
 static const char * NAME_OF_GAME = "OpenGL Practice Test\0";

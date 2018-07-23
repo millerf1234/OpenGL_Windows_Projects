@@ -42,11 +42,17 @@ void RenderProject1::run() {
 		return;
 	}
 	fprintf(MSGLOG, "\nRENDER PROJECT 1 IS LOADED AND RUNNING!\n");
+
+
+	fprintf(MSGLOG, "\nLoading TextEngine...\n");
+	
+
 	//fprintf(MSGLOG, "\nRender PROJECT 1 will attempt a HarfBuzz test...\n");
 	//std::unique_ptr<HarfBuzzTester> hbTest = std::make_unique<HarfBuzzTester>();
 
 	//hbTest->runTest();
 
+	fprintf(MSGLOG, "\nLoaded TextEngine! Text Engine ready status: %d\n", txtEngine->ready());
 
 	
 
@@ -64,8 +70,10 @@ void RenderProject1::initialize() {
 	frameUnpaused = 0ull;
 	counter = 0.0f;
 
+	txtEngine = nullptr;
+
 }
 
 void RenderProject1::loadAssets() {
-
+	txtEngine = std::make_unique<TextEngine>("Fonts\\Roboto-Black.ttf");
 }

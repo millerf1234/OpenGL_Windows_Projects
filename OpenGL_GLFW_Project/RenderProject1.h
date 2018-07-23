@@ -14,7 +14,7 @@
 #include "GLFW_Init.h"
 #include "ProjectSetup.h"
 
-#include "HarfBuzzTester.h"
+#include "TextEngine.h"
 
 
 
@@ -25,6 +25,7 @@ public:
 	~RenderProject1();
 
 	void run();
+	void loadAssets();
 	
 
 private:
@@ -33,10 +34,11 @@ private:
 	unsigned long long frameNumber, frameUnpaused;
 	float counter;
 
+	std::unique_ptr<TextEngine> txtEngine;
 
 
 	void initialize();
-	void loadAssets(); 
+	
 
 
 };

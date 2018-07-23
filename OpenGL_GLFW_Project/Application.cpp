@@ -45,7 +45,7 @@ void Application::launch() {
 	
 	runHarfBuzzSetupTest();
 
-	fprintf(MSGLOG, "Application is ready to switch to a new program...\n");
+	fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
 	runRenderProject1();
 
 	//loop();
@@ -144,6 +144,7 @@ void Application::runRenderProject1() {
 	fprintf(MSGLOG, "Loading RenderProject1...\n");
 	if (mDisplayInfo && mApplicationValid) {
 		std::unique_ptr<RenderProject1> rp1 = std::make_unique<RenderProject1>(mDisplayInfo);
+		rp1->loadAssets();
 		rp1->run();
 	}
 	else {

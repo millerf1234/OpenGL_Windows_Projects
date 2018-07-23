@@ -133,13 +133,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="HarfBuzzSetupTest.cpp" />
     <ClCompile Include="HarfBuzzTester.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
+    <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="ShaderWrapper.cpp" />
     <ClCompile Include="TextEngine.cpp" />
+    <ClCompile Include="CachedUniformLocation.cpp" />
+    <ClCompile Include="UniformLocationTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -148,6 +155,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Billboard.h" />
+    <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
     <ClInclude Include="freetype\config\ftmodule.h" />
@@ -232,8 +241,15 @@
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectSetup.h" />
+    <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderProject1.h" />
+    <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="ShaderWrapper.h" />
     <ClInclude Include="TextEngine.h" />
+    <ClInclude Include="TextLine.h" />
+    <ClInclude Include="UniformLocationBucket.h" />
+    <ClInclude Include="CachedUniformLocation.h" />
+    <ClInclude Include="UniformLocationTracker.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="constantcolor.frag" />
