@@ -140,6 +140,7 @@
     <ClCompile Include="HarfBuzzSetupTest.cpp" />
     <ClCompile Include="HarfBuzzTester.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="TextEngine.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -238,6 +240,7 @@
     <ClInclude Include="HarfBuzz\hb.h" />
     <ClInclude Include="InputFlags.h" />
     <ClInclude Include="khrplatform.h" />
+    <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectSetup.h" />
@@ -245,11 +248,13 @@
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderWrapper.h" />
+    <ClInclude Include="SIMDComputation.h" />
     <ClInclude Include="TextEngine.h" />
     <ClInclude Include="TextLine.h" />
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
+    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="constantcolor.frag" />

@@ -1,12 +1,19 @@
 #include "ShaderProgram.h"
 
 
-
-ShaderProgram::ShaderProgram()
-{
-}
+namespace ShaderInterface {
 
 
-ShaderProgram::~ShaderProgram()
-{
-}
+	ShaderProgram::ShaderProgram() {
+		mID = glCreateProgram();
+		uniformLocations = UniformLocationTracker(mID);
+
+	}
+
+
+	ShaderProgram::~ShaderProgram() {
+
+	}
+
+
+} //namespace ShaderInterface

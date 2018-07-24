@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef BILLBOARD_H
-#define BILLBOARD_H
+#ifndef BILLBOARD_H_
+#define BILLBOARD_H_
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -23,4 +23,4 @@ private:
 
 };
 
-#endif //#ifndef BILLBOARD_H
+#endif // BILLBOARD_H_

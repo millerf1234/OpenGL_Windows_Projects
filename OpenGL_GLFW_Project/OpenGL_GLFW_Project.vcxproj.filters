@@ -76,6 +76,15 @@
     <Filter Include="Source Files\Utility\Shader\Helper\Uniform">
       <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Experimental">
+      <UniqueIdentifier>{c5a59474-e00e-4523-9c07-cfada446feba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Experimental\SSE2">
+      <UniqueIdentifier>{35403b86-4e9f-4d13-bdb4-9a5600d40de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Math">
+      <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -122,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="CachedUniformLocation.cpp">
       <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunctions.cpp">
+      <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -423,6 +438,15 @@
     </ClInclude>
     <ClInclude Include="CachedUniformLocation.h">
       <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
+    </ClInclude>
+    <ClInclude Include="SIMDComputation.h">
+      <Filter>Source Files\Utility\Experimental\SSE2</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunctions.h">
+      <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

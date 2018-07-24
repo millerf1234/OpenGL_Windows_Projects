@@ -1,14 +1,32 @@
+//Shader Program that is composed of a set of compiled shaders. 
+//This class is essentially a wrapper for a glShaderProgram
+
 #pragma once
 
-#ifndef SHADER_PROGRAM_H
-#define SHADER_PROGRAM_H
+#ifndef SHADER_PROGRAM_H_
+#define SHADER_PROGRAM_H_
 
-class ShaderProgram
-{
-public:
-	ShaderProgram();
-	~ShaderProgram();
-};
+#include "UniformLocationTracker.h"
+
+namespace ShaderInterface {
+
+		class ShaderProgram {
+		public:
+			ShaderProgram();
+			~ShaderProgram();
+
+			GLuint ID() const { return mID; }
 
 
-#endif //#ifndef SHADER_PROGRAM_H
+			std::unique_ptr<UniformLocationTracker> uniformLocations; //Make this public? 
+		private:
+			
+			GLuint mID;
+		};
+
+
+
+
+} //namespace ShaderInterface
+
+#endif //#ifndef SHADER_PROGRAM_H_

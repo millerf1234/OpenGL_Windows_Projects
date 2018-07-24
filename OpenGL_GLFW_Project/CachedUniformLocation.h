@@ -18,57 +18,61 @@
 #include "UniformLocationBucket.h"
 #include "UniformLocationTracker.h"
 
-class UniformLocationTracker; //Defined later, declared here to let that class be friend of this one
+namespace ShaderInterface {
 
-class CachedUniformLocation {
-public:
-	friend class UniformLocationTracker; //Based off example at https://www.codingunit.com/cplusplus-tutorial-friend-function-and-friend-class
-										 //friend bool UniformLocationTracker::checkIfInitialized() const { return mWasInitialized; }
+	class UniformLocationTracker; //Defined later, declared here to let that class be friend of this one
 
-	CachedUniformLocation(); //Default Constructs an invalid object that needs to be validated. See UniformLocationTracker
-	CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose);
-	~CachedUniformLocation();
+	class CachedUniformLocation {
+	public:
+		friend class UniformLocationTracker; //Based off example at https://www.codingunit.com/cplusplus-tutorial-friend-function-and-friend-class
+											 //friend bool UniformLocationTracker::checkIfInitialized() const { return mWasInitialized; }
 
-	//Nothing fancy to do when it comes to copying...
-	CachedUniformLocation(const CachedUniformLocation &) = default;
-	CachedUniformLocation(CachedUniformLocation&&) = default;
-	CachedUniformLocation& operator=(const CachedUniformLocation&) = default;
-	CachedUniformLocation& operator=(CachedUniformLocation&&) = delete;
+		CachedUniformLocation(); //Default Constructs an invalid object that needs to be validated. See UniformLocationTracker
+		CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose);
+		~CachedUniformLocation();
 
-	//Can use this CachedLocation object to update shader-code uniforms directly with the following function calls
-	void updateUniform(void * data);
-	void updateUniform(void * xPtr, void * yPtr); //For uniform2i, uniform2ui, uniform2f only
-	void updateUniform(void * xPtr, void * yPtr, void * zPtr); //For uniform3i, uniform3ui, uniform3f only
-	void updateUniform(void * xPtr, void * yPtr, void * zPtr, void * wPtr); ////For uniform4i, uniform4ui, uniform4f only
+		//Nothing fancy to do when it comes to copying...
+		CachedUniformLocation(const CachedUniformLocation &) = default;
+		CachedUniformLocation(CachedUniformLocation&&) = default;
+		CachedUniformLocation& operator=(const CachedUniformLocation&) = default;
+		CachedUniformLocation& operator=(CachedUniformLocation&&) = delete;
 
-	const GLchar * getUniformName() const { return mUniformName; }
-	GLint uniformLocation() const { return mUniformLocation;  }
-	GLuint programID() const { return mProgramID; }
-	bool checkIfValidUniformLocation() { return mValidLocation; }
-	UniformType getType() const { return mUniformType; }
+		//Can use this CachedLocation object to update shader-code uniforms directly with the following function calls
+		void updateUniform(void * data);
+		void updateUniform(void * xPtr, void * yPtr); //For uniform2i, uniform2ui, uniform2f only
+		void updateUniform(void * xPtr, void * yPtr, void * zPtr); //For uniform3i, uniform3ui, uniform3f only
+		void updateUniform(void * xPtr, void * yPtr, void * zPtr, void * wPtr); ////For uniform4i, uniform4ui, uniform4f only
 
-	//Matrix and Vector only:
-	GLsizei getCount() const { return mCount; }
+		const GLchar * getUniformName() const { return mUniformName; }
+		GLint uniformLocation() const { return mUniformLocation; }
+		GLuint programID() const { return mProgramID; }
+		bool checkIfValidUniformLocation() { return mValidLocation; }
+		UniformType getType() const { return mUniformType; }
 
-	//Matrices Only:
-	void enableTranspose() { mTranspose = true; }
-	void disableTranspose() { mTranspose = false; }
-	bool checkTranspose() const { return mTranspose; }
+		//Matrix and Vector only:
+		GLsizei getCount() const { return mCount; }
+
+		//Matrices Only:
+		void enableTranspose() { mTranspose = true; }
+		void disableTranspose() { mTranspose = false; }
+		bool checkTranspose() const { return mTranspose; }
 
 
 
-private:
-	const GLchar * mUniformName;
-	GLint mUniformLocation;
-	GLuint mProgramID;
-	UniformType mUniformType;
-	bool mWasInitialized;
-	bool mValidLocation;
-	bool mTranspose; //Only matters for matrices
-	GLsizei mCount; //Only for vectors and matrices
-	
-};
+	private:
+		const GLchar * mUniformName;
+		GLint mUniformLocation;
+		GLuint mProgramID;
+		UniformType mUniformType;
+		bool mWasInitialized;
+		bool mValidLocation;
+		bool mTranspose; //Only matters for matrices
+		GLsizei mCount; //Only for vectors and matrices
 
+	};
+
+
+} // namespace ShaderInterface
 
 
 #endif // CACHED_UNIFORM_LOCATION_H_
