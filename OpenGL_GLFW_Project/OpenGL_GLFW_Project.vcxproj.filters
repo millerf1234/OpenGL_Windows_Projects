@@ -67,9 +67,6 @@
     <Filter Include="Source Files\Utility\Shader">
       <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Shader\Old">
-      <UniqueIdentifier>{4f352d95-9b74-4770-a821-bbfd956edb7e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Shader\Helper">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,12 @@
     </Filter>
     <Filter Include="Source Files\Utility\Math">
       <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader\Helper\ShaderCodeWrappers">
+      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Shader\ShaderProgramBuilder">
+      <UniqueIdentifier>{40d28438-57ed-4f71-8575-60caefe0ecaa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,23 +123,26 @@
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files\Utility\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderWrapper.cpp">
-      <Filter>Source Files\Utility\Shader\Old</Filter>
-    </ClCompile>
-    <ClCompile Include="CompiledShader.cpp">
-      <Filter>Source Files\Utility\Shader\Helper</Filter>
-    </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
       <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="CachedUniformLocation.cpp">
       <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files\Utility\Shader\Helper</Filter>
-    </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexData.cpp">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\Shader\Helper\ShaderCodeWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CompiledShader.cpp">
+      <Filter>Source Files\Utility\Shader\Helper\ShaderCodeWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgramBuilder.cpp">
+      <Filter>Source Files\Utility\Shader\ShaderProgramBuilder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,14 +427,8 @@
     <ClInclude Include="Quad.h">
       <Filter>Source Files\Utility\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderWrapper.h">
-      <Filter>Source Files\Utility\Shader\Old</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderProgram.h">
       <Filter>Source Files\Utility\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="CompiledShader.h">
-      <Filter>Source Files\Utility\Shader\Helper</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationBucket.h">
       <Filter>Source Files\Utility\Shader\Helper\Uniform</Filter>
@@ -442,11 +442,23 @@
     <ClInclude Include="SIMDComputation.h">
       <Filter>Source Files\Utility\Experimental\SSE2</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Utility\Shader\Helper</Filter>
-    </ClInclude>
     <ClInclude Include="MathFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexData.h">
+      <Filter>Source Files\Utility\Shader\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Utility\Shader\Helper\ShaderCodeWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="CompiledShader.h">
+      <Filter>Source Files\Utility\Shader\Helper\ShaderCodeWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInitializerInstructions.h">
+      <Filter>Source Files\Utility\Shader\ShaderProgramBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgramBuilder.h">
+      <Filter>Source Files\Utility\Shader\ShaderProgramBuilder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

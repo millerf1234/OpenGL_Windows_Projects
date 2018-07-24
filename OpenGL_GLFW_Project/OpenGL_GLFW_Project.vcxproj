@@ -143,11 +143,12 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
+    <ClCompile Include="ShaderProgramBuilder.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
-    <ClCompile Include="ShaderWrapper.cpp" />
     <ClCompile Include="TextEngine.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
+    <ClCompile Include="VertexData.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -246,14 +247,16 @@
     <ClInclude Include="ProjectSetup.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderProject1.h" />
+    <ClInclude Include="ShaderProgramBuilder.h" />
+    <ClInclude Include="ShaderInitializerInstructions.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="ShaderWrapper.h" />
     <ClInclude Include="SIMDComputation.h" />
     <ClInclude Include="TextEngine.h" />
     <ClInclude Include="TextLine.h" />
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
+    <ClInclude Include="VertexData.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>

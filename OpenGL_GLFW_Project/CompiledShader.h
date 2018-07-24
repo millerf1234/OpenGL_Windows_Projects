@@ -21,8 +21,12 @@ namespace ShaderInterface {
 		bool validFilepath() const { return mValidFilepath; }
 		bool error() const { return mError; }
 
+		bool operator==(const CompiledShader&); //For comparing shaders...
+		bool operator!=(const CompiledShader&); 
+
 	private:
 		const GLchar * mFilepath;
+		GLchar infoLog[512]; //Buffer for storing shader-compilation error messages
 		GLuint mID;
 
 		//Variables representing object's state:

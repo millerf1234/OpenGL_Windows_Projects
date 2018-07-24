@@ -1,12 +1,12 @@
 #include "ShaderProgram.h"
 
 
-namespace ShaderInterface {
+//namespace ShaderInterface {
 
 
 	ShaderProgram::ShaderProgram() {
 		mID = glCreateProgram();
-		uniformLocations = UniformLocationTracker(mID);
+		//uniformLocations = UniformLocationTracker(mID);
 
 	}
 
@@ -16,4 +16,4 @@ namespace ShaderInterface {
 	}
 
 
-} //namespace ShaderInterface
+//} //namespace ShaderInterface

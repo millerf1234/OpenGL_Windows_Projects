@@ -501,6 +501,7 @@ namespace ShaderInterface {
 			}
 		}
 		cachedLocation.reset(new CachedUniformLocation(uniformName, mProgramID, type, count, transpose)); //Re-initialize with the proper data
+		mCachedLocationsCount++;
 		return cachedLocation;
 	}
 

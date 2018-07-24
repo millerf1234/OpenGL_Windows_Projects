@@ -2,13 +2,11 @@
 
 namespace ShaderInterface {
 
-	VertexShader::VertexShader()
-	{
+	VertexShader::VertexShader() {
 	}
 
 
-	VertexShader::~VertexShader()
-	{
+	VertexShader::~VertexShader() {
 	}
 
 

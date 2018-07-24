@@ -7,7 +7,10 @@
 
 #include "Application.h"
 
-#include "UniformLocationTracker.h"
+////These headers are for the debug code and can be deleted:
+//#include "UniformLocationTracker.h"
+//#include "ShaderProgram.h"
+
 
 int main() {
 	////Debug test (delete this code eventually):
@@ -17,6 +20,8 @@ int main() {
 	delete temp;
 	temp = nullptr;
 	*/
+	
+
 
 	//Create the application and launch it
 	std::unique_ptr<Application> app = std::make_unique<Application>(); 

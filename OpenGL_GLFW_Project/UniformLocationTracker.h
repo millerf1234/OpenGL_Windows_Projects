@@ -1,8 +1,17 @@
 //This class is intented to help a ShaderProgram object manage it's tracked uniform locations. 
 //Note that this class is a friend of CachedUniformLocation
-
+//
+// Usage comment: The easiest way to use this class is to just call the appropriate 'updateUniformxx()' functions
+//				  while the corrosponding ShaderProgram is bound as active and with parameters matching the name of
+//				  the uniform in the program and with the data value. 
+//				
+//				  For (theoretically) faster uniform updates it is possible to call one of the 'getCachedUniformxx()'
+//				  functions which return a shared_ptr to a cached uniform location. This returned pointer can then be 
+//				  used to update uniforms directly, skipping the lookup this object has to perform each time one of the
+//			      simpler 'updateUniformxx()' functions is called.
+//
 //Created by Forrest Miller on July 20, 2018 
-//Completed on July 23, 2018 by Forrest Miller
+//Completed on July 24, 2018 by Forrest Miller
 
 #pragma once
 
@@ -19,6 +28,8 @@
 #include "CachedUniformLocation.h"
 
 namespace ShaderInterface {
+
+	class CachedUniformLocation;
 
 	class UniformLocationTracker {
 	public:
@@ -119,9 +130,18 @@ namespace ShaderInterface {
 		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
 		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
 
-
+		//Gets the number of uniform locations being tracked directly by this object. Currently it is possible for a
+		//CachedUniformLocation to be requested which bypasses this object's internal storing of UniformLocationBuckets, so this 
+		//count might not actually be the total number of tracked uniforms. Perhaps a better function name would be 
+		//getNumberOfInternallyTrackedUniforms(). But that still is a little misleading because technically this object
+		//also manages the hash table of Cached Uniforms. 
 		size_t getNumberOfTrackedUniforms() const { return mTrackedLocationsCount; }
+
+		//Returns the number of unique CachedUniformLocations that have been given away by this object. In other
+		//words, giving away multiple shared_pointers to the same UniformLocation would only count as 1 in the tally.
 		size_t getNumberOfCachedUniforms() const { return mCachedLocationsCount; }
+
+		//Returns the GL-assigned program ID that this objects uniform locations are associated with.
 		GLuint getProgramID() const { return mProgramID; }
 
 	private: //See .cpp file for implementation details
@@ -150,7 +170,6 @@ namespace ShaderInterface {
 		//Helper functions for managing cachedUniformLocations
 		bool seeIfUniformLocationHasAlreadyBeenCached(const GLchar *);
 		std::shared_ptr<CachedUniformLocation> addCachedUniformLocation(const GLchar * uniformName, UniformType, GLsizei count = 1, GLboolean transpose = false);
-
 
 
 
