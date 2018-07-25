@@ -7,8 +7,8 @@
 
 #pragma once
 
-#ifndef VERTEX_DATA_H_
-#define VERTEX_DATA_H_
+#ifndef STREAMABLE_BUFFER_SET_H_
+#define STREAMABLE_BUFFER_SET_H_
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -45,4 +45,4 @@ namespace ShaderInterface {
 
 } //namespace ShaderInterface
 
-#endif //VERTEX_DATA_H_
+#endif STREAMABLE_BUFFER_SET_H_

@@ -1,4 +1,4 @@
-#include "VertexData.h"
+#include "VertexSet.h"
 
 namespace ShaderInterface {
 
