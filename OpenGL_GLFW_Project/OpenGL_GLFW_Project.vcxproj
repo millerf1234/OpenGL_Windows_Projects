@@ -136,6 +136,7 @@
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="GLBuffer.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="HarfBuzzSetupTest.cpp" />
     <ClCompile Include="HarfBuzzTester.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="freetype\ttunpat.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="glad.h" />
+    <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
+    <ClInclude Include="ProjectResourceFilepaths.h" />
     <ClInclude Include="ProjectSetup.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderProject1.h" />
@@ -257,6 +260,7 @@
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="StreamableBufferSet.h" />
+    <ClInclude Include="VertexAttribPointerData.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +291,14 @@
     <Font Include="Fonts\RobotoCondensed-Light.ttf" />
     <Font Include="Fonts\RobotoCondensed-LightItalic.ttf" />
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes_and_ReadMe.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

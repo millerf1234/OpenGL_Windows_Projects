@@ -12,11 +12,10 @@
 #include <memory>
 #include <fstream>
 
-#include "ProjectSetup.h"
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
-
+#include "ProjectResourceFilepaths.h"
 #include "HarfBuzzSetupTest.h"
 
 #include "RenderProject1.h"

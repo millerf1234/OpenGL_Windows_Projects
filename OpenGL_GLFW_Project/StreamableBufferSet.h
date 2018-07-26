@@ -1,9 +1,8 @@
-//This class is a wrapper for shader input data. I am not sure yet to what extent of the drawing logic will run through this class.
-// Right now it's just a VBO/EBO/VAO wrapper
+
+
 //
 //Author: Forrest S Miller
-//Date(s):   July 24, 2018         File created
-
+//Date(s):   July 25, 2018         File created in place of the simple VBO/EBO/VAO wrapper class I was originally going to write.
 
 #pragma once
 

@@ -64,21 +64,6 @@
     <Filter Include="Source Files\Utility\RenderTools">
       <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Helper">
-      <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Helper\Uniform">
-      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Helper\ShaderCodeWrappers">
-      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Helper\Buffer">
-      <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderProgramBuilder">
-      <UniqueIdentifier>{40d28438-57ed-4f71-8575-60caefe0ecaa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Billboard">
       <UniqueIdentifier>{2684fc34-2780-4205-a060-9b57c71940e0}</UniqueIdentifier>
     </Filter>
@@ -90,6 +75,24 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Geometry">
       <UniqueIdentifier>{9929ec1c-74f1-416e-91da-d7a94e059712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools">
+      <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform">
+      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer">
+      <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing">
+      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\ShaderProgramBuilder">
+      <UniqueIdentifier>{40d28438-57ed-4f71-8575-60caefe0ecaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader">
+      <UniqueIdentifier>{9e20bcc7-5112-4c55-9e72-c097198a9c0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,29 +126,32 @@
     <ClCompile Include="Quad.cpp">
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgram.cpp">
-      <Filter>Source Files\Utility\RenderTools</Filter>
-    </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
-      <Filter>Source Files\Utility\RenderTools\Helper\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="CachedUniformLocation.cpp">
-      <Filter>Source Files\Utility\RenderTools\Helper\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Helper\ShaderCodeWrappers</Filter>
-    </ClCompile>
-    <ClCompile Include="CompiledShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Helper\ShaderCodeWrappers</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderProgramBuilder.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderProgramBuilder</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\ShaderProgramBuilder</Filter>
     </ClCompile>
     <ClCompile Include="StreamableBufferSet.cpp">
-      <Filter>Source Files\Utility\RenderTools\Helper\Buffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GLBuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="CompiledShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,17 +436,14 @@
     <ClInclude Include="Quad.h">
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderProgram.h">
-      <Filter>Source Files\Utility\RenderTools</Filter>
-    </ClInclude>
     <ClInclude Include="UniformLocationBucket.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationTracker.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="CachedUniformLocation.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="SIMDComputation.h">
       <Filter>Source Files\Utility\Math\Experimental\SSE2</Filter>
@@ -448,20 +451,32 @@
     <ClInclude Include="MathFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\ShaderCodeWrappers</Filter>
-    </ClInclude>
-    <ClInclude Include="CompiledShader.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\ShaderCodeWrappers</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderInitializerInstructions.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderProgramBuilder</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\ShaderProgramBuilder</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgramBuilder.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderProgramBuilder</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\ShaderProgramBuilder</Filter>
     </ClInclude>
     <ClInclude Include="StreamableBufferSet.h">
-      <Filter>Source Files\Utility\RenderTools\Helper\Buffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectResourceFilepaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLBuffer.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="CompiledShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexAttribPointerData.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -542,5 +557,10 @@
     <Font Include="Fonts\Roboto-ThinItalic.ttf">
       <Filter>Resource Files\Fonts</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes_and_ReadMe.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

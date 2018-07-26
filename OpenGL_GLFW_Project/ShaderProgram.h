@@ -1,5 +1,6 @@
 //Shader Program that is composed of a set of compiled shaders. 
 //This class is essentially a wrapper for a glShaderProgram
+//Created by Forrest Miller on July 24, 2018
 
 #pragma once
 
@@ -11,6 +12,8 @@
 
 
 //namespace ShaderInterface {
+
+//see: https://www.khronos.org/opengl/wiki/GLAPI/glGetAttachedShaders
 
 		class ShaderProgram {
 		public:

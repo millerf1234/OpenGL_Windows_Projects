@@ -161,7 +161,7 @@ bool HarfBuzzTester::createAFaceAndAFont() {
 
 	fprintf(MSGLOG, "\tUsing FreeType font library to create a Face and Font...\n");
 	
-	const char * font_path = "Fonts\\Roboto-Black.ttf"; 
+	const char * font_path = "Fonts\\Roboto-Black.ttf"; //Since this is just a demo project, leave filepath hardcoded and don't use filepath in ProjectResourceFilepath.h
 	fprintf(MSGLOG, "\tUsing font: %s\n", font_path);
 
 	FT_Error noError = static_cast<FT_Error>(0);
