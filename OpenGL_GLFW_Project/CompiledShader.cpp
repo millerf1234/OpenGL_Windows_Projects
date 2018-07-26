@@ -2,25 +2,36 @@
 
 namespace ShaderInterface {
 
-	CompiledShader::CompiledShader() {
+	/*CompiledShader::CompiledShader() {
+		initialize();
+	}*/
+
+	CompiledShader::CompiledShader(const char * filepath) {
 		initialize();
 	}
 
-
 	CompiledShader::~CompiledShader() {
-		//see: https://www.khronos.org/opengl/wiki/GLAPI/glGetShader   and https://www.khronos.org/opengl/wiki/GLAPI/glIsShader
-		//Check to see if mID corresponds to a valid shader
-		GLboolean stillValid = glIsShader(mID);
-		if (stillValid) { //If the shader is still valid
-			GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
-			glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
-				if (shaderFlaggedForDeletion != GL_TRUE) {
-					glDeleteShader(mID);
-				}
+		//New implementation
+		if (!mWasDecomissioned) { //Check to make sure there is something to delete
+			if (mWasCompiled) {
+
+			}
+			
 		}
+		//Olde implementation
+		////see: https://www.khronos.org/opengl/wiki/GLAPI/glGetShader   and https://www.khronos.org/opengl/wiki/GLAPI/glIsShader
+		////Check to see if mID corresponds to a valid shader
+		//GLboolean stillValid = glIsShader(mShaderID);
+		//if (stillValid) { //If the shader is still valid
+		//	GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
+		//	glGetShaderiv(mShaderID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
+		//		if (shaderFlaggedForDeletion != GL_TRUE) {
+		//			glDeleteShader(mShaderID);
+		//		}
+		//}
 	}
 
-	bool CompiledShader::operator==(const CompiledShader& that) {
+	bool CompiledShader::operator==(const CompiledShader& that) const {
 		if (this == &that)  
 			return true;  //If comparing with self, then return true
 		else if (mType == that.mType) {
@@ -31,7 +42,7 @@ namespace ShaderInterface {
 		return false;
 	}
 
-	bool CompiledShader::operator!=(const CompiledShader& that) {
+	bool CompiledShader::operator!=(const CompiledShader& that) const {
 		if (this == &that) 
 			return false;
 		if ( (mID == that.mID) && (mID != 0u) && (strcmp(mFilepath, that.mFilepath) == 0) )
@@ -39,22 +50,22 @@ namespace ShaderInterface {
 		return true;
 	}
 
-	void CompiledShader::deleteShader() { //Delete the shader by invalidating it
-		mValid = false;
-		//Check to see if mID corresponds to a valid shader
-		if (mID != 0u) {
-			GLboolean stillValid = glIsShader(mID);
-			if (stillValid) { //If the shader is still valid
-				GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
-				glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
-				if (shaderFlaggedForDeletion != GL_TRUE) {
-					glDeleteShader(mID);
-					stillValid = GL_FALSE;
-				}
-			}
-		}
-		mID = 0u;
-	}
+	//void CompiledShader::deleteShader() { //Delete the shader by invalidating it
+	//	mValid = false;
+	//	//Check to see if mID corresponds to a valid shader
+	//	if (mID != 0u) {
+	//		GLboolean stillValid = glIsShader(mID);
+	//		if (stillValid) { //If the shader is still valid
+	//			GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
+	//			glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
+	//			if (shaderFlaggedForDeletion != GL_TRUE) {
+	//				glDeleteShader(mID);
+	//				stillValid = GL_FALSE;
+	//			}
+	//		}
+	//	}
+	//	mID = 0u;
+	//}
 
 
 	std::string CompiledShader::loadSourceFile(char * filename) const {

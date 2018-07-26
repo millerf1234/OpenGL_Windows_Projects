@@ -20,8 +20,15 @@
 			ShaderProgram();
 			~ShaderProgram();
 
+			//interface functions
+			bool attachVert(const char * vert);
+			bool attachGeom(const char * geom);
+			bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
+			bool attachTesse(const char * tesse);
+			bool attachTessc(const char * tessc);
+			bool attachFrag(const char * frag);
 
-			
+
 
 			//Returns the OpenGL-assigned ID number for this shader program
 			GLuint ID() const { return mID; }
