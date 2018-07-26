@@ -39,16 +39,18 @@ namespace ShaderInterface {
 		return true;
 	}
 
-	void CompiledShader::deleteShader() {
+	void CompiledShader::deleteShader() { //Delete the shader by invalidating it
 		mValid = false;
 		//Check to see if mID corresponds to a valid shader
-		if (mID != 0u);
-		GLboolean stillValid = glIsShader(mID);
-		if (stillValid) { //If the shader is still valid
-			GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
-			glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
-			if (shaderFlaggedForDeletion != GL_TRUE) {
-				glDeleteShader(mID);
+		if (mID != 0u) {
+			GLboolean stillValid = glIsShader(mID);
+			if (stillValid) { //If the shader is still valid
+				GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
+				glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
+				if (shaderFlaggedForDeletion != GL_TRUE) {
+					glDeleteShader(mID);
+					stillValid = GL_FALSE;
+				}
 			}
 		}
 		mID = 0u;

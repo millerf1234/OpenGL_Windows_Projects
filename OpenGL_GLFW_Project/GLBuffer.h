@@ -1,5 +1,9 @@
 //Abstract Representation of a GLBuffer
 //
+//I will want to try to combine buffers of data? What if I have models submit prototypes of themselves to
+//the graphics renderer and then the renderer can decide how to allocate it's buffers and can handle loading 
+//the physical models. 
+//
 //Created by Forrest Miller on July 25, 2018
 
 #pragma once

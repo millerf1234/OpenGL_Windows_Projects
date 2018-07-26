@@ -2,11 +2,9 @@
 
 
 
-GLBuffer::GLBuffer()
-{
+GLBuffer::GLBuffer() {
 }
 
 
-GLBuffer::~GLBuffer()
-{
+GLBuffer::~GLBuffer() {
 }

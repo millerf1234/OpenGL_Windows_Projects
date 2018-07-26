@@ -44,7 +44,7 @@ namespace ShaderInterface {
 
 		virtual void compile() = 0; //To be implemented by derived classes
 
-		void deleteShader();
+		virtual void deleteShader();
 		
 	protected:
 		ShaderType mType; 

@@ -476,7 +476,7 @@
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
     <ClInclude Include="VertexAttribPointerData.h">
-      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,12 @@
 
 static const char * NAME_OF_GAME = "OpenGL Practice Test\0";
 
+//Used in shader code for shader inputs
+enum class VertexAttribPointerType {
+	BYTE, UNSIGNED_BYTE, SHORT, UNSIGNED_SHORT, INT, UNSIGNED_INT, HALF_FLOAT,
+	FLOAT, FIXED, INT_2_10_10_10_REV, UNSIGNED_INT_2_10_10_10_REV, UNSIGNED_INT_10f_11f_11f_REV,
+};
+
 
 //OpenGL Version:
 static constexpr int DEFAULT_OPENGL_VERSION_MAJOR = 4;

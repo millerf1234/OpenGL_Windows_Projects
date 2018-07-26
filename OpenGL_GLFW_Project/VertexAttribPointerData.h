@@ -1,3 +1,6 @@
+//Update: I think I overdid the responsibility of this struct. I am going to keep it around because it might prove useful 
+//    for when I implement buffers down the line.
+//
 //This is a header-only struct that represents that information contained in an OpenGL VertexAttribPointer.
 //This struct is used to interface between the Vertex shader of a shaderprogram and input buffer data.
 //
@@ -15,9 +18,6 @@
 #include "ProjectParameters.h"
 
 namespace ShaderInterface {
-
-	enum class VertexAttribPointerType {BYTE, UNSIGNED_BYTE, SHORT, UNSIGNED_SHORT, INT, UNSIGNED_INT, HALF_FLOAT,
-		FLOAT, FIXED, INT_2_10_10_10_REV, UNSIGNED_INT_2_10_10_10_REV, UNSIGNED_INT_10f_11f_11f_REV};
 
 
 
