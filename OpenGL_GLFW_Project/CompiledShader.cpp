@@ -7,13 +7,13 @@ namespace ShaderInterface {
 	}*/
 
 	CompiledShader::CompiledShader(const char * filepath) {
-		initialize();
+		initialize(filepath);
 	}
 
 	CompiledShader::~CompiledShader() {
 		//New implementation
 		if (!mWasDecomissioned) { //Check to make sure there is something to delete
-			if (mWasCompiled) {
+			if (mHasBeenCompiled) {
 
 			}
 			
@@ -67,24 +67,54 @@ namespace ShaderInterface {
 	//	mID = 0u;
 	//}
 
-
-	std::string CompiledShader::loadSourceFile(char * filename) const {
-		std::ifstream shaderInputStream{ filename };
-		return { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
-	}
-
-
-	void CompiledShader::initialize() {
-		mValid = false;
-		mValidFilepath = false;
-		mError = false;
+	void CompiledShader::initialize(const char * filepath) {
+		fprintf(MSGLOG, "\nInitializing shader for shader source file %s\n", filepath);
+		//for (size_t i = 0; i < SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE; i++) {
+		//	mCompilationInfoLog[i] = '\0';
+		//}
+		mCompilationInfoLog[0] = mCompilationInfoLog[1] = '\0'; 
+		initializeBooleans();
 		mType = ShaderType::UNSPECIFIED;
+		mShaderID = 0u; //0u will never be assigned to a valid shader
+		mFilepath = filepath;
+		
+		
 
-		mID = 0u; //I am not sure if 0u is a valid OpenGL shader program handle or not. Oh well...
-		mFilepath = "\0";
-		infoLog[0] = '\0';
+		//mValid = false;
+		//mValidFilepath = false;
+		//mError = false;
+		//mType = ShaderType::UNSPECIFIED;
+
+		//mID = 0u; //I am not sure if 0u is a valid OpenGL shader program handle or not. Oh well...
+		//mFilepath = "\0";
+		//infoLog[0] = '\0';
 	}
 
+	void CompiledShader::initializeBooleans() {
+		
+	}
+
+	void CompiledShader::loadSourceFile(const char * filename, std::string& textBuffer) {
+		std::ifstream shaderInputStream{ filename };
+		if (this->validateFilepath(shaderInputStream)) {
+
+		}
+		textBuffer = { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
+	
+	}
+
+	//This function is based off the example listed at: https://en.cppreference.com/w/cpp/io/ios_base/failure
+	bool CompiledShader::validateFilepath(std::ifstream& inFileStream) {
+		try {
+			inFileStream.exceptions(inFileStream.failbit);
+		}
+		catch (const std::ios_base::failure& e) {
+			fprintf(WRNLOG, "\nWARNING! Invalid or Unreadable filepath encountered with \"%s\"\n", mFilepath);
+			mValidFilepath = false;
+			mError = true;
+		}
+		return true;
+	}
 
 } //namespace ShaderInterface 
 

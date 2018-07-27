@@ -16,6 +16,7 @@
 
 
 namespace ShaderInterface {
+	constexpr size_t SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE = 768ull;
 
 	//Enum for the various shader types
 	enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL, TESSELATION_EVALUATION, FRAGMENT, UNSPECIFIED};
@@ -28,18 +29,19 @@ namespace ShaderInterface {
 		CompiledShader(CompiledShader&&) = default;
 		virtual ~CompiledShader();
 
+		//-------------------------------
 		//Public Interface Functions  
-		//Compiles the shader
-		virtual bool compile() = 0;
+		//-------------------------------
 		//Successful calls to this function should also call setDecomissioned() to reflect the state change.
 		virtual void decommision() = 0;  //Alternative function names: abolish(), deactivate(), unload(), 
-		//
+		//This function is expected to be called on a 
 		//Successful calls to this function should also call setRecomissioned() to reflect the state change.
 		virtual void reinstate() = 0; //Alternative function names: reestablish(), restore(), rehabilitate(), revive(), reload(), recompile(),
-
 		
-
+		
+		//-------------------------------
 		//Operators
+		//-------------------------------
 		CompiledShader& operator=(const CompiledShader&) = default;
 		CompiledShader& operator=(CompiledShader&&) = default;
 		//Compares type and filepath strings for equality
@@ -48,43 +50,49 @@ namespace ShaderInterface {
 		bool operator!=(const CompiledShader&) const;
 
 
-
+		//-------------------------------
 		//Member field getters
+		//-------------------------------
 		const char * getFilepath() const { return mFilepath; }
 		bool seeIfIsDecomissioned() const { return mWasDecomissioned;  }
 		bool valid() const { return mValid; }
 		bool validFilepath() const { return mValidFilepath; }
+		bool isCompiled() const { return mHasBeenCompiled; }
 		bool error() const { return mError; }
 		ShaderType type() const { return mType; }
-
+		
 
 	protected:
+		//-------------------------------
+		//Protected member variables
+		//-------------------------------
 		ShaderType mType; 
 		GLuint mShaderID;
 		const char * mFilepath;
 		std::string mSourceText; //The entire text of the source file
-		GLchar mCompilationInfoLog[512]; //Buffer for storing shader-compilation error messages
+		GLchar mCompilationInfoLog[SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE]; //Buffer for storing shader-compilation error messages
 		bool mValid; //True on successful shader compilation
 		bool mValidFilepath; //True on successfuly opening of file handle 
 		bool mError; //True on encountering an error
-		bool mWasCompiled; //Becomes true once the shader is compiled
+		bool mHasBeenCompiled; //Becomes true once the shader gets compiled
+		bool mWasDecomissioned; //Becomes true if the shader is decomissioned
 
-		
+		//-------------------------------
 		//Protected Functions
-		void setIsReady(bool isReady) { mIsReady = isReady; }
-		//Changes the boolean variable
-		void setDecomissioned() { mWasDecomissioned = true; }
-		//Changes the boolean variable
-		void setReinstated() { mWasDecomissioned = false; }
-
-		//Loads the text of a file located at filepath. Useful for loading shaders
-		std::string loadSourceFile(char * filepath) const;
+		//-------------------------------
+		//Compiles the shader
+		virtual bool compile() = 0;
+		
 
 	private:
-		bool mIsReady;
-		bool mWasDecomissioned;
-		void initialize(); //Initializes variables
+		void initialize(const char * filepath); //Initializes variables
+		void initializeBooleans(); //Initializes all of the boolean members of this object
 
+		//Loads the text of a file located at filepath. Useful for loading shaders
+		void loadSourceFile(const char * filepath, std::string& textBuffer);
+		
+		//Check the validity of the filepath 
+		bool validateFilepath(std::ifstream&);
 	};
 
 #if 0  //I am going to try to clean up this class a bit
