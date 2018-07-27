@@ -1,3 +1,4 @@
+#if 0
 #include "VertexSet.h"
 
 namespace ShaderInterface {
@@ -17,3 +18,5 @@ namespace ShaderInterface {
 
 
 } //namespace ShaderInterface
+
+#endif //#if 0

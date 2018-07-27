@@ -2,7 +2,7 @@
 
 #pragma once
 
-
+#if 0
 
 
 typedef struct ShaderInitializerInstructions {
@@ -14,3 +14,7 @@ typedef struct ShaderInitializerInstructions {
 
 
 } ShaderInitializerInstructions;
+
+
+
+#endif //#if 0

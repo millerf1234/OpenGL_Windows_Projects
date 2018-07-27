@@ -17,6 +17,8 @@
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 
+#if 0
+
 namespace ShaderInterface {
 
 
@@ -71,6 +73,7 @@ namespace ShaderInterface {
 
 } // namespace ShaderInterface
 
+#endif //"#if 0"
 
 
 #endif //VERTEX_ATTRIB_POINTER_DATA_H_

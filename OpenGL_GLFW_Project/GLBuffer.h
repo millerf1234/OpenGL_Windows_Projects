@@ -8,6 +8,9 @@
 
 #pragma once
 
+
+
+#if 0
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 
@@ -32,3 +35,4 @@ private:
 	GLuint mVAO; //If has an associated VAO, value will be VAO's value. 0 represents no VAO set.
 };
 
+#endif

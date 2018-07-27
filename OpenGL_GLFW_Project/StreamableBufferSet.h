@@ -6,6 +6,8 @@
 
 #pragma once
 
+#if 0
+
 #ifndef STREAMABLE_BUFFER_SET_H_
 #define STREAMABLE_BUFFER_SET_H_
 
@@ -43,5 +45,7 @@ namespace ShaderInterface {
 
 
 } //namespace ShaderInterface
+
+#endif //'#if 0'
 
 #endif STREAMABLE_BUFFER_SET_H_
