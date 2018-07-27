@@ -36,10 +36,10 @@ namespace ShaderInterface {
 		FragmentShader& operator=(const CompiledShader&) = delete;
 
 	protected:
-		virtual bool compile() override;
+		virtual void aquireShaderID() override;
 
 	private:
-		void aquireShaderID();
+		
 	};
 
 } //namespace ShaderInterface

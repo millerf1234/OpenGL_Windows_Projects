@@ -17,7 +17,7 @@ namespace ShaderInterface {
 	constexpr size_t SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE = 768ull;
 
 	//Enum for the various shader types
-	enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL, TESSELATION_EVALUATION, FRAGMENT, UNSPECIFIED};
+	enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL, TESSELATION_EVALUATION, FRAGMENT, COMPUTE, UNSPECIFIED};
 
 	class CompiledShader {
 	public:
@@ -82,7 +82,8 @@ namespace ShaderInterface {
 		//Protected Functions
 		//-------------------------------
 		//Compiles the shader
-		virtual bool compile() = 0;
+		bool compile();
+		virtual void aquireShaderID() = 0;
 		
 
 		//Loads the text of a file located at filepath. Useful for loading shaders

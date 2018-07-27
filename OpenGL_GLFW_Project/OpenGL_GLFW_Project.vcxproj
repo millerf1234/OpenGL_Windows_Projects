@@ -135,7 +135,9 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
+    <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLBuffer.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
@@ -147,12 +149,13 @@
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgramBuilder.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="TesselationControlShader.cpp" />
+    <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="TextEngine.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="StreamableBufferSet.cpp" />
     <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="VertexShader1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -163,6 +166,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="CompiledShader.h" />
+    <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
@@ -216,6 +220,7 @@
     <ClInclude Include="freetype\tttags.h" />
     <ClInclude Include="freetype\ttunpat.h" />
     <ClInclude Include="ft2build.h" />
+    <ClInclude Include="GeometryShader.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="glfw3.h" />
@@ -257,6 +262,8 @@
     <ClInclude Include="ShaderInitializerInstructions.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SIMDComputation.h" />
+    <ClInclude Include="TesselationControlShader.h" />
+    <ClInclude Include="TesselationEvaluationShader.h" />
     <ClInclude Include="TextEngine.h" />
     <ClInclude Include="TextLine.h" />
     <ClInclude Include="UniformLocationBucket.h" />
@@ -265,7 +272,6 @@
     <ClInclude Include="StreamableBufferSet.h" />
     <ClInclude Include="VertexAttribPointerData.h" />
     <ClInclude Include="VertexShader.h" />
-    <ClInclude Include="VertexShader1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="constantcolor.frag" />
@@ -275,6 +281,7 @@
     <None Include="harfbuzz.dll" />
     <None Include="passthrough2D.vert" />
     <None Include="passthrough3D.vert" />
+    <None Include="TestGeom.geom" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf" />

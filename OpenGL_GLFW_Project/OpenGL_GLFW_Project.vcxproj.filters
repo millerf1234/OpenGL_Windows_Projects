@@ -150,13 +150,22 @@
     <ClCompile Include="CompiledShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader1.cpp">
-      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
-    </ClCompile>
     <ClCompile Include="FragmentShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="TesselationEvaluationShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="TesselationControlShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
   </ItemGroup>
@@ -481,13 +490,22 @@
     <ClInclude Include="VertexAttribPointerData.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader1.h">
-      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
-    </ClInclude>
     <ClInclude Include="FragmentShader.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="TesselationEvaluationShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="TesselationControlShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
   </ItemGroup>
@@ -512,6 +530,9 @@
     </None>
     <None Include="glfw3dll.exp">
       <Filter>GLFW</Filter>
+    </None>
+    <None Include="TestGeom.geom">
+      <Filter>Resource Files\Shaders\Generic</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

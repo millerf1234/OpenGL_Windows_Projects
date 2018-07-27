@@ -1,30 +1,30 @@
-//Implementation file for the Fragment Shader class.
-//The Fragment Shader class inherits from the CompiledShader class\
+//Implementation file for the Geometry Shader class.
+//The Geometry Shader class inherits from the CompiledShader class\
 //
 //Created by Forrest Miller on July 26, 2018
 
-#include "FragmentShader.h"
+#include "GeometryShader.h"
 
 namespace ShaderInterface {
 
-	FragmentShader::FragmentShader(const char * filepath) : CompiledShader(filepath) {
-		mType = ShaderType::FRAGMENT;
-		if (mHasLoadedSourceText)
+	GeometryShader::GeometryShader(const char * filepath) : CompiledShader(filepath) {
+		mType = ShaderType::GEOMETRY;
+		if (mHasLoadedSourceText) //if the base constructor was able to load the file
 			compile();
 	}
 
-	FragmentShader::FragmentShader(const FragmentShader& that) : CompiledShader(that.mFilepath) {
+	GeometryShader::GeometryShader(const GeometryShader& that) : CompiledShader(that.mFilepath) {
 		if (that.mValidFilepath) {
-			FragmentShader::FragmentShader(that.mFilepath);
-			mType = ShaderType::FRAGMENT;
+			GeometryShader::GeometryShader(that.mFilepath);
+			mType = ShaderType::GEOMETRY;
 		}
 		else {
 			mValidFilepath = false;
-			mType = ShaderType::FRAGMENT;
+			mType = ShaderType::GEOMETRY;
 		}
-		
+
 	}
-	FragmentShader::FragmentShader(FragmentShader&& that) : CompiledShader(that.mFilepath) {
+	GeometryShader::GeometryShader(GeometryShader&& that) : CompiledShader(that.mFilepath) {
 		if (that.mValid) {
 			mShaderID = that.mShaderID;
 			that.mShaderID = 0u;
@@ -32,16 +32,16 @@ namespace ShaderInterface {
 		}
 		else {
 			mValid = false;
-			mType = ShaderType::FRAGMENT;
+			mType = ShaderType::GEOMETRY;
 		}
 	}
-	
-	FragmentShader::~FragmentShader() {
+
+	GeometryShader::~GeometryShader() {
 
 	}
 
-	//Decomissions this frag shader object
-	void FragmentShader::decommision() {
+	//Decomissions this geom shader object
+	void GeometryShader::decommision() {
 		if (mWasDecomissioned) {
 			return;
 		}
@@ -55,26 +55,27 @@ namespace ShaderInterface {
 			mWasDecomissioned = true;
 		}
 	}
-	void FragmentShader::reinstate() {
+	void GeometryShader::reinstate() {
 		if (!mWasDecomissioned) {
+			fprintf(WRNLOG, "\nWarning! Unable to reinstate geometry shader \"%s\" because it was never decomissioned!\n", mFilepath);
 			return;
 		}
 		else {
-			FragmentShader::FragmentShader(mFilepath);
+			GeometryShader::GeometryShader(mFilepath); //Reconstruct this object to reinstate it
 			mWasDecomissioned = false;
 		}
 	}
 
 	//Assigns a different ID to this shader if need be
-	FragmentShader& FragmentShader::operator=(const FragmentShader& that) {
+	GeometryShader& GeometryShader::operator=(const GeometryShader& that) {
 		if (this != &that) {
 			CompiledShader::operator=(that); //Call the base class copy operator
 			if (that.mError || !that.mValidFilepath) {
-				fprintf(WRNLOG, "\nWarning! Copying invalid fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying invalid Geometry shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mWasDecomissioned) {
-				fprintf(WRNLOG, "\nWarning! Copying decomissioned fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying decomissioned Geometry shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mShaderID != 0u) {
@@ -91,31 +92,30 @@ namespace ShaderInterface {
 		}
 		return *this;
 	}
-	FragmentShader& FragmentShader::operator=(FragmentShader&& that) {
+	GeometryShader& GeometryShader::operator=(GeometryShader&& that) {
 		if (this != &that) {
 			if (!that.mValid) {
-				FragmentShader::FragmentShader(that.mFilepath);
+				GeometryShader::GeometryShader(that.mFilepath);
 			}
 			else {
 				if (that.mWasDecomissioned) {
-					FragmentShader::FragmentShader(that.mFilepath);
+					GeometryShader::GeometryShader(that.mFilepath);
 				}
 				else {
 					CompiledShader::operator=(that);
-					that.mShaderID = 0u; //That loses ownership over the OpenGL shader
+					that.mShaderID = 0u; //'that' loses ownership over the OpenGL shader
 				}
 			}
-
 		}
 		return *this;
 	}
 
-	void FragmentShader::aquireShaderID() {
+	void GeometryShader::aquireShaderID() {
 		if (mShaderID != 0u) {
 			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
 			return;
 		}
-		mShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+		mShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 	}
 
 } //namespace ShaderInterface

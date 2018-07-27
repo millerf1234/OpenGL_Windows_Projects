@@ -1,4 +1,4 @@
-//Class that handles loading and compiling a fragment shader source file.
+//Class that handles loading and compiling a vertex shader source file.
 //Intended to contain just a single shader source file.
 //
 //File:        VertexShader.h
@@ -26,8 +26,9 @@ namespace ShaderInterface {
 		VertexShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~VertexShader();
 
-		//Decomissions this frag shader object
+		//Decomissions this vertex shader object
 		virtual void decommision() override;
+		//Restores the decomissioned shader
 		virtual void reinstate() override;
 
 
@@ -36,18 +37,13 @@ namespace ShaderInterface {
 		VertexShader& operator=(const CompiledShader&) = delete;
 
 	protected:
-		virtual bool compile() override;
+		 virtual void aquireShaderID() override;
 
 	private:
-		void aquireShaderID();
+
 	};
 
 } //namespace ShaderInterface
-
-
-
-
-
 
 
 #endif //VERTEX_SHADER_H_

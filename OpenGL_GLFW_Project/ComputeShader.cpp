@@ -1,30 +1,30 @@
-//Implementation file for the Fragment Shader class.
-//The Fragment Shader class inherits from the CompiledShader class\
+//Implementation file for the Compute Shader class.
+//The Compute Shader class inherits from the CompiledShader class
 //
 //Created by Forrest Miller on July 26, 2018
 
-#include "FragmentShader.h"
+#include "ComputeShader.h"
 
 namespace ShaderInterface {
 
-	FragmentShader::FragmentShader(const char * filepath) : CompiledShader(filepath) {
+	ComputeShader::ComputeShader(const char * filepath) : CompiledShader(filepath) {
 		mType = ShaderType::FRAGMENT;
 		if (mHasLoadedSourceText)
 			compile();
 	}
 
-	FragmentShader::FragmentShader(const FragmentShader& that) : CompiledShader(that.mFilepath) {
+	ComputeShader::ComputeShader(const ComputeShader& that) : CompiledShader(that.mFilepath) {
 		if (that.mValidFilepath) {
-			FragmentShader::FragmentShader(that.mFilepath);
-			mType = ShaderType::FRAGMENT;
+			ComputeShader::ComputeShader(that.mFilepath);
+			mType = ShaderType::COMPUTE;
 		}
 		else {
 			mValidFilepath = false;
-			mType = ShaderType::FRAGMENT;
+			mType = ShaderType::COMPUTE;
 		}
-		
+
 	}
-	FragmentShader::FragmentShader(FragmentShader&& that) : CompiledShader(that.mFilepath) {
+	ComputeShader::ComputeShader(ComputeShader&& that) : CompiledShader(that.mFilepath) {
 		if (that.mValid) {
 			mShaderID = that.mShaderID;
 			that.mShaderID = 0u;
@@ -35,13 +35,13 @@ namespace ShaderInterface {
 			mType = ShaderType::FRAGMENT;
 		}
 	}
-	
-	FragmentShader::~FragmentShader() {
+
+	ComputeShader::~ComputeShader() {
 
 	}
 
 	//Decomissions this frag shader object
-	void FragmentShader::decommision() {
+	void ComputeShader::decommision() {
 		if (mWasDecomissioned) {
 			return;
 		}
@@ -55,26 +55,26 @@ namespace ShaderInterface {
 			mWasDecomissioned = true;
 		}
 	}
-	void FragmentShader::reinstate() {
+	void ComputeShader::reinstate() {
 		if (!mWasDecomissioned) {
 			return;
 		}
 		else {
-			FragmentShader::FragmentShader(mFilepath);
+			ComputeShader::ComputeShader(mFilepath);
 			mWasDecomissioned = false;
 		}
 	}
 
 	//Assigns a different ID to this shader if need be
-	FragmentShader& FragmentShader::operator=(const FragmentShader& that) {
+	ComputeShader& ComputeShader::operator=(const ComputeShader& that) {
 		if (this != &that) {
 			CompiledShader::operator=(that); //Call the base class copy operator
 			if (that.mError || !that.mValidFilepath) {
-				fprintf(WRNLOG, "\nWarning! Copying invalid fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying invalid Compute shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mWasDecomissioned) {
-				fprintf(WRNLOG, "\nWarning! Copying decomissioned fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying decomissioned Compute shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mShaderID != 0u) {
@@ -91,31 +91,30 @@ namespace ShaderInterface {
 		}
 		return *this;
 	}
-	FragmentShader& FragmentShader::operator=(FragmentShader&& that) {
+	ComputeShader& ComputeShader::operator=(ComputeShader&& that) {
 		if (this != &that) {
 			if (!that.mValid) {
-				FragmentShader::FragmentShader(that.mFilepath);
+				ComputeShader::ComputeShader(that.mFilepath);
 			}
 			else {
 				if (that.mWasDecomissioned) {
-					FragmentShader::FragmentShader(that.mFilepath);
+					ComputeShader::ComputeShader(that.mFilepath);
 				}
 				else {
 					CompiledShader::operator=(that);
 					that.mShaderID = 0u; //That loses ownership over the OpenGL shader
 				}
 			}
-
 		}
 		return *this;
 	}
 
-	void FragmentShader::aquireShaderID() {
+	void ComputeShader::aquireShaderID() {
 		if (mShaderID != 0u) {
 			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
 			return;
 		}
-		mShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+		mShaderID = glCreateShader(GL_COMPUTE_SHADER);
 	}
 
 } //namespace ShaderInterface

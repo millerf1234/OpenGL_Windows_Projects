@@ -47,6 +47,45 @@ namespace ShaderInterface {
 		return true;
 	}
 
+	bool CompiledShader::compile() {
+		if (isCompiled()) {
+			if (mShaderID == 0) {
+				mHasBeenCompiled = false;
+			}
+			fprintf(ERRLOG, "\nERROR COMPILING SHADER \"%s\"!\nThis shader is already compiled!\n", mFilepath);
+			return true;
+		}
+		if (!mHasLoadedSourceText || !mValidFilepath)
+			return false;
+		if (mShaderID != 0u) { //Check to make sure there isn't a shader leak
+			GLboolean shaderStillValid = glIsShader(mShaderID);
+			if (shaderStillValid) {
+				//Check to see if a delete call is already pending with OpenGL
+				GLint shaderMarkedForDeletion;
+				glGetShaderiv(mShaderID, GL_DELETE_STATUS, &shaderMarkedForDeletion);
+				if (!shaderMarkedForDeletion) {
+					glDeleteShader(mShaderID);
+				}
+			}
+			mShaderID = 0u;
+		}
+
+		aquireShaderID(); //This should be the derived version of this func depending on type
+		//Check to see if this ShaderID is valid
+		GLboolean shaderStillValid = glIsShader(mShaderID);
+		if (shaderStillValid) {
+			fprintf(WRNLOG, "\nWARNING! Unable to compile shader \"%s\" because ShaderID already represents a program!\n", mFilepath);
+			return true;
+		}
+		const GLchar* rawShaderSource = mSourceText.c_str();
+		glShaderSource(mShaderID, 1, &rawShaderSource, NULL);
+		glCompileShader(mShaderID);
+
+		checkForCompilationErrors();
+		return mValid;
+	}
+
+
 	void CompiledShader::initialize(const char * filepath) {
 		fprintf(MSGLOG, "\nInitializing shader for shader source file %s\n", filepath);
 		//mCompilationInfoLog[0] = '\0';

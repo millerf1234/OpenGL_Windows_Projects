@@ -8,8 +8,13 @@
 #define SHADER_PROGRAM_H_
 
 #include "UniformLocationTracker.h"
-#include "VertexShader1.h"
+#include "ComputeShader.h"
+#include "VertexShader.h"
+#include "GeometryShader.h"
+#include "TesselationControlShader.h"
+#include "TesselationEvaluationShader.h"
 #include "FragmentShader.h"
+
 
 //namespace ShaderInterface {
 
@@ -22,11 +27,19 @@
 
 			//interface functions
 			bool attachVert(const char * vert);
+			void attachVert(const ShaderInterface::VertexShader * vert);
 			bool attachGeom(const char * geom);
+			void attachGeom(const ShaderInterface::GeometryShader * geom);
 			bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
+			void attachTess(const ShaderInterface::TesselationControlShader tessc, const ShaderInterface::TesselationEvaluationShader tesse);
 			bool attachTesse(const char * tesse);
+			void attachTesse(const ShaderInterface::TesselationEvaluationShader tesse);
 			bool attachTessc(const char * tessc);
+			void attachTessc(const ShaderInterface::TesselationControlShader tessc);
 			bool attachFrag(const char * frag);
+			void attachFrag(const ShaderInterface::FragmentShader frag);
+			bool attachCompute(const char * compute);
+			void attachCompute(const ShaderInterface::ComputeShader compute);
 
 
 
@@ -61,16 +74,16 @@
 			bool mError;
 			bool mReadyToLink;
 
-
-
+			
+			std::unique_ptr<ShaderInterface::VertexShader> mVertexShader;
+			std::unique_ptr<ShaderInterface::GeometryShader> mGeometryShader;
+			std::unique_ptr<ShaderInterface::TesselationControlShader> mTesselationControlShader;
+			std::unique_ptr<ShaderInterface::TesselationEvaluationShader> mTesselationEvaluationShader;
+			std::unique_ptr<ShaderInterface::FragmentShader> mFragmentationShader;
 
 
 			void initialize();
-
 		};
-
-
-
 
 //} //namespace ShaderInterface
 
