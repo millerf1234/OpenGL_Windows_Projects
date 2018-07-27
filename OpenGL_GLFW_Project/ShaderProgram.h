@@ -8,8 +8,8 @@
 #define SHADER_PROGRAM_H_
 
 #include "UniformLocationTracker.h"
-#include "VertexShader.h"
-
+#include "VertexShader1.h"
+#include "FragmentShader.h"
 
 //namespace ShaderInterface {
 

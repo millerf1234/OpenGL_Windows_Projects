@@ -151,6 +151,7 @@
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="StreamableBufferSet.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="VertexShader1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +264,7 @@
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="StreamableBufferSet.h" />
     <ClInclude Include="VertexAttribPointerData.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="VertexShader1.h" />
   </ItemGroup>
   <ItemGroup>

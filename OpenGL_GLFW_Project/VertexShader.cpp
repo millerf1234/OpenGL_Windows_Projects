@@ -3,28 +3,28 @@
 //
 //Created by Forrest Miller on July 26, 2018
 
-#include "FragmentShader.h"
+#include "VertexShader.h"
 
 namespace ShaderInterface {
 
-	FragmentShader::FragmentShader(const char * filepath) : CompiledShader(filepath) {
-		mType = ShaderType::FRAGMENT;
+	VertexShader::VertexShader(const char * filepath) : CompiledShader(filepath) {
+		mType = ShaderType::VERTEX;
 		if (mHasLoadedSourceText)
 			compile();
 	}
 
-	FragmentShader::FragmentShader(const FragmentShader& that) : CompiledShader(that.mFilepath) {
+	VertexShader::VertexShader(const VertexShader& that) : CompiledShader(that.mFilepath) {
 		if (that.mValidFilepath) {
-			FragmentShader::FragmentShader(that.mFilepath);
-			mType = ShaderType::FRAGMENT;
+			VertexShader::VertexShader(that.mFilepath);
+			mType = ShaderType::VERTEX;
 		}
 		else {
 			mValidFilepath = false;
-			mType = ShaderType::FRAGMENT;
+			mType = ShaderType::VERTEX;
 		}
-		
+
 	}
-	FragmentShader::FragmentShader(FragmentShader&& that) : CompiledShader(that.mFilepath) {
+	VertexShader::VertexShader(VertexShader&& that) : CompiledShader(that.mFilepath) {
 		if (that.mValid) {
 			mShaderID = that.mShaderID;
 			that.mShaderID = 0u;
@@ -32,16 +32,16 @@ namespace ShaderInterface {
 		}
 		else {
 			mValid = false;
-			mType = ShaderType::FRAGMENT;
+			mType = ShaderType::VERTEX;
 		}
 	}
-	
-	FragmentShader::~FragmentShader() {
+
+	VertexShader::~VertexShader() {
 
 	}
 
 	//Decomissions this frag shader object
-	void FragmentShader::decommision() {
+	void VertexShader::decommision() {
 		if (mWasDecomissioned) {
 			return;
 		}
@@ -55,26 +55,26 @@ namespace ShaderInterface {
 			mWasDecomissioned = true;
 		}
 	}
-	void FragmentShader::reinstate() {
+	void VertexShader::reinstate() {
 		if (!mWasDecomissioned) {
 			return;
 		}
 		else {
-			FragmentShader::FragmentShader(mFilepath);
+			VertexShader::VertexShader(mFilepath);
 			mWasDecomissioned = false;
 		}
 	}
 
 	//Assigns a different ID to this shader if need be
-	FragmentShader& FragmentShader::operator=(const FragmentShader& that) {
+	VertexShader& VertexShader::operator=(const VertexShader& that) {
 		if (this != &that) {
 			CompiledShader::operator=(that); //Call the base class copy operator
 			if (that.mError || !that.mValidFilepath) {
-				fprintf(WRNLOG, "\nWarning! Copying invalid fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying invalid VERTEX shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mWasDecomissioned) {
-				fprintf(WRNLOG, "\nWarning! Copying decomissioned fragment shader \"%s\"\n", mFilepath);
+				fprintf(WRNLOG, "\nWarning! Copying decomissioned Vertex shader \"%s\"\n", mFilepath);
 				return *this;
 			}
 			else if (that.mShaderID != 0u) {
@@ -91,14 +91,14 @@ namespace ShaderInterface {
 		}
 		return *this;
 	}
-	FragmentShader& FragmentShader::operator=(FragmentShader&& that) {
+	VertexShader& VertexShader::operator=(VertexShader&& that) {
 		if (this != &that) {
 			if (!that.mValid) {
-				FragmentShader::FragmentShader(that.mFilepath);
+				VertexShader::VertexShader(that.mFilepath);
 			}
 			else {
 				if (that.mWasDecomissioned) {
-					FragmentShader::FragmentShader(that.mFilepath);
+					VertexShader::VertexShader(that.mFilepath);
 				}
 				else {
 					CompiledShader::operator=(that);
@@ -110,7 +110,7 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	bool FragmentShader::compile() {
+	bool VertexShader::compile() {
 		if (isCompiled()) {
 			if (mShaderID == 0) {
 				mHasBeenCompiled = false;
@@ -118,7 +118,7 @@ namespace ShaderInterface {
 			fprintf(ERRLOG, "\nERROR COMPILING SHADER \"%s\"!\nThis shader is already compiled!\n", mFilepath);
 			return true;
 		}
-		if (!mHasLoadedSourceText || !mValidFilepath) 
+		if (!mHasLoadedSourceText || !mValidFilepath)
 			return false;
 		if (mShaderID != 0u) { //Check to make sure there isn't a shader leak
 			GLboolean shaderStillValid = glIsShader(mShaderID);
@@ -132,7 +132,7 @@ namespace ShaderInterface {
 			}
 			mShaderID = 0u;
 		}
-	
+
 		aquireShaderID();
 		//Check to see if this ShaderID is valid
 		GLboolean shaderStillValid = glIsShader(mShaderID);
@@ -148,12 +148,12 @@ namespace ShaderInterface {
 		return mValid;
 	}
 
-	void FragmentShader::aquireShaderID() {
+	void VertexShader::aquireShaderID() {
 		if (mShaderID != 0u) {
 			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
 			return;
 		}
-		mShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+		mShaderID = glCreateShader(GL_VERTEX_SHADER);
 	}
 
 } //namespace ShaderInterface

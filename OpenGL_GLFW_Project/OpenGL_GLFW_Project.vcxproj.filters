@@ -156,6 +156,9 @@
     <ClCompile Include="FragmentShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="harfbuzz.lib">
@@ -482,6 +485,9 @@
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
     <ClInclude Include="FragmentShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
   </ItemGroup>
