@@ -150,7 +150,10 @@
     <ClCompile Include="CompiledShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
+    <ClCompile Include="VertexShader1.cpp">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="FragmentShader.cpp">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClCompile>
   </ItemGroup>
@@ -472,11 +475,14 @@
     <ClInclude Include="CompiledShader.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
-    </ClInclude>
     <ClInclude Include="VertexAttribPointerData.h">
       <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader1.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="FragmentShader.h">
+      <Filter>Source Files\Utility\RenderTools\GPU_And_OpenGL_Tools\ShaderProcessing\CompiledShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

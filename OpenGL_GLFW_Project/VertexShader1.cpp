@@ -1,4 +1,6 @@
-#include "VertexShader.h"
+#if 0
+
+#include "VertexShader1.h"
 
 #include <utility>
 #include <functional>
@@ -45,3 +47,6 @@ namespace ShaderInterface {
 
 
 } //namespace ShaderInterface 
+
+
+#endif //"#if 0"

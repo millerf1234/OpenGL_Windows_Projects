@@ -135,6 +135,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
+    <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLBuffer.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
@@ -150,7 +151,7 @@
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="StreamableBufferSet.cpp" />
-    <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="VertexShader1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="CompiledShader.h" />
+    <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
     <ClInclude Include="freetype\config\ftmodule.h" />
@@ -261,7 +263,7 @@
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="StreamableBufferSet.h" />
     <ClInclude Include="VertexAttribPointerData.h" />
-    <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="VertexShader1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="constantcolor.frag" />

@@ -37,6 +37,11 @@ enum class VertexAttribPointerType {
 	FLOAT, FIXED, INT_2_10_10_10_REV, UNSIGNED_INT_2_10_10_10_REV, UNSIGNED_INT_10f_11f_11f_REV,
 };
 
+//Useful Constants
+constexpr size_t INDEX_SHIFT = 1ull; //Useful for array indexing
+constexpr GLfloat PI = 3.14159265f;
+
+
 
 //OpenGL Version:
 static constexpr int DEFAULT_OPENGL_VERSION_MAJOR = 4;

@@ -2,33 +2,27 @@
 
 namespace ShaderInterface {
 
-	/*CompiledShader::CompiledShader() {
-		initialize();
-	}*/
-
 	CompiledShader::CompiledShader(const char * filepath) {
 		initialize(filepath);
 	}
 
 	CompiledShader::~CompiledShader() {
-		//New implementation
-		if (!mWasDecomissioned) { //Check to make sure there is something to delete
-			if (mHasBeenCompiled) {
+		//see: https://www.khronos.org/opengl/wiki/GLAPI/glGetShader   
+		// and https://www.khronos.org/opengl/wiki/GLAPI/glIsShader
 
+		//All the base constructor will do is free the programID if necessary
+		if (mShaderID != 0u) {
+			GLboolean shaderStillValid = glIsShader(mShaderID);
+			if (shaderStillValid) {
+				//Check to see if a delete call is already pending with OpenGL
+				GLint shaderMarkedForDeletion;
+				glGetShaderiv(mShaderID, GL_DELETE_STATUS, &shaderMarkedForDeletion);
+				if (!shaderMarkedForDeletion) {
+					glDeleteShader(mShaderID);
+				}
 			}
-			
+			mShaderID = 0u;
 		}
-		//Olde implementation
-		////see: https://www.khronos.org/opengl/wiki/GLAPI/glGetShader   and https://www.khronos.org/opengl/wiki/GLAPI/glIsShader
-		////Check to see if mID corresponds to a valid shader
-		//GLboolean stillValid = glIsShader(mShaderID);
-		//if (stillValid) { //If the shader is still valid
-		//	GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
-		//	glGetShaderiv(mShaderID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
-		//		if (shaderFlaggedForDeletion != GL_TRUE) {
-		//			glDeleteShader(mShaderID);
-		//		}
-		//}
 	}
 
 	bool CompiledShader::operator==(const CompiledShader& that) const {
@@ -45,63 +39,79 @@ namespace ShaderInterface {
 	bool CompiledShader::operator!=(const CompiledShader& that) const {
 		if (this == &that) 
 			return false;
-		if ( (mID == that.mID) && (mID != 0u) && (strcmp(mFilepath, that.mFilepath) == 0) )
-			return false;
+		if (this->mType == that.mType) {                     //   If the types match
+			if ((strcmp(mFilepath, that.mFilepath) == 0)) {  //  And the filepaths match
+				return false;
+			}
+		}
 		return true;
 	}
 
-	//void CompiledShader::deleteShader() { //Delete the shader by invalidating it
-	//	mValid = false;
-	//	//Check to see if mID corresponds to a valid shader
-	//	if (mID != 0u) {
-	//		GLboolean stillValid = glIsShader(mID);
-	//		if (stillValid) { //If the shader is still valid
-	//			GLint shaderFlaggedForDeletion; //Check to see if it has been flagged for deletion already
-	//			glGetShaderiv(mID, GL_DELETE_STATUS, &shaderFlaggedForDeletion);
-	//			if (shaderFlaggedForDeletion != GL_TRUE) {
-	//				glDeleteShader(mID);
-	//				stillValid = GL_FALSE;
-	//			}
-	//		}
-	//	}
-	//	mID = 0u;
-	//}
-
 	void CompiledShader::initialize(const char * filepath) {
 		fprintf(MSGLOG, "\nInitializing shader for shader source file %s\n", filepath);
-		//for (size_t i = 0; i < SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE; i++) {
-		//	mCompilationInfoLog[i] = '\0';
-		//}
-		mCompilationInfoLog[0] = mCompilationInfoLog[1] = '\0'; 
+		//mCompilationInfoLog[0] = '\0';
+		//mCompilationInfoLog[1] = '\0';
+		//mCompilationInfoLog[SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE - INDEX_SHIFT] = '\0';
 		initializeBooleans();
 		mType = ShaderType::UNSPECIFIED;
 		mShaderID = 0u; //0u will never be assigned to a valid shader
 		mFilepath = filepath;
-		
-		
-
-		//mValid = false;
-		//mValidFilepath = false;
-		//mError = false;
-		//mType = ShaderType::UNSPECIFIED;
-
-		//mID = 0u; //I am not sure if 0u is a valid OpenGL shader program handle or not. Oh well...
-		//mFilepath = "\0";
-		//infoLog[0] = '\0';
+		//Try to open the file
+		loadSourceFile(filepath, mSourceText);
+		if (mHasLoadedSourceText) {
+			fprintf(MSGLOG, "Shader filepath successfully read from. Preparing to compile shader...\n");
+		}
+		else {
+			fprintf(ERRLOG, "\nERROR! Unable to read from shader file \"%s\"\nPlease ensure that a valid filepath is used.\n", filepath);
+			mError = true;
+			mValid = false;
+			return;
+		}
 	}
 
 	void CompiledShader::initializeBooleans() {
-		
+		mError = false;
+		mValid = false;
+		mValidFilepath = false;
+		mHasLoadedSourceText = false;
+		mHasBeenCompiled = false;
+		mWasDecomissioned = false;
 	}
 
 	void CompiledShader::loadSourceFile(const char * filename, std::string& textBuffer) {
 		std::ifstream shaderInputStream{ filename };
 		if (this->validateFilepath(shaderInputStream)) {
-
+			textBuffer = { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
+			if (textBuffer.length() > 20ul) //I am using 20 as a cutoff for shortest allowed shader length in characters
+				mHasLoadedSourceText = true;
 		}
-		textBuffer = { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
-	
+		else { //if unable to validate the filepath
+			mValidFilepath = false;
+			mHasLoadedSourceText = false;
+			mError = true;
+			mValid = false;
+			textBuffer = "\0";
+			//textBuffer = "#version 450 core\nvoid main() {\n\t;\n}\n\0"; //Throw in a bogus empty shader 
+		}
 	}
+	
+	//This function is to be called only right after glCompileShader is called.
+	bool CompiledShader::checkForCompilationErrors() {
+		GLint success;
+		glGetShaderiv(mShaderID, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(mShaderID, SHADER_COMPILATION_INFO_LOG_BUFFER_SIZE, NULL, mCompilationInfoLog);
+			fprintf(WRNLOG, "\nSHADER COMPILATION FAILURE WARNING!\n");
+			fprintf(WRNLOG, "\nThe Fragment Shader \"%s\" failed to compile...\n\t%s\n", mFilepath, mCompilationInfoLog);
+			mHasBeenCompiled = false;
+			mValid = false;
+			return false;
+		}
+		mHasBeenCompiled = true;
+		mValid = true;
+		return true;
+	}
+
 
 	//This function is based off the example listed at: https://en.cppreference.com/w/cpp/io/ios_base/failure
 	bool CompiledShader::validateFilepath(std::ifstream& inFileStream) {
@@ -112,62 +122,11 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nWARNING! Invalid or Unreadable filepath encountered with \"%s\"\n", mFilepath);
 			mValidFilepath = false;
 			mError = true;
+			return false;
 		}
+		mValidFilepath = true;
 		return true;
 	}
 
+
 } //namespace ShaderInterface 
-
-
-
-/*
-
-//Enum for the various shader types
-enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL, TESSELATION_EVALUATION, FRAGMENT, INVALID};
-
-
-class CompiledShader {
-public:
-CompiledShader();
-~CompiledShader();
-
-const char* getFilepath() const { return mFilepath; }
-
-bool valid() const { return mValid; }
-bool validFilepath() const { return mValidFilepath; }
-bool error() const { return mError; }
-ShaderType type() const { return mType; }
-
-bool operator==(const CompiledShader&); //For comparing shaders...
-bool operator!=(const CompiledShader&);
-
-//Copying not allowed but moving is okay
-CompiledShader(const CompiledShader &) = delete;
-CompiledShader& operator=(const CompiledShader &) = delete;
-//CompiledShader(CompiledShader && that); //Not sure about this one... It can't be virtual since it's a constructor
-virtual CompiledShader& operator=(CompiledShader &&) = 0;
-
-
-protected:
-
-ShaderType mType;
-
-//Loads the text of a file located at filepath. Useful for loading shaders
-std::string loadSourceFile(char * filepath) const;
-
-private:
-const char * mFilepath;
-GLchar infoLog[512]; //Buffer for storing shader-compilation error messages
-GLuint mID;
-
-//Variables representing object's state:
-bool mValid; //True on successful shader compilation
-bool mValidFilepath; //True on successfuly opening of file handle
-bool mError; //True on encountering an error
-
-//initialize should only be called from a constructor
-void initialize();
-
-};
-} //namespace ShaderInterface
-*/
