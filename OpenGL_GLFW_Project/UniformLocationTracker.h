@@ -29,7 +29,7 @@
 
 namespace ShaderInterface {
 
-	class CachedUniformLocation;
+	class CachedUniformLocation; //Instances of CachedUniformLocation objects can be created and handed out through functions calls in this class
 
 	class UniformLocationTracker {
 	public:

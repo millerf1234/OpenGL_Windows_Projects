@@ -14,8 +14,11 @@
 #include "GLFW_Init.h"
 #include "ProjectSetup.h"
 
+#include "ProjectResourceFilepaths.h"
+
 #include "TextEngine.h"
 
+#include "ShaderProgram.h"
 #include "ShaderProgramBuilder.h"
 
 class RenderProject1 {

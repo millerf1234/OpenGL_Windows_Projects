@@ -24,7 +24,7 @@ namespace ShaderInterface {
 		ComputeShader(const char *);
 		ComputeShader(const ComputeShader&);
 		ComputeShader(ComputeShader&&);
-		ComputeShader(const ComputeShader&) = delete; //This delete the move constructor as well
+		ComputeShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~ComputeShader();
 
 		//Decomissions this compute shader object

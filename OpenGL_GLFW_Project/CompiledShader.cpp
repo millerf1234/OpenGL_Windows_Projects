@@ -70,13 +70,14 @@ namespace ShaderInterface {
 			mShaderID = 0u;
 		}
 
-		aquireShaderID(); //This should be the derived version of this func depending on type
 		//Check to see if this ShaderID is valid
 		GLboolean shaderStillValid = glIsShader(mShaderID);
 		if (shaderStillValid) {
 			fprintf(WRNLOG, "\nWARNING! Unable to compile shader \"%s\" because ShaderID already represents a program!\n", mFilepath);
 			return true;
 		}
+		aquireShaderID(); //This should be the derived version of this func depending on type
+		
 		const GLchar* rawShaderSource = mSourceText.c_str();
 		glShaderSource(mShaderID, 1, &rawShaderSource, NULL);
 		glCompileShader(mShaderID);

@@ -51,9 +51,9 @@ void RenderProject1::run() {
 	//std::unique_ptr<HarfBuzzTester> hbTest = std::make_unique<HarfBuzzTester>();
 
 	//hbTest->runTest();
-
-	fprintf(MSGLOG, "\nLoaded TextEngine! Text Engine ready status: %d\n", txtEngine->ready());
-
+	if (txtEngine) {
+		fprintf(MSGLOG, "\nLoaded TextEngine! Text Engine ready status: %d\n", txtEngine->ready());
+	}
 	
 
 	std::cin.get(); //keep the screen open
@@ -75,5 +75,20 @@ void RenderProject1::initialize() {
 }
 
 void RenderProject1::loadAssets() {
-	txtEngine = std::make_unique<TextEngine>("Fonts\\Roboto-Black.ttf");
+	//txtEngine = std::make_unique<TextEngine>("Fonts\\Roboto-Black.ttf");
+
+	fprintf(MSGLOG, "\nCreating a new shader program!\n");
+	std::unique_ptr<ShaderProgram> testProgram = std::make_unique<ShaderProgram>();
+
+	fprintf(MSGLOG, "\nAttaching vertex shader!\n");
+	testProgram->attachVert(VERT_PASSTHROUGH2D);
+	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
+	testProgram->attachFrag(FRAG_CONSTANTCOLOR);
+
+	fprintf(MSGLOG, "\nAttempting to link program!\n");
+	testProgram->link();
+
+	testProgram->uniforms->updateUniform1f("zoom", 1.0f);
+
+	//Test Updating/Caching uniform locations too!
 }
