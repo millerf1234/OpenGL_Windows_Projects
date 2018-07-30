@@ -24,37 +24,40 @@
 #endif 
 
 namespace ShaderInterface {
+	namespace UNFINISHED_UNUSED {
 
-	//enum ShaderInterfaceErrorCodes {
-	enum ShaderInterfaceStatusCode {
-		SI_NO_ERROR,                         //No error
-		SI_BAD_FILEPATH,					 //
-		SI_BAD_COPY,                         //For when an illegal copy operation is attempted/performed
-		SI_GL_ERROR,						 //For an error within the graphics context 
-		SI_TYPE_MISMATCH,                    //For an illegal operation on mismatched-derived types 
-		SI_LOCAL_DATA_AND_GLCONTEXT_TYPE_MISMATCH,
-		SI_UNCOMPILED,
-		SI_DECOMISSIONED,
-		SI_UNINITIALIZED,
-		SI_MARKED_FOR_DESTRUCTION,
-		SI_POTENTIAL_OBJECT_SLICING_DETECTED,
-	};
-
-	
-	//Also there will be a mini stack implemented globally that can be used on objects for codes
-	
-	typedef struct SIStatusCodeStack final {
-	private:
-		ShaderInterfaceStatusCode * mStatusCode;
-
-		typedef struct SIStatusCodeBucket {
-			ShaderInterfaceStatusCode mSelf;
-			SIStatusCodeBucket * next;
-		} SIStatusCodeBucket;
+		//enum ShaderInterfaceErrorCodes {
+		enum ShaderInterfaceStatusCode {
+			SI_NO_ERROR,                         //No error
+			SI_BAD_FILEPATH,					 //
+			SI_BAD_COPY,                         //For when an illegal copy operation is attempted/performed
+			SI_GL_ERROR,						 //For an error within the graphics context 
+			SI_TYPE_MISMATCH,                    //For an illegal operation on mismatched-derived types 
+			SI_LOCAL_DATA_AND_GLCONTEXT_TYPE_MISMATCH,
+			SI_UNCOMPILED,
+			SI_DECOMISSIONED,
+			SI_UNINITIALIZED,
+			SI_MARKED_FOR_DESTRUCTION,
+			SI_POTENTIAL_OBJECT_SLICING_DETECTED,
+		};
 
 
-	} SICodeStack;
+		//Also there will be a mini stack implemented globally that can be used on objects for codes
 
+		typedef struct SIStatusCodeStack final {
+		private:
+			ShaderInterfaceStatusCode * mStatusCode;
+
+			typedef struct SIStatusCodeBucket {
+				ShaderInterfaceStatusCode mSelf;
+				SIStatusCodeBucket * next;
+			} SIStatusCodeBucket;
+
+			//Add Push, Pop, Print functions...
+
+		} SICodeStack;
+
+	} //namespace UNFINISHED_UNUSED
 
 } //namespace ShaderInterface
 

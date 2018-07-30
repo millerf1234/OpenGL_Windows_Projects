@@ -134,8 +134,8 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="CompiledShader_old.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
-    <ClCompile Include="CompiledShader2.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
@@ -166,8 +166,8 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
+    <ClInclude Include="CompiledShader_old.h" />
     <ClInclude Include="CompiledShader.h" />
-    <ClInclude Include="CompiledShader2.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />

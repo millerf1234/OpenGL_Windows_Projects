@@ -2,6 +2,7 @@
 // Events are logged by calling a pointer-to-static-function they are given
 // which will add a message to the message log.
 // 
+// DOES NOT WORK CORRECTLY AND IS UNFINISHED!
 //
 //
 //Created by Forrest Miller on July 30, 2018
@@ -45,12 +46,13 @@
 
 namespace ShaderInterface {
 	//namespace ShaderInterfaceLogger {
+	namespace UNFINISHED_UNUSED {
 
-	typedef std::chrono::time_point<std::chrono::system_clock>  SystemTime;
-	typedef std::chrono::time_point<std::chrono::high_resolution_clock> HighResolutionTime;
+		typedef std::chrono::time_point<std::chrono::system_clock>  SystemTime;
+		typedef std::chrono::time_point<std::chrono::high_resolution_clock> HighResolutionTime;
 
-	
-		
+
+
 		static std::unique_ptr<SystemTime> programSystemStartTime = nullptr;
 		static std::unique_ptr<HighResolutionTime> highResProgramStartTime = nullptr;
 		static bool useHighResTime = false;
@@ -104,7 +106,7 @@ namespace ShaderInterface {
 		}
 
 		static void logWrnEvent(unsigned int id, ShaderInterfaceStatusCode code) {
-			
+
 		}
 
 		static void logErrEvent(const char * customMessage) {
@@ -128,8 +130,8 @@ namespace ShaderInterface {
 
 
 
-	
-	
+
+	} //namespace UNFINISHED_UNUSED
 	//} //namespace ShaderInterfaceLogger
 } //namespace ShaderInterface
 

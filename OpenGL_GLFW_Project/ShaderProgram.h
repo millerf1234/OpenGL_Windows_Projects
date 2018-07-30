@@ -8,6 +8,7 @@
 #define SHADER_PROGRAM_H_
 
 #include "UniformLocationTracker.h"
+
 #include "ComputeShader.h"
 #include "VertexShader.h"
 #include "GeometryShader.h"
@@ -15,7 +16,7 @@
 #include "TesselationEvaluationShader.h"
 #include "FragmentShader.h"
 
-
+/*
 //namespace ShaderInterface {
 
 //see: https://www.khronos.org/opengl/wiki/GLAPI/glGetAttachedShaders
@@ -108,5 +109,8 @@
 		};
 
 //} //namespace ShaderInterface
+
+*/
+
 
 #endif //#ifndef SHADER_PROGRAM_H_

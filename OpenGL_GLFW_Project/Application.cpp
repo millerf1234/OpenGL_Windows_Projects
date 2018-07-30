@@ -11,7 +11,7 @@ Application::Application() {
 	//ShaderInterface::initializeShaderInterfaceLogger();
 
 	fprintf(MSGLOG, "Application is loading...\n");
-	ShaderInterface::logMsgEvent("Application is loading...");
+	//ShaderInterface::logMsgEvent("Application is loading...");
 	setupGLFW();
 	loadGraphicsLanguageFunctions();
 	checkMSAA();
