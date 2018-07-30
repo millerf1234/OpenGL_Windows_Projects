@@ -48,19 +48,17 @@ namespace ShaderInterface {
 		//-------------------------------
 		// Constructors / Destructor
 		//-------------------------------
-		//CompiledShader();
 		CompiledShader(const char * sourceFilepath);
-		//CompiledShader(const std::string& sourceText);
-		CompiledShader(const CompiledShader& that);
-		CompiledShader(CompiledShader&& that);
+		CompiledShader(const CompiledShader& that) = delete;
+		CompiledShader(CompiledShader&& that) = delete;
 
 		virtual ~CompiledShader();
 
 		//-------------------------------
 		// Operators
 		//-------------------------------
-		CompiledShader& operator=(const CompiledShader& that);
-		CompiledShader& operator=(CompiledShader&& that);
+		CompiledShader& operator=(const CompiledShader& that) = delete;
+		CompiledShader& operator=(CompiledShader&& that) = delete;
 
 		//Compares ShaderTypes and Filepaths for equality
 		bool operator==(const CompiledShader&) const;
