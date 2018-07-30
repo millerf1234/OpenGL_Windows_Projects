@@ -40,21 +40,6 @@ namespace ShaderInterface {
 
 	}
 
-	//Decomissions this Tesselation Evaluation shader object
-	void TesselationEvaluationShader::decommision() {
-		if (mWasDecomissioned) {
-			return;
-		}
-		else {
-			mSourceText = "\0";
-			mHasBeenCompiled = false;
-			mHasLoadedSourceText = false;
-			mValid = false;
-			glDeleteShader(mShaderID);
-			mShaderID = 0u;
-			mWasDecomissioned = true;
-		}
-	}
 	void TesselationEvaluationShader::reinstate() {
 		if (!mWasDecomissioned) {
 			fprintf(WRNLOG, "\nWarning! Unable to reinstate Tess Eval shader \"%s\" because it was never decomissioned!\n", mFilepath);

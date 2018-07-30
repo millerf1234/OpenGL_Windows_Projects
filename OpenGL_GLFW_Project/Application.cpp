@@ -7,8 +7,11 @@ Application::Application() {
 	mDisplayInfo = nullptr;
 	mGLFWInitializer = nullptr;
 
+	//initialize the shader interface logger
+	//ShaderInterface::initializeShaderInterfaceLogger();
 
 	fprintf(MSGLOG, "Application is loading...\n");
+	ShaderInterface::logMsgEvent("Application is loading...");
 	setupGLFW();
 	loadGraphicsLanguageFunctions();
 	checkMSAA();

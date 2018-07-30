@@ -40,21 +40,6 @@ namespace ShaderInterface {
 
 	}
 
-	//Decomissions this geom shader object
-	void GeometryShader::decommision() {
-		if (mWasDecomissioned) {
-			return;
-		}
-		else {
-			mSourceText = "\0";
-			mHasBeenCompiled = false;
-			mHasLoadedSourceText = false;
-			mValid = false;
-			glDeleteShader(mShaderID);
-			mShaderID = 0u;
-			mWasDecomissioned = true;
-		}
-	}
 	void GeometryShader::reinstate() {
 		if (!mWasDecomissioned) {
 			fprintf(WRNLOG, "\nWarning! Unable to reinstate geometry shader \"%s\" because it was never decomissioned!\n", mFilepath);

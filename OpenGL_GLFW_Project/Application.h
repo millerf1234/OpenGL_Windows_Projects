@@ -18,10 +18,12 @@
 #include "ProjectResourceFilepaths.h"
 #include "HarfBuzzSetupTest.h"
 
+#include "ShaderInterfaceLogger.h" //Not yet in active use
+
 #include "RenderProject1.h"
 
-class Application
-{
+
+class Application {
 public:
 	Application();
 	~Application();
@@ -35,7 +37,7 @@ private:
 
 	//Initialization Helper Functions:
 	void setupGLFW();
-	void loadGraphicsLanguageFunctions();
+	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers)
 
 	void checkMSAA(); //Prints MSAA config to MSGLOG
 

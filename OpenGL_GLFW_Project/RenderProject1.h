@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef RENDER_PROJECT_1
-#define RENDER_PROJECT_1
+#ifndef RENDER_PROJECT_1_H_
+#define RENDER_PROJECT_1_H_
 
 #include <limits>
 
@@ -46,4 +46,4 @@ private:
 
 };
 
-#endif //RENDER_PROJECT_1
+#endif //RENDER_PROJECT_1_H_

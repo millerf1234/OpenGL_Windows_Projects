@@ -41,21 +41,6 @@ namespace ShaderInterface {
 
 	}
 
-	//Decomissions this Tesselation Control shader object
-	void TesselationControlShader::decommision() {
-		if (mWasDecomissioned) {
-			return;
-		}
-		else {
-			mSourceText = "\0";
-			mHasBeenCompiled = false;
-			mHasLoadedSourceText = false;
-			mValid = false;
-			glDeleteShader(mShaderID);
-			mShaderID = 0u;
-			mWasDecomissioned = true;
-		}
-	}
 	void TesselationControlShader::reinstate() {
 		if (!mWasDecomissioned) {
 			fprintf(WRNLOG, "\nWarning! Unable to reinstate Tess Cntrl shader \"%s\" because it was never decomissioned!\n", mFilepath);

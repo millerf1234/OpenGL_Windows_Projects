@@ -26,9 +26,7 @@ namespace ShaderInterface {
 		VertexShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~VertexShader();
 
-		//Decomissions this vertex shader object
-		virtual void decommision() override;
-		//Restores the decomissioned shader
+		//Restores this shader if it was decomissioned 
 		virtual void reinstate() override;
 
 

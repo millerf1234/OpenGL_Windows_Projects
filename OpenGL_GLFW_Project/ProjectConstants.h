@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef PROJECT_CONSTANTS
-#define PROJECT_CONSTANTS
+#ifndef PROJECT_CONSTANTS_H_
+#define PROJECT_CONSTANTS_H_
 
 #include <array>
 #include <string>
@@ -59,4 +59,4 @@ static const std::array<int, 2> SCREEN_RESOLUTION_UHD = { 3840, 2160 };  // Ultr
 
 
 
-#endif //define PROJECT_CONSTANTS
+#endif //define PROJECT_CONSTANTS_H_

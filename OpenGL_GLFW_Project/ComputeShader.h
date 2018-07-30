@@ -27,8 +27,6 @@ namespace ShaderInterface {
 		ComputeShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~ComputeShader();
 
-		//Decomissions this compute shader object
-		virtual void decommision() override;
 		//Reinstate's the shader to allow for attachment to programs again. ShaderID may be different than this objects previous ShaderIDs
 		virtual void reinstate() override;
 

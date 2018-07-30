@@ -27,7 +27,6 @@ namespace ShaderInterface {
 		virtual ~TesselationControlShader();
 
 		//Decomissions this Tesselation Control shader object
-		virtual void decommision() override;
 		virtual void reinstate() override;
 
 

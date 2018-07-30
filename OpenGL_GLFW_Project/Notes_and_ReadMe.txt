@@ -9,6 +9,9 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 -Forrest
 
 
+//Web Links:
+		For Relating OpenGL types to Specific Types, see:  https://stackoverflow.com/questions/8932912/whats-the-advantage-of-using-gluint-instead-of-unsigned-int
+
 
 
 

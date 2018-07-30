@@ -85,7 +85,6 @@
 
 
 		private:
-			
 			GLuint mProgramID; //GL ShaderProgram ID
 
 			bool mValid;
@@ -94,7 +93,6 @@
 			bool mError;
 			bool mReadyToLink;
 			
-
 			std::unique_ptr<ShaderInterface::VertexShader> mVertexShader;
 			std::unique_ptr<ShaderInterface::GeometryShader> mGeometryShader;
 			std::unique_ptr<ShaderInterface::TesselationControlShader> mTesselationControlShader;

@@ -30,8 +30,6 @@ namespace ShaderInterface {
 		GeometryShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~GeometryShader();
 
-		//Decomissions this geom shader object
-		virtual void decommision() override;
 		virtual void reinstate() override;
 
 

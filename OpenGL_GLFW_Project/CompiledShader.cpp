@@ -18,10 +18,26 @@ namespace ShaderInterface {
 				GLint shaderMarkedForDeletion;
 				glGetShaderiv(mShaderID, GL_DELETE_STATUS, &shaderMarkedForDeletion);
 				if (!shaderMarkedForDeletion) {
-					glDeleteShader(mShaderID);
+					//glDeleteShader(mShaderID);
 				}
 			}
 			mShaderID = 0u;
+		}
+	}
+
+	//Decomissions this shader object (i.e. free's it's resources and prevent's it from being attached to new programs
+	void CompiledShader::decommision() {
+		if (mWasDecomissioned) {
+			return;
+		}
+		else {
+			mSourceText = "\0";
+			mHasBeenCompiled = false;
+			mHasLoadedSourceText = false;
+			mValid = false;
+			glDeleteShader(mShaderID);
+			mShaderID = 0u;
+			mWasDecomissioned = true;
 		}
 	}
 
@@ -76,7 +92,7 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nWARNING! Unable to compile shader \"%s\" because ShaderID already represents a program!\n", mFilepath);
 			return true;
 		}
-		aquireShaderID(); //This should be the derived version of this func depending on type
+		aquireShaderID(); //This function's implementation will choose the appropriate glFunctionCall to get the appropriate type of shader handle
 		
 		const GLchar* rawShaderSource = mSourceText.c_str();
 		glShaderSource(mShaderID, 1, &rawShaderSource, NULL);

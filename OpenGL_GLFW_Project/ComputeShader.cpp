@@ -40,21 +40,6 @@ namespace ShaderInterface {
 
 	}
 
-	//Decomissions this frag shader object
-	void ComputeShader::decommision() {
-		if (mWasDecomissioned) {
-			return;
-		}
-		else {
-			mSourceText = "\0";
-			mHasBeenCompiled = false;
-			mHasLoadedSourceText = false;
-			mValid = false;
-			glDeleteShader(mShaderID);
-			mShaderID = 0u;
-			mWasDecomissioned = true;
-		}
-	}
 	void ComputeShader::reinstate() {
 		if (!mWasDecomissioned) {
 			return;

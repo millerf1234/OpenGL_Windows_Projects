@@ -5,8 +5,8 @@
 
 #pragma once
 
-#ifndef PROJECT_PARAMETERS
-#define PROJECT_PARAMETERS
+#ifndef PROJECT_PARAMETERS_H_
+#define PROJECT_PARAMETERS_H_
 
 #include "ProjectSetup.h"
 
@@ -28,4 +28,4 @@ static constexpr float MARGIN = FONT_SIZE * 0.5f;
 
 
 
-#endif //define PROJECT_PARAMETERS
+#endif //define PROJECT_PARAMETERS_H_

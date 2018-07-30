@@ -279,7 +279,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 				mValid = false;
 
 				glGetProgramInfoLog(mProgramID, 768, NULL, infoLog);
-				fprintf(ERRLOG, "\nERROR OCCURED WHILE LINKING SHADERPROGRAM!\nError log:\n\y%s\n", infoLog);
+				fprintf(ERRLOG, "\nERROR OCCURED WHILE LINKING SHADERPROGRAM!\nError log:\n\t%s\n", infoLog);
 				return;
 			}
 

@@ -40,21 +40,6 @@ namespace ShaderInterface {
 
 	}
 
-	//Decomissions this vert shader object (it releases resources and can't be attached to ShaderPrograms until reinstated
-	void VertexShader::decommision() {
-		if (mWasDecomissioned) {
-			return;
-		}
-		else {
-			mSourceText = "\0";
-			mHasBeenCompiled = false;
-			mHasLoadedSourceText = false;
-			mValid = false;
-			glDeleteShader(mShaderID);
-			mShaderID = 0u;
-			mWasDecomissioned = true;
-		}
-	}
 	void VertexShader::reinstate() {
 		if (!mWasDecomissioned) {
 			return;

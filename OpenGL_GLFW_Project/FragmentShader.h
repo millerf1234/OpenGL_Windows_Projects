@@ -26,10 +26,7 @@ namespace ShaderInterface {
 		FragmentShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		virtual ~FragmentShader();
 		
-		//Decomissions this frag shader object
-		virtual void decommision() override;
 		virtual void reinstate() override;
-
 
 		FragmentShader& operator=(const FragmentShader&);
 		FragmentShader& operator=(FragmentShader&&);
@@ -37,8 +34,6 @@ namespace ShaderInterface {
 
 	protected:
 		virtual void aquireShaderID() override;
-
-	private:
 		
 	};
 
