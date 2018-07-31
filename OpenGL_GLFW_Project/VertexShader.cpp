@@ -9,7 +9,7 @@
 namespace ShaderInterface {
 
 	VertexShader::VertexShader(const char * filepath) : CompiledShader(filepath) {
-		
+		fprintf(MSGLOG, "Creating vertex shader from source \"%s\"\n", filepath);
 	}
 	
 	VertexShader::VertexShader(VertexShader&& other) : CompiledShader() {
@@ -96,6 +96,8 @@ namespace ShaderInterface {
 		}
 	}
 
+
+	//////////////////////////////////////////////////////////////////////////////////////
 	//OLDE
 	//VertexShader::VertexShader(const char * filepath) : CompiledShader(filepath) {
 	//	mType = ShaderType::VERTEX;

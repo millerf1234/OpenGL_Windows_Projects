@@ -9,6 +9,8 @@
 
 #pragma once
 
+#if 0
+
 #ifndef SHADER_INTERFACE_LOGGER_H_
 #define SHADER_INTERFACE_LOGGER_H_
 
@@ -137,3 +139,7 @@ namespace ShaderInterface {
 
 
 #endif //SHADER_INTERFACE_LOGGER_H_
+
+
+
+#endif //#if 0

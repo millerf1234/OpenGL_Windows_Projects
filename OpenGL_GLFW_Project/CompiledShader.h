@@ -1,8 +1,8 @@
-// //Abstract base class that the 5 shader types derive from.
+//Abstract base class that the 5 shader types derive from.
 //
 //This is a rewritten version of my first version of CompiledShader. The previous
 //version put everything in place and worked fine, I was concerned however that it's
-//implementation was slightly sloppy and had become bloated (like OpenGL already stores the 
+//implementation was slightly sloppy and had become bloated (like for example OpenGL already stores the 
 //shader source string so there is no reason to store a local copy). Thus I decided to try
 //to rewrite the whole class structure using my previous version as a guide while trying to keep
 //everything more streamlined and light-weight.

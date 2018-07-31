@@ -1,9 +1,11 @@
 //This is a common header file used by Shader Processing objects to 
 //track their error state. 
 //
+//Currently this code is unused within the project
 //
 // Forrest Miller    July 30, 2018
 
+#if 0
 
 #pragma once
 
@@ -62,3 +64,6 @@ namespace ShaderInterface {
 } //namespace ShaderInterface
 
 #endif SHADER_INTERFACE_STATUS_CODE_H_
+
+
+#endif //#if 0
