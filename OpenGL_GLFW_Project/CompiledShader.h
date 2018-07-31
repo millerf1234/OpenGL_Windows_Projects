@@ -49,16 +49,16 @@ namespace ShaderInterface {
 		// Constructors / Destructor
 		//-------------------------------
 		CompiledShader(const char * sourceFilepath);
-		CompiledShader(const CompiledShader& that) = delete;
-		CompiledShader(CompiledShader&& that) = delete;
+		CompiledShader(const CompiledShader& that) = delete; //No copying from abstract base type
+		CompiledShader(CompiledShader&& that) = delete; //No moving an abstract base type
 
 		virtual ~CompiledShader();
 
 		//-------------------------------
 		// Operators
 		//-------------------------------
-		CompiledShader& operator=(const CompiledShader& that) = delete;
-		CompiledShader& operator=(CompiledShader&& that) = delete;
+		CompiledShader& operator=(const CompiledShader& that) = delete; //No copying from abstract base type
+		CompiledShader& operator=(CompiledShader&& that) = delete; //No moving an abstract base type
 
 		//Compares ShaderTypes and Filepaths for equality
 		bool operator==(const CompiledShader&) const;
@@ -100,6 +100,13 @@ namespace ShaderInterface {
 		const char * mFilepath;
 		std::unique_ptr<std::string> mSourceText;
 		bool mError;
+		//These next 2 variables should really be 'private', but are protected to allow for derived objects to move themselves properly
+		bool mReadyToBeAttached;
+		bool mValidFilepath;
+
+
+		//ProtectedDefaultConstructor
+		CompiledShader(); //Default constructor should only be called by derived types since it will create an invalid object
 
 		//Protected functions:
 		bool compile();
@@ -107,13 +114,8 @@ namespace ShaderInterface {
 
 		//Loads the text of a file located at filepath. Useful for loading shaders
 		bool loadSourceFile();
-		
 
 	private:
-		bool mReadyToBeAttached;
-		bool mHasFilepath;
-		bool mValidFilepath;
-		
 		//Private functions
 		void initialize();
 		bool checkIfValidFilepath(std::ifstream& inFileStream);

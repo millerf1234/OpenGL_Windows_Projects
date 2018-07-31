@@ -10,10 +10,6 @@
 
 namespace ShaderInterface {
 
-	/*CompiledShader::CompiledShader() {
-		initialize();
-	}*/
-
 	CompiledShader::CompiledShader(const char * sourceFilepath) {
 		initialize();
 		mFilepath = sourceFilepath;
@@ -32,6 +28,9 @@ namespace ShaderInterface {
 		if (compile()) {
 			mReadyToBeAttached = true;
 		}
+		else {
+			mReadyToBeAttached = false;
+		}
 	}
 
 	CompiledShader::~CompiledShader() {
@@ -42,7 +41,7 @@ namespace ShaderInterface {
 				GLint shaderMarkedForDeletion;
 				glGetShaderiv(mShaderID.mID, GL_DELETE_STATUS, &shaderMarkedForDeletion);
 				if (!shaderMarkedForDeletion) {
-					//glDeleteShader(mShaderID);
+					glDeleteShader(mShaderID.mID);
 				}
 			}
 			mShaderID = 0u;
@@ -99,7 +98,18 @@ namespace ShaderInterface {
 		}
 		return false;
 	}
-	
+
+	//Protected default constructor that is to be called by derived types only. This constructor does not create a valid object, 
+	//instead it creates an object that is intended to serve as a dummy for another objects member variables to be moved over to.
+	CompiledShader::CompiledShader() {
+		mError = true;
+		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		mReadyToBeAttached = false;
+		mValidFilepath = false;
+		mIsDecomissioned = false;
+
+	}
+
 	bool CompiledShader::compile() {
 		//See if for some reason this object represents a valid shader...
 		if (mShaderID.mID != 0u) {
@@ -139,7 +149,6 @@ namespace ShaderInterface {
 		mSourceText = nullptr;
 		mError = false;
 		mReadyToBeAttached = false;
-		mHasFilepath = false;
 		mValidFilepath = false;
 	}
 
@@ -151,6 +160,7 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nWARNING! Invalid or Unreadable filepath encountered with \"%s\"\n", mFilepath);
 			mValidFilepath = false;
 			mError = true;
+			mReadyToBeAttached = false;
 			return false;
 		}
 		mValidFilepath = true;
@@ -168,6 +178,7 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nThe Fragment Shader \"%s\" failed to compile...\n\t%s\n", mFilepath, compilationInfoLog);
 			return false;
 		}
+		mReadyToBeAttached = true;
 		return true;
 	}
 

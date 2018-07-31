@@ -21,23 +21,27 @@ namespace ShaderInterface {
 	class VertexShader final : public CompiledShader {
 	public:
 		VertexShader(const char *);
-		VertexShader(const VertexShader&);
-		VertexShader(VertexShader&&);
+		VertexShader(const VertexShader&) = delete; //No Copying
+		VertexShader(VertexShader&&); //Moving is okay though
 		VertexShader(const CompiledShader&) = delete; //This delete the move constructor as well
+		VertexShader(CompiledShader&&) = delete;
 		virtual ~VertexShader();
 
 		//Restores this shader if it was decomissioned 
 		virtual void reinstate() override;
 
 
-		VertexShader& operator=(const VertexShader&);
+		VertexShader& operator=(const VertexShader&) = delete;
 		VertexShader& operator=(VertexShader&&);
 		VertexShader& operator=(const CompiledShader&) = delete;
+		VertexShader& operator=(CompiledShader&&) = delete;
 
 	protected:
 		 virtual void aquireShaderID() override;
 
 	private:
+		//Helper function that is called as part of reinstate()
+		bool makeSureShaderSourceTextIsLoaded();
 
 	};
 
