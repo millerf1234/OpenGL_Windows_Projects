@@ -1,8 +1,13 @@
-//Redone version of CompiledShader    (i.e. Version_old (written over 7/24/2018-7/27/2018) )
+//Class: CompiledShader
+//Namespace: ShaderInterface
+//Programmer: Forrest Miller
+//Date(s): 7/24/2018 - 7/31/2018  
 //
-// See Header file for more details 
+//This is the implementation file for CompiledShader.
+//See the header file for more details.
 //
-//Code by Forrest Miller           Version2 (7/29/2018 - 7/30/2018)
+// Implementation notes:  Not much to note here. 
+
 
 
 
@@ -29,6 +34,7 @@ namespace ShaderInterface {
 			mReadyToBeAttached = true;
 		}
 		else {
+			mError = true;
 			mReadyToBeAttached = false;
 		}
 	}
@@ -71,19 +77,59 @@ namespace ShaderInterface {
 		return true;
 	}
 
+	bool CompiledShader::operator<(const CompiledShader& other) const {
+		if (this->mError || !(this->mValidFilepath)) {
+			if (other.mError || (other.mValidFilepath))  //if both are invalid
+				return compareFilepaths(this->mFilepath, other.mFilepath);
+			else //If this is invalid (and other is valid)
+				return false;
+		}
+		else if (other.mError || !(other.mValidFilepath)) //If other is invalid
+			return true; 
+		else if (this->mShaderID.mType == other.mShaderID.mType) //If the shaders have the same type
+				return compareFilepaths(this->mFilepath, other.mFilepath);
+		else { //If both shaders are valid but have different types	
+			switch (this->mShaderID.mType) {
+				// The ordering is first done by derived type in the order :
+				//Compute < Fragment < Geometry < TessC < TessE < Vertex < UNSPECIFIED < ShaderWithError
+			case ShaderType::COMPUTE:
+				return true;
+			case ShaderType::FRAGMENT:
+				return (other.mShaderID.mType != ShaderType::COMPUTE);
+			case ShaderType::GEOMETRY:
+				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||
+					(other.mShaderID.mType != ShaderType::FRAGMENT));
+			case ShaderType::TESSELATION_CONTROL:
+				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||
+					(other.mShaderID.mType != ShaderType::FRAGMENT) ||
+					(other.mShaderID.mType != ShaderType::GEOMETRY));
+			case ShaderType::TESSELATION_EVALUATION:
+				return ((other.mShaderID.mType == ShaderType::VERTEX) ||
+					(other.mShaderID.mType == ShaderType::UNSPECIFIED));
+			case ShaderType::VERTEX:
+				return (other.mShaderID.mType == ShaderType::UNSPECIFIED);
+			case ShaderType::UNSPECIFIED:
+				[[fallthrough]]; //C++17 required
+			default:
+				return false;
+			}
+		}
+	}
+
+	bool CompiledShader::operator>(const CompiledShader& other) const {
+		return !( *this < other);
+	}
+
 	void CompiledShader::decommision() {
-		if (mIsDecomissioned || mError)
+		if (mIsDecomissioned || mError || !mValidFilepath)
 			return;
 		mIsDecomissioned = true;
 		mReadyToBeAttached = false;
-		mSourceText = nullptr;
-
-
+		mSourceText = nullptr; //This effectivly deletes the sourceText string because of unique_ptr's behavior
 		GLboolean shaderStillValid = glIsShader(mShaderID.mID);
 		if (shaderStillValid) {
 			glDeleteShader(mShaderID.mID);
 		}
-
 		mShaderID.mID = 0u;
 	}
 
@@ -107,7 +153,6 @@ namespace ShaderInterface {
 		mReadyToBeAttached = false;
 		mValidFilepath = false;
 		mIsDecomissioned = false;
-
 	}
 
 	bool CompiledShader::compile() {
@@ -131,7 +176,6 @@ namespace ShaderInterface {
 		return checkForCompilationErrors();
 	}
 
-
 	bool CompiledShader::loadSourceFile() {
 		std::ifstream shaderInputStream{ mFilepath };
 		if (!checkIfValidFilepath(shaderInputStream)) {
@@ -140,6 +184,11 @@ namespace ShaderInterface {
 		mSourceText = std::make_unique<std::string>();
 		*mSourceText = { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
 		return true;
+	}
+
+	void CompiledShader::copyPrivateMemberVariables(const CompiledShader& source) {
+		this->mReadyToBeAttached = source.mReadyToBeAttached;
+		this->mValidFilepath = source.mValidFilepath;
 	}
 
 	void CompiledShader::initialize() {
@@ -161,17 +210,19 @@ namespace ShaderInterface {
 			mValidFilepath = false;
 			mError = true;
 			mReadyToBeAttached = false;
+			mShaderID.mID = 0u;
 			return false;
 		}
 		mValidFilepath = true;
 		return true;
 	}
 
-
 	bool CompiledShader::checkForCompilationErrors() {
 		GLint success;
 		glGetShaderiv(mShaderID.mID, GL_COMPILE_STATUS, &success);
 		if (!success) {
+			mError = true;
+			mReadyToBeAttached = false;
 			GLchar compilationInfoLog[768];
 			glGetShaderInfoLog(mShaderID.mID, 768, NULL, compilationInfoLog);
 			fprintf(WRNLOG, "\nSHADER COMPILATION FAILURE WARNING!\n");
@@ -180,6 +231,20 @@ namespace ShaderInterface {
 		}
 		mReadyToBeAttached = true;
 		return true;
+	}
+
+	bool CompiledShader::compareFilepaths(const char * fp1, const char * fp2) {
+		if (fp1 == nullptr)
+			return false;
+		else if (fp2 == nullptr)
+			return true;
+		else {
+			int result = strcmp(fp1, fp2); //Behavior is undefined if strcmp is passed NULL parameter
+			if (result < 0)
+				return true;
+			else
+				return false;
+		}
 	}
 
 } //namespace ShaderInterface

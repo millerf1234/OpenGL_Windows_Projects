@@ -1,5 +1,7 @@
 //Implementation file for the Vertex Shader class.
-//The Vertex Shader class inherits from the CompiledShader class
+//The Vertex Shader class inherits from the CompiledShader class. Since 
+//OpenGL shaders share a lot of common logic, the majority of the implementation
+//for this class can be found in the abstract base class CompiledShader.
 //
 //Created by Forrest Miller on July 26, 2018
 //Rewritten by Forrest Miller on July 30, 2018
@@ -15,7 +17,7 @@ namespace ShaderInterface {
 	VertexShader::VertexShader(VertexShader&& other) : CompiledShader() {
 		this->mFilepath = other.mFilepath;
 		this->mShaderID = other.shaderID;
-		other.shaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		other.shaderID = ShaderID(0u, ShaderType::UNSPECIFIED); //Invalidate the other shader
 		if (other.mShaderID.mType != ShaderType::VERTEX) {
 			this->mError = true;
 		}
