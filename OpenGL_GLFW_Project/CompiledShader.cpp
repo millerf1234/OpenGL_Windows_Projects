@@ -13,8 +13,9 @@
 
 namespace ShaderInterface {
 
-	CompiledShader::CompiledShader(const char * sourceFilepath) {
+	CompiledShader::CompiledShader(const char * sourceFilepath, GLenum type) {
 		initialize();
+		mShaderID.mType = ShaderType::UNASSIGNED;
 		mFilepath = sourceFilepath;
 		if (sourceFilepath == nullptr) {
 			fprintf(ERRLOG, "\nERROR! Attempting to construct shader from a NULL filepath!\n");
@@ -29,7 +30,7 @@ namespace ShaderInterface {
 			return;
 		}
 
-		if (compile()) {
+		if (compile(type)) {
 			mReadyToBeAttached = true;
 		}
 		else {
@@ -90,24 +91,24 @@ namespace ShaderInterface {
 		else { //If both shaders are valid but have different types	
 			switch (this->mShaderID.mType) {
 				// The ordering is first done by derived type in the order :
-				//Compute < Fragment < Geometry < TessC < TessE < Vertex < UNSPECIFIED < ShaderWithError
-			case ShaderType::COMPUTE:
-				return true;
-			case ShaderType::FRAGMENT:
-				return (other.mShaderID.mType != ShaderType::COMPUTE);
+				//Compute < Fragment < Geometry < TessC < TessE < Vertex < UNASSIGNED < ShaderWithError
+			case ShaderType::COMPUTE: 
+				return true;													// COMPUTE < {All Other Shaders}
+			case ShaderType::FRAGMENT:                                         
+				return (other.mShaderID.mType != ShaderType::COMPUTE);         // {COMPUTE} < FRAGMENT < {All Other Shaders}
 			case ShaderType::GEOMETRY:
-				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||
-					(other.mShaderID.mType != ShaderType::FRAGMENT));
+				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||      // {COMPUTE, FRAGMENT} < GEOMETRY < {All Other Shaders}
+					(other.mShaderID.mType != ShaderType::FRAGMENT));																	//etc...
 			case ShaderType::TESSELATION_CONTROL:
 				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||
 					(other.mShaderID.mType != ShaderType::FRAGMENT) ||
 					(other.mShaderID.mType != ShaderType::GEOMETRY));
 			case ShaderType::TESSELATION_EVALUATION:
 				return ((other.mShaderID.mType == ShaderType::VERTEX) ||
-					(other.mShaderID.mType == ShaderType::UNSPECIFIED));
+					(other.mShaderID.mType == ShaderType::UNASSIGNED));
 			case ShaderType::VERTEX:
-				return (other.mShaderID.mType == ShaderType::UNSPECIFIED);
-			case ShaderType::UNSPECIFIED:
+				return (other.mShaderID.mType == ShaderType::UNASSIGNED);
+			case ShaderType::UNASSIGNED:
 				[[fallthrough]]; //C++17 required
 			default:
 				return false;
@@ -124,7 +125,8 @@ namespace ShaderInterface {
 			return;
 		mIsDecomissioned = true;
 		mReadyToBeAttached = false;
-		mSourceText = nullptr; //This effectivly deletes the sourceText string because of unique_ptr's behavior
+		mSourceText.release(); //Frees the string containing this objects source text
+
 		GLboolean shaderStillValid = glIsShader(mShaderID.mID);
 		if (shaderStillValid) {
 			glDeleteShader(mShaderID.mID);
@@ -148,7 +150,7 @@ namespace ShaderInterface {
 	//instead it creates an object that is intended to serve as a dummy for another objects member variables to be moved over to.
 	CompiledShader::CompiledShader() {
 		mError = true;
-		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		mShaderID = ShaderID(0u, ShaderType::UNASSIGNED);
 		mReadyToBeAttached = false;
 		mValidFilepath = false;
 		mIsDecomissioned = false;
@@ -156,7 +158,7 @@ namespace ShaderInterface {
 		mFilepath = nullptr;
 	}
 
-	bool CompiledShader::compile() {
+	bool CompiledShader::compile(GLenum type) {
 		//See if for some reason this object represents a valid shader...
 		if (mShaderID.mID != 0u) {
 			GLboolean isShaderProgram = glIsShader(mShaderID.mID);
@@ -165,10 +167,11 @@ namespace ShaderInterface {
 				glDeleteShader(mShaderID.mID);
 			}
 			mShaderID.mID = 0u;
-			mShaderID.mType = ShaderType::UNSPECIFIED;
+			mShaderID.mType = ShaderType::UNASSIGNED;
 		}
 
-		aquireShaderID(); //This function is overridden by derived classes and will choose to create the correct type of shader within OpenGL
+		aquireShaderID(type);
+		//aquireShaderID(); //This function is overridden by derived classes and will choose to create the correct type of shader within OpenGL
 
 		const GLchar * rawShaderSource = mSourceText->c_str();
 		glShaderSource(mShaderID.mID, 1, &rawShaderSource, NULL);
@@ -178,6 +181,14 @@ namespace ShaderInterface {
 	}
 
 
+	void CompiledShader::aquireShaderID(GLenum type) {
+		if (mShaderID.mID != 0u) {
+			fprintf(WRNLOG, "\nWarning! Unable to aquire a new shaderID for shader:\n\t\"%s\"\nbecause this shader already has ID %u!", mFilepath, mShaderID.mID);
+			mReadyToBeAttached = false;
+			return;
+		}
+		mShaderID = glCreateShader(type);
+	}
 
 	bool CompiledShader::loadSourceFile() {
 		std::ifstream shaderInputStream{ mFilepath };
@@ -188,7 +199,6 @@ namespace ShaderInterface {
 		*mSourceText = { std::istreambuf_iterator<char>(shaderInputStream),  std::istreambuf_iterator<char>() };
 		return true;
 	}
-
 
 
 	void CompiledShader::copyMemberVariables(CompiledShader& source) {
@@ -205,7 +215,7 @@ namespace ShaderInterface {
 
 
 	void CompiledShader::invalidateCompiledShaderAfterCopying() {
-		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		mShaderID = ShaderID(0u, ShaderType::UNASSIGNED);
 		mIsDecomissioned = false;
 		mFilepath = nullptr;
 		mSourceText = nullptr;
@@ -218,7 +228,7 @@ namespace ShaderInterface {
 
 
 	void CompiledShader::initialize() {
-		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		mShaderID = ShaderID(0u, ShaderType::UNASSIGNED);
 		mIsDecomissioned = false;
 		mFilepath = "\0";
 		mSourceText = nullptr;

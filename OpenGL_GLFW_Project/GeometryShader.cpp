@@ -15,10 +15,13 @@
 
 namespace ShaderInterface {
 
-	GeometryShader::GeometryShader(const char * filepath) : CompiledShader(filepath) {
+	GeometryShader::GeometryShader(const char * filepath) : CompiledShader(filepath, GL_GEOMETRY_SHADER) {
+		if (mShaderID.mID != 0u)
+			mShaderID.mType = ShaderType::GEOMETRY;
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
-			fprintf(MSGLOG, "Created geometry shader from source \"%s\"\n", filepath);
+			fprintf(MSGLOG, "Created Geometry shader from source \"%s\"\n", filepath);
 #endif //PRINT_SHADER_COMPILE_MESSAGES 
 	}
 
@@ -33,11 +36,11 @@ namespace ShaderInterface {
 
 	void GeometryShader::reinstate() {
 		if (!mIsDecomissioned) {
-			fprintf(WRNLOG, "\nWarning! Reinstate() was called on shader \"%s\" even though this shader was never decomissioned!\n", mFilepath);
+			fprintf(WRNLOG, "\nWarning! Reinstate() was called on Geometry shader \"%s\" even though this shader was never decomissioned!\n", mFilepath);
 			return;
 		}
 		else if (!validFilepath()) {
-			fprintf(ERRLOG, "\nERROR! Unable to reinstate() shader \"%s\" because filepath is invalid!\n", mFilepath);
+			fprintf(ERRLOG, "\nERROR! Unable to reinstate() Geometry shader \"%s\" because filepath is invalid!\n", mFilepath);
 			mError = true;
 			return;
 		}
@@ -47,7 +50,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_GEOMETRY_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -61,19 +64,18 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void GeometryShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_GEOMETRY_SHADER);
-	}
+	//void GeometryShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_GEOMETRY_SHADER);
+	//}
 
 	void GeometryShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}
 	}
-
 
 } //namespace ShaderInterface

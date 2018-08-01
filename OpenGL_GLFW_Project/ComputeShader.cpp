@@ -14,11 +14,15 @@
 
 namespace ShaderInterface {
 
-	ComputeShader::ComputeShader(const char * filepath) : CompiledShader(filepath) {
+	ComputeShader::ComputeShader(const char * filepath) : CompiledShader(filepath, GL_COMPUTE_SHADER) {
+		if (mShaderID.mID != 0u)
+			mShaderID.mType = ShaderType::COMPUTE;
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
 			fprintf(MSGLOG, "Created Compute shader from source \"%s\"\n", filepath);
 #endif //PRINT_SHADER_COMPILE_MESSAGES 
+
 	}
 
 	ComputeShader::ComputeShader(ComputeShader&& other) : CompiledShader() {
@@ -46,7 +50,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_COMPUTE_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -60,19 +64,18 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void ComputeShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_COMPUTE_SHADER);
-	}
+	//void ComputeShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_COMPUTE_SHADER);
+	//}
 
 	void ComputeShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}
 	}
-
 
 } //namespace ShaderInterface

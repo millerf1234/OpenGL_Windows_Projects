@@ -14,7 +14,10 @@
 
 namespace ShaderInterface {
 
-	TesselationEvaluationShader::TesselationEvaluationShader(const char * filepath) : CompiledShader(filepath) {
+	TesselationEvaluationShader::TesselationEvaluationShader(const char * filepath) : CompiledShader(filepath, GL_TESS_EVALUATION_SHADER) {
+		if (mShaderID.mID != 0u)
+			mShaderID.mType = ShaderType::TESSELATION_EVALUATION;
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
 			fprintf(MSGLOG, "Created Tesselation Evaluation shader from source \"%s\"\n", filepath);
@@ -46,7 +49,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_TESS_EVALUATION_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -60,13 +63,13 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void TesselationEvaluationShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_TESS_EVALUATION_SHADER);
-	}
+	//void TesselationEvaluationShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_TESS_EVALUATION_SHADER);
+	//}
 
 	void TesselationEvaluationShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {

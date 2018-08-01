@@ -14,7 +14,11 @@
 
 namespace ShaderInterface {
 
-	FragmentShader::FragmentShader(const char * filepath) : CompiledShader(filepath) {
+	FragmentShader::FragmentShader(const char * filepath) : CompiledShader(filepath, GL_FRAGMENT_SHADER) {
+		if (mShaderID.mID != 0u)
+			mShaderID.mType = ShaderType::FRAGMENT;
+
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
 			fprintf(MSGLOG, "Created Fragment shader from source \"%s\"\n", filepath);
@@ -46,7 +50,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_FRAGMENT_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -60,13 +64,13 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void FragmentShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-	}
+	//void FragmentShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	//}
 
 	void FragmentShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {

@@ -14,7 +14,10 @@
 
 namespace ShaderInterface {
 
-	TesselationControlShader::TesselationControlShader(const char * filepath) : CompiledShader(filepath) {
+	TesselationControlShader::TesselationControlShader(const char * filepath) : CompiledShader(filepath, GL_TESS_CONTROL_SHADER) {
+		if (mShaderID.mID != 0u)
+			mShaderID.mType = ShaderType::TESSELATION_CONTROL;
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
 			fprintf(MSGLOG, "Created Tesselation Control shader from source \"%s\"\n", filepath);
@@ -46,7 +49,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_TESS_CONTROL_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -60,13 +63,13 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void TesselationControlShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_TESS_CONTROL_SHADER);
-	}
+	//void TesselationControlShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_TESS_CONTROL_SHADER);
+	//}
 
 	void TesselationControlShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {

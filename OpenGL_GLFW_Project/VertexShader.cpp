@@ -14,7 +14,10 @@
 
 namespace ShaderInterface {
 
-	VertexShader::VertexShader(const char * filepath) : CompiledShader(filepath) {
+	VertexShader::VertexShader(const char * filepath) : CompiledShader(filepath, GL_VERTEX_SHADER) {
+		if (mShaderID.mID != 0u) 
+			mShaderID.mType = ShaderType::VERTEX;
+
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
 			fprintf(MSGLOG, "Created vertex shader from source \"%s\"\n", filepath);
@@ -46,7 +49,7 @@ namespace ShaderInterface {
 		}
 		else { //Actually go ahead and reinstate it
 			makeSureShaderSourceTextIsLoaded();
-			if (compile()) {
+			if (compile(GL_VERTEX_SHADER)) {
 				mIsDecomissioned = false;
 			}
 		}
@@ -60,13 +63,13 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	void VertexShader::aquireShaderID() {
-		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
-			return;
-		}
-		mShaderID = glCreateShader(GL_VERTEX_SHADER);
-	}
+	//void VertexShader::aquireShaderID() {
+	//	if (mShaderID.mID != 0u) {
+	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
+	//		return;
+	//	}
+	//	mShaderID = glCreateShader(GL_VERTEX_SHADER);
+	//}
 
 	void VertexShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {

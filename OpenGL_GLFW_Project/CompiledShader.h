@@ -13,6 +13,16 @@
 //			   This class handles managing the Shader within both the application
 //			   side and with the GL context. Creating the shader within the GL
 //			   context is handled by this class as is the cleanup for the shader.
+//
+// UPDATES/Changes:
+//					August 1, 2018            Changed this class's constructor so that it now requires an additional GLenum 
+//											  parameter which this class then stores and uses as the macro to use when
+//											  glCreateShader() is called. This effectivly is replacing the protected abstract 
+//											  member function  aquireShaderID(), which was intended to be implemented by 
+//											  derived classes so that they each could implement their own macro.
+//											  In other words, the GLContext Shader creation logic was moved from the derived
+//											  classes to this class.
+//
 //			
 //Notes:   -While it is possible to recover the shader's ID number, it is 
 //			highly advised that no calls are made to the GL Context that 
@@ -39,7 +49,7 @@
 //
 //		   -Comparison operatos < and > are defined to allow for the sorting of an array/vector of CompiledShaders.
 //			The ordering is first done by derived type in the order:
-//					Compute < Fragment < Geometry < TessC < TessE < Vertex < UNSPECIFIED < ShaderWithError
+//					Compute < Fragment < Geometry < TessC < TessE < Vertex < UNASSIGNED < ShaderWithError
 //          and within shaders of the same type the ordering is done alphabetically by filepath name
 //
 //
@@ -69,7 +79,7 @@ namespace ShaderInterface {
 	//-------------------------------
 	enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL,
 						   TESSELATION_EVALUATION, FRAGMENT,
-						   COMPUTE, UNSPECIFIED};
+						   COMPUTE, UNASSIGNED};
 
 	//-------------------------------
 	// Struct to tie ShaderID and ShaderType together
@@ -77,7 +87,7 @@ namespace ShaderInterface {
 	typedef struct ShaderID {
 		GLuint mID;
 		ShaderType mType;
-		ShaderID(GLuint id = 0u, ShaderType type = ShaderType::UNSPECIFIED) : mID(id), mType(type) { ; }
+		ShaderID(GLuint id = 0u, ShaderType type = ShaderType::UNASSIGNED) : mID(id), mType(type) { ; }
 	} ShaderID;
 
 
@@ -90,7 +100,7 @@ namespace ShaderInterface {
 		// Constructors / Destructor  
 		//-------------------------------
 		//Default constructor is Protected 
-		CompiledShader(const char * sourceFilepath);
+		CompiledShader(const char * sourceFilepath, GLenum type);
 		CompiledShader(const CompiledShader& that) = delete; //No copying from abstract base type
 		CompiledShader(CompiledShader&& that) = delete; //No moving an abstract base type
 
@@ -159,10 +169,18 @@ namespace ShaderInterface {
 		//Protected functions:
 		//----------------------------
 		//Compiles the shader within OpenGL. Expects for there to be the loaded source text stored within a valid string pointed to by mSourceText 
-		bool compile();
+		bool compile(GLenum type);
 
-		//This derived function should call glCreateShader(GL_SHADER_TYPE) with the correct GL_SHADER_TYPE macro 
-		virtual void aquireShaderID() = 0; //This function is to be overwritten by the derived types
+		//Creates a new shader within the GL Context and aquires a GLuint handle to the shader object. 
+		//Note that 0u will never be used as a shader handle
+		void aquireShaderID(GLenum type);
+
+		
+		//This derived function calls glCreateShader(GL_SHADER_TYPE) with the correct GL_SHADER_TYPE macro (as recieved from the constructor)
+		//virtual void aquireShaderID() = 0; //This function is to be overwritten by the derived types
+
+
+		
 
 		//Loads the text of a file located at filepath. Useful for loading shaders
 		bool loadSourceFile();

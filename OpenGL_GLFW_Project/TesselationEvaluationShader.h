@@ -45,7 +45,7 @@ namespace ShaderInterface {
 		TesselationEvaluationShader& operator=(CompiledShader&&) = delete;
 
 	protected:
-		virtual void aquireShaderID() override;
+		//virtual void aquireShaderID() override;
 
 	private:
 		//Helper function that is called as part of reinstate()
