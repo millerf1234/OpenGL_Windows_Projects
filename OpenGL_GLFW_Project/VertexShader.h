@@ -46,7 +46,7 @@ namespace ShaderInterface {
 
 	private:
 		//Helper function that is called as part of reinstate()
-		bool makeSureShaderSourceTextIsLoaded(); //Will reopen and parse the file if need be
+		void makeSureShaderSourceTextIsLoaded(); //Will reopen and parse the file if need be
 
 	};
 

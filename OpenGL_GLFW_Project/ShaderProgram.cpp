@@ -104,8 +104,8 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return false;
 		}
 		mVertexShader = std::make_unique<VertexShader>(vert);
-		if (mVertexShader->valid()) {
-			glAttachShader(mProgramID, mVertexShader->shaderID());
+		if (mVertexShader->readyToBeAttached()) {
+			glAttachShader(mProgramID, mVertexShader->ID());
 			mHasVert = true;
 			if (mHasFrag && !mHasCompute) {
 				mReadyToLink = true;
@@ -123,7 +123,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", vert->getFilepath());
 			return;
 		}
-		if (!(vert->valid())) {
+		if (!(vert->readyToBeAttached())) {
 			fprintf(ERRLOG, "\nError attaching vertex shader to program, shader is invalid!\n");
 			return;
 		}
@@ -132,11 +132,11 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return;
 		}
 		//One last extra check (that probably isnt necessary):
-		if (vert->shaderID() == 0u) {
+		if (vert->ID() == 0u) {
 			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as %s vert shader to this program!\n", vert->getFilepath());
 			return;
 		}
-		glAttachShader(mProgramID, vert->shaderID());
+		glAttachShader(mProgramID, vert->ID());
 		mHasVert = true;
 		if (mHasFrag && !mHasCompute) {
 			mReadyToLink = true;
@@ -156,8 +156,8 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return false;
 		}
 		mGeometryShader = std::make_unique<GeometryShader>(geom);
-		if (mGeometryShader->valid()) {
-			glAttachShader(mProgramID, mGeometryShader->shaderID());
+		if (mGeometryShader->readyToBeAttached()) {
+			glAttachShader(mProgramID, mGeometryShader->ID());
 			mHasGeom = true;
 			return true;
 		}
@@ -172,7 +172,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", geom->getFilepath());
 			return;
 		}
-		if (!(geom->valid())) {
+		if (!(geom->readyToBeAttached())) {
 			fprintf(ERRLOG, "\nError attaching geometry shader to program, the geometry shader is invalid!\n");
 			return;
 		}
@@ -181,11 +181,11 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return;
 		}
 		//One last extra check (that probably isnt necessary):
-		if (geom->shaderID() == 0u) {
+		if (geom->ID() == 0u) {
 			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\" geom shader to this program!\n", geom->getFilepath());
 			return;
 		}
-		glAttachShader(mProgramID, geom->shaderID());
+		glAttachShader(mProgramID, geom->ID());
 		mHasGeom = true;
 	}
 	

@@ -17,7 +17,7 @@ namespace ShaderInterface {
 	ComputeShader::ComputeShader(const char * filepath) : CompiledShader(filepath) {
 #if defined PRINT_SHADER_COMPILE_MESSAGES 
 		if (!mError)
-			fprintf(MSGLOG, "Created compute shader from source \"%s\"\n", filepath);
+			fprintf(MSGLOG, "Created Compute shader from source \"%s\"\n", filepath);
 #endif //PRINT_SHADER_COMPILE_MESSAGES 
 	}
 
@@ -57,17 +57,18 @@ namespace ShaderInterface {
 			copyMemberVariables(that);
 			that.invalidateCompiledShaderAfterCopying();
 		}
+		return *this;
 	}
 
 	void ComputeShader::aquireShaderID() {
 		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
+			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
 			return;
 		}
 		mShaderID = glCreateShader(GL_COMPUTE_SHADER);
 	}
 
-	bool ComputeShader::makeSureShaderSourceTextIsLoaded() {
+	void ComputeShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}

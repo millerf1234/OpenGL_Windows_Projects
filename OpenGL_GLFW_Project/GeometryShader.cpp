@@ -58,17 +58,18 @@ namespace ShaderInterface {
 			copyMemberVariables(that);
 			that.invalidateCompiledShaderAfterCopying();
 		}
+		return *this;
 	}
 
 	void GeometryShader::aquireShaderID() {
 		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
+			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
 			return;
 		}
 		mShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 	}
 
-	bool GeometryShader::makeSureShaderSourceTextIsLoaded() {
+	void GeometryShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}

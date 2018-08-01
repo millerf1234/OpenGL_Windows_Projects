@@ -136,7 +136,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
-    <ClCompile Include="CompiledShader_old.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
@@ -150,7 +149,6 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
-    <ClCompile Include="ShaderProgramBuilder.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
@@ -168,7 +166,6 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
-    <ClInclude Include="CompiledShader_old.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="FragmentShader.h" />
@@ -262,10 +259,6 @@
     <ClInclude Include="ProjectSetup.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderProject1.h" />
-    <ClInclude Include="ShaderInterfaceLogger.h" />
-    <ClInclude Include="ShaderInterfaceStatusCode.h" />
-    <ClInclude Include="ShaderProgramBuilder.h" />
-    <ClInclude Include="ShaderInitializerInstructions.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SIMDComputation.h" />
     <ClInclude Include="TesselationControlShader.h" />

@@ -57,17 +57,18 @@ namespace ShaderInterface {
 			copyMemberVariables(that);
 			that.invalidateCompiledShaderAfterCopying();
 		}
+		return *this;
 	}
 
 	void TesselationEvaluationShader::aquireShaderID() {
 		if (mShaderID.mID != 0u) {
-			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
+			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
 			return;
 		}
 		mShaderID = glCreateShader(GL_TESS_EVALUATION_SHADER);
 	}
 
-	bool TesselationEvaluationShader::makeSureShaderSourceTextIsLoaded() {
+	void TesselationEvaluationShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}

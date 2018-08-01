@@ -85,20 +85,11 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing">
       <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\ShaderProgramBuilder">
-      <UniqueIdentifier>{40d28438-57ed-4f71-8575-60caefe0ecaa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Buffer">
       <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore">
-      <UniqueIdentifier>{403686f5-4db2-499b-9e0f-e2a8769220e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader">
       <UniqueIdentifier>{5680177a-33cf-4bdd-9907-36cbb17c2f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old">
-      <UniqueIdentifier>{9e20bcc7-5112-4c55-9e72-c097198a9c0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes">
       <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
@@ -144,9 +135,6 @@
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgramBuilder.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\ShaderProgramBuilder</Filter>
-    </ClCompile>
     <ClCompile Include="StreamableBufferSet.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClCompile>
@@ -155,9 +143,6 @@
     </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
-    </ClCompile>
-    <ClCompile Include="CompiledShader_old.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
@@ -478,12 +463,6 @@
     <ClInclude Include="MathFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInitializerInstructions.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\ShaderProgramBuilder</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderProgramBuilder.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\ShaderProgramBuilder</Filter>
-    </ClInclude>
     <ClInclude Include="StreamableBufferSet.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClInclude>
@@ -498,15 +477,6 @@
     </ClInclude>
     <ClInclude Include="VertexAttribPointerData.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderInterfaceStatusCode.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderInterfaceLogger.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore</Filter>
-    </ClInclude>
-    <ClInclude Include="CompiledShader_old.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
