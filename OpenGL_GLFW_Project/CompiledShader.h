@@ -87,8 +87,9 @@ namespace ShaderInterface {
 	class CompiledShader {
 	public:
 		//-------------------------------
-		// Constructors / Destructor
+		// Constructors / Destructor  
 		//-------------------------------
+		//Default constructor is Protected 
 		CompiledShader(const char * sourceFilepath);
 		CompiledShader(const CompiledShader& that) = delete; //No copying from abstract base type
 		CompiledShader(CompiledShader&& that) = delete; //No moving an abstract base type
@@ -99,7 +100,7 @@ namespace ShaderInterface {
 		// Operators
 		//-------------------------------
 		CompiledShader& operator=(const CompiledShader& that) = delete; //No copying from abstract base type
-		CompiledShader& operator=(CompiledShader&& that) = delete; //No moving an abstract base type
+		CompiledShader& operator=(CompiledShader&& that) = delete; //No moving an abstract base type 
 
 		//Compares ShaderTypes and Filepaths for equality
 		bool operator==(const CompiledShader&) const;
@@ -167,8 +168,13 @@ namespace ShaderInterface {
 		bool loadSourceFile();
 
 		//This function is to faciliate copying/moving amongst derived objects of this type. 
-		//Will copy all of the private member fields from Source to the object calling this function.
-		void copyPrivateMemberVariables(const CompiledShader& source);
+		//Will copy all of the non-pointer member variables from Source to the object calling this function.
+		//Does not copy mSourceText since that is a pointer.
+		void copyMemberVariables(CompiledShader& source);
+
+		//This function is meant to be called after the copyPrivateMemberVariables function to invalidate
+		//the source object so that ownership of the GL shader is retained by a single object
+		void invalidateCompiledShaderAfterCopying();
 
 	private:
 		//----------------------------

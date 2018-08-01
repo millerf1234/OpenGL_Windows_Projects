@@ -1,39 +1,30 @@
-//Implementation file for the Geometry Shader class.
-//The Geometry Shader class inherits from the CompiledShader class\
+//Class: GeometryShader
+//Namespace: ShaderInterface
+//Programmer: Forrest Miller
+//Date(s): 7/24/2018 - 7/31/2018  
 //
-//Created by Forrest Miller on July 26, 2018
+//This is the implementation file for Geometry Shader. This type derives from CompiledShader.
+//See the header file for more details. 
+//This type is intended to wrap a single Geometry shader source code object
+//
+// Implementation notes: Copying is not allowed but moving is allowed. Luckily most of 
+//						 the implementation details is shared amongst shaders and is located 
+//						 in the CompiledShader implementation file. 
 
 #include "GeometryShader.h"
 
 namespace ShaderInterface {
 
 	GeometryShader::GeometryShader(const char * filepath) : CompiledShader(filepath) {
-		mType = ShaderType::GEOMETRY;
-		if (mHasLoadedSourceText) //if the base constructor was able to load the file
-			compile();
+#if defined PRINT_SHADER_COMPILE_MESSAGES 
+		if (!mError)
+			fprintf(MSGLOG, "Created geometry shader from source \"%s\"\n", filepath);
+#endif //PRINT_SHADER_COMPILE_MESSAGES 
 	}
 
-	GeometryShader::GeometryShader(const GeometryShader& that) : CompiledShader(that.mFilepath) {
-		if (that.mValidFilepath) {
-			GeometryShader::GeometryShader(that.mFilepath);
-			mType = ShaderType::GEOMETRY;
-		}
-		else {
-			mValidFilepath = false;
-			mType = ShaderType::GEOMETRY;
-		}
-
-	}
-	GeometryShader::GeometryShader(GeometryShader&& that) : CompiledShader(that.mFilepath) {
-		if (that.mValid) {
-			mShaderID = that.mShaderID;
-			that.mShaderID = 0u;
-			that.mValid = false;
-		}
-		else {
-			mValid = false;
-			mType = ShaderType::GEOMETRY;
-		}
+	GeometryShader::GeometryShader(GeometryShader&& other) : CompiledShader() {
+		copyMemberVariables(other);
+		other.invalidateCompiledShaderAfterCopying();
 	}
 
 	GeometryShader::~GeometryShader() {
@@ -41,66 +32,47 @@ namespace ShaderInterface {
 	}
 
 	void GeometryShader::reinstate() {
-		if (!mWasDecomissioned) {
-			fprintf(WRNLOG, "\nWarning! Unable to reinstate geometry shader \"%s\" because it was never decomissioned!\n", mFilepath);
+		if (!mIsDecomissioned) {
+			fprintf(WRNLOG, "\nWarning! Reinstate() was called on shader \"%s\" even though this shader was never decomissioned!\n", mFilepath);
 			return;
 		}
-		else {
-			GeometryShader::GeometryShader(mFilepath); //Reconstruct this object to reinstate it
-			mWasDecomissioned = false;
+		else if (!validFilepath()) {
+			fprintf(ERRLOG, "\nERROR! Unable to reinstate() shader \"%s\" because filepath is invalid!\n", mFilepath);
+			mError = true;
+			return;
+		}
+		else if (mError) {
+			fprintf(ERRLOG, "\nERROR Reinstating shader \"%s\"!\nReason: This shader has already encountered an error!\n", mFilepath);
+			return;
+		}
+		else { //Actually go ahead and reinstate it
+			makeSureShaderSourceTextIsLoaded();
+			if (compile()) {
+				mIsDecomissioned = false;
+			}
 		}
 	}
 
-	//Assigns a different ID to this shader if need be
-	GeometryShader& GeometryShader::operator=(const GeometryShader& that) {
-		if (this != &that) {
-			CompiledShader::operator=(that); //Call the base class copy operator
-			if (that.mError || !that.mValidFilepath) {
-				fprintf(WRNLOG, "\nWarning! Copying invalid Geometry shader \"%s\"\n", mFilepath);
-				return *this;
-			}
-			else if (that.mWasDecomissioned) {
-				fprintf(WRNLOG, "\nWarning! Copying decomissioned Geometry shader \"%s\"\n", mFilepath);
-				return *this;
-			}
-			else if (that.mShaderID != 0u) {
-				if (mHasLoadedSourceText) {
-					mValid = mHasBeenCompiled = compile();
-				}
-				else { //else something is screwed up so we gotta reload the shader from the file
-					loadSourceFile(mFilepath, mSourceText);
-					if (mHasLoadedSourceText) {
-						mValid = mHasBeenCompiled = compile();
-					}
-				}
-			}
-		}
-		return *this;
-	}
 	GeometryShader& GeometryShader::operator=(GeometryShader&& that) {
 		if (this != &that) {
-			if (!that.mValid) {
-				GeometryShader::GeometryShader(that.mFilepath);
-			}
-			else {
-				if (that.mWasDecomissioned) {
-					GeometryShader::GeometryShader(that.mFilepath);
-				}
-				else {
-					CompiledShader::operator=(that);
-					that.mShaderID = 0u; //'that' loses ownership over the OpenGL shader
-				}
-			}
+			copyMemberVariables(that);
+			that.invalidateCompiledShaderAfterCopying();
 		}
-		return *this;
 	}
 
 	void GeometryShader::aquireShaderID() {
-		if (mShaderID != 0u) {
+		if (mShaderID.mID != 0u) {
 			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
 			return;
 		}
 		mShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 	}
+
+	bool GeometryShader::makeSureShaderSourceTextIsLoaded() {
+		if (mSourceText == nullptr) {
+			loadSourceFile();
+		}
+	}
+
 
 } //namespace ShaderInterface

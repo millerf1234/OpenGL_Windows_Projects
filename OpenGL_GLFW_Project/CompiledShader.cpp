@@ -9,8 +9,6 @@
 // Implementation notes:  Not much to note here. 
 
 
-
-
 #include "CompiledShader.h"
 
 namespace ShaderInterface {
@@ -19,6 +17,7 @@ namespace ShaderInterface {
 		initialize();
 		mFilepath = sourceFilepath;
 		if (sourceFilepath == nullptr) {
+			fprintf(ERRLOG, "\nERROR! Attempting to construct shader from a NULL filepath!\n");
 			mError = true;
 			mValidFilepath = false;
 			return;
@@ -47,7 +46,7 @@ namespace ShaderInterface {
 				GLint shaderMarkedForDeletion;
 				glGetShaderiv(mShaderID.mID, GL_DELETE_STATUS, &shaderMarkedForDeletion);
 				if (!shaderMarkedForDeletion) {
-					glDeleteShader(mShaderID.mID);
+					glDeleteShader(mShaderID.mID); //This marks the shader for deletion by the GL Context
 				}
 			}
 			mShaderID = 0u;
@@ -153,6 +152,8 @@ namespace ShaderInterface {
 		mReadyToBeAttached = false;
 		mValidFilepath = false;
 		mIsDecomissioned = false;
+		mSourceText = nullptr;
+		mFilepath = nullptr;
 	}
 
 	bool CompiledShader::compile() {
@@ -176,6 +177,8 @@ namespace ShaderInterface {
 		return checkForCompilationErrors();
 	}
 
+
+
 	bool CompiledShader::loadSourceFile() {
 		std::ifstream shaderInputStream{ mFilepath };
 		if (!checkIfValidFilepath(shaderInputStream)) {
@@ -186,10 +189,33 @@ namespace ShaderInterface {
 		return true;
 	}
 
-	void CompiledShader::copyPrivateMemberVariables(const CompiledShader& source) {
+
+
+	void CompiledShader::copyMemberVariables(CompiledShader& source) {
+		this->mShaderID.mID = source.mShaderID.mID;
+		this->mShaderID.mType = source.mShaderID.mType;
+		this->mIsDecomissioned = source.mIsDecomissioned;
+		this->mFilepath = source.mFilepath;
+		this->mSourceText = std::move(source.mSourceText);
+		this->mError = source.mError;
 		this->mReadyToBeAttached = source.mReadyToBeAttached;
 		this->mValidFilepath = source.mValidFilepath;
 	}
+
+
+
+	void CompiledShader::invalidateCompiledShaderAfterCopying() {
+		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
+		mIsDecomissioned = false;
+		mFilepath = nullptr;
+		mSourceText = nullptr;
+		mError = true;
+		
+		mReadyToBeAttached = false;
+		mValidFilepath = false;
+	}
+
+
 
 	void CompiledShader::initialize() {
 		mShaderID = ShaderID(0u, ShaderType::UNSPECIFIED);
@@ -200,6 +226,8 @@ namespace ShaderInterface {
 		mReadyToBeAttached = false;
 		mValidFilepath = false;
 	}
+
+
 
 	bool CompiledShader::checkIfValidFilepath(std::ifstream& inFileStream) {
 		try {
@@ -229,7 +257,7 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nThe Fragment Shader \"%s\" failed to compile...\n\t%s\n", mFilepath, compilationInfoLog);
 			return false;
 		}
-		mReadyToBeAttached = true;
+		mReadyToBeAttached = true; //Important to keep this here in case derived types rely on it
 		return true;
 	}
 

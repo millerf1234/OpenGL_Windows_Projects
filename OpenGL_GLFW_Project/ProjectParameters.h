@@ -10,6 +10,8 @@
 
 #include "ProjectSetup.h"
 
+#define PRINT_SHADER_COMPILE_MESSAGES  //Used within the CompiledShader classes
+
 
 static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 

@@ -1,39 +1,29 @@
-//Implementation file for the Compute Shader class.
-//The Compute Shader class inherits from the CompiledShader class
+//Class: Compute Shader
+//Namespace: ShaderInterface
+//Programmer: Forrest Miller
+//Date(s): 7/24/2018 - 7/31/2018  
 //
-//Created by Forrest Miller on July 26, 2018
+//This is the implementation file for Compute Shader. This type derives from CompiledShader.
+//See the header file for more details. 
+//
+// Implementation notes: Copying is not allowed but moving is allowed. Luckily most of 
+//						 the implementation details is shared amongst shaders and is located 
+//						 in the CompiledShader implementation file. 
 
 #include "ComputeShader.h"
 
 namespace ShaderInterface {
 
 	ComputeShader::ComputeShader(const char * filepath) : CompiledShader(filepath) {
-		mType = ShaderType::FRAGMENT;
-		if (mHasLoadedSourceText)
-			compile();
+#if defined PRINT_SHADER_COMPILE_MESSAGES 
+		if (!mError)
+			fprintf(MSGLOG, "Created compute shader from source \"%s\"\n", filepath);
+#endif //PRINT_SHADER_COMPILE_MESSAGES 
 	}
 
-	ComputeShader::ComputeShader(const ComputeShader& that) : CompiledShader(that.mFilepath) {
-		if (that.mValidFilepath) {
-			ComputeShader::ComputeShader(that.mFilepath);
-			mType = ShaderType::COMPUTE;
-		}
-		else {
-			mValidFilepath = false;
-			mType = ShaderType::COMPUTE;
-		}
-
-	}
-	ComputeShader::ComputeShader(ComputeShader&& that) : CompiledShader(that.mFilepath) {
-		if (that.mValid) {
-			mShaderID = that.mShaderID;
-			that.mShaderID = 0u;
-			that.mValid = false;
-		}
-		else {
-			mValid = false;
-			mType = ShaderType::FRAGMENT;
-		}
+	ComputeShader::ComputeShader(ComputeShader&& other) : CompiledShader() {
+		copyMemberVariables(other);
+		other.invalidateCompiledShaderAfterCopying();
 	}
 
 	ComputeShader::~ComputeShader() {
@@ -41,65 +31,47 @@ namespace ShaderInterface {
 	}
 
 	void ComputeShader::reinstate() {
-		if (!mWasDecomissioned) {
+		if (!mIsDecomissioned) {
+			fprintf(WRNLOG, "\nWarning! Reinstate() was called on shader \"%s\" even though this shader was never decomissioned!\n", mFilepath);
 			return;
 		}
-		else {
-			ComputeShader::ComputeShader(mFilepath);
-			mWasDecomissioned = false;
+		else if (!validFilepath()) {
+			fprintf(ERRLOG, "\nERROR! Unable to reinstate() shader \"%s\" because filepath is invalid!\n", mFilepath);
+			mError = true;
+			return;
+		}
+		else if (mError) {
+			fprintf(ERRLOG, "\nERROR Reinstating shader \"%s\"!\nReason: This shader has already encountered an error!\n", mFilepath);
+			return;
+		}
+		else { //Actually go ahead and reinstate it
+			makeSureShaderSourceTextIsLoaded();
+			if (compile()) {
+				mIsDecomissioned = false;
+			}
 		}
 	}
 
-	//Assigns a different ID to this shader if need be
-	ComputeShader& ComputeShader::operator=(const ComputeShader& that) {
-		if (this != &that) {
-			CompiledShader::operator=(that); //Call the base class copy operator
-			if (that.mError || !that.mValidFilepath) {
-				fprintf(WRNLOG, "\nWarning! Copying invalid Compute shader \"%s\"\n", mFilepath);
-				return *this;
-			}
-			else if (that.mWasDecomissioned) {
-				fprintf(WRNLOG, "\nWarning! Copying decomissioned Compute shader \"%s\"\n", mFilepath);
-				return *this;
-			}
-			else if (that.mShaderID != 0u) {
-				if (mHasLoadedSourceText) {
-					mValid = mHasBeenCompiled = compile();
-				}
-				else { //else something is screwed up so we gotta reload the shader from the file
-					loadSourceFile(mFilepath, mSourceText);
-					if (mHasLoadedSourceText) {
-						mValid = mHasBeenCompiled = compile();
-					}
-				}
-			}
-		}
-		return *this;
-	}
 	ComputeShader& ComputeShader::operator=(ComputeShader&& that) {
 		if (this != &that) {
-			if (!that.mValid) {
-				ComputeShader::ComputeShader(that.mFilepath);
-			}
-			else {
-				if (that.mWasDecomissioned) {
-					ComputeShader::ComputeShader(that.mFilepath);
-				}
-				else {
-					CompiledShader::operator=(that);
-					that.mShaderID = 0u; //That loses ownership over the OpenGL shader
-				}
-			}
+			copyMemberVariables(that);
+			that.invalidateCompiledShaderAfterCopying();
 		}
-		return *this;
 	}
 
 	void ComputeShader::aquireShaderID() {
-		if (mShaderID != 0u) {
+		if (mShaderID.mID != 0u) {
 			fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID);
 			return;
 		}
 		mShaderID = glCreateShader(GL_COMPUTE_SHADER);
 	}
+
+	bool ComputeShader::makeSureShaderSourceTextIsLoaded() {
+		if (mSourceText == nullptr) {
+			loadSourceFile();
+		}
+	}
+
 
 } //namespace ShaderInterface

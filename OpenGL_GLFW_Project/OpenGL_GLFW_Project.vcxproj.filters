@@ -100,6 +100,9 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old">
       <UniqueIdentifier>{9e20bcc7-5112-4c55-9e72-c097198a9c0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes">
+      <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -153,29 +156,29 @@
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
     </ClCompile>
-    <ClCompile Include="FragmentShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
-    <ClCompile Include="TesselationEvaluationShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
-    <ClCompile Include="TesselationControlShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
-    <ClCompile Include="ComputeShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClCompile>
     <ClCompile Include="CompiledShader_old.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
     </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
     <ClCompile Include="CompiledShader.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="FragmentShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="TesselationControlShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="TesselationEvaluationShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,24 +499,6 @@
     <ClInclude Include="VertexAttribPointerData.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="FragmentShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
-    <ClInclude Include="TesselationEvaluationShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
-    <ClInclude Include="TesselationControlShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
-    <ClInclude Include="ComputeShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderInterfaceStatusCode.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore</Filter>
     </ClInclude>
@@ -523,8 +508,26 @@
     <ClInclude Include="CompiledShader_old.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Unused_Ignore\CompiledShader_old</Filter>
     </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
     <ClInclude Include="CompiledShader.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="FragmentShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="TesselationControlShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="TesselationEvaluationShader.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

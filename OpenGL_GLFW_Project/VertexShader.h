@@ -12,15 +12,14 @@
 //			    Vertex Shader will result in the source object being invalidated
 //				(which is expected behavior and means that extra calls to
 //				glDeleteShader(shaderID) are not accidentally made during object
-//				destruction.
+//				destruction).
+
 
 #pragma once
 
 #ifndef VERTEX_SHADER_H_
 #define VERTEX_SHADER_H_
 
-//#include "ProjectConstants.h"
-//#include "ProjectParameters.h"
 #include "CompiledShader.h"
 
 namespace ShaderInterface {
@@ -38,7 +37,7 @@ namespace ShaderInterface {
 		virtual void reinstate() override;
 
 		VertexShader& operator=(const VertexShader&) = delete;
-		VertexShader& operator=(VertexShader&&);
+		VertexShader& operator=(VertexShader&&); //Moving of derived types is okay
 		VertexShader& operator=(const CompiledShader&) = delete;
 		VertexShader& operator=(CompiledShader&&) = delete;
 
