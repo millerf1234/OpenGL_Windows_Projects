@@ -15,6 +15,9 @@
 
 
 
+
+
+
 ///For logging 
 #ifndef MSGLOG
 #define MSGLOG stdout
@@ -27,6 +30,8 @@
 #ifndef WRNLOG
 #define WRNLOG stderr
 #endif 
+
+
 
 
 static const char * NAME_OF_GAME = "OpenGL Practice Test\0";

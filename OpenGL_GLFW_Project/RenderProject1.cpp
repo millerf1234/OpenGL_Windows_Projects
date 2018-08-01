@@ -25,7 +25,6 @@ RenderProject1::RenderProject1(std::shared_ptr<MonitorData> screenInfo) {
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
 	}
 	window = screenInfo->activeMonitor;
-
 }
 
 
@@ -44,7 +43,7 @@ void RenderProject1::run() {
 	fprintf(MSGLOG, "\nRENDER PROJECT 1 IS LOADED AND RUNNING!\n");
 
 
-	fprintf(MSGLOG, "\nLoading TextEngine...\n");
+	//fprintf(MSGLOG, "\nLoading TextEngine...\n");
 	
 
 	//fprintf(MSGLOG, "\nRender PROJECT 1 will attempt a HarfBuzz test...\n");

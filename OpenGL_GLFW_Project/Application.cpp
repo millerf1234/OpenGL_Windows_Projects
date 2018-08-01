@@ -14,7 +14,7 @@ Application::Application() {
 	//ShaderInterface::logMsgEvent("Application is loading...");
 	setupGLFW();
 	loadGraphicsLanguageFunctions();
-	checkMSAA();
+	doExtraSetup(); //This function call to doExtraSetup() isn't necessary (probably), it's more for informational purposes and testing/learning/experimenting
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -46,10 +46,12 @@ void Application::launch() {
 
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	
-	runHarfBuzzSetupTest();
+	//runHarfBuzzSetupTest(); //Confirmed that HarfBuzz works as intended. Unfortunatly I currently have no use for it (not until I get billboards/glyphs set up)
 
 	fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
 	runRenderProject1();
+
+
 
 	//loop();
 
@@ -123,9 +125,19 @@ void Application::loadGraphicsLanguageFunctions() {
 	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
 	std::cout << "\tActivating GL scissor-test\n";
 	glEnable(GL_SCISSOR_TEST);
+
+	//Is blending enabled here too as well? Or should blending be enabled/disabled as 
+	//needed for transparent objects?
 }
 
-void Application::checkMSAA() { //hmm
+
+
+void Application::doExtraSetup() const {
+	checkMSAA();
+	checkSomeCompilerMacros();
+}
+
+void Application::checkMSAA() const { //hmm
 	if (mApplicationValid) {
 		//glad_glEnable(GL_MULTISAMPLE);
 		GLint bufs = -1;
@@ -135,6 +147,32 @@ void Application::checkMSAA() { //hmm
 		fprintf(MSGLOG, "\n\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 	}
 }
+
+void Application::checkSomeCompilerMacros() const {
+	bool unsupportedCompilerDetected = false;
+	//I got most of my ideas for this from: 
+    //   https://isocpp.org/std/standing-documents/sd-6-sg10-feature-test-recommendations#recs.cpp98
+
+	//A compiler can have certain settings turned on and off. These macros check the settings and report potentially dangerous mismatches
+
+	//Check to see if Run-Time-Type Identification is unsupported!
+#ifndef __cpp_rtti   
+	fprintf(WRNLOG, "\nWaRNiNg! DETECTED THAT RUN-TIME-TYPE-IDENTIFICATION is not enabled!\nProgram probably will act strangly and crash a lot!\n");
+	unsupportedCompilerDetected = true;
+#endif //__cpp_rtti
+
+	//Check to see if exceptions
+#ifndef __cpp_exceptions
+	fprintf(WRNLOG, "\nWarning! DETECTED THat EXCEPTION HANDLING (OR SOMETHING LIKE THAT) IS NOT ENABLED!\n"
+		"This may cause a lot of crashing for if an exception gets thrown!\n");
+	unsupportedCompilerDetected = true;
+#endif //__cpp_exceptions
+
+
+
+
+}
+
 
 void Application::playIntroMovie() {
 	/*if ((nullptr != mDisplayInfo->activeMonitor) && (nullptr != glfwGetCurrentContext())) {

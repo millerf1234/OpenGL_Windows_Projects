@@ -38,11 +38,17 @@ private:
 	//Initialization Helper Functions:
 	void setupGLFW();
 	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers)
+	
+	void doExtraSetup() const;
+	void checkMSAA() const; //Prints MSAA config to MSGLOG
+	void checkSomeCompilerMacros() const;
 
-	void checkMSAA(); //Prints MSAA config to MSGLOG
 
 	void playIntroMovie();
 	
+
+	
+
 
 	//Projects:
 	void runHarfBuzzSetupTest();

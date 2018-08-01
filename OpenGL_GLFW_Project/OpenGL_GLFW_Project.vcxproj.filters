@@ -79,9 +79,6 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Uniform">
-      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing">
       <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes">
       <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform">
+      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,10 +127,10 @@
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="CachedUniformLocation.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
@@ -449,13 +449,13 @@
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationBucket.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationTracker.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="CachedUniformLocation.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="SIMDComputation.h">
       <Filter>Source Files\Utility\Math\Experimental\SSE2</Filter>

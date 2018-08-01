@@ -12,6 +12,9 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 //Web Links:
 		For Relating OpenGL types to Specific Types, see:  https://stackoverflow.com/questions/8932912/whats-the-advantage-of-using-gluint-instead-of-unsigned-int
 
+		For StackOverflow post on anonymous namespaces: https://stackoverflow.com/a/156834
+
+
 
 
 

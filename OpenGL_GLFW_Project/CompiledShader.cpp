@@ -243,7 +243,7 @@ namespace ShaderInterface {
 		try {
 			inFileStream.exceptions(inFileStream.failbit);
 		}
-		catch (const std::ios_base::failure& e) {
+		catch (const std::ios_base::failure& e [[maybe_unused]]) { //[[maybe_unused]] requires C++17
 			fprintf(WRNLOG, "\nWARNING! Invalid or Unreadable filepath encountered with \"%s\"\n", mFilepath);
 			mValidFilepath = false;
 			mError = true;

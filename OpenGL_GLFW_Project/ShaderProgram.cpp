@@ -1,10 +1,17 @@
+//File:      ShaderProgram.cpp 
+//Class:     ShaderProgram
+//Namespace: Global
+//Programmer: Forrest Miller
+//Date(s): Late July - Early August 2018     
+//
+//  See the header file for more detail
+//
+
 #include "ShaderProgram.h"
 
 using namespace ShaderInterface;  //Hopefully this doesn't get imported into the global namespace
-
 	ShaderProgram::ShaderProgram() {
 		initialize(); //Gives initial values to member variables
-		
 	}
 
 
@@ -21,16 +28,16 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		this->mProgramID = that.mProgramID;
 		that.mProgramID = 0u;
 
-		this->mHasVert = that.mHasVert;
-		this->mHasGeom = that.mHasGeom;
-		this->mHasTessc = that.mHasTessc;
-		this->mHasTesse = that.mHasTesse;
-		this->mHasFrag = that.mHasFrag;
+		this->mState.mHasVert = that.mState.mHasVert;
+		this->mState.mHasGeom = that.mState.mHasGeom;
+		this->mState.mHasTessc = that.mState.mHasTessc;
+		this->mState.mHasTesse = that.mState.mHasTesse;
+		this->mState.mHasFrag = that.mState.mHasFrag;
 
-		this->mValid = that.mValid;
-		that.mValid = false;
-		this->mError = that.mError;
-		this->mReadyToLink = that.mReadyToLink;
+		this->mState.mValid = that.mState.mValid;
+		that.mState.mValid = false;
+		this->mState.mError = that.mState.mError;
+		this->mState.mReadyToLink = that.mState.mReadyToLink;
 		
 		if (that.mVertexShader) {
 			this->mVertexShader = std::move(that.mVertexShader);
@@ -58,17 +65,17 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		this->mProgramID = that.mProgramID;
 		that.mProgramID = 0u;
 
-		this->mHasVert = that.mHasVert;
-		this->mHasGeom = that.mHasGeom;
-		this->mHasTessc = that.mHasTessc;
-		this->mHasTesse = that.mHasTesse;
-		this->mHasFrag = that.mHasFrag;
+		this->mState.mHasVert = that.mState.mHasVert;
+		this->mState.mHasGeom = that.mState.mHasGeom;
+		this->mState.mHasTessc = that.mState.mHasTessc;
+		this->mState.mHasTesse = that.mState.mHasTesse;
+		this->mState.mHasFrag = that.mState.mHasFrag;
 
-		this->mValid = that.mValid;
-		that.mValid = false;
-		this->mLinked = that.mLinked;
-		this->mError = that.mError;
-		this->mReadyToLink = that.mReadyToLink;
+		this->mState.mValid = that.mState.mValid;
+		that.mState.mValid = false;
+		this->mState.mLinked = that.mState.mLinked;
+		this->mState.mError = that.mState.mError;
+		this->mState.mReadyToLink = that.mState.mReadyToLink;
 
 		if (that.mVertexShader) {
 			this->mVertexShader = std::move(that.mVertexShader);
@@ -94,32 +101,61 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 
 	//Interface functions
 	bool ShaderProgram::attachVert(const char * vert) {
-		if (mLinked) {
-			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", vert);
+		if (mState.mLinked) {
+			fprintf(WRNLOG, "\nWarning! Unable to attach vert shader \"%s\"\nto this ShaderProgram "
+				"because this ShaderProgram has already been linked!\n", vert);
 			return false;
 		}
-		if ((mHasVert) || (mVertexShader != nullptr)) {
+		if (mState.mHasVert) {
 			fprintf(WRNLOG, "\nWARNING! Unable to attach Vertex shader \"%s\" to this shaderprogram\n"
 				"because this shaderprogram already has vert \"%s\" attached!\n", vert, mVertexShader->getFilepath());
 			return false;
 		}
+		if (mState.mHasCompute) {
+			fprintf(WRNLOG, "\nWarning! Unable to attach Vertex shader \"%s\"\nto this "
+				"ShaderProgram object because this ShaderProgram object has a Compute shader attached to it!\n", vert);
+			return false;
+		}
 		mVertexShader = std::make_unique<VertexShader>(vert);
-		if (mVertexShader->readyToBeAttached()) {
-			glAttachShader(mProgramID, mVertexShader->ID());
-			mHasVert = true;
-			if (mHasFrag && !mHasCompute) {
-				mReadyToLink = true;
+		if (!(mVertexShader->readyToBeAttached())) { //If something went wrong creating the vert shader
+			mVertexShader = nullptr;
+			return false;
+		}
+		//Else we have a valid VertexShader compiled and ready for attachment, so we can
+		glAttachShader(mProgramID, mVertexShader->ID());
+		mState.mHasVert = true;
+		//Check to see if ShaderProgram is ready to be linked
+		if (mState.mHasFrag) { 
+			if (mState.mHasTessc) {
+				if (mState.mHasTesse) {
+					mState.mReadyToLink = true;
+				}
+				else { //Still need a tesse to be ready to link
+					mState.mReadyToLink = false;
+				}
 			}
-			return true;
+			else if (mState.mHasTesse) {
+				if (mState.mHasTessc) {
+					mState.mReadyToLink = true;
+				}
+				else { //Still need a tessc to be ready to link
+					mState.mReadyToLink = false;
+				}
+			}
+			else { //If neither tesselation shaders are attached
+				mState.mReadyToLink = true;
+			}
 		}
 		else {
-			mVertexShader = nullptr;
+			mState.mReadyToLink = false; //Still need a Fragment shader before able to link
 		}
-		return false;
+		return true;
 	}
+
+	
 	void ShaderProgram::attachVert(const ShaderInterface::VertexShader * vert) {
 		if (vert == nullptr) { return; }
-		if (mLinked) {
+		if (mState.mLinked) {
 			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", vert->getFilepath());
 			return;
 		}
@@ -127,9 +163,13 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			fprintf(ERRLOG, "\nError attaching vertex shader to program, shader is invalid!\n");
 			return;
 		}
-		if (mHasVert) {
+		if (mState.mHasVert) {
 			fprintf(ERRLOG, "\nError attaching vertex shader to program. This program already has a vert shader!\n");
 			return;
+		}
+		if (mState.mHasCompute) {
+			fprintf(ERRLOG, "\nError attaching vertex shader \"%s\" to this ShaderProgram!", vert->getFilepath());
+			if ()
 		}
 		//One last extra check (that probably isnt necessary):
 		if (vert->ID() == 0u) {
@@ -137,20 +177,19 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return;
 		}
 		glAttachShader(mProgramID, vert->ID());
-		mHasVert = true;
-		if (mHasFrag && !mHasCompute) {
-			mReadyToLink = true;
+		mState.mHasVert = true;
+		if (mState.mHasFrag) {
+			mState.mReadyToLink = true;
 		}
 	}
 
 
-
 	bool ShaderProgram::attachGeom(const char * geom) {
-		if (mLinked) {
+		if (mState.mLinked) {
 			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", geom);
 			return false;
 		}
-		if ((mHasGeom) || (mGeometryShader != nullptr)) {
+		if ((mState.mHasGeom) || (mGeometryShader != nullptr)) {
 			fprintf(WRNLOG, "\nWARNING! Unable to attach Geometry shader \"%s\" to this ShaderProgram\n"
 				"because this ShaderProgram already has geom \"%s\" attached!\n", geom, mGeometryShader->getFilepath());
 			return false;
@@ -158,7 +197,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		mGeometryShader = std::make_unique<GeometryShader>(geom);
 		if (mGeometryShader->readyToBeAttached()) {
 			glAttachShader(mProgramID, mGeometryShader->ID());
-			mHasGeom = true;
+			mState.mHasGeom = true;
 			return true;
 		}
 		else {
@@ -168,7 +207,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 	}
 	void ShaderProgram::attachGeom(const ShaderInterface::GeometryShader * geom) {
 		if (geom == nullptr) { return; }
-		if (mLinked) {
+		if (mState.mLinked) {
 			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", geom->getFilepath());
 			return;
 		}
@@ -176,7 +215,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			fprintf(ERRLOG, "\nError attaching geometry shader to program, the geometry shader is invalid!\n");
 			return;
 		}
-		if (mHasGeom) {
+		if (mState.mHasGeom) {
 			fprintf(ERRLOG, "\nError attaching geometry shader to program. This program already has a geometry shader!\n");
 			return;
 		}
@@ -186,7 +225,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			return;
 		}
 		glAttachShader(mProgramID, geom->ID());
-		mHasGeom = true;
+		mState.mHasGeom = true;
 	}
 	
 
@@ -221,47 +260,47 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 	}
 
 	void ShaderProgram::link(bool cacheLocalShaders) {
-		if (mLinked) {
+		if (mState.mLinked) {
 			fprintf(WRNLOG, "\nWARNING! Unable to link this shader program because this shader program has already been linked!\n");
 			return;
 		}
-		else if (!mReadyToLink) { 
+		else if (!mState.mReadyToLink) {
 			fprintf(WRNLOG, "\nWARNING! Unable to link shader program because Shader program is not ready to be linked!\n");
 			//Figure out why it object is not ready to link and print out findings
-			if (mHasCompute) { //A compute shader must always be used in isolation?
-				if (mHasVert) {
+			if (mState.mHasCompute) { //A compute shader must always be used in isolation?
+				if (mState.mHasVert) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Vertex shader attached!\n");
 				}
-				if (mHasGeom) {
+				if (mState.mHasGeom) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Geometry shader attached!\n");
 				}
-				if (mHasTessc) {
+				if (mState.mHasTessc) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tesselation Control shader attached!\n");
 				}
-				if (mHasTesse) {
+				if (mState.mHasTesse) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tesselation Evaluation shader attached!\n");
 				}
-				if (mHasFrag) {
+				if (mState.mHasFrag) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Fragment shader attached!\n");
 				}
 			}
 			else {
-				if (mHasTessc && !mHasTesse) {
+				if (mState.mHasTessc && !mState.mHasTesse) {
 					fprintf(WRNLOG, "Shader program is unable to link because a Tesselation Control is attached but no Tesselation Evaluation is attached!\n");
 				}
-				else if (!mHasTessc && mHasTesse) {
+				else if (!mState.mHasTessc && mState.mHasTesse) {
 					fprintf(WRNLOG, "Shader program is unable to link because a Tesselation Control is attached but no Tesselation Evaluation is attached!\n");
 				}
-				if (!mHasVert) {
+				if (!mState.mHasVert) {
 					fprintf(WRNLOG, "Shader Program is unable to link because program has not had a vert shader attached yet!\n");
 				}
-				if (!mHasFrag) {
+				if (!mState.mHasFrag) {
 					fprintf(WRNLOG, "Shader program is unable to link becuase program has not had a frag shader attached yet!\n");
 				}
 			}
 			return;
 		}
-		else if (mError) {//If an error has occured before linking
+		else if (mState.mError) {//If an error has occured before linking
 			fprintf(ERRLOG, "\nERROR! Unable to link ShaderProgram because it encountered an error!\n");
 			return;
 		}
@@ -273,23 +312,23 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			glLinkProgram(mProgramID);
 			glGetProgramiv(mProgramID, GL_LINK_STATUS, &success);
 			if (!success) {
-				mError = true;
-				mReadyToLink = false;
-				mLinked = false;
-				mValid = false;
+				mState.mError = true;
+				mState.mReadyToLink = false;
+				mState.mLinked = false;
+				mState.mValid = false;
 
 				glGetProgramInfoLog(mProgramID, 768, NULL, infoLog);
 				fprintf(ERRLOG, "\nERROR OCCURED WHILE LINKING SHADERPROGRAM!\nError log:\n\t%s\n", infoLog);
 				return;
 			}
 
-			mReadyToLink = false;
-			mLinked = true;
-			mValid = true;
+			mState.mReadyToLink = false;
+			mState.mLinked = true;
+			mState.mValid = true;
 		}
 	}
 
-	//
+	
 	void ShaderProgram::use() {
 
 	}
@@ -298,7 +337,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 
 	void ShaderProgram::initialize() {
 		mProgramID = 0u;
-		initializeBooleans();
+		mState = ProgramState();  //Explicity call default constructor
 		uniforms = nullptr;
 		mVertexShader = nullptr;
 		mGeometryShader = nullptr;
@@ -311,18 +350,6 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		initializeUniformLocationTracker();
 	}
 
-	void ShaderProgram::initializeBooleans() {
-		mValid = false;
-		mLinked = false;
-		mHasVert = false;
-		mHasGeom = false;
-		mHasTesse = false;
-		mHasTessc = false;
-		mHasFrag = false;
-		mHasCompute = false;
-		mError = false;
-		mReadyToLink = false;
-	}
 
 	void ShaderProgram::generateGLProgramHandle() {
 		mProgramID = glCreateProgram();
