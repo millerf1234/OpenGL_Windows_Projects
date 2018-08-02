@@ -112,7 +112,7 @@ void RenderProject1::loadAssets() {
 void RenderProject1::renderLoop() {
 	
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
-
+		
 		if (checkToSeeIfShouldCloseWindow()) {
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			continue; //Skip the rest of this loop iteration to close window quickly
@@ -127,6 +127,17 @@ void RenderProject1::renderLoop() {
 		//To look into:
 		//GL_UseProgram_Stages 
 		
+		static float red = 0.0f;
+		static float green = 0.5f;
+		static float blue = 0.75f;
+		static long counter = 0l;
+
+		red += red * sin(counter++);
+		green = cos(counter++);
+		blue = 0.5*sin(red + (counter++));
+
+		glClearColor(red, green, blue, 1.0f);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		frameNumber++; //Increment the frame counter

@@ -168,9 +168,6 @@ void Application::checkSomeCompilerMacros() const {
 	unsupportedCompilerDetected = true;
 #endif //__cpp_exceptions
 
-
-
-
 }
 
 
@@ -207,13 +204,3 @@ void Application::runHarfBuzzSetupTest() {
 
 	}
 }
-
-//bool Application::loop() {
-//	bool loopShouldEnd = false;
-//	while (!loopShouldEnd) {
-//
-//		std::cin.get();
-//		loopShouldEnd = true;
-//	}
-//	return true;
-//}
