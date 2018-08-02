@@ -49,7 +49,7 @@ namespace ShaderInterface {
 			mType = type;
 			name = std::move(std::string(str));
 			location = glGetUniformLocation(programID, str);  //Crashes here if programID is invalid...
-			if (location = -1) {
+			if (location == -1) {
 				fprintf(WRNLOG, "\nWarning! Unable to get uniform location for uniform: %s\n", str);
 				fprintf(WRNLOG, "This is expected behavior if uniform is unused within the shader\n");
 				mError = true;

@@ -8,6 +8,8 @@
 #define RENDER_PROJECT_1_H_
 
 #include <limits>
+#include <thread>
+#include <chrono>
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -37,13 +39,20 @@ private:
 	unsigned long long frameNumber, frameUnpaused;
 	float counter;
 
+
+	std::unique_ptr<ShaderProgram> testProgram; //Test shader program
 	std::unique_ptr<TextEngine> txtEngine;
 
 
 	void initialize();
 	
+	void renderLoop();
 
+	bool checkToSeeIfShouldCloseWindow(); 
+	bool checkIfShouldPause();
+	void pause();
 
+	void prepareGLContextForNextFrame();
 };
 
 #endif //RENDER_PROJECT_1_H_
