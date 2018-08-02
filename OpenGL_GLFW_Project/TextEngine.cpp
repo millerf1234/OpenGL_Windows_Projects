@@ -69,7 +69,7 @@ void TextEngine::initializeFromFontFilePath() {
 		//return;
 	}
 	if (mValidFontFilePath) {
-		fprintf(ERRLOG, "\mError trying to set a new text file path, this object already had a text filepath set!\n");
+		fprintf(ERRLOG, "\nError trying to set a new text file path, this object already had a text filepath set!\n");
 		return;
 	}
 	if (strcmp(mFontPath, "\0") == 0){

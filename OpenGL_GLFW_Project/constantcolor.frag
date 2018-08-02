@@ -1,7 +1,9 @@
 #version 450 core
 
-out vec4 Color;
+uniform float zoom;
+
+out vec4 color;
 
 void main() {
-	color = vec4(0.751, 0.852, 0.796, 1.0);
+	color = vec4(0.751, 0.852 - max(zoom, 0.645), 0.796, 1.0);
 }

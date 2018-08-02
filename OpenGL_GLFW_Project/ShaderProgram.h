@@ -30,9 +30,11 @@
 //Notes:   
 //
 //
-//Errors to watch for:  Invalid Shader Filepath
-//						Error within the Context
-//						Shader Compilation Error
+//Errors to watch for:  (None are explicitly implemented yet)
+//					Ideas for what the errors could include:
+//                      --Invalid Shader Filepath
+//						--Error within the Context
+//						--Shader Compilation Error
 //
 //
 
@@ -170,6 +172,7 @@
 				bool mHasVert, mHasGeom, mHasTesse, mHasTessc, mHasFrag, mHasCompute; //These bools represent attached shaders, not cached shaders
 				bool mError;
 				bool mReadyToLink;
+
 				//Constructor
 				ProgramState() {
 					mValid = false;
@@ -198,11 +201,14 @@
 			void initialize();
 			void generateGLProgramHandle();
 			void initializeUniformLocationTracker();
+
+			bool checkToSeeIfReadyToLinkAfterAttachingVert() const;
+			bool checkToSeeIfReadyToLinkAfterAttachingTesse() const;
+			bool checkToSeeIfReadyToLinkAfterAttachingTessc() const;
+			bool checkToSeeIfReadyToLinkAfterAttachingFrag() const;
 		};
 
 //} //namespace ShaderInterface
-
-
 
 
 #endif //#ifndef SHADER_PROGRAM_H_

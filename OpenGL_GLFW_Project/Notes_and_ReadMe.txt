@@ -48,6 +48,10 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 //                  
 //
 //
+// Idea for dealing with how to proceed when shader compilation fails:
+//		Have a generic passthrough shader stored as a static string and that will always compile. Then
+//		  have it replace shaders that fail to load/compile.
+//
 //
 
 
