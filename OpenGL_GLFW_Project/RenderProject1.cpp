@@ -64,10 +64,7 @@ void RenderProject1::run() {
 	renderLoop();
 
 
-
-
 	//std::cin.get(); //keep the screen open
-
 
 }
 
@@ -78,10 +75,13 @@ void RenderProject1::initialize() {
 	window = nullptr;
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
+	frameOfMostRecentColorRecording = 0ull;
 	counter = 0.0f;
 
 	txtEngine = nullptr;
 
+	//Set initial background color
+	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
 }
 
 void RenderProject1::loadAssets() {
@@ -104,6 +104,7 @@ void RenderProject1::loadAssets() {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 	}
 
+	//Update uniform locations
 	testProgram->uniforms->updateUniform1f("zoom", 0.5f);
 
 	//Test Updating/Caching uniform locations too!
@@ -123,20 +124,39 @@ void RenderProject1::renderLoop() {
 			continue;
 		}
 
+		if (checkIfShouldRecordColor())
+			recordColorToLog();
+
 
 		//To look into:
 		//GL_UseProgram_Stages 
+		float * red = &(backgroundColor.x);
+		float * green = &(backgroundColor.y);
+		float * blue = &(backgroundColor.z);
+
+		*red = glm::min(1.0f, (*red + *green + *blue) / 3.0f);
+		*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
+		*blue = 0.5f + 0.25f*cos(counter);
 		
-		static float red = 0.0f;
-		static float green = 0.5f;
-		static float blue = 0.75f;
-		static long counter = 0l;
+		//static bool sleep = false;
+		if (abs(ceilf(counter) - counter) < 0.0049f ) {
+			float temp = *red;
+			*red = *green;
+			*green = *blue;
+			*blue = temp;
+			//sleep = true;
+		}
+		//if (sleep) {
+		//	sleep = false;
+		//	std::this_thread::sleep_for(std::chrono::nanoseconds(333333333));
+		//}
 
-		red += red * sin(counter++);
-		green = cos(counter++);
-		blue = 0.5*sin(red + (counter++));
+		counter += 0.0125f;
+		//red += red * glm::sin(static_cast<float>(counter++));
+		//green = cos(static_cast<float>(counter++));
+		//blue = 0.5*sin(red + (static_cast<float>(counter++)));
 
-		glClearColor(red, green, blue, 1.0f);
+		glClearColor(*red, *green, *blue, 1.0f);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -147,19 +167,38 @@ void RenderProject1::renderLoop() {
 }
 
 
-bool RenderProject1::checkToSeeIfShouldCloseWindow() {
+bool RenderProject1::checkToSeeIfShouldCloseWindow() const {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
 }
 
-bool RenderProject1::checkIfShouldPause() {
-	if ((glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) &&
-		(frameNumber >= (frameUnpaused + 10ull))) {
+bool RenderProject1::checkIfShouldPause() const {
+	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
+		&& (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
+}
+
+bool RenderProject1::checkIfShouldRecordColor() const {
+	if ((frameNumber >= (frameOfMostRecentColorRecording +
+		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1))
+		&& (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)) {
+		return true;
+	}
+	return false;
+}
+
+void RenderProject1::recordColorToLog() {
+	frameOfMostRecentColorRecording = frameNumber;
+	int colorDigits = 6; //Digits to print out for each color
+
+	//Syntax Note: With '%*f', the '*' means that the width will be provided as an additional parameter
+	fprintf(MSGLOG, "\nThe background color of frame %llu is:\n\tRed: %*f,\tGreen: %*f,\tBlue: %*f\n",
+		frameNumber, colorDigits, backgroundColor.r, colorDigits, backgroundColor.g, colorDigits, backgroundColor.b);
+
 }
 
 void RenderProject1::pause() {

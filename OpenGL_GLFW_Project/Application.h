@@ -27,7 +27,6 @@ class Application {
 public:
 	Application();
 	~Application();
-
 	void launch();
 
 private:
@@ -35,13 +34,18 @@ private:
 	std::shared_ptr<MonitorData> mDisplayInfo;
 	std::unique_ptr<GLFW_Init> mGLFWInitializer;
 
+
 	//Initialization Helper Functions:
-	void setupGLFW();
-	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers)
-	
+	void callProjectSetupFunctions() { //Mostly just checks system/compiler configuration macros
+		PROJECT_SETUP_FUNCTIONS::Call_Project_Setup_Functions(); //see project setup.h
+	} 
+
+	void setupGLFW(); //Loads the GLFW library
+	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
+
 	void doExtraSetup() const;
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
-	void checkSomeCompilerMacros() const;
+	
 
 
 	void playIntroMovie();

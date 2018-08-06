@@ -94,6 +94,15 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform">
       <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ModelInterface">
+      <UniqueIdentifier>{1e7fd297-ab4e-4ac4-a333-00c44220f438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ModelInterface\AffineTransformation">
+      <UniqueIdentifier>{510ed4c6-5150-4ef4-baef-aad155d71b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotesAndReferences">
+      <UniqueIdentifier>{7e929138-11ce-4b48-bf47-c2e4623f992d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -165,6 +174,9 @@
     <ClCompile Include="TesselationEvaluationShader.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
+    <ClCompile Include="AffineTransformation.cpp">
+      <Filter>Source Files\Utility\RenderTools\ModelInterface\AffineTransformation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="harfbuzz.lib">
@@ -207,9 +219,6 @@
     </ClInclude>
     <ClInclude Include="RenderProject1.h">
       <Filter>Source Files\Projects\RenderProject1</Filter>
-    </ClInclude>
-    <ClInclude Include="InputFlags.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb.h">
       <Filter>HarfBuzz</Filter>
@@ -499,6 +508,9 @@
     <ClInclude Include="TesselationEvaluationShader.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
+    <ClInclude Include="AffineTransformation.h">
+      <Filter>Source Files\Utility\RenderTools\ModelInterface\AffineTransformation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="passthrough2D.vert">
@@ -524,6 +536,9 @@
     </None>
     <None Include="TestGeom.geom">
       <Filter>Resource Files\Shaders\Generic</Filter>
+    </None>
+    <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
+      <Filter>NotesAndReferences</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -584,7 +599,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes_and_ReadMe.txt">
-      <Filter>Source Files</Filter>
+      <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
 </Project>

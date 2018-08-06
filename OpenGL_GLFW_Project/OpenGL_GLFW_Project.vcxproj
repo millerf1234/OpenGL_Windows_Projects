@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AffineTransformation.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
@@ -164,6 +165,7 @@
     <Library Include="harfbuzz.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AffineTransformation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="CompiledShader.h" />
@@ -250,7 +252,6 @@
     <ClInclude Include="HarfBuzz\hb-unicode.h" />
     <ClInclude Include="HarfBuzz\hb-version.h" />
     <ClInclude Include="HarfBuzz\hb.h" />
-    <ClInclude Include="InputFlags.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="ProjectConstants.h" />
@@ -273,6 +274,10 @@
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="constantcolor.frag" />
     <None Include="freetype.dll" />
     <None Include="glfw3.dll" />

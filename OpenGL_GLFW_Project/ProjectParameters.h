@@ -30,4 +30,9 @@ static constexpr float MARGIN = FONT_SIZE * 0.5f;
 
 
 
+//Mostly constant parameters (these parameters can be tweaked but usually doing so will have a negative effect)
+static constexpr unsigned long long DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE = 10ull;
+static constexpr unsigned long long DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1 = 15ull;
+
+
 #endif //define PROJECT_PARAMETERS_H_

@@ -23,6 +23,7 @@
 #include "ShaderProgram.h"
 //#include "ShaderProgramBuilder.h"
 
+
 class RenderProject1 {
 public:
 	RenderProject1() = delete;
@@ -36,8 +37,9 @@ public:
 private:
 	bool error;
 	GLFWwindow * window;
-	unsigned long long frameNumber, frameUnpaused;
+	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
+	glm::vec3 backgroundColor;
 
 
 	std::unique_ptr<ShaderProgram> testProgram; //Test shader program
@@ -48,9 +50,14 @@ private:
 	
 	void renderLoop();
 
-	bool checkToSeeIfShouldCloseWindow(); 
-	bool checkIfShouldPause();
+	//Input detection
+	bool checkToSeeIfShouldCloseWindow() const; 
+	bool checkIfShouldPause() const;
+	bool checkIfShouldRecordColor() const;
+
+	//Input processing
 	void pause();
+	void recordColorToLog();
 
 	void prepareGLContextForNextFrame();
 };

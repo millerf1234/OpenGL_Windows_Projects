@@ -14,26 +14,6 @@
 #include "ProjectSetup.h"
 
 
-
-
-
-
-///For logging 
-#ifndef MSGLOG
-#define MSGLOG stdout
-#endif
-
-#ifndef ERRLOG
-#define ERRLOG stderr
-#endif 
-
-#ifndef WRNLOG
-#define WRNLOG stderr
-#endif 
-
-
-
-
 static const char * NAME_OF_GAME = "OpenGL Practice Test\0";
 
 //Used in shader code for shader inputs
@@ -45,6 +25,7 @@ enum class VertexAttribPointerType {
 //Useful Constants
 constexpr size_t INDEX_SHIFT = 1ull; //Useful for array indexing
 constexpr GLfloat PI = 3.14159265f;
+
 
 
 

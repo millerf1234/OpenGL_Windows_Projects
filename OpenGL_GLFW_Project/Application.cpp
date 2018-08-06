@@ -134,7 +134,7 @@ void Application::loadGraphicsLanguageFunctions() {
 
 void Application::doExtraSetup() const {
 	checkMSAA();
-	checkSomeCompilerMacros();
+	//checkSomeCompilerMacros(); //This is now done during construction with functions in "ProjectSetup.h"
 }
 
 void Application::checkMSAA() const { //hmm
@@ -146,28 +146,6 @@ void Application::checkMSAA() const { //hmm
 		glad_glGetIntegerv(GL_SAMPLES, &samples);
 		fprintf(MSGLOG, "\n\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 	}
-}
-
-void Application::checkSomeCompilerMacros() const {
-	bool unsupportedCompilerDetected = false;
-	//I got most of my ideas for this from: 
-    //   https://isocpp.org/std/standing-documents/sd-6-sg10-feature-test-recommendations#recs.cpp98
-
-	//A compiler can have certain settings turned on and off. These macros check the settings and report potentially dangerous mismatches
-
-	//Check to see if Run-Time-Type Identification is unsupported!
-#ifndef __cpp_rtti   
-	fprintf(WRNLOG, "\nWaRNiNg! DETECTED THAT RUN-TIME-TYPE-IDENTIFICATION is not enabled!\nProgram probably will act strangly and crash a lot!\n");
-	unsupportedCompilerDetected = true;
-#endif //__cpp_rtti
-
-	//Check to see if exceptions
-#ifndef __cpp_exceptions
-	fprintf(WRNLOG, "\nWarning! DETECTED THat EXCEPTION HANDLING (OR SOMETHING LIKE THAT) IS NOT ENABLED!\n"
-		"This may cause a lot of crashing for if an exception gets thrown!\n");
-	unsupportedCompilerDetected = true;
-#endif //__cpp_exceptions
-
 }
 
 
