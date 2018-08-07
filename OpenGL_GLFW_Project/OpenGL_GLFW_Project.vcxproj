@@ -151,6 +151,7 @@
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="SimpleBuffer.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="TextEngine.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SIMDComputation.h" />
+    <ClInclude Include="SimpleBuffer.h" />
     <ClInclude Include="TesselationControlShader.h" />
     <ClInclude Include="TesselationEvaluationShader.h" />
     <ClInclude Include="TextEngine.h" />

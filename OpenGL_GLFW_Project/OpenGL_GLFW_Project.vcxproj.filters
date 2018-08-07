@@ -97,11 +97,14 @@
     <Filter Include="Source Files\Utility\RenderTools\ModelInterface">
       <UniqueIdentifier>{1e7fd297-ab4e-4ac4-a333-00c44220f438}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ModelInterface\AffineTransformation">
-      <UniqueIdentifier>{510ed4c6-5150-4ef4-baef-aad155d71b55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="NotesAndReferences">
       <UniqueIdentifier>{7e929138-11ce-4b48-bf47-c2e4623f992d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ModelInterface\Experimental">
+      <UniqueIdentifier>{c39fe7a3-c9c6-45c4-b618-4ce09c03c69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation">
+      <UniqueIdentifier>{510ed4c6-5150-4ef4-baef-aad155d71b55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -175,7 +178,10 @@
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="AffineTransformation.cpp">
-      <Filter>Source Files\Utility\RenderTools\ModelInterface\AffineTransformation</Filter>
+      <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleBuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -509,7 +515,10 @@
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="AffineTransformation.h">
-      <Filter>Source Files\Utility\RenderTools\ModelInterface\AffineTransformation</Filter>
+      <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleBuffer.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
