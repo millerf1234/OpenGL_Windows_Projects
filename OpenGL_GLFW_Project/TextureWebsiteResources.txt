@@ -1,0 +1,19 @@
+
+This file just contains a bunch of URLs for websites that 
+allow texture downloading or generation.
+
+
+
+(Free)
+http://cpetry.github.io/TextureGenerator-Online/      (I might be able to code this myself using noise)
+http://cpetry.github.io/NormalMap-Online/
+
+
+
+(Free and Paid)
+https://www.poliigon.com/  
+
+
+
+(Paid)
+

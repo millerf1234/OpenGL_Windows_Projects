@@ -106,6 +106,9 @@
     <Filter Include="Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation">
       <UniqueIdentifier>{510ed4c6-5150-4ef4-baef-aad155d71b55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{c9f858de-f478-43c8-b4ff-ac641c838a67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -609,6 +612,9 @@
   <ItemGroup>
     <Text Include="Notes_and_ReadMe.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="TextureWebsiteResources.txt">
+      <Filter>Resource Files\Textures</Filter>
     </Text>
   </ItemGroup>
 </Project>

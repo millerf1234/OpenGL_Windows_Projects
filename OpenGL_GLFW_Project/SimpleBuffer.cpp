@@ -65,7 +65,8 @@ namespace ShaderInterface {
 		}
 		else { //Load the data to the GPU
 			//NOTE: The difference between named and unnamed is unnamed uses the current buffer bound to the context
-			glBufferStorage
+			//glBufferStorage
+			//see: https://stackoverflow.com/questions/27810542/what-is-the-difference-between-glbufferstorage-and-glbufferdata
 		}
 	}
 

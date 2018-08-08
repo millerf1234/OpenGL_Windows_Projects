@@ -160,7 +160,7 @@ namespace ShaderInterface {
 		bool mError;
 
 		//-------------------------------
-		// Protected Default Constructor (see notes on header)
+		// Protected Default Constructor (see notes at top of this file)
 		//-------------------------------
 		//Don't call this constructor! Use the one which takes a filepath instead!
 		CompiledShader(); //Default constructor should only be called by derived types since it will create an invalid object

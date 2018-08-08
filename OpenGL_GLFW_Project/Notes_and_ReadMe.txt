@@ -14,9 +14,15 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 
 		For StackOverflow post on anonymous namespaces: https://stackoverflow.com/a/156834
 
+		LAMBDA EXPRESSIONS (YOU REALLY SHOULD LEARN THIS!) https://msdn.microsoft.com/en-us/library/dd293608(d=printer).aspx
 
+		Difference between glBufferStorage and glBufferData: https://stackoverflow.com/questions/27810542/what-is-the-difference-between-glbufferstorage-and-glbufferdata
 
+		Random OpenGL reading that is worth looking at again:
+				https://www.glprogramming.com/red/chapter03.html#name1
+				http://web.cse.ohio-state.edu/~shen.94/781/Site/Slides_files/pipeline.pdf
 
+		OpenGL Framebuffer intro: http://www.songho.ca/opengl/gl_fbo.html
 
 //FUTURE IDEAS:
 
