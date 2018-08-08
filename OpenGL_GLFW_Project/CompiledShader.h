@@ -175,13 +175,6 @@ namespace ShaderInterface {
 		//Note that 0u will never be used as a shader handle
 		void aquireShaderID(GLenum type);
 
-		
-		//This derived function calls glCreateShader(GL_SHADER_TYPE) with the correct GL_SHADER_TYPE macro (as recieved from the constructor)
-		//virtual void aquireShaderID() = 0; //This function is to be overwritten by the derived types
-
-
-		
-
 		//Loads the text of a file located at filepath. Useful for loading shaders
 		bool loadSourceFile();
 
@@ -198,6 +191,7 @@ namespace ShaderInterface {
 		//----------------------------
 		// Private member variables
 		//----------------------------
+
 		bool mReadyToBeAttached;
 		bool mValidFilepath;
 

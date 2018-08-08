@@ -109,6 +109,12 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{c9f858de-f478-43c8-b4ff-ac641c838a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\ModelTools">
+      <UniqueIdentifier>{677e5d3f-d5ad-4ec8-8b8f-8dc3586ee9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\ModelTools\ModelLoading">
+      <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -522,6 +528,12 @@
     </ClInclude>
     <ClInclude Include="SimpleBuffer.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="OS_And_Compiler_Configuration_Check.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingMessageTargets.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

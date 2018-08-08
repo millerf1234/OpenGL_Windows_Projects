@@ -1,3 +1,4 @@
+//Designed to be quick to use (and quick and dirty to implement).
 //This is a self-contained simple buffer complete with full OpenGL calls. 
 //This object will be useful for quickly getting something working for testing.
 //
@@ -6,7 +7,8 @@
 //
 // See OpenGl SuperBible 7th edition around pages 100-101 
 //
-// Created August 8, 2018  by Forrest Miller
+// Created August 6, 2018  by Forrest Miller
+// Completed August 9th, 2018 
 // 
 
 #pragma once
@@ -26,8 +28,8 @@ namespace ShaderInterface {
 		SimpleBuffer();
 		~SimpleBuffer();
 
-		//SimpleBuffer(const SimpleBuffer&);
-		//SimpleBuffer(SimpleBuffer&&);
+		SimpleBuffer(const SimpleBuffer&) = delete;
+		SimpleBuffer(SimpleBuffer&&);
 
 		void createGLBuffer(); 
 		void attachVertices(const std::vector<GLfloat> &);
@@ -38,7 +40,8 @@ namespace ShaderInterface {
 		GLuint ID() const { return mBufferID;  }
 		size_t vertDataSize() const { return mVertData.size(); }
 
-
+		SimpleBuffer& operator=(const SimpleBuffer&) = delete;
+		SimpleBuffer& operator=(SimpleBuffer&&);
 
 	private:
 		//Right now only a vertice buffer

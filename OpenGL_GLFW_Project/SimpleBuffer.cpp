@@ -72,7 +72,8 @@ namespace ShaderInterface {
 
 
 	void SimpleBuffer::bindToContext() const {
-		if (!hasValidBufferID() )
+		if (!hasValidBufferID())
+			return;
 	}
 
 	void SimpleBuffer::cleanupSelf() {

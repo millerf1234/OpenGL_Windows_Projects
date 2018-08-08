@@ -37,7 +37,7 @@ private:
 
 	//Initialization Helper Functions:
 	void callProjectSetupFunctions() { //Mostly just checks system/compiler configuration macros
-		PROJECT_SETUP_FUNCTIONS::Call_Project_Setup_Functions(); //see project setup.h
+		OperatingSystemAndCompilerDependentConfiguationFunc::Call_Project_Setup_Functions(); //see project setup.h
 	} 
 
 	void setupGLFW(); //Loads the GLFW library
