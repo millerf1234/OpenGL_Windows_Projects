@@ -10,7 +10,7 @@
 // (This is basically just a wrapper class for stb_image)
 //
 // Created by Forrest Miller on August 11, 2018
-// More work done on August 17, 2018
+// More work done on August 17, 2018   (in fact I got a working version completed this day)
 //
 //
 //  I have decided to do things differently than what I wrote here in "Thoughts"
@@ -30,6 +30,10 @@
 #include <vector>
 #include <stdio.h>
 
+#include <stdexcept>
+
+#include "LoggingMessageTargets.h"
+
 namespace ImageLoadingInterface {
 
 	enum class fileFormat{JPEG, PNG, UNSUPPORTED};
@@ -48,7 +52,6 @@ namespace ImageLoadingInterface {
 
 		//Public Functions
 		[[nodiscard]] uniquePtrToImageData getImageData() const;
-		//void loadFile(const char * imageFilepath);
 		
 		//Getters
 		int getWidth() const { return mWidth; }
@@ -57,7 +60,7 @@ namespace ImageLoadingInterface {
 		int h() const { return mHeight; }
 		int getComponents() const { return mComponents; }
 		bool hasAlpha() const { return (mComponents == 4); } //r, g, b, alpha 
-		int getDataSize() const { return mWidth * mHeight * ((0) < STBI_rgb ? STBI_rgb : mComponents ); } //Hmm, this line doesn't make sense to me
+		int getDataSize() const { return mWidth * mHeight * ((0) < 3 ? 3 : mComponents ); } //Hmm, this line doesn't make sense to me
 		const char * getFilepath() const { return mFilepath; }
 		bool validFilepath() const { return mValidFilepath; }
 		bool error() const { return mError; }
@@ -65,16 +68,20 @@ namespace ImageLoadingInterface {
 	private:
 		int mWidth, mHeight, mComponents;
 		const char * mFilepath;
-		//std::unique_ptr<std::vector<unsigned char>> mImageData;
 		
 		bool mValidFilepath;        //Will be set based on the most recently loaded file
 		bool mError;                //Will be true if this object encounters an internal error
-		//bool mHasLoadedImageData; //Will be true when this object has loaded an image.
 
-		std::unique_ptr<unsigned char, void(*)(void*)> stbi_data;
+		bool mBogusData;            //Will become true if made-up data is used as a safe substitute for
+		//							//being asked to load an invalid/unreable file
+
+		//I need the extra level of pointers here for this so that I can construct this object properly.
+		std::unique_ptr<std::unique_ptr<unsigned char, void(*)(void*)>> stbi_data;
 
 		//Private helper functions
 		void initialize(); 
+		void load(); //Requires for this object to have mFilepath set
+		void createBogusButReasonableDataToReturnOnFileReadError();
 	};
 
 } //namespace ImageLoadingInterface
