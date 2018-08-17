@@ -33,35 +33,38 @@
 
 
 
-/////////////////////////////////////
-////        Case Enum Logger     ////  
-/////////////////////////////////////
+////////////////////////////////////////
+////        Case Enum Logger        ////  
+////////////////////////////////////////
 
+//First we need a macro to print the enum
+//This is based off of the top answer at ////see top answer at https://stackoverflow.com/questions/9907160/how-to-convert-enum-names-to-string-in-c
+#define EXTRACT_ENUM_(x) #x
 
+//We need a second macro function to get the proper behavior
+#define ENUM_TO_STRING(e) EXTRACT_ENUM_(e)
 
+#define LOG_ENUM(a) fprintf(MSGLOG, "%s", ENUM_TO_STRING(a))
 
-/////////////////////////////////////
-////    Enum To String (sorta)   ////  
-/////////////////////////////////////
-
-//This is based off of an example written by Peter Dalton, Evans & Sutherland as section 1.2
-//in the book Game Programming Gems 2 (2001). Their example can be found on page 19. 
+//The CASE_ENUM macro function is intended to be used within switch statements.
 //
+//The CASE_ENUM macro is based off of an example written by Peter Dalton, Evans & Sutherland
+//as section 1.2 in the book Game Programming Gems 2 (2001). Their example can be found on
+//page 19. 
+#define CASE_ENUM(val)       case(val) : LOG_ENUM( #val )     
+						      
+
+//Then a switch statement with enums might look like:
+//		switch (enum) {
+//		CASE_ENUM(ENUM1);
+//			processCaseEnum1();
+//			break;
+//		CASE_ENUM(ENUM2);
+//			processCaseEnum2();
+//			break;
 //
-
-// Doesn't work correctly. I think I misjugded what would be possible.
+//		//etc...
 //
-////////////////////////////////
-//////    Enum To String    ////  
-////////////////////////////////
-////see top answer at https://stackoverflow.com/questions/9907160/how-to-convert-enum-names-to-string-in-c
-//#define EXTRACT_ENUM__(x) #x
-//
-//#ifndef ENUM_TO_STRING
-//#define ENUM_TO_STRING(a) EXTRACT_ENUM__(a)
-//#endif 
-
-
-
+//		}
 
 #endif //LOGGING_MESSAGE_TARGET_CONFIGURATION_H_

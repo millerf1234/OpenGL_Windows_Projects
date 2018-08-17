@@ -8,7 +8,8 @@
 // See OpenGl SuperBible 7th edition around pages 100-101 
 //
 // Created August 6, 2018  by Forrest Miller
-// Completed August 9th, 2018 
+// Left stagnant and unfinished for several weeks due to other (work) commitments.
+// Finished on (NEVER! UNTIL I QUIT MY JOB!)
 // 
 
 #pragma once

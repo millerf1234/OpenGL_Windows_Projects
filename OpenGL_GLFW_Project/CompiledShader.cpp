@@ -39,6 +39,7 @@ namespace ShaderInterface {
 		}
 	}
 
+
 	CompiledShader::~CompiledShader() {
 		if (mShaderID.mID != 0u) {
 			GLboolean shaderStillValid = glIsShader(mShaderID.mID);
@@ -66,6 +67,8 @@ namespace ShaderInterface {
 		return false;
 	}
 
+
+
 	bool CompiledShader::operator!=(const CompiledShader& that) const {
 		if (this == &that)
 			return false;
@@ -76,6 +79,8 @@ namespace ShaderInterface {
 		}
 		return true;
 	}
+
+
 
 	bool CompiledShader::operator<(const CompiledShader& other) const {
 		if (this->mError || !(this->mValidFilepath)) {
@@ -116,9 +121,13 @@ namespace ShaderInterface {
 		}
 	}
 
+
+
 	bool CompiledShader::operator>(const CompiledShader& other) const {
 		return !( *this < other);
 	}
+
+
 
 	void CompiledShader::decommision() {
 		if (mIsDecomissioned || mError || !mValidFilepath)
@@ -134,6 +143,8 @@ namespace ShaderInterface {
 		mShaderID.mID = 0u;
 	}
 
+
+
 	bool CompiledShader::isCompiled() const {
 		if (mError) { return false; }
 		GLboolean isShaderProgram = glIsShader(mShaderID.mID);
@@ -146,6 +157,8 @@ namespace ShaderInterface {
 		return false;
 	}
 
+
+
 	//Protected default constructor that is to be called by derived types only. This constructor does not create a valid object, 
 	//instead it creates an object that is intended to serve as a dummy for another objects member variables to be moved over to.
 	CompiledShader::CompiledShader() {
@@ -157,6 +170,8 @@ namespace ShaderInterface {
 		mSourceText = nullptr;
 		mFilepath = nullptr;
 	}
+
+
 
 	bool CompiledShader::compile(GLenum type) {
 		//See if for some reason this object represents a valid shader...
@@ -189,6 +204,8 @@ namespace ShaderInterface {
 		}
 		mShaderID = glCreateShader(type);
 	}
+
+
 
 	bool CompiledShader::loadSourceFile() {
 		std::ifstream shaderInputStream{ mFilepath };
@@ -255,6 +272,8 @@ namespace ShaderInterface {
 		return true;
 	}
 
+
+
 	bool CompiledShader::checkForCompilationErrors() {
 		GLint success;
 		glGetShaderiv(mShaderID.mID, GL_COMPILE_STATUS, &success);
@@ -270,6 +289,8 @@ namespace ShaderInterface {
 		mReadyToBeAttached = true; //Important to keep this here in case derived types rely on it
 		return true;
 	}
+
+
 
 	bool CompiledShader::compareFilepaths(const char * fp1, const char * fp2) {
 		if (fp1 == nullptr)

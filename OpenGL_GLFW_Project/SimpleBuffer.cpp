@@ -13,14 +13,15 @@ namespace ShaderInterface {
 
 	}
 
-		//SimpleBuffer::SimpleBuffer(const SimpleBuffer&) { 
-	    //		//todo...
-		//}
-		//SimpleBuffer::SimpleBuffer(SimpleBuffer&&) {
-		//      //todo...
-		//}
+	//SimpleBuffer::SimpleBuffer(const SimpleBuffer&) { 
+	//		//todo... or not todo
+	//}
 
-		//SimpleBuffer::SimpleBuffer(SimpleBuffer&&);
+	//SimpleBuffer::SimpleBuffer(SimpleBuffer&&) {
+	//      //todo...
+	//}
+
+	//SimpleBuffer::SimpleBuffer(SimpleBuffer&&);
 
 	void SimpleBuffer::createGLBuffer() {
 		if (ID() != 0u) {
@@ -63,7 +64,10 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nWARNING! SIMPLE BUFFER OBJECT DOES NOT CONTAIN ANY DATA TO BUFFER!\n");
 			return;
 		}
-		else { //Load the data to the GPU
+		else { 
+			
+			
+			//Load the data to the GPU
 			//NOTE: The difference between named and unnamed is unnamed uses the current buffer bound to the context
 			//glBufferStorage
 			//see: https://stackoverflow.com/questions/27810542/what-is-the-difference-between-glbufferstorage-and-glbufferdata
