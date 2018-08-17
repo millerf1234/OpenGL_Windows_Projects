@@ -159,6 +159,7 @@
     <ClCompile Include="TextEngine.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TexturePool.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="StreamableBufferSet.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="TextEngine.h" />
     <ClInclude Include="TextLine.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TexturePool.h" />
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />

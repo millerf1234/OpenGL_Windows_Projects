@@ -5,21 +5,16 @@
 // This class distinguishes between filepath errors and other
 // types of error, so that a distinction exists between issues
 // caused by bad files vs issues caused internally within this
-// class.
+// class. (actually, not really...)
+//
+//	IMPORTANT! This class will generate a bogus 100x100 3-component image of one color if it 
+//				is unable to read from the file. 
 //
 // (This is basically just a wrapper class for stb_image)
 //
 // Created by Forrest Miller on August 11, 2018
 // More work done on August 17, 2018   (in fact I got a working version completed this day)
-//
-//
-//  I have decided to do things differently than what I wrote here in "Thoughts"
-//  Thoughts: So this class can exist in several different states. 
-//			First, it can be created with no parameters to put it
-//		    in a ready-to-load-file state. 
-//          Second, it can be created with a filepath parameter to
-//			get it to load the provided file. 
-//			
+
 
 #pragma once
 

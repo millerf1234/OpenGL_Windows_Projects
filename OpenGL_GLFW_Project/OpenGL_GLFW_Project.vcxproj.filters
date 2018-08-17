@@ -124,6 +124,12 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer">
       <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Texture\TextureInternal">
+      <UniqueIdentifier>{424dd3f0-6ce4-4430-a588-539e9d3d55d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Texture\Material">
+      <UniqueIdentifier>{76988fe0-c6ec-4aeb-880d-1680bb78e838}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -198,16 +204,19 @@
     <ClCompile Include="AffineTransformation.cpp">
       <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleBuffer.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer</Filter>
     </ClCompile>
     <ClCompile Include="ImageFileLoader.cpp">
+      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Utility\RenderTools\Texture\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturePool.cpp">
       <Filter>Source Files\Utility\RenderTools\Texture</Filter>
     </ClCompile>
   </ItemGroup>
@@ -550,20 +559,23 @@
     <ClInclude Include="stb_image.h">
       <Filter>stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleBuffer.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="ImageFileLoader.h">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="VertexAttribPointerData.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFileLoader.h">
+      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Source Files\Utility\RenderTools\Texture\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePool.h">
+      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
