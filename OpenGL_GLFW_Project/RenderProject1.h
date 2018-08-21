@@ -36,29 +36,76 @@ public:
 
 private:
 	bool error;
-	GLFWwindow * window;
+	GLFWwindow * window; //Pointer to target renderable window (Application should have this)
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
 	glm::vec3 backgroundColor;
-
 
 	std::unique_ptr<ShaderProgram> testProgram; //Test shader program
 	std::unique_ptr<TextEngine> txtEngine;
 
 
-	void initialize();
+	void initialize(); //loads assets
 	
+	///////////////////////////////////////////////////////
+	/////////////      The Render Loop      ///////////////
+	///////////////////////////////////////////////////////
 	void renderLoop();
 
-	//Input detection
-	bool checkToSeeIfShouldCloseWindow() const; 
-	bool checkIfShouldPause() const;
-	bool checkIfShouldRecordColor() const;
+	//-----------------------------------------------------------------//
+	//    The Render Loop Consists of the following series of steps    //
+	//-----------------------------------------------------------------//
+	
+	//////////////////////////////
+	/// (1)  Input Detection   ///
+	//////////////////////////////
+	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
+	bool checkIfShouldPause() const; //Probably 'space'
+	bool checkIfShouldRecordColor() const; //records the current frames background clear color, probably 'p' or 'P'
+	
 
-	//Input processing
+	///////////////////////////////
+	/// (2)  Input Processing   ///
+	///////////////////////////////
 	void pause();
 	void recordColorToLog();
 
+
+
+	///////////////////////////////////
+	/// (3)  Perform World Logic    ///
+	///////////////////////////////////
+
+
+
+
+
+
+
+
+	///////////////////
+	/// (4) Render  ///
+	///////////////////
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+	|	(4a)  Background Color Update  |
+	+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	/*							+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+								|	(4a)  Background Color Update  |
+								+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+				                   */
+	void updateFrameClearColor();
+
+
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~+
+	|	(4b)  Update Uniforms   |
+	+~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	
+
+	
+
+	/////////////////////////////////////////////////
+	/// (5) Clean-up and Prepare for Next Frame   ///
+	/////////////////////////////////////////////////
 	void prepareGLContextForNextFrame();
 };
 

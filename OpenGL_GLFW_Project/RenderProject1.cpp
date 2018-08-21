@@ -128,35 +128,10 @@ void RenderProject1::renderLoop() {
 			recordColorToLog();
 
 
-		//To look into:
-		//GL_UseProgram_Stages 
-		float * red = &(backgroundColor.x);
-		float * green = &(backgroundColor.y);
-		float * blue = &(backgroundColor.z);
-
-		*red = glm::min(1.0f, (*red + *green + *blue) / 3.0f);
-		*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
-		*blue = 0.5f + 0.25f*cos(counter);
-		
-		//static bool sleep = false;
-		if (abs(ceilf(counter) - counter) < 0.0049f ) {
-			float temp = *red;
-			*red = *green;
-			*green = *blue;
-			*blue = temp;
-			//sleep = true;
-		}
-		//if (sleep) {
-		//	sleep = false;
-		//	std::this_thread::sleep_for(std::chrono::nanoseconds(333333333));
-		//}
 
 		counter += 0.0125f;
-		//red += red * glm::sin(static_cast<float>(counter++));
-		//green = cos(static_cast<float>(counter++));
-		//blue = 0.5*sin(red + (static_cast<float>(counter++)));
 
-		glClearColor(*red, *green, *blue, 1.0f);
+		
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -226,6 +201,33 @@ void RenderProject1::pause() {
 			std::this_thread::sleep_for(std::chrono::nanoseconds(333333333));
 		}
 	}
+}
+
+void RenderProject1::updateFrameClearColor() {
+	//To look into:
+	//GL_UseProgram_Stages 
+	float * red = &(backgroundColor.x);
+	float * green = &(backgroundColor.y);
+	float * blue = &(backgroundColor.z);
+
+	*red = glm::min(1.0f, (*red + *green + *blue) / 3.0f);
+	*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
+	*blue = 0.5f + 0.25f*cos(counter);
+
+	//static bool sleep = false;
+	if (abs(ceilf(counter) - counter) < 0.0049f) {
+		float temp = *red;
+		*red = *green;
+		*green = *blue;
+		*blue = temp;
+		//sleep = true;
+	}
+
+	//red += red * glm::sin(static_cast<float>(counter++));
+	//green = cos(static_cast<float>(counter++));
+	//blue = 0.5*sin(red + (static_cast<float>(counter++)));
+
+	glClearColor(*red, *green, *blue, 1.0f);
 }
 
 
