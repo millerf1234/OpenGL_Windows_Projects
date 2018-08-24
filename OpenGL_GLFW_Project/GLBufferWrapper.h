@@ -28,10 +28,11 @@
 #ifndef GL_BUFFER_WRAPPER_H_
 #define GL_BUFFER_WRAPPER_H_
 
-
-
 namespace ShaderInterface {
+
 	namespace BufferInternal {
+
+
 		class GLBuffer {
 		public:
 			GLBuffer();
@@ -39,7 +40,10 @@ namespace ShaderInterface {
 
 
 		};
+
+
 	} //Namespace BufferInternal
+
 } //Namespace ShaderInterface
 
 

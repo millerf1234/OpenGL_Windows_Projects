@@ -323,6 +323,7 @@
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="ModularBufferManifesto.txt" />
     <Text Include="Notes_and_ReadMe.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>

@@ -1,0 +1,24 @@
+I have a sheet of paper with more information, maybe one day I will transfer
+more of the information from my paper to this file. 
+
+The idea here is to have a modular buffer system. After several failed attempts at writing a unified 
+buffer system using one class, I kept running into the issue of there being multiple different
+possibilites for implementing the same task (updating buffer, reading/writing, etc...).
+
+Having a modular buffer system is the correct way to go
+
+
+                         Module Catagories
+
+Module Name:    Buffer Type     |   Allocation Type     |   Mapping         |
+       Type:     (choose one)	|   (Combinable)        |	(Combinable)    |
+ Selections:   -----------------|------------------------------------------------------
+					Array	    |	Mappable			|   Read            |
+					Element		|   Dynamic             |   Write           |
+					Uniform		|	Read/Write enabled  |   Persistent      |
+					Pixel		|	Coherent		    |   Flush Explicit  |
+					Texture		|   Client Storage      |   Unsynchronized  |
+					etc...		|						|                   |
+							    |						|                   |
+								   
+The various Buffer Types will be what are created publically by outside code

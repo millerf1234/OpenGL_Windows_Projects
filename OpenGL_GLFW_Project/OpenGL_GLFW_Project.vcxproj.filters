@@ -79,9 +79,6 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Buffer">
-      <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ModelInterface">
       <UniqueIdentifier>{1e7fd297-ab4e-4ac4-a333-00c44220f438}</UniqueIdentifier>
     </Filter>
@@ -132,6 +129,21 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform">
       <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer">
+      <UniqueIdentifier>{0054332d-9b85-49f6-92ca-fd8ba8486719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer\Buffers">
+      <UniqueIdentifier>{3e1e6be7-d8d6-497d-a440-9c2b052a43db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer\AllocatedStorage">
+      <UniqueIdentifier>{b782b099-68fa-4e00-9e00-294971298ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer\MappingLogic">
+      <UniqueIdentifier>{e7e04d0b-ab3a-45be-bdea-c0350b035aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer">
+      <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -581,10 +593,10 @@
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
     </ClInclude>
     <ClInclude Include="BufferBase.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="GLBufferWrapper.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,6 +690,9 @@
     </Text>
     <Text Include="TextureWebsiteResources.txt">
       <Filter>Resource Files\Textures</Filter>
+    </Text>
+    <Text Include="ModularBufferManifesto.txt">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer</Filter>
     </Text>
   </ItemGroup>
 </Project>
