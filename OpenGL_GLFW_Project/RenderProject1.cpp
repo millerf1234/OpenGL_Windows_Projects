@@ -61,27 +61,11 @@ void RenderProject1::run() {
 
 	
 	fprintf(MSGLOG, "\nEntering Render Loop...\n");
+
+
 	renderLoop();
 
 
-	//std::cin.get(); //keep the screen open
-
-}
-
-
-
-void RenderProject1::initialize() {
-	error = false;
-	window = nullptr;
-	frameNumber = 0ull;
-	frameUnpaused = 0ull;
-	frameOfMostRecentColorRecording = 0ull;
-	counter = 0.0f;
-
-	txtEngine = nullptr;
-
-	//Set initial background color
-	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
 }
 
 void RenderProject1::loadAssets() {
@@ -110,10 +94,33 @@ void RenderProject1::loadAssets() {
 	//Test Updating/Caching uniform locations too!
 }
 
+
+void RenderProject1::initialize() {
+	error = false;
+	window = nullptr;
+	frameNumber = 0ull;
+	frameUnpaused = 0ull;
+	frameOfMostRecentColorRecording = 0ull;
+	counter = 0.0f;
+
+	txtEngine = nullptr;
+
+	//Set initial background color
+	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
+}
+
+
+void RenderProject1::createDataBuffer() {
+
+
+
+
+
+}
+
+
 void RenderProject1::renderLoop() {
-	
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
-		
 		if (checkToSeeIfShouldCloseWindow()) {
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			continue; //Skip the rest of this loop iteration to close window quickly
@@ -127,7 +134,7 @@ void RenderProject1::renderLoop() {
 		if (checkIfShouldRecordColor())
 			recordColorToLog();
 
-
+		updateFrameClearColor();
 
 		counter += 0.0125f;
 

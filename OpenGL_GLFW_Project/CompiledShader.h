@@ -74,6 +74,7 @@
 #include "ProjectParameters.h"
 
 namespace ShaderInterface {
+
 	//-------------------------------
 	//Enum for the various shader types
 	//-------------------------------

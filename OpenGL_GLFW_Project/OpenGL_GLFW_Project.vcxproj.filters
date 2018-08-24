@@ -79,20 +79,8 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing">
-      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Buffer">
       <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader">
-      <UniqueIdentifier>{5680177a-33cf-4bdd-9907-36cbb17c2f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes">
-      <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform">
-      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ModelInterface">
       <UniqueIdentifier>{1e7fd297-ab4e-4ac4-a333-00c44220f438}</UniqueIdentifier>
@@ -121,14 +109,29 @@
     <Filter Include="Source Files\Utility\RenderTools\Texture">
       <UniqueIdentifier>{513a15fd-78a1-4385-a898-aef9133d890b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer">
-      <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Texture\TextureInternal">
       <UniqueIdentifier>{424dd3f0-6ce4-4430-a588-539e9d3d55d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Texture\Material">
       <UniqueIdentifier>{76988fe0-c6ec-4aeb-880d-1680bb78e838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED">
+      <UniqueIdentifier>{20359bfc-7d77-4a65-8bfd-12ca152faeb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer">
+      <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject">
+      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader">
+      <UniqueIdentifier>{5680177a-33cf-4bdd-9907-36cbb17c2f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes">
+      <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform">
+      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,49 +166,43 @@
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="CachedUniformLocation.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
-    <ClCompile Include="StreamableBufferSet.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="GLBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="CompiledShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader</Filter>
     </ClCompile>
     <ClCompile Include="ComputeShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="FragmentShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="GeometryShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="TesselationControlShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="TesselationEvaluationShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="AffineTransformation.cpp">
       <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
     </ClCompile>
     <ClCompile Include="SimpleBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer</Filter>
     </ClCompile>
     <ClCompile Include="ImageFileLoader.cpp">
       <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
@@ -218,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="TexturePool.cpp">
       <Filter>Source Files\Utility\RenderTools\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GLBuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamableBufferSet.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,13 +503,13 @@
       <Filter>Source Files\Utility\RenderTools\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationBucket.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="UniformLocationTracker.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="CachedUniformLocation.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\Uniform</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="SIMDComputation.h">
       <Filter>Source Files\Utility\Math\Experimental\SSE2</Filter>
@@ -514,38 +517,32 @@
     <ClInclude Include="MathFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="StreamableBufferSet.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectResourceFilepaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderProgram.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="CompiledShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader</Filter>
     </ClInclude>
     <ClInclude Include="ComputeShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="FragmentShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="GeometryShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="TesselationControlShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="TesselationEvaluationShader.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing\CompiledShader\DerivedShaderTypes</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="AffineTransformation.h">
       <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
@@ -560,10 +557,7 @@
       <Filter>stb_image</Filter>
     </ClInclude>
     <ClInclude Include="SimpleBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer\SimpleBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexAttribPointerData.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderProcessing</Filter>
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer</Filter>
     </ClInclude>
     <ClInclude Include="ImageFileLoader.h">
       <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
@@ -576,6 +570,21 @@
     </ClInclude>
     <ClInclude Include="TexturePool.h">
       <Filter>Source Files\Utility\RenderTools\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexAttribPointerData.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
+    </ClInclude>
+    <ClInclude Include="GLBuffer.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamableBufferSet.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferBase.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GLBufferWrapper.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

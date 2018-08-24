@@ -248,7 +248,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		return false;
 	}
 	void ShaderProgram::attachTesse(const ShaderInterface::TesselationEvaluationShader * tesse) {
-
+		//todo
 	}
 	bool ShaderProgram::attachTessc(const char * tessc) {
 		if (tessc == nullptr) { return false; }
@@ -279,7 +279,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		return false;
 	}
 	void ShaderProgram::attachTessc(const ShaderInterface::TesselationControlShader * tessc) {
-
+		//todo
 	}
 	bool ShaderProgram::attachFrag(const char * frag) {
 		if (frag == nullptr) { return false; }
@@ -311,7 +311,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 	}
 
 	void ShaderProgram::attachFrag(const ShaderInterface::FragmentShader * frag) {
-
+		//todo
 	}
 
 
@@ -349,7 +349,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 	}
 
 	void ShaderProgram::attachCompute(const ShaderInterface::ComputeShader * compute) {
-
+		//to do
 	}
 
 	void ShaderProgram::link(bool cacheLocalShaders) {
@@ -423,7 +423,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 
 	
 	void ShaderProgram::use() {
-
+		//todo
 	}
 
 

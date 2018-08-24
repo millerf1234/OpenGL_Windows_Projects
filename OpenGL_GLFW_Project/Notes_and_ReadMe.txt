@@ -9,6 +9,11 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 -Forrest
 
 
+//August 23, 2018
+//  Here is a reference for types that may be encountered in OpenGL
+//         https://www.khronos.org/opengl/wiki/OpenGL_Type
+
+
 //Web Links:
 		For Relating OpenGL types to Specific Types, see:  https://stackoverflow.com/questions/8932912/whats-the-advantage-of-using-gluint-instead-of-unsigned-int
 
