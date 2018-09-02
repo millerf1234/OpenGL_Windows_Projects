@@ -23,6 +23,8 @@
 #include "ShaderProgram.h"
 //#include "ShaderProgramBuilder.h"
 
+#include "SimpleVertexBuffer.h"
+
 
 class RenderProject1 {
 public:
@@ -41,13 +43,29 @@ private:
 	float counter;
 	glm::vec3 backgroundColor;
 
-	std::unique_ptr<ShaderProgram> testProgram; //Test shader program
+	std::unique_ptr<ShaderInterface::SimpleVertexBuffer> vertices;
+	std::unique_ptr<ShaderProgram> sceneShader; 
+
+
 	std::unique_ptr<TextEngine> txtEngine;
 
+	static int numTriangles;
+	std::vector<GLfloat> triangleBase2D = { 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f };
+	std::vector<GLfloat> triangles2D;
+	//glm::mat4 rotationMat;
 
-	void initialize(); //loads assets
-	void createDataBuffer(); //Creates an OpenGL Data Buffer and puts Data into it
 	
+	//   Helper Functions
+	void initialize(); 
+
+	void createTriangles2D();
+
+	void loadShaders();
+	void createDataBuffer(); //Creates an OpenGL Data Buffer and puts Data into it
+	void updateDataBuffer(); 
+
+	
+
 
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////
@@ -121,7 +139,7 @@ private:
 	/////////////////////////////////
 	///  (4d)  Make Draw Calls    ///                          (This step could also do a multi-draw indirect)
 	/////////////////////////////////
-
+	void drawVerts();
 
 
 	

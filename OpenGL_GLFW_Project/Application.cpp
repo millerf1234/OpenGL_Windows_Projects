@@ -1,7 +1,6 @@
 #include "Application.h"
 
 
-
 Application::Application() {
 	mApplicationValid = true;
 	mDisplayInfo = nullptr;
@@ -130,11 +129,23 @@ void Application::loadGraphicsLanguageFunctions() {
 	//needed for transparent objects?
 }
 
+void Application::checkIfGraphicsContextDebugCallbackFunctionEnabled() const {
+	fprintf(MSGLOG, "Graphics Context Debug Output: ");
+#ifdef USE_DEBUG    //defined in ProjectSetup.h
+	fprintf(MSGLOG, "Enabled\n\n");
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
+	glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
+#else
+	fprintf(MSGLOG, "Disabled\n\n");
+#endif //USE_DEBUG
+}
 
 
 void Application::doExtraSetup() const {
 	checkMSAA();
 	//checkSomeCompilerMacros(); //This is now done during construction with functions in "ProjectSetup.h"
+	checkIfGraphicsContextDebugCallbackFunctionEnabled();
 }
 
 void Application::checkMSAA() const { //hmm
@@ -144,7 +155,7 @@ void Application::checkMSAA() const { //hmm
 		GLint samples = -1;
 		glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
 		glad_glGetIntegerv(GL_SAMPLES, &samples);
-		fprintf(MSGLOG, "\n\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+		fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 	}
 }
 
@@ -166,7 +177,6 @@ void Application::runRenderProject1() {
 	else {
 		fprintf(ERRLOG, "Error loading RenderProject1! The Application is"
 			"\ninvalid or the display information is null!\n");
-
 	}
 }
 

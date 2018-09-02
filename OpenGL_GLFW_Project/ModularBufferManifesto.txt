@@ -1,9 +1,15 @@
-I have a sheet of paper with more information, maybe one day I will transfer
-more of the information from my paper to this file. 
+August 2018
+
+	(side note) I have a sheet of paper with more information, maybe one day I will transfer
+				more of that information from my paper to this file. Unfortunatly time constraints
+				prevent a large number of my beginnings from ending. 
 
 The idea here is to have a modular buffer system. After several failed attempts at writing a unified 
 buffer system using one class, I kept running into the issue of there being multiple different
-possibilites for implementing the same task (updating buffer, reading/writing, etc...).
+possibilites for implementing the same task (updating buffer, reading/writing, etc...). Thus
+it seemed like moving to a generic plug-and-play system would be the natural way to go. 
+The implementation should try to not sacrifice speed beyond the scope of directly increasing
+useability. 
 
 Having a modular buffer system is the correct way to go
 

@@ -13,26 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GLFW">
-      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="glad">
-      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Setup">
       <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HarfBuzz">
-      <UniqueIdentifier>{33c2c045-52f5-4e25-b6e3-8480c9046c78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FreeType">
-      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FreeType\freetype">
-      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FreeType\freetype\config">
-      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
@@ -100,9 +82,6 @@
     <Filter Include="Source Files\Utility\ModelTools\ModelLoading">
       <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="stb_image">
-      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Texture">
       <UniqueIdentifier>{513a15fd-78a1-4385-a898-aef9133d890b}</UniqueIdentifier>
     </Filter>
@@ -114,9 +93,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED">
       <UniqueIdentifier>{20359bfc-7d77-4a65-8bfd-12ca152faeb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer">
-      <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\ShaderObject">
       <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
@@ -145,10 +121,49 @@
     <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer">
       <UniqueIdentifier>{97172c44-a1c4-4d6c-9f7f-73697de30150}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SetupAndConfiguration">
+      <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party">
+      <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\HarfBuzz">
+      <UniqueIdentifier>{33c2c045-52f5-4e25-b6e3-8480c9046c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLFW">
+      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad">
+      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType">
+      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype">
+      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype\config">
+      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\stb_image">
+      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Debug">
+      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Parameters">
+      <UniqueIdentifier>{bfee94b6-d826-4f00-b9f3-bc011d33faf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Filepaths">
+      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\ShaderInterface\SimpleVertexBuffer">
+      <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
-      <Filter>glad</Filter>
+      <Filter>Third Party\glad</Filter>
     </ClCompile>
     <ClCompile Include="GLFW_Init.cpp">
       <Filter>Source Files\Setup</Filter>
@@ -213,9 +228,6 @@
     <ClCompile Include="AffineTransformation.cpp">
       <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer</Filter>
-    </ClCompile>
     <ClCompile Include="ImageFileLoader.cpp">
       <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
     </ClCompile>
@@ -231,45 +243,39 @@
     <ClCompile Include="GLBuffer.cpp">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
     </ClCompile>
-    <ClCompile Include="StreamableBufferSet.cpp">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
+    <ClCompile Include="AllocatedStorage.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer\AllocatedStorage</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleVertexBuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleVertexBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="harfbuzz.lib">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </Library>
     <Library Include="freetype.lib">
-      <Filter>FreeType</Filter>
+      <Filter>Third Party\FreeType</Filter>
     </Library>
     <Library Include="glfw3dll.lib">
-      <Filter>GLFW</Filter>
+      <Filter>Third Party\GLFW</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glad.h">
-      <Filter>glad</Filter>
+      <Filter>Third Party\glad</Filter>
     </ClInclude>
     <ClInclude Include="khrplatform.h">
-      <Filter>glad</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectConstants.h">
-      <Filter>Header Files</Filter>
+      <Filter>Third Party\glad</Filter>
     </ClInclude>
     <ClInclude Include="glfw_config.h">
-      <Filter>GLFW</Filter>
+      <Filter>Third Party\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="glfw3.h">
-      <Filter>GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectParameters.h">
-      <Filter>Header Files</Filter>
+      <Filter>Third Party\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_Init.h">
       <Filter>Source Files\Setup</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectSetup.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
@@ -278,223 +284,223 @@
       <Filter>Source Files\Projects\RenderProject1</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-blob.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-buffer.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-common.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-deprecated.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-face.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-font.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ft.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-map.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-font.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-layout.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-math.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-shape.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-tag.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-ot-var.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-set.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-shape.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-shape-plan.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-unicode.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb-version.h">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="ft2build.h">
-      <Filter>FreeType</Filter>
+      <Filter>Third Party\FreeType</Filter>
     </ClInclude>
     <ClInclude Include="freetype\freetype.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftadvanc.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftautoh.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftbbox.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftbdf.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftbitmap.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftbzip2.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftcache.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftcffdrv.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftchapters.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftcid.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\fterrdef.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\fterrors.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftfntfmt.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftgasp.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftglyph.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftgxval.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftgzip.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftimage.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftincrem.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftlcdfil.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftlist.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftlzw.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftmac.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftmm.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftmodapi.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftmoderr.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftotval.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftoutln.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftpcfdrv.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftpfr.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftrender.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftsizes.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftsnames.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftstroke.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftsynth.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftsystem.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\fttrigon.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftttdrv.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\fttypes.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ftwinfnt.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\t1tables.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ttnameid.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\tttables.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\tttags.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\ttunpat.h">
-      <Filter>FreeType\freetype</Filter>
+      <Filter>Third Party\FreeType\freetype</Filter>
     </ClInclude>
     <ClInclude Include="freetype\config\ftconfig.h">
-      <Filter>FreeType\freetype\config</Filter>
+      <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="freetype\config\ftheader.h">
-      <Filter>FreeType\freetype\config</Filter>
+      <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="freetype\config\ftmodule.h">
-      <Filter>FreeType\freetype\config</Filter>
+      <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="freetype\config\ftoption.h">
-      <Filter>FreeType\freetype\config</Filter>
+      <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="freetype\config\ftstdlib.h">
-      <Filter>FreeType\freetype\config</Filter>
+      <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzzTester.h">
       <Filter>Source Files\Projects\HarfBuzzTest</Filter>
@@ -529,9 +535,6 @@
     <ClInclude Include="MathFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectResourceFilepaths.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderProgram.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\ShaderObject</Filter>
     </ClInclude>
@@ -559,17 +562,8 @@
     <ClInclude Include="AffineTransformation.h">
       <Filter>Source Files\Utility\RenderTools\ModelInterface\Experimental\AffineTransformation</Filter>
     </ClInclude>
-    <ClInclude Include="OS_And_Compiler_Configuration_Check.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoggingMessageTargets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image.h">
-      <Filter>stb_image</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleBuffer</Filter>
+      <Filter>Third Party\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="ImageFileLoader.h">
       <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
@@ -589,14 +583,38 @@
     <ClInclude Include="GLBuffer.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
     </ClInclude>
-    <ClInclude Include="StreamableBufferSet.h">
-      <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED</Filter>
-    </ClInclude>
     <ClInclude Include="BufferBase.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="GLBufferWrapper.h">
       <Filter>Source Files\Utility\RenderTools\ShaderInterface\UNFINISHED\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="AllocatedStorage.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\ModularBuffer\AllocatedStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleVertexBuffer.h">
+      <Filter>Source Files\Utility\RenderTools\ShaderInterface\SimpleVertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingMessageTargets.h">
+      <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectSetup.h">
+      <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
+      <Filter>SetupAndConfiguration\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectResourceFilepaths.h">
+      <Filter>SetupAndConfiguration\Filepaths</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectParameters.h">
+      <Filter>SetupAndConfiguration\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="OS_And_Compiler_Configuration_Check.h">
+      <Filter>SetupAndConfiguration\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectConstants.h">
+      <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -610,16 +628,16 @@
       <Filter>Resource Files\Shaders\Generic</Filter>
     </None>
     <None Include="harfbuzz.dll">
-      <Filter>HarfBuzz</Filter>
+      <Filter>Third Party\HarfBuzz</Filter>
     </None>
     <None Include="freetype.dll">
-      <Filter>FreeType</Filter>
+      <Filter>Third Party\FreeType</Filter>
     </None>
     <None Include="glfw3.dll">
-      <Filter>GLFW</Filter>
+      <Filter>Third Party\GLFW</Filter>
     </None>
     <None Include="glfw3dll.exp">
-      <Filter>GLFW</Filter>
+      <Filter>Third Party\GLFW</Filter>
     </None>
     <None Include="TestGeom.geom">
       <Filter>Resource Files\Shaders\Generic</Filter>

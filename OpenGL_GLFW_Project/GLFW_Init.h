@@ -3,7 +3,7 @@
 //  GLFW_Init.h
 //
 //  Created by Forrest Miller on 2/12/18.
-//  Repurposed for Windows projects on 7/16/2018
+//  Repurposed for Windows project on 7/16/2018
 //
 
 #pragma once

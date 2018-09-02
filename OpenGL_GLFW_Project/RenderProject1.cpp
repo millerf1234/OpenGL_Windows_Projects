@@ -1,6 +1,9 @@
 #include "RenderProject1.h"
 
+using namespace ShaderInterface;
 
+
+int RenderProject1::numTriangles = 20000;
 
 RenderProject1::RenderProject1(std::shared_ptr<MonitorData> screenInfo) {
 	initialize();
@@ -54,7 +57,7 @@ void RenderProject1::run() {
 		fprintf(MSGLOG, "\nLoaded TextEngine! Text Engine ready status: %d\n", txtEngine->ready());
 	}
 	
-
+	txtEngine.release();
 	fprintf(MSGLOG, "\nUnloaded TextEngine since no text rendering is yet possible...\n");
 
 	fprintf(MSGLOG, "\nTesting graphics language!\n");
@@ -71,25 +74,12 @@ void RenderProject1::run() {
 void RenderProject1::loadAssets() {
 	//txtEngine = std::make_unique<TextEngine>("Fonts\\Roboto-Black.ttf");
 
-	fprintf(MSGLOG, "\nCreating a new shader program!\n");
-	testProgram = std::make_unique<ShaderProgram>();
-
-	fprintf(MSGLOG, "\nAttaching vertex shader!\n");
-	testProgram->attachVert(VERT_PASSTHROUGH2D);
-	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
-	testProgram->attachFrag(FRAG_CONSTANTCOLOR);
-
-	fprintf(MSGLOG, "\nAttempting to link program!\n");
-	testProgram->link();
-	if (testProgram->checkIfLinked()) {
-		fprintf(MSGLOG, "Program Successfully linked!\n");
-	}
-	else {
-		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
-	}
+	loadShaders();
+	
+	createDataBuffer();
 
 	//Update uniform locations
-	testProgram->uniforms->updateUniform1f("zoom", 0.5f);
+	sceneShader->uniforms->updateUniform1f("zoom", 0.5f);
 
 	//Test Updating/Caching uniform locations too!
 }
@@ -107,17 +97,83 @@ void RenderProject1::initialize() {
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
+
+	vertices = nullptr;
+
+	createTriangles2D();
+	
 }
 
+//This function just does some random math to make the triangles
+void RenderProject1::createTriangles2D() {  
+	//glm::vec3 eulerAngles(0.0f, 0.0f, 0.5f);
+	//glm::quat rotation(eulerAngles);
+	//rotationMat = glm::quaternion::toMat4(rotation);
+
+	//Rotation
+	glm::mat2 rotation(cos(0.01f), sin(0.01f), -sin(0.01f), cos(0.01f));
+
+	//Translation
+	glm::vec2 translation(0.01f, 0.02f);
+
+	glm::vec2 vert0(triangleBase2D[0], triangleBase2D[1]);
+	glm::vec2 vert1(triangleBase2D[2], triangleBase2D[3]);
+	glm::vec2 vert2(triangleBase2D[4], triangleBase2D[5]);
+
+	
+	for (int i = 0; i < numTriangles; i++) {
+		vert0 = vert0 + (rotation * translation);
+		vert1 = vert1 + (rotation * translation);
+		vert2 = vert2 + (rotation * (translation + vert2));
+
+		triangles2D.push_back(vert0.x);
+		triangles2D.push_back(vert0.y);
+		triangles2D.push_back(vert1.x);
+		triangles2D.push_back(vert1.y);
+		triangles2D.push_back(vert2.x);
+		triangles2D.push_back(vert2.y);
+	}
+
+	
+}
+
+void RenderProject1::loadShaders() {
+	fprintf(MSGLOG, "\nCreating a new shader program for scene!\n");
+	sceneShader = std::make_unique<ShaderProgram>();
+
+	fprintf(MSGLOG, "\nAttaching vertex shader!\n");
+	sceneShader->attachVert(VERT_PASSTHROUGH2D);
+	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
+	sceneShader->attachFrag(FRAG_CONSTANTCOLOR);
+
+	fprintf(MSGLOG, "\nAttempting to link program!\n");
+	sceneShader->link();
+	if (sceneShader->checkIfLinked()) {
+		fprintf(MSGLOG, "Program Successfully linked!\n");
+	}
+	else {
+		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+	}
+}
 
 void RenderProject1::createDataBuffer() {
+	fprintf(MSGLOG, "\nLoading Vertex Data for scene...\n");
 
 
-
-
+	vertices = std::make_unique<SimpleVertexBuffer>(triangles2D.size() * sizeof(GLfloat));
+	vertices->create(); //Create self in context
+	vertices->attach(triangles2D); //Attach data
+	vertices->setLayout(VertLayout::VERT2);
+	vertices->loadBufferToGPU(); //Send data to GPU
+	vertices->bindToContext(); //Bind buffer to context as the active Vertex input buffer
 
 }
 
+
+
+void RenderProject1::updateDataBuffer() {
+
+}
 
 void RenderProject1::renderLoop() {
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
@@ -135,6 +191,8 @@ void RenderProject1::renderLoop() {
 			recordColorToLog();
 
 		updateFrameClearColor();
+
+		drawVerts();
 
 		counter += 0.0125f;
 
@@ -235,6 +293,13 @@ void RenderProject1::updateFrameClearColor() {
 	//blue = 0.5*sin(red + (static_cast<float>(counter++)));
 
 	glClearColor(*red, *green, *blue, 1.0f);
+}
+
+void RenderProject1::drawVerts() {
+	sceneShader->use();
+	vertices->bindToContext();
+
+	glDrawArrays(GL_TRIANGLES, 0, numTriangles);
 }
 
 

@@ -79,6 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>-std:c++17</AdditionalOptions>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -108,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>-std:c++17</AdditionalOptions>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -135,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AffineTransformation.cpp" />
+    <ClCompile Include="AllocatedStorage.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
@@ -153,7 +156,7 @@
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
-    <ClCompile Include="SimpleBuffer.cpp" />
+    <ClCompile Include="SimpleVertexBuffer.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="TextEngine.cpp" />
@@ -161,7 +164,6 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturePool.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
-    <ClCompile Include="StreamableBufferSet.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AffineTransformation.h" />
+    <ClInclude Include="AllocatedStorage.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="BufferBase.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
+    <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />
     <ClInclude Include="HarfBuzzSetupTest.h" />
     <ClInclude Include="HarfBuzzTester.h" />
     <ClInclude Include="HarfBuzz\hb-blob.h" />
@@ -273,7 +277,7 @@
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SIMDComputation.h" />
-    <ClInclude Include="SimpleBuffer.h" />
+    <ClInclude Include="SimpleVertexBuffer.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="TesselationControlShader.h" />
     <ClInclude Include="TesselationEvaluationShader.h" />
@@ -284,7 +288,6 @@
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
-    <ClInclude Include="StreamableBufferSet.h" />
     <ClInclude Include="VertexAttribPointerData.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>

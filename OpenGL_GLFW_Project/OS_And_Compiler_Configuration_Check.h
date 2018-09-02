@@ -1,3 +1,7 @@
+//Most of this was me just experimenting with C/C++ compiler macro testing. 
+//Chances are most of this is unnecessary and can probably be deleted once the 
+//Application starts coming together more.
+//
 //The following setup functions are called as part of loading the Application.
 //These are usually inconsequential and just involve checking macros and 
 //configuring stuff...
@@ -43,9 +47,17 @@ namespace OperatingSystemAndCompilerDependentConfiguationFunc {
 					//Enable C++17 features here?
 
 				#elif _MSVC_LANG == 201402  //If C++14 (minimum compilation standard) (untested)
-					#define [[fallthrough]]
-					#define [[nodiscard]]
-					#define [[maybe_unused]]
+					/*  This doesn't actually work like this
+					#ifndef [[fallthrough]]
+						#define [[fallthrough]] //
+					#endif
+					#ifndef [[nodiscard]]
+						#define [[nodiscard]]
+					#endif
+					#ifndef [[maybe_unused]]
+						#define [[maybe_unused]]
+					#endif
+					                                 */
 				#elif _MSVC_LANG < 201402 //C++ version is less than 14
 					#error   //Must be compiled under at least c++14 
 				#endif 
@@ -98,8 +110,6 @@ namespace OperatingSystemAndCompilerDependentConfiguationFunc {
 				fprintf(MSGLOG, "Detected that compiler supports Exception Handling!\n");
 			#endif //__cpp_exceptions
 		}
-
-
 
 
 		//This is the function that should be called publically
