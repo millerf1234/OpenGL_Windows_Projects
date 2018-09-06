@@ -14,7 +14,7 @@ namespace ShaderInterface {
 		mDataWasLoadedToGpu = false;
 		glGenVertexArrays(1, &mVAO);
 
-		//THis comment is from when before I realized how VAO's worked (I still don't fully understand them)
+		//This comment is from when before I realized how VAO's worked (I still don't fully understand them)
 		//
 		// glIsVertexArray will return false until the vertex array is bound for the first time. So not sure how to check initially that a VAO was created. Guess I just need to assume OpenGL knows what it's doing...
 		//
