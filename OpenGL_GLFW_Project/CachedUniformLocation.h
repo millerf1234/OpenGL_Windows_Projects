@@ -1,6 +1,7 @@
-// This class is a wrapper for a UniformLocation that can be requested to obtain faster uniform
-// updates. While faster than making requests to the UniformLocationTracker directly each time a uniform update 
-// is required, aquiring and managing one of these objects is 
+// This class is a wrapper for a UniformLocation that can be requested by outside code to obtain a faster uniform
+// update route. While faster than making requests to the UniformLocationTracker directly each time a uniform update 
+// is required, aquiring and managing one of these objects allows for a direct update for the uniform without
+// having to look up it's location
 //
 //This class makes heavy use of the functions at: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glProgramUniform.xhtml\
 //

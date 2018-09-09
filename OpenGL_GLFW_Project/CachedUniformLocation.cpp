@@ -1,4 +1,5 @@
-//See Header file for detail. This class works within the UniformLocationBucket-UniformLocationTracker system
+//See Header file for detail. This class works within the UniformLocationBucket-UniformLocationTracker system.
+//The functions take void pointers to speed up their operation.
 //Created by Forrest Miller on July 23, 2018
 
 #include "CachedUniformLocation.h"
@@ -39,11 +40,11 @@ namespace ShaderInterface {
 		//Nothing to do here thanks to smart pointers 
 	}
 
-	//Updates the uniform with the value(s) stored at data. Data is a void pointer that
-	//gets cast to the correct data type based off this objects type (or throws a logic_error if
-	//given the wrong type). Note that calling this function for an update that takes multiple 
-	//data parameters will have the given value used for all possible values. 
-	void CachedUniformLocation::updateUniform(void * data) {
+	//Updates the uniform with the value(s) stored at parameter 'data'. Data is a void pointer that
+	//will be cast to the correct data type based off the calling object's type (or will throw a
+	//logic_error if given the wrong type). Note that calling this function for an update that
+	//takes multiple data parameters will have the given value used for all possible values. 
+	void CachedUniformLocation::updateUniform(void * data) { 
 		if (!mWasInitialized) {
 			fprintf(ERRLOG, "\nERROR! updateUniform was called on an uninitialized cached uniform!"
 				"\nPlease make sure all cached uniforms are initialized before being updated!\n");
@@ -53,6 +54,10 @@ namespace ShaderInterface {
 			fprintf(WRNLOG, "\nWarning! updateUniform called on uniform %s, but this uniform's location in the shader is not valid!\n", mUniformName);
 			return;
 		}
+		if (!data) {
+			fprintf(WRNLOG, "\nWarning! updateUniform called with a nullptr parameter!\n");
+		}
+
 		//else 
 		switch (mUniformType) {
 		case UniformType::INT1:
@@ -300,6 +305,8 @@ namespace ShaderInterface {
 		}
 	}
 
+
+	
 
 
 } //namespace ShaderInterface 

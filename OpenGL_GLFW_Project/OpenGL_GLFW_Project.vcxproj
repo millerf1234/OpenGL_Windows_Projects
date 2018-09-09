@@ -136,24 +136,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AffineTransformation.cpp" />
-    <ClCompile Include="AllocatedStorage.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="BBuffer.cpp" />
+    <ClCompile Include="BufferPool.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="GLBuffer.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="HarfBuzzSetupTest.cpp" />
     <ClCompile Include="HarfBuzzTester.cpp" />
     <ClCompile Include="ImageFileLoader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MappableBuffer.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
-    <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="SimpleVertexBuffer.cpp" />
@@ -164,6 +162,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturePool.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
+    <ClCompile Include="VertexArrayObject.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,11 +171,9 @@
     <Library Include="harfbuzz.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AffineTransformation.h" />
-    <ClInclude Include="AllocatedStorage.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Billboard.h" />
-    <ClInclude Include="BufferBase.h" />
+    <ClInclude Include="BBuffer.h" />
+    <ClInclude Include="BufferPool.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="FragmentShader.h" />
@@ -234,7 +231,6 @@
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="GeometryShader.h" />
     <ClInclude Include="glad.h" />
-    <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
@@ -262,10 +258,10 @@
     <ClInclude Include="HarfBuzz\hb-unicode.h" />
     <ClInclude Include="HarfBuzz\hb-version.h" />
     <ClInclude Include="HarfBuzz\hb.h" />
-    <ClInclude Include="GLBufferWrapper.h" />
     <ClInclude Include="ImageFileLoader.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
+    <ClInclude Include="MappableBuffer.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="OS_And_Compiler_Configuration_Check.h" />
@@ -273,10 +269,8 @@
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectResourceFilepaths.h" />
     <ClInclude Include="ProjectSetup.h" />
-    <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="SIMDComputation.h" />
     <ClInclude Include="SimpleVertexBuffer.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="TesselationControlShader.h" />
@@ -288,7 +282,7 @@
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
-    <ClInclude Include="VertexAttribPointerData.h" />
+    <ClInclude Include="VertexArrayObject.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -326,7 +320,6 @@
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ModularBufferManifesto.txt" />
     <Text Include="Notes_and_ReadMe.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>

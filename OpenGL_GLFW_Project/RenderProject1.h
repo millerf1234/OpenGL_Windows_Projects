@@ -21,7 +21,6 @@
 #include "TextEngine.h"
 
 #include "ShaderProgram.h"
-//#include "ShaderProgramBuilder.h"
 
 #include "SimpleVertexBuffer.h"
 
@@ -52,8 +51,6 @@ private:
 	static int numTriangles;
 	std::vector<GLfloat> triangleBase2D = { 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f };
 	std::vector<GLfloat> triangles2D;
-	//glm::mat4 rotationMat;
-
 	
 	//   Helper Functions
 	void initialize(); 
@@ -61,8 +58,8 @@ private:
 	void createTriangles2D();
 
 	void loadShaders();
-	void createDataBuffer(); //Creates an OpenGL Data Buffer and puts Data into it
-	void updateDataBuffer(); 
+	//void createDataBuffer(); //Creates an OpenGL Data Buffer and puts Data into it
+	//void updateDataBuffer(); 
 
 	
 
@@ -82,7 +79,7 @@ private:
 	
 	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
 	bool checkIfShouldPause() const; //Probably 'space'
-	bool checkIfShouldRecordColor() const; //records the current frames background clear color, probably 'p' or 'P'
+	bool checkIfShouldRecordColor() const; //records the current frames background clear color, probably tied to input 'p' or 'P'
 	
 
 
@@ -154,60 +151,4 @@ private:
 };
 
 #endif //RENDER_PROJECT_1_H_
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-//Extra comment style stash  (Basically just different formats of the above comment titles)
-//     (ignore this for now, this should be DELETED eventually,
-//		once a more standardized commenting style gets developed...)	  
-////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////
-/// (1)  Input Detection   ///
-//////////////////////////////
-
-
-
-///////////////////////////////
-/// (2)  Input Processing   ///
-///////////////////////////////
-
-
-
-///////////////////////////////////
-/// (3)  Perform World Logic    ///
-///////////////////////////////////
-
-
-
-///////////////////
-/// (4) Render  ///
-///////////////////
-
-
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-|	(4a)  Background Color Update  |
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~+
-|	(4b)  Update Uniforms   |
-+~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
-
-/////////////////////////////////////////////////
-/// (5) Clean-up and Prepare for Next Frame   ///
-/////////////////////////////////////////////////
 

@@ -124,6 +124,11 @@ namespace ShaderInterface {
 		
 		bool operator>(const CompiledShader&) const;
 
+		//Returns true if the shader is ready to be attached (thus not decomissioned),
+		//and false otherwise (if there was an error, a bad filepath or shader gets decomissioned)
+		explicit operator bool() const;
+
+
 
 		//-------------------------------
 		//Public Interface Functions  

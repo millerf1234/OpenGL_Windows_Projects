@@ -67,6 +67,24 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 
 
 
+//  Types of buffer comment from a deleted file I deleted
+//				ARRAY_BUFFER						 -- Not Yet Implemented
+//				ATOMIC_COUNTER_BUFFER                -- Not Yet Implemented
+//				COPY_READ_BUFFER					 -- Not Yet Implemented
+//				COPY_WRITE_BUFFER					 -- Not Yet Implemented
+//				DISPATCH_INDIRECT_BUFFER             -- Not Yet Implemented
+//				DRAW_INDIRECT_BUFFER	             -- Not Yet Implemented
+//				ELEMENT_ARRAY_BUFFER	             -- Not Yet Implemented
+//				PIXEL_PACK_BUFFER                    -- Not Yet Implemented	
+//				PIXEL_UNPACK_BUFFER	                 -- Not Yet Implemented
+//				QUERY_BUFFER                         -- Not Yet Implemented
+//				SHADER_STORAGE_BUFFER                -- Not Yet Implemented	
+//				TEXTURE_BUFFER						 -- Not Yet Implemented
+//				TRANSFORM_FEEDBACK_BUFFER            -- Not Yet Implemented	
+//				UNIFORM_BUFFER						 -- Not Yet Implemented
+//				
+
+
 RANDOM NOTES  (read later to remind self):
 
 //Random note on Open-Source library installer that I wasn't sure where else to put:

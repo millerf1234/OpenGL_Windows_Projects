@@ -128,6 +128,11 @@ namespace ShaderInterface {
 	}
 
 
+	explicit CompiledShader::operator bool() const {
+		return mReadyToBeAttached;
+	}
+
+	
 
 	void CompiledShader::decommision() {
 		if (mIsDecomissioned || mError || !mValidFilepath)

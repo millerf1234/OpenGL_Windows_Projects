@@ -40,7 +40,7 @@ RenderProject1::~RenderProject1() {
 
 void RenderProject1::run() {
 	if (error) {
-		fprintf(MSGLOG, "An error occured while loading RenderProject1");
+		fprintf(ERRLOG, "An error occured while loading RenderProject1\n");
 		return;
 	}
 	fprintf(MSGLOG, "\nRENDER PROJECT 1 IS LOADED AND RUNNING!\n");
@@ -76,7 +76,7 @@ void RenderProject1::loadAssets() {
 
 	loadShaders();
 	
-	createDataBuffer();
+	//createDataBuffer();
 
 	//Update uniform locations
 	sceneShader->uniforms->updateUniform1f("zoom", 0.5f);
@@ -156,24 +156,24 @@ void RenderProject1::loadShaders() {
 	}
 }
 
-void RenderProject1::createDataBuffer() {
-	fprintf(MSGLOG, "\nLoading Vertex Data for scene...\n");
-
-
-	vertices = std::make_unique<SimpleVertexBuffer>(triangles2D.size() * sizeof(GLfloat));
-	vertices->create(); //Create self in context
-	vertices->attach(triangles2D); //Attach data
-	vertices->setLayout(VertLayout::VERT2);
-	vertices->loadBufferToGPU(); //Send data to GPU
-	vertices->bindToContext(); //Bind buffer to context as the active Vertex input buffer
-
-}
-
-
-
-void RenderProject1::updateDataBuffer() {
-
-}
+//void RenderProject1::createDataBuffer() {
+//	fprintf(MSGLOG, "\nLoading Vertex Data for scene...\n");
+//
+//
+//	vertices = std::make_unique<SimpleVertexBuffer>(triangles2D.size() * sizeof(GLfloat));
+//	vertices->create(); //Create self in context
+//	vertices->attach(triangles2D); //Attach data
+//	vertices->setLayout(VertLayout::VERT2);
+//	vertices->loadBufferToGPU(); //Send data to GPU
+//	vertices->bindToContext(); //Bind buffer to context as the active Vertex input buffer
+//
+//}
+//
+//
+//
+//void RenderProject1::updateDataBuffer() {
+//
+//}
 
 void RenderProject1::renderLoop() {
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
@@ -297,9 +297,7 @@ void RenderProject1::updateFrameClearColor() {
 
 void RenderProject1::drawVerts() {
 	sceneShader->use();
-	vertices->bindToContext();
-
-	glDrawArrays(GL_TRIANGLES, 0, numTriangles);
+	
 }
 
 
