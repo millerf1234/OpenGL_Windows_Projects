@@ -38,7 +38,7 @@ namespace ShaderInterface {
 		MappableBuffer();
 		MappableBuffer(GLuint ID);
 		MappableBuffer(GLuint ID, bool persistant);
-		MappableBuffer(GLuint ID, bool coherent);
+		//MappableBuffer(GLuint ID, bool coherent);
 
 		//Copying is illegal
 		MappableBuffer(const MappableBuffer &) = delete;

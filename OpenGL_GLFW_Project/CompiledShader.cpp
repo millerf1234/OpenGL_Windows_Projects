@@ -128,11 +128,17 @@ namespace ShaderInterface {
 	}
 
 
-	explicit CompiledShader::operator bool() const {
+	//(Note to future self: I notice that this operator does not have a return type. I should find
+	//						out if this is just a quirk in the syntax (akin to the dummy 'int' used
+	//						to destinguish between pre-increment and post-increment) or if there is 
+	//						actually a temporary bool variable being constructed.
+	CompiledShader::operator bool() const {
 		return mReadyToBeAttached;
 	}
 
-	
+	bool CompiledShader::operator!() const {
+		return mReadyToBeAttached;
+	}
 
 	void CompiledShader::decommision() {
 		if (mIsDecomissioned || mError || !mValidFilepath)

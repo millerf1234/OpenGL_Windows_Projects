@@ -4,14 +4,20 @@
 #include "VertexArrayObject.h"
 
 namespace ShaderInterface {
-	namespace {
+	//namespace {
 		void VertexArrayObject::initialize() {
 			
 		}
 
+		VertexArrayObject::VertexArrayObject(GLuint vertexBufferID) {
+			mID = vertexBufferID;
+		}
 
+		VertexArrayObject::~VertexArrayObject() {
+			fprintf(MSGLOG, "\nDeleting VAO!\n");
+		}
 
-	} //anonymous namespace
+	//} //anonymous namespace
 } //namespace ShaderInterface
 
 

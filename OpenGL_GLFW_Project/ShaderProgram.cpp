@@ -10,9 +10,10 @@
 #include "ShaderProgram.h"
 
 using namespace ShaderInterface;  //Hopefully this doesn't get imported into the global namespace
-	ShaderProgram::ShaderProgram() {
-		initialize(); //Gives initial values to member variables
-	}
+	
+ShaderProgram::ShaderProgram() {
+	initialize(); //Gives initial values to member variables
+}
 
 
 	ShaderProgram::~ShaderProgram() {
@@ -122,7 +123,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 			mVertexShader.release();
 			return false;
 		}
-		//Else we have a valid VertexShader compiled and ready for attachment, so we can
+		//Else we have a valid VertexShader compiled and ready for attachment, so we can attach it to our object
 		glAttachShader(mProgramID, mVertexShader->ID());
 		mState.mHasVert = true;
 		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingVert();
@@ -158,7 +159,6 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 		mState.mHasVert = true;
 		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingVert();
 	}
-
 
 
 	bool ShaderProgram::attachGeom(const char * geom) {
@@ -424,8 +424,8 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 	
 	void ShaderProgram::use() {
 		//todo
+		fprintf(MSGLOG, "\nThe function 'use' within the shaderProgram class is not yet implemented!\n");
 	}
-
 
 
 	void ShaderProgram::initialize() {

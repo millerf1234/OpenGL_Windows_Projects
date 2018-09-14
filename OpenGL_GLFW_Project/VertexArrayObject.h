@@ -15,7 +15,7 @@
 
 
 namespace ShaderInterface {
-	namespace {
+	//namespace {
 
 
 		class VertexArrayObject {
@@ -54,7 +54,7 @@ namespace ShaderInterface {
 
 
 
-	} //Anonymous namespace 
+	//} //Anonymous namespace 
 }//namespace ShaderInterface
 
 #endif //VERTEX_ARRAY_OBJECT_H_

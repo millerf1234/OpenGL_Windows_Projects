@@ -31,9 +31,9 @@ namespace ShaderInterface {
 	}
 
 
-	MappableBuffer::MappableBuffer(GLuint ID, bool coherent) {
+	/*MappableBuffer::MappableBuffer(GLuint ID, bool coherent) {
 
-	}
+	}*/
 		
 
 } //namespace ShaderInterface

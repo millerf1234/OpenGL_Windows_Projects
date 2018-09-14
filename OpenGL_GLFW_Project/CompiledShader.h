@@ -126,9 +126,13 @@ namespace ShaderInterface {
 
 		//Returns true if the shader is ready to be attached (thus not decomissioned),
 		//and false otherwise (if there was an error, a bad filepath or shader gets decomissioned)
-		explicit operator bool() const;
+		explicit operator bool() const; //(the 'explicit' keyword prevents this class from being allowed to conversion-construct a bool)
 
+		//Returns true if for any reason the shader is not ready to be attached. 
+		//Returns false if there is nothing preventing the shader from being attached.
+		bool operator!() const;
 
+		//explicit operator GLuint() const;  //This would allow for this object to be converted to a GLuint
 
 		//-------------------------------
 		//Public Interface Functions  

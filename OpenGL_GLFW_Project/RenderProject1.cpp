@@ -5,6 +5,30 @@ using namespace ShaderInterface;
 
 int RenderProject1::numTriangles = 20000;
 
+
+void RenderProject1::initialize() {
+	error = false;
+	window = nullptr;
+	frameNumber = 0ull;
+	frameUnpaused = 0ull;
+	frameOfMostRecentColorRecording = 0ull;
+	counter = 0.0f;
+
+	txtEngine = nullptr;
+
+	//Set initial background color
+	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
+
+	//vertices = nullptr;
+	testVAO = nullptr;
+	testVBO = 0u;
+
+
+	createTriangles2D();
+
+}
+
+
 RenderProject1::RenderProject1(std::shared_ptr<MonitorData> screenInfo) {
 	initialize();
 	//Make sure we have a monitor to render to
@@ -82,26 +106,6 @@ void RenderProject1::loadAssets() {
 	sceneShader->uniforms->updateUniform1f("zoom", 0.5f);
 
 	//Test Updating/Caching uniform locations too!
-}
-
-
-void RenderProject1::initialize() {
-	error = false;
-	window = nullptr;
-	frameNumber = 0ull;
-	frameUnpaused = 0ull;
-	frameOfMostRecentColorRecording = 0ull;
-	counter = 0.0f;
-
-	txtEngine = nullptr;
-
-	//Set initial background color
-	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
-
-	vertices = nullptr;
-
-	createTriangles2D();
-	
 }
 
 //This function just does some random math to make the triangles

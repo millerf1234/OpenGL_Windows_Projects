@@ -58,15 +58,6 @@
     <Filter Include="Source Files\Utility\ModelTools\ModelLoading">
       <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Texture">
-      <UniqueIdentifier>{513a15fd-78a1-4385-a898-aef9133d890b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Texture\TextureInternal">
-      <UniqueIdentifier>{424dd3f0-6ce4-4430-a588-539e9d3d55d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Texture\Material">
-      <UniqueIdentifier>{76988fe0-c6ec-4aeb-880d-1680bb78e838}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
@@ -103,9 +94,6 @@
     <Filter Include="SetupAndConfiguration\Filepaths">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Buffer">
-      <UniqueIdentifier>{ab520b4f-9fb8-4ad8-8ef1-e9f50fe62e2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
@@ -121,22 +109,40 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform">
       <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Buffer\Implementation">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished">
+      <UniqueIdentifier>{4d3962e5-8631-4841-8689-42beb88c4ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture">
+      <UniqueIdentifier>{513a15fd-78a1-4385-a898-aef9133d890b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal">
+      <UniqueIdentifier>{424dd3f0-6ce4-4430-a588-539e9d3d55d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material">
+      <UniqueIdentifier>{76988fe0-c6ec-4aeb-880d-1680bb78e838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer">
+      <UniqueIdentifier>{ab520b4f-9fb8-4ad8-8ef1-e9f50fe62e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation">
       <UniqueIdentifier>{e8af1029-f566-4bd3-b2c4-62a7329be774}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Buffer\Implementation\Unfinished">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished">
       <UniqueIdentifier>{058efdb2-c5c4-4bfa-89fd-57267456f54f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Buffer\Implementation\Unfinished\SimpleVertexBuffer">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer">
       <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Buffer\BufferPool">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool">
       <UniqueIdentifier>{e3901447-8802-4e60-8b61-193fcda2bba8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\BetterBuffer">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer">
       <UniqueIdentifier>{afe1b40a-364e-4c65-a9e6-2450a9d7a2c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\VAO">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer">
+      <UniqueIdentifier>{e3fbcaea-c507-4adc-a1fa-fb0e05bb5bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO">
       <UniqueIdentifier>{57b3bcc5-b4db-4005-b8e7-ee7e563f0e22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -196,32 +202,32 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="ImageFileLoader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture\Material</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material</Filter>
     </ClCompile>
     <ClCompile Include="TexturePool.cpp">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture</Filter>
     </ClCompile>
     <ClCompile Include="SimpleVertexBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VertexArrayObject.cpp">
-      <Filter>Source Files\Utility\RenderTools\VAO</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO</Filter>
     </ClCompile>
     <ClCompile Include="MappableBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\Buffer\Implementation</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="BBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\BetterBuffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer</Filter>
     </ClCompile>
     <ClCompile Include="BufferPool.cpp">
-      <Filter>Source Files\Utility\RenderTools\Buffer\BufferPool</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,19 +534,19 @@
       <Filter>Third Party\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="ImageFileLoader.h">
-      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Source Files\Utility\RenderTools\Texture\TextureInternal</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Source Files\Utility\RenderTools\Texture\Material</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material</Filter>
     </ClInclude>
     <ClInclude Include="TexturePool.h">
-      <Filter>Source Files\Utility\RenderTools\Texture</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture</Filter>
     </ClInclude>
     <ClInclude Include="SimpleVertexBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="LoggingMessageTargets.h">
       <Filter>SetupAndConfiguration</Filter>
@@ -564,16 +570,16 @@
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="VertexArrayObject.h">
-      <Filter>Source Files\Utility\RenderTools\VAO</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO</Filter>
     </ClInclude>
     <ClInclude Include="MappableBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\Buffer\Implementation</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="BBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\BetterBuffer</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer</Filter>
     </ClInclude>
     <ClInclude Include="BufferPool.h">
-      <Filter>Source Files\Utility\RenderTools\Buffer\BufferPool</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

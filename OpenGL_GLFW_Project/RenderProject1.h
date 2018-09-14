@@ -22,8 +22,11 @@
 
 #include "ShaderProgram.h"
 
-#include "SimpleVertexBuffer.h"
+//#include "SimpleVertexBuffer.h"
 
+
+//For testing my VAO class
+#include "VertexArrayObject.h"
 
 class RenderProject1 {
 public:
@@ -42,7 +45,15 @@ private:
 	float counter;
 	glm::vec3 backgroundColor;
 
-	std::unique_ptr<ShaderInterface::SimpleVertexBuffer> vertices;
+	////////////////////////////////////////////
+	// Test Code
+	//std::unique_ptr<ShaderInterface::SimpleVertexBuffer> vertices;
+	std::unique_ptr<ShaderInterface::VertexArrayObject> testVAO;
+	GLuint testVBO;
+	void * ptrToMappedBuffer;
+	////////////////////////////////////////////
+
+
 	std::unique_ptr<ShaderProgram> sceneShader; 
 
 

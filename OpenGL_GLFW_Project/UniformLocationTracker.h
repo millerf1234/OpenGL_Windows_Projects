@@ -171,10 +171,6 @@ namespace ShaderInterface {
 		bool seeIfUniformLocationHasAlreadyBeenCached(const GLchar *);
 		std::shared_ptr<CachedUniformLocation> addCachedUniformLocation(const GLchar * uniformName, UniformType, GLsizei count = 1, GLboolean transpose = false);
 
-
-
-
-		//bool checkForOpenGLError(); //see: https://www.khronos.org/opengl/wiki/OpenGL_Error  //Use callback to catch error globally instead...
 	};
 
 
