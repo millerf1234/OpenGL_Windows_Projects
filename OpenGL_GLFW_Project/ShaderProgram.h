@@ -21,6 +21,14 @@
 //						- If any shader type other than compute is attached, then a compute shader can not be attached
 //						- If a tesselation control is attached, then a tesselation evaluation must also be attached,
 //						      and vice-versa.
+//						- It is possible to mark CompiledShaders as secondary, which by doing so means you
+//						      can guarentee the shader does not contain a 'main()' function. There are then special 
+//						      functions for attaching secondary shaders to a ShaderProgram. Secondary shaders do 
+//							  not count towards occupying the primary shader spot of their type (duh), and there 
+//							  is (currently) no limit on the number of secondary shaders that can be attached. The
+//							  same rules apply towards what types of secondary shaders can be attached as towards primary
+//							  (i.e. if a compute is attached then no other type can be attached, and vice versa; must have 
+//							  both types of tesselation if one is present).
 //
 //
 // UPDATES/Changes:
@@ -40,6 +48,10 @@
 //						--Attaching a shader to a spot meant for shaders of a different kind
 //
 //
+//  Known Issues:  It is currently possible to attach a primary shader to a shader program, then mark the shader as
+//				   a secondary and reattach it using the appropriate 'attachSecondary' function. The ShaderProgram 
+//				   will not be able to link if this happens, but this class will not catch it ahead of time. 
+
 
 #pragma once
 
@@ -55,7 +67,7 @@
 #include "TesselationEvaluationShader.h"
 #include "FragmentShader.h"
 
-#include <unordered_map>  //Used to track already-attached shaders 
+#include <unordered_map>  //Used to track already-attached (secondary) shaders  
 
 //namespace ShaderInterface { 
 

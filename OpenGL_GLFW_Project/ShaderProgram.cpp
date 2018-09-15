@@ -211,7 +211,7 @@ ShaderProgram::ShaderProgram() {
 				"attached to it!\n", secondaryVert->getFilepath());
 			return;
 		}
-		if (!secondaryVert->markedAsSecondary()) {
+		if ( (!secondaryVert->markedAsSecondary()) ) {
 			fprintf(ERRLOG, "\nError! Attempting to attach secondaryVert shader \"%s\"\n"
 				"as a secondary shader, but this shader was never marked as secondary!\n"
 				"Please use the function makeSecondary() on the vertex shader to allow it to\n"
@@ -389,12 +389,12 @@ ShaderProgram::ShaderProgram() {
 	void ShaderProgram::attachTesse(const ShaderInterface::TesselationEvaluationShader * tesse) {
 		if (tesse == nullptr) { return; }
 		if (mState.mLinked) {
-			fprintf(WRNLOG, "\nUnable to attach Tesselation Evaluation shader %s\n" 
+			fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Evaluation shader %s\n" 
 				"to shaderProgram because this ShaderProgram has already been linked!\n", tesse->getFilepath());
 			return;
 		}
 		if (mState.mHasTesse) {
-			fprintf(WRNLOG, "\nWARNING! Unable to attach Tesselation Evaluation shader \"%s\" to this ShaderProgram\n"
+			fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Evaluation shader \"%s\" to this ShaderProgram\n"
 				"because this ShaderProgram already has a tesse shader attached!\n", tesse->getFilepath());
 			return;
 		}
@@ -469,16 +469,16 @@ ShaderProgram::ShaderProgram() {
 	bool ShaderProgram::attachTessc(const char * tessc) {
 		if (tessc == nullptr) { return false; }
 		if (mState.mLinked) {
-			fprintf(WRNLOG, "\nUnable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", tessc);
+			fprintf(ERRLOG, "\nERROR: Unable to attach %s to shaderProgram because ShaderProgram has already been linked!\n", tessc);
 			return false;
 		}
 		if (mState.mHasTessc) {
-			fprintf(WRNLOG, "\nWARNING! Unable to attach Tesselation Control shader \"%s\" to this ShaderProgram\n"
+			fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Control shader \"%s\" to this ShaderProgram\n"
 				"because this ShaderProgram already has a tessc shader attached!\n", tessc);
 			return false;
 		}
 		if (mState.mHasCompute) {
-			fprintf(WRNLOG, "\nWARNING! Unable to attach Tesselation Control shader \"%s\"\nto this ShaderProgram "
+			fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Control shader \"%s\"\nto this ShaderProgram "
 				"because this ShaderProgram already has a Compute attached!\n", tessc);
 			return false;
 		}
@@ -496,7 +496,38 @@ ShaderProgram::ShaderProgram() {
 	}
 	
 	void ShaderProgram::attachTessc(const ShaderInterface::TesselationControlShader * tessc) {
-		//todo
+		if (tessc == nullptr) { return; }
+		if (mState.mLinked) {
+			fprintf(ERRLOG, "\nUnable to attach Tesselation Control shader %s\n"
+				"to shaderProgram because this ShaderProgram has already been linked!\n", tessc->getFilepath());
+			return;
+		}
+		if (mState.mHasTessc) {
+			fprintf(ERRLOG, "\nWARNING! Unable to attach Tesselation Control shader \"%s\" to this ShaderProgram\n"
+				"because this ShaderProgram already has a tesse shader attached!\n", tessc->getFilepath());
+			return;
+		}
+		if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
+			fprintf(ERRLOG, "\nError attaching Tessetlation Control shader \"%s\"\n"
+				"to this program. This program has already had a compute\n"
+				"shader attached to it, which prevents any further shaders that\n"
+				"are not compute shaders from being attached!\n", tessc->getFilepath());
+			return;
+		}
+		if (tessc->markedAsSecondary()) {
+			fprintf(ERRLOG, "\nERROR! Unable to attach secondary Tesselation Control shader\n"
+				"\"%s\" as a primary Tesselation shader!\nPlease use the 'attachSecondary*()' function\n"
+				"or provide a primary shader to this attachTessc function.\n",
+				tessc->getFilepath());
+			return;
+		}
+		if ((tessc->ID() == 0) || (tessc->type() != ShaderType::TESSELATION_CONTROL)) {
+			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
+				"Tesselation Control shader to this program!\n", tessc->getFilepath());
+			return;
+		}
+		glAttachShader(mProgramID, tessc->ID());
+		mState.mHasTessc = true;
 	}
 
 	void ShaderProgram::attachSecondaryTessc(const ShaderInterface::TesselationControlShader * secondaryTessc) {
@@ -547,17 +578,17 @@ ShaderProgram::ShaderProgram() {
 	bool ShaderProgram::attachFrag(const char * frag) {
 		if (frag == nullptr) { return false; }
 		if (mState.mLinked) {
-			fprintf(WRNLOG, "\nWarning! Unable to attach frag shader \"%s\"\nto this ShaderProgram "
+			fprintf(ERRLOG, "\nERROR: Unable to attach frag shader \"%s\"\nto this ShaderProgram "
 				"because this ShaderProgram has already been linked!\n", frag);
 			return false;
 		}
 		if (mState.mHasFrag) {
-			fprintf(WRNLOG, "\nWARNING! Unable to attach Fragment shader \"%s\"\nto this ShaderProgram "
+			fprintf(ERRLOG, "\nERROR: Unable to attach Fragment shader \"%s\"\nto this ShaderProgram "
 				"because this shaderprogram already has a fragment shader attached!\n", frag);
 			return false;
 		}
 		if (mState.mHasCompute) {
-			fprintf(WRNLOG, "\nWarning! Unable to attach Fragment shader \"%s\"\nto this "
+			fprintf(ERRLOG, "\nERROR: Unable to attach Fragment shader \"%s\"\nto this "
 				"ShaderProgram object because this ShaderProgram object has a Compute shader attached to it!\n", frag);
 			return false;
 		}
