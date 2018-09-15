@@ -139,10 +139,7 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer">
       <UniqueIdentifier>{afe1b40a-364e-4c65-a9e6-2450a9d7a2c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer">
-      <UniqueIdentifier>{e3fbcaea-c507-4adc-a1fa-fb0e05bb5bd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO">
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VAO">
       <UniqueIdentifier>{57b3bcc5-b4db-4005-b8e7-ee7e563f0e22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -218,7 +215,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VertexArrayObject.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\VAO</Filter>
     </ClCompile>
     <ClCompile Include="MappableBuffer.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
@@ -228,6 +225,12 @@
     </ClCompile>
     <ClCompile Include="BufferPool.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
+    </ClCompile>
+    <ClCompile Include="loadOBJ.cpp">
+      <Filter>Source Files\Utility\ModelTools\ModelLoading</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Utility\ModelTools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -570,7 +573,7 @@
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="VertexArrayObject.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\New Modular Buffer\VAO</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\VAO</Filter>
     </ClInclude>
     <ClInclude Include="MappableBuffer.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
@@ -580,6 +583,12 @@
     </ClInclude>
     <ClInclude Include="BufferPool.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
+    </ClInclude>
+    <ClInclude Include="loadOBJ.h">
+      <Filter>Source Files\Utility\ModelTools\ModelLoading</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Utility\ModelTools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

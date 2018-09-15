@@ -27,7 +27,7 @@
 //Notes:   -While it is possible to recover the shader's ID number, it is 
 //			highly advised that no calls are made to the GL Context that 
 //			will affect the state of this object (i.e. don't call glDeleteProgram() 
-//			with the id value aquired by the getter function ID()  ).
+//			with the id value aquired by the getter function 'ID()'  ).
 //       
 //		   -Since it is advised to delete the compiled shader objects once the linking of
 //			shader programs is completed, this class provides a function called decomission()
@@ -149,15 +149,25 @@ namespace ShaderInterface {
 		//-------------------------------
 		//Member field getters
 		//-------------------------------
+
+		//Returns the filepath of this shader's source file.
 		const char * getFilepath() const { return mFilepath; }
+		//Returns true if this shader has been decomissioned
 		bool seeIfIsDecomissioned() const { return mIsDecomissioned; }
+		//Returns true if this shader is ready to be attached to a ShaderProgram
 		bool readyToBeAttached() const { return mReadyToBeAttached; }
+		//Returns true if this shader was able to read and compile itself from the provided filepath
 		bool validFilepath() const { return mValidFilepath; }
 		//Checks with the GLContext to see if the shader is compiled
 		bool isCompiled() const; 
+		//Checks to see if an error has occured with this shader (includes both client (Application) and Server (GPU) errors)
 		bool error() const { return mError; }
+		//Returns the type of this CompiledShader. Type is expected to always match the type of the derived shader object.
 		ShaderType type() const { return mShaderID.mType; }
-		GLuint ID() const { return mShaderID.mID; }
+		//Returns the uniquely assigned name (as a GLuint) for this shader that was assigned 
+		//by the context. (Really there is no reason for this function to be called (outside of debugging
+		// and some possible future hack-job programming))
+		GLuint ID() const { return mShaderID.mID; } 
 
 	protected:
 		//-------------------------------
