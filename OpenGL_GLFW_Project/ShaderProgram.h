@@ -24,7 +24,9 @@
 //
 //
 // UPDATES/Changes:
-//					
+//					   I have discovered that it is not only possible to attach multiple shaders of the same type to
+//						one program object but is in fact encouraged. This means that I (will have) to rewrite parts
+//						of this class to allow multiple shaders of the same type to be attached.
 //
 //			
 //Notes:   

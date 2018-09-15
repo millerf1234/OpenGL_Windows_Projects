@@ -55,9 +55,6 @@
     <Filter Include="Source Files\Utility\ModelTools">
       <UniqueIdentifier>{677e5d3f-d5ad-4ec8-8b8f-8dc3586ee9b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\ModelTools\ModelLoading">
-      <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
@@ -141,6 +138,27 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VAO">
       <UniqueIdentifier>{57b3bcc5-b4db-4005-b8e7-ee7e563f0e22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading">
+      <UniqueIdentifier>{61aefebc-6b93-4f8d-a147-495f549eeeb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Load Queues">
+      <UniqueIdentifier>{b1e1c2d8-f129-4e98-9aa1-b56258068586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Sound Loading">
+      <UniqueIdentifier>{4514d2cf-abc1-4c29-a918-d0b8be86068a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Material Loading">
+      <UniqueIdentifier>{523e4a9d-f750-43f0-b799-e16439fe26a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Save State Loading">
+      <UniqueIdentifier>{e6ea0bf8-9849-46ce-ada2-c325cc47fc53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Texture Loading">
+      <UniqueIdentifier>{651db2c0-f74d-419b-9bdc-7307ee35ac5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading">
+      <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,11 +244,14 @@
     <ClCompile Include="BufferPool.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClCompile>
-    <ClCompile Include="loadOBJ.cpp">
-      <Filter>Source Files\Utility\ModelTools\ModelLoading</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Utility\ModelTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjAnalyzer.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,11 +605,14 @@
     <ClInclude Include="BufferPool.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClInclude>
-    <ClInclude Include="loadOBJ.h">
-      <Filter>Source Files\Utility\ModelTools\ModelLoading</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Utility\ModelTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjAnalyzer.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
