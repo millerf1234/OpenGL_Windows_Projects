@@ -3,6 +3,8 @@
 //Programmer: Forrest Miller
 //Date(s): 7/24/2018 - 7/31/2018  
 //
+// 9/14/2018  --  Added the option to convert to a secondary shader 
+//
 //This is the implementation file for CompiledShader.
 //See the header file for more details.
 //
@@ -12,6 +14,17 @@
 #include "CompiledShader.h"
 
 namespace ShaderInterface {
+
+	void CompiledShader::initialize() {
+		mShaderID = ShaderID(0u, ShaderType::UNASSIGNED);
+		mIsDecomissioned = false;
+		mFilepath = "\0";
+		mSourceText = nullptr;
+		mError = false;
+		mReadyToBeAttached = false;
+		mValidFilepath = false;
+		mMarkedAsSecondary = false;
+	}
 
 	CompiledShader::CompiledShader(const char * sourceFilepath, GLenum type) {
 		initialize();
@@ -249,18 +262,6 @@ namespace ShaderInterface {
 		mSourceText = nullptr;
 		mError = true;
 		
-		mReadyToBeAttached = false;
-		mValidFilepath = false;
-	}
-
-
-
-	void CompiledShader::initialize() {
-		mShaderID = ShaderID(0u, ShaderType::UNASSIGNED);
-		mIsDecomissioned = false;
-		mFilepath = "\0";
-		mSourceText = nullptr;
-		mError = false;
 		mReadyToBeAttached = false;
 		mValidFilepath = false;
 	}

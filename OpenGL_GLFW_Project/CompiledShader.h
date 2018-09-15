@@ -22,7 +22,15 @@
 //											  derived classes so that they each could implement their own macro.
 //											  In other words, the GLContext Shader creation logic was moved from the derived
 //											  classes to this class.
-//
+//				
+//					September 14, 2018        Added the ability to mark a CompiledShader as secondary, which will allow multiple
+//											  shaders of the same type to be attached to one program. The intention is that by 
+//											  marking a shader as secondary, the application promises that the shader does not 
+//											  contain a 'main' function, since linking a program with 2 shaders of the same type
+//											  that both contain a main will lead to a program-linkage error. It is legal to attach
+//											  as many secondarys as are available for attaching, and it is legal to attach secondaries
+//										      before attaching a primary (i.e. a shader that contains a 'main' function). 
+//											  
 //			
 //Notes:   -While it is possible to recover the shader's ID number, it is 
 //			highly advised that no calls are made to the GL Context that 
@@ -86,8 +94,9 @@ namespace ShaderInterface {
 	// Struct to tie ShaderID and ShaderType together
 	//-------------------------------
 	typedef struct ShaderID {
-		GLuint mID;
-		ShaderType mType;
+		GLuint mID;       //Context-Assigned ID
+		ShaderType mType; //Type of shader
+		//Constructor
 		ShaderID(GLuint id = 0u, ShaderType type = ShaderType::UNASSIGNED) : mID(id), mType(type) { ; }
 	} ShaderID;
 
@@ -100,7 +109,7 @@ namespace ShaderInterface {
 		//-------------------------------
 		// Constructors / Destructor  
 		//-------------------------------
-		//Default constructor is Protected 
+		//Note: The parameterless constructor is protected (It is declared below with the other protected class members)
 		CompiledShader(const char * sourceFilepath, GLenum type);
 		CompiledShader(const CompiledShader& that) = delete; //No copying from abstract base type
 		CompiledShader(CompiledShader&& that) = delete; //No moving an abstract base type
@@ -113,15 +122,20 @@ namespace ShaderInterface {
 		CompiledShader& operator=(const CompiledShader& that) = delete; //No copying from abstract base type
 		CompiledShader& operator=(CompiledShader&& that) = delete; //No moving an abstract base type 
 
-		//Compares ShaderTypes and Filepaths for equality
+		//Compares ShaderTypes and Filepaths for equality. Does not check to see if
+		//both shaders are primary or secondary.
 		bool operator==(const CompiledShader&) const;
 
-		//Compares ShaderTypes and Filepaths for inequality
+		//Compares ShaderTypes and Filepaths for inequality. Does not check to see if
+		//both shaders are primary or secondary.
 		bool operator!=(const CompiledShader&) const;
 
-		//Two comparison operators to allow for the sorting of shaders
+		//Comparison operators to allow for the sorting of shaders. Sorts shaders
+		//by type
 		bool operator<(const CompiledShader&) const;
 		
+		//Comparison operators to allow for the sorting of shaders. Sorts shaders
+		//by type
 		bool operator>(const CompiledShader&) const;
 
 		//Returns true if the shader is ready to be attached (thus not decomissioned),
@@ -146,6 +160,11 @@ namespace ShaderInterface {
 		//objects GL-Context-Assigned ID Number  (I am unsure if this will invalidate old shaders still bound with the old ID number of this shader?)
 		virtual void reinstate() = 0; //Alternative function names: reestablish(), restore(), rehabilitate(), revive(), reload(), recompile(),
 
+		//Marks this shader as a secondary shader, thus allowing it to be 
+		//attached to ShaderPrograms that already have a shader of the same
+		//type attached. 
+		void makeSecondary() { mMarkedAsSecondary = true; }
+
 		//-------------------------------
 		//Member field getters
 		//-------------------------------
@@ -156,6 +175,10 @@ namespace ShaderInterface {
 		bool seeIfIsDecomissioned() const { return mIsDecomissioned; }
 		//Returns true if this shader is ready to be attached to a ShaderProgram
 		bool readyToBeAttached() const { return mReadyToBeAttached; }
+		//Checks to see if this shader has been marked as a secondary shader. To be a 
+		//secondary shader, the shader must not contain a 'main' function. A shader must
+		//be marked secondary to be eligible to be attached as a secondary.
+		bool markedAsSecondary() const { return mMarkedAsSecondary; }
 		//Returns true if this shader was able to read and compile itself from the provided filepath
 		bool validFilepath() const { return mValidFilepath; }
 		//Checks with the GLContext to see if the shader is compiled
@@ -168,6 +191,8 @@ namespace ShaderInterface {
 		//by the context. (Really there is no reason for this function to be called (outside of debugging
 		// and some possible future hack-job programming))
 		GLuint ID() const { return mShaderID.mID; } 
+		//Returns a copy of this object's shaderID struct 
+		ShaderID shaderID() const { return ShaderID(mShaderID.mID, mShaderID.mType); }
 
 	protected:
 		//-------------------------------
@@ -186,7 +211,7 @@ namespace ShaderInterface {
 		CompiledShader(); //Default constructor should only be called by derived types since it will create an invalid object
 
 		//----------------------------
-		//Protected functions:
+		//Protected functions:  (these are internal functions that are made available for derived types)
 		//----------------------------
 		//Compiles the shader within OpenGL. Expects for there to be the loaded source text stored within a valid string pointed to by mSourceText 
 		bool compile(GLenum type);
@@ -214,6 +239,7 @@ namespace ShaderInterface {
 
 		bool mReadyToBeAttached;
 		bool mValidFilepath;
+		bool mMarkedAsSecondary;
 
 		//----------------------------
 		//Private functions

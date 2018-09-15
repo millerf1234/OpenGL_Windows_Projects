@@ -6,22 +6,34 @@
 #include "ObjAnalyzer.h"
 #include <fstream>
 
-//   //For reference
-//typedef struct ModelStatistics {
-//	long vertices;
-//	long positions;
-//	long texels;
-//	long normals;
-//	long faces;
-//};
 
 namespace AssetLoadingInternal {
 
-	size_t ModelStatistics::computeRequiredBufferSpace() const {
-
-
+	///////////////////////////////////////////////////////
+	///////////     ModelSectionStatistics    /////////////
+	///////////////////////////////////////////////////////
+	ModelSectionStatistics::ModelSectionStatistics() {
+		vertices = 0l;
+		positions = 0l;
+		texels = 0l;
+		normals = 0l;
+		faces = 0l;
+		mNextSectionStatistics = nullptr;
 	}
 
+	///////////////////////////////////////////////////////
+	///////////         ModelStatistics      //////////////
+	///////////////////////////////////////////////////////
+	size_t ModelStatistics::computeRequiredBufferSpace() const {
+		if (mSectionStatisticsListHead == nullptr) 
+			return 0ul;
+		
+	}
+
+
+	////////////////////////////////////////////////////////
+	//////////           ObjAnalyzer          //////////////
+	////////////////////////////////////////////////////////
 	void ObjAnalyzer::initialize() {
 		mObjFileText = nullptr;
 	}
@@ -38,7 +50,7 @@ namespace AssetLoadingInternal {
 
 	}
 
-	inline std::unique_ptr<std::string> getObjFileText(const char * objFilepath) {
+	inline std::unique_ptr<std::string> ObjAnalyzer::getObjFileText(const char * objFilepath) {
 		std::unique_ptr<std::string> objFileText = std::make_unique<std::string>();
 		std::ifstream inObjFile{ objFilepath };
 		*objFileText = { std::istreambuf_iterator<char>(inObjFile), std::istreambuf_iterator<char>() };
