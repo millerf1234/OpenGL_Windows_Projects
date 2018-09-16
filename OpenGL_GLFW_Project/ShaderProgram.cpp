@@ -270,7 +270,7 @@ ShaderProgram::ShaderProgram() {
 			return;
 		}
 		if (!(geom->readyToBeAttached())) {
-			fprintf(ERRLOG, "\nError attaching geometry shader to program, the geometry shader is invalid!\n");
+			fprintf(ERRLOG, "\nError attaching geometry shader to program, the geometry shader is not ready to be attached to a program!\n");
 			return;
 		}
 		if (mState.mHasGeom) {
@@ -335,8 +335,8 @@ ShaderProgram::ShaderProgram() {
 		}
 
 		//If we made it this far, then it is safe to attach the shader as a secondary
-		addShaderToAttachedSecondaries(secondaryGeom); //Track the newly added secondary
 		glAttachShader(mProgramID, secondaryGeom->ID()); //Attach the secondary to the shaderProgram
+		addShaderToAttachedSecondaries(secondaryGeom); //Track the newly added secondary
 		mState.mAttachedSecondaryGeomCount++; //Increment the number of attached secondary geometry shaders
 	}
 
@@ -346,8 +346,8 @@ ShaderProgram::ShaderProgram() {
 
 
 	void ShaderProgram::attachTess(const ShaderInterface::TesselationControlShader * tessc, const ShaderInterface::TesselationEvaluationShader * tesse) {
-		//I avoid validating the object's state here because each of these 2 functions will handle their
-		//own object-state checking.
+		//We avoid validating each parameter object's state here because each of these 2 functions will handle their
+		//own parameter evaluation.
 		attachTesse(tesse); 
 		attachTessc(tessc);
 	}
@@ -418,6 +418,7 @@ ShaderProgram::ShaderProgram() {
 		}
 		glAttachShader(mProgramID, tesse->ID());
 		mState.mHasTesse = true;
+		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTesse();
 	}
 
 	void ShaderProgram::attachSecondaryTesse(const ShaderInterface::TesselationEvaluationShader * secondaryTesse) {
@@ -499,7 +500,7 @@ ShaderProgram::ShaderProgram() {
 		if (tessc == nullptr) { return; }
 		if (mState.mLinked) {
 			fprintf(ERRLOG, "\nUnable to attach Tesselation Control shader %s\n"
-				"to shaderProgram because this ShaderProgram has already been linked!\n", tessc->getFilepath());
+				"to shaderProgram because this ShaderProgram has already been linked!\n", tessc->getFilepath() );
 			return;
 		}
 		if (mState.mHasTessc) {
@@ -511,7 +512,7 @@ ShaderProgram::ShaderProgram() {
 			fprintf(ERRLOG, "\nError attaching Tessetlation Control shader \"%s\"\n"
 				"to this program. This program has already had a compute\n"
 				"shader attached to it, which prevents any further shaders that\n"
-				"are not compute shaders from being attached!\n", tessc->getFilepath());
+				"are not compute shaders from being attached!\n", tessc->getFilepath() );
 			return;
 		}
 		if (tessc->markedAsSecondary()) {
@@ -521,13 +522,18 @@ ShaderProgram::ShaderProgram() {
 				tessc->getFilepath());
 			return;
 		}
+		if ((!tessc->readyToBeAttached())) {
+			fprintf(ERRLOG, "Error! Attaching Tesselation Control shader \"%s\"\n"
+				"failed because object is not ready to be attached\n", tessc->getFilepath() );
+		}
 		if ((tessc->ID() == 0) || (tessc->type() != ShaderType::TESSELATION_CONTROL)) {
 			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
-				"Tesselation Control shader to this program!\n", tessc->getFilepath());
+				"Tesselation Control shader to this program!\n", tessc->getFilepath() );
 			return;
 		}
 		glAttachShader(mProgramID, tessc->ID());
 		mState.mHasTessc = true;
+		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTessc();
 	}
 
 	void ShaderProgram::attachSecondaryTessc(const ShaderInterface::TesselationControlShader * secondaryTessc) {
@@ -550,12 +556,12 @@ ShaderProgram::ShaderProgram() {
 				"attached to it already!\n", secondaryTessc->getFilepath());
 			return;
 		}
-		if (!(secondaryTessc->markedAsSecondary())) {
+		if ( !(secondaryTessc->markedAsSecondary()) ) {
 			fprintf(ERRLOG, "\nError attempting to attach as secondary the requested Tesselation Control shader \"%s\"\n"
 				"as a secondary shader, because this shader was never marked as secondary!\n"
 				"Please use the function 'makeSecondary()' on this Tess Control shader to allow it to\n"
 				"be attached as a secondary. Please note that secondary shaders can not contain\n"
-				"a 'main()' function!\n", secondaryTessc->getFilepath());
+				"a 'main()' function!\n", secondaryTessc->getFilepath() );
 			return;
 		}
 
@@ -567,8 +573,8 @@ ShaderProgram::ShaderProgram() {
 		}
 
 		//If we made it this far, then it is safe to attach the shader as a secondary
-		addShaderToAttachedSecondaries(secondaryTessc); //Track the newly added secondary
 		glAttachShader(mProgramID, secondaryTessc->ID()); //Attach the secondary to the shaderProgram
+		addShaderToAttachedSecondaries(secondaryTessc); //Track the newly added secondary
 		mState.mAttachedSecondaryTesscCount++; //Increment the number of attached secondary tess control shaders
 	}
 
@@ -605,7 +611,44 @@ ShaderProgram::ShaderProgram() {
 	}
 
 	void ShaderProgram::attachFrag(const ShaderInterface::FragmentShader * frag) {
-		//todo
+		//fprintf(WRNLOG, "\nWarning! This function to attach an already created primary Fragment shader has not yet been implemented!\n");
+		if (frag == nullptr) { return; }
+		if (mState.mLinked) {
+			fprintf(ERRLOG, "\nERROR: Unable to attach %s to ShaderProgram because this ShaderProgram has already been linked!\n", frag->getFilepath());
+			return;
+		}
+		if (mState.mHasFrag) {
+			fprintf(ERRLOG, "\nError attaching Fragment shader \"%s\"\n"
+				"to this ShaderProgram. This program already has a primary Fragment shader!\n");
+			return;
+		}
+		if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
+			fprintf(WRNLOG, "\nWarning! Unable to attach Fragment shader \"%s\"\nto this "
+				"ShaderProgram object because this ShaderProgram object has a Compute shader attached to it!\n", frag->getFilepath());
+			return;
+		}
+		if ( !(frag->readyToBeAttached()) ) {
+			fprintf(ERRLOG, "\nError attaching Fragment shader \"%s\"\n"
+				"to program, shader is not currently ready to be attached!\n");
+			return;
+		}
+		if (frag->markedAsSecondary()) {
+			fprintf(ERRLOG, "\nError! The Fragment shader \"%s\"\n"
+				"has been marked as a secondary shader, which prevents it from being\n"
+				"able to be attached to the primary Fragment shader spot!\n"
+				"Please use the 'attachSecondaryFrag()' function to attach this shader.\n", frag->getFilepath());
+			return;
+		}
+		//One last extra check (that probably isnt necessary):
+		if ((frag->ID() == 0u) || (frag->type() != ShaderType::FRAGMENT)) {
+			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
+				"Fragment shader to this program!\n", frag->getFilepath());
+			return;
+		}
+
+		glAttachShader(mProgramID, frag->ID());
+		mState.mHasFrag = true;
+		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingFrag();
 	}
 
 	void ShaderProgram::attachSecondaryFrag(const ShaderInterface::FragmentShader * secondaryFrag) {
@@ -645,8 +688,8 @@ ShaderProgram::ShaderProgram() {
 		}
 
 		//If we made it this far, then it is safe to attach the shader as a secondary
-		addShaderToAttachedSecondaries(secondaryFrag); //Track the newly added secondary
 		glAttachShader(mProgramID, secondaryFrag->ID()); //Attach the secondary to the shaderProgram
+		addShaderToAttachedSecondaries(secondaryFrag); //Track the newly added secondary
 		mState.mAttachedSecondaryFragCount++; //Increment the number of attached secondary Fragment shaders
 	}
 
@@ -664,7 +707,10 @@ ShaderProgram::ShaderProgram() {
 				"because this shaderProgram has already been linked", compute);
 			return false;
 		}
-		if (mState.mHasVert || mState.mHasGeom || mState.mHasTessc || mState.mHasTesse || mState.mHasFrag) {
+		//If any shader besides a compute shader has already been attached, then attaching a compute is an illegal operation.
+		if ((mState.mHasVert || mState.mHasGeom || mState.mHasTesse || mState.mHasTessc || mState.mHasFrag) ||
+			(((mState.mAttachedSecondaryVertCount + mState.mAttachedSecondaryGeomCount + mState.mAttachedSecondaryTesseCount +
+				mState.mAttachedSecondaryTesscCount + mState.mAttachedSecondaryFragCount) > 0))) {
 			fprintf(WRNLOG, "\nWARNING! Unable to attach Compute shader \"%s\"\nto this ShaderProgram "
 				"because this shader program has already had a differnt type of shader attached.\nCompute "
 				"shaders must always be bound to their own ShaderProgram objects without\n"
@@ -684,7 +730,46 @@ ShaderProgram::ShaderProgram() {
 	}
 
 	void ShaderProgram::attachCompute(const ShaderInterface::ComputeShader * compute) {
-		//to do
+		if (compute == nullptr) { return; }
+		if (mState.mLinked) {
+			fprintf(ERRLOG, "\nUnable to attach \"%s\"\n"
+				"to this ShaderProgram because this ShaderProgram has already been linked!\n", compute->getFilepath());
+			return;
+		}
+		if (mState.mHasCompute) {
+			fprintf(ERRLOG, "\nError attaching compute shader to program. This program already has a primary compute shader attached!\n");
+			return;
+		}
+		if ((mState.mHasVert || mState.mHasGeom || mState.mHasTesse || mState.mHasTessc || mState.mHasFrag) ||
+			(((mState.mAttachedSecondaryVertCount + mState.mAttachedSecondaryGeomCount + mState.mAttachedSecondaryTesseCount +
+				mState.mAttachedSecondaryTesscCount + mState.mAttachedSecondaryFragCount) > 0))) {
+			fprintf(WRNLOG, "\nWarning! Unable to attach Fragment shader \"%s\"\nto this "
+				"ShaderProgram object because this ShaderProgram object has a non-Compute shader attached to it!\n", compute->getFilepath());
+			return;
+		}
+		if ( !(compute->readyToBeAttached()) ) {
+			fprintf(ERRLOG, "\nError attaching Compute shader \"%s\"\n"
+				"to program, the compute shader is not currently ready to be attached!\n", compute->getFilepath() );
+			return;
+		}
+		if (compute->markedAsSecondary()) {
+			fprintf(ERRLOG, "\nError! The compute shader \"%s\"\n"
+				"has been marked as a secondary shader, which prevents it from being\n"
+				"able to be attached to the primary compute shader spot!\n"
+				"Please use the 'attachSecondaryCompute()' function to attach this shader.\n",
+				compute->getFilepath() );
+			return;
+		}
+		//One last extra check (that probably isnt necessary):
+		if ((compute->ID() == 0u) || (compute->type() != ShaderType::COMPUTE)) {
+			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
+				"Compute shader to this program!\n", compute->getFilepath());
+			return;
+		}
+
+		glAttachShader(mProgramID, compute->ID());
+		mState.mHasVert = true;
+		mState.mReadyToLink = true;
 	}
 
 	void ShaderProgram::attachSecondaryCompute(const ShaderInterface::ComputeShader * secondaryCompute) {

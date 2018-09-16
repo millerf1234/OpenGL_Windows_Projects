@@ -160,6 +160,9 @@
     <Filter Include="Source Files\Utility\Asset Loading\Model Loading">
       <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\OBJ">
+      <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -613,6 +616,9 @@
     </ClInclude>
     <ClInclude Include="ObjAnalyzer.h">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFilepaths.h">
+      <Filter>Resource Files\OBJ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -264,6 +264,7 @@
     <ClInclude Include="ImageFileLoader.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="ObjAnalyzer.h" />
+    <ClInclude Include="ObjFilepaths.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MappableBuffer.h" />
