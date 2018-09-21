@@ -18,3 +18,7 @@
 
 #pragma once
 
+class Mesh {
+
+
+};

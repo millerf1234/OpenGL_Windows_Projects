@@ -10,9 +10,9 @@
 namespace AssetLoadingInternal {
 
 	///////////////////////////////////////////////////////
-	///////////     ModelSectionStatistics    /////////////
+	///////////     SectionStatistics    /////////////
 	///////////////////////////////////////////////////////
-	ModelSectionStatistics::ModelSectionStatistics() {
+	ModelStatistics::SectionStatistics::SectionStatistics() {
 		vertices = 0l;
 		positions = 0l;
 		texels = 0l;

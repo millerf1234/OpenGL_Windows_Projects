@@ -135,7 +135,6 @@ namespace ShaderInterface {
 	}
 
 
-
 	bool CompiledShader::operator>(const CompiledShader& other) const {
 		return !( *this < other);
 	}
@@ -150,7 +149,7 @@ namespace ShaderInterface {
 	}
 
 	bool CompiledShader::operator!() const {
-		return mReadyToBeAttached;
+		return !mReadyToBeAttached;
 	}
 
 	void CompiledShader::decommision() {

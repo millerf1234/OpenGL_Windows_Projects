@@ -13,6 +13,7 @@
 //and the .obj loading class from my previous project 'Star Suzerian'. 
 
 //IMPLEMENTATION NOTE: 
+//      (oops I never wrote this)
 
 #pragma once
 
@@ -27,22 +28,22 @@ namespace AssetLoadingInternal {
 
 	//class ObjAnalyzer { //I am not sure if I should keep these structs internal or not
 
-	//ModelSectionStatistics is essentially a node in a linked-list of model sections
-	typedef struct ModelSectionStatistics {
-		long vertices; 
-		long positions; 
-		long texels;
-		long normals;
-		long faces;
-		std::unique_ptr<ModelSectionStatistics> mNextSectionStatistics;
-		ModelSectionStatistics();
-	};
+	//ModelStatistics holds the head node in the linked-list of model sections
+	class ModelStatistics {
+		//SectionStatistics is essentially a node in a linked-list of model sections
+		typedef struct SectionStatistics {
+			long vertices;
+			long positions;
+			long texels;
+			long normals;
+			long faces;
+			std::unique_ptr<SectionStatistics> mNextSectionStatistics;
+			SectionStatistics();
+		};
 
-	//Model Statistics holds the head node in the linked-list of model sections
-	typedef struct ModelStatistics {
 		int modelSections;
-		std::unique_ptr<ModelSectionStatistics> mSectionStatisticsListHead; //Linked-list of model sections
-
+		std::unique_ptr<SectionStatistics> mSectionStatisticsListHead; //Linked-list of model sections
+	public:
 		ModelStatistics() {
 			modelSections = 0;
 			mSectionStatisticsListHead = nullptr;
@@ -60,7 +61,7 @@ namespace AssetLoadingInternal {
 		ObjAnalyzer(const ObjAnalyzer&) = delete;
 		ObjAnalyzer& operator=(const ObjAnalyzer&) = delete;
 
-		ObjAnalyzer(const char * filepath);
+		ObjAnalyzer(const char * filepathToObj);
 		//Eventually I will add a second constructor that looks something like:
 		//ObjAnalyzer(std::tuple<const char *, bool, int>);  //Tuple is <filepath, staticMesh, drawGroup> 
 

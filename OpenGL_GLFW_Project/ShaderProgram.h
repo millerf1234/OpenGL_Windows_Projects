@@ -1,7 +1,7 @@
 //File:    CompiledShader.h
 //Class:   CompiledShader
 //Programmer: Forrest Miller
-//Date(s): 7/24/2018 - 8/1/2018  (and counting)
+//Date(s): 7/24/2018 - 8/1/2018  
 //
 //
 //
@@ -51,6 +51,8 @@
 //  Known Issues:  It is currently possible to attach a primary shader to a shader program, then mark the shader as
 //				   a secondary and reattach it using the appropriate 'attachSecondary' function. The ShaderProgram 
 //				   will not be able to link if this happens, but this class will not catch it ahead of time. 
+//
+//
 
 
 #pragma once

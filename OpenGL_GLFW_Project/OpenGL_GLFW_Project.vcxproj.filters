@@ -52,9 +52,6 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{c9f858de-f478-43c8-b4ff-ac641c838a67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\ModelTools">
-      <UniqueIdentifier>{677e5d3f-d5ad-4ec8-8b8f-8dc3586ee9b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
@@ -160,7 +157,13 @@
     <Filter Include="Source Files\Utility\Asset Loading\Model Loading">
       <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\OBJ">
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Obj">
+      <UniqueIdentifier>{0655cef6-b647-4bf0-bb60-4aeccfc7b7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models">
+      <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -248,12 +251,15 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Utility\ModelTools</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader.cpp">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClCompile>
     <ClCompile Include="ObjAnalyzer.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClCompile>
   </ItemGroup>
@@ -609,16 +615,19 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Utility\ModelTools</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjLoader.h">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClInclude>
     <ClInclude Include="ObjAnalyzer.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
     </ClInclude>
     <ClInclude Include="ObjFilepaths.h">
-      <Filter>Resource Files\OBJ</Filter>
+      <Filter>SetupAndConfiguration\Filepaths</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,6 +657,9 @@
     </None>
     <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
+    </None>
+    <None Include="obj\Engine2_Textured.mtl">
+      <Filter>Resource Files\Models\OBJ</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -713,5 +725,15 @@
     <Text Include="TextureWebsiteResources.txt">
       <Filter>Resource Files\Textures</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="obj\Engine2_Textured.obj">
+      <Filter>Resource Files\Models\OBJ</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="obj\RocketEngine_UV.png">
+      <Filter>Resource Files\Models\OBJ</Filter>
+    </Image>
   </ItemGroup>
 </Project>

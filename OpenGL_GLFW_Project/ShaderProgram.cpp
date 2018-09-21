@@ -619,7 +619,8 @@ ShaderProgram::ShaderProgram() {
 		}
 		if (mState.mHasFrag) {
 			fprintf(ERRLOG, "\nError attaching Fragment shader \"%s\"\n"
-				"to this ShaderProgram. This program already has a primary Fragment shader!\n");
+				"to this ShaderProgram. This program already has a primary Fragment shader!\n",
+				frag->getFilepath() );
 			return;
 		}
 		if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
@@ -629,7 +630,8 @@ ShaderProgram::ShaderProgram() {
 		}
 		if ( !(frag->readyToBeAttached()) ) {
 			fprintf(ERRLOG, "\nError attaching Fragment shader \"%s\"\n"
-				"to program, shader is not currently ready to be attached!\n");
+				"to program, shader is not currently ready to be attached!\n",
+				frag->getFilepath() );
 			return;
 		}
 		if (frag->markedAsSecondary()) {

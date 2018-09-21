@@ -5,11 +5,13 @@
 //
 //Description: The CompiledShader class is an abstract base class that
 //			   is intended to cover the common logic shared between all
-//			   OpenGL shader types. Since all OpenGL shaders have a lot 
-//			   in common, as such most of the logic for the derived classes
+//			   OpenGL shader types. Since all OpenGL shaders are parsed, compiled and 
+//			   tracked the exact same way, most of the functions and logic for them
 //			   can be found in this class. This class requires a filepath
 //			   to be constructed. Copying and Moving of the abstract base
-//			   type (i.e. this class) is not allowed. 
+//			   type (i.e. this class) is not allowed. Also, by having a shared base
+//			   class, it is possible to have a common comparison operator, so that a
+//			   collection of various shaders can be sorted using '<' or '>'. 
 //			   This class handles managing the Shader within both the application
 //			   side and with the GL context. Creating the shader within the GL
 //			   context is handled by this class as is the cleanup for the shader.
@@ -162,7 +164,10 @@ namespace ShaderInterface {
 
 		//Marks this shader as a secondary shader, thus allowing it to be 
 		//attached to ShaderPrograms that already have a shader of the same
-		//type attached. 
+		//type attached. By marking a shader as secondary, it is promised that
+		//the shader does not contain a 'main' method. Failure to satisfy this
+		//promise will result in errors in ShaderProgram linking. Once a shader
+		//has been made secondary, it cannot be reverted back to a primary.
 		void makeSecondary() { mMarkedAsSecondary = true; }
 
 		//-------------------------------
