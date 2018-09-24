@@ -27,7 +27,7 @@ namespace AssetLoadingInternal {
 	size_t ModelStatistics::computeRequiredBufferSpace() const {
 		if (mSectionStatisticsListHead == nullptr) 
 			return 0ul;
-		
+		return 0ul;
 	}
 
 
@@ -47,7 +47,7 @@ namespace AssetLoadingInternal {
 	}
 
 	ObjAnalyzer& ObjAnalyzer::operator=(ObjAnalyzer&& that) {
-
+		return *this;
 	}
 
 	inline std::unique_ptr<std::string> ObjAnalyzer::getObjFileText(const char * objFilepath) {

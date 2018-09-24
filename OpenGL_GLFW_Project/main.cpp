@@ -2,6 +2,7 @@
 //
 //Create the application and launch it
 //
+// Forrest Miller           July 2018
 
 #include "Application.h"
 

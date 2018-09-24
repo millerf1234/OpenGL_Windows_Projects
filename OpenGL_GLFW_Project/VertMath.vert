@@ -1,0 +1,64 @@
+//This is a utility shader full of utility functions that 
+//are meant to be called from other Vertex shaders. This
+//shader does not have a 'main' function nor does it 
+//have input or output. This shader should be marked 
+//as 'secondary' within the application code.
+
+//IMPORTANT: Read the GLSL rules! https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
+
+#version 450 core
+
+
+//Convert Degrees to Radians 
+float dg2Rad(float degrees) {
+	return (degrees * 3.1415927 / 180.0f);
+}
+
+//Convert radians to degrees
+float rad2Dg(float radians) {
+	return (radians * 180.0f / 3.1415927);
+}
+
+
+void setAspectRatio(inout vec3 vert, in float aspectRatio) {
+	vert.y *= aspectRatio;
+	// As a matrix multiplication, thi operation would use the following matrix
+	//return inpt * mat3(1.0f,    0.0f,     0.0f,
+	//					  0.0f, aspectRatio, 0.0f,
+	//					  0.0f,    0.0f,     1.0f);
+}
+//void setAspectRatio(in vec3 inpt, in float aspectRatio, out vec3 AspectScaledVertex) {
+//	AspectScaledVertex = vec3(inpt.x, inpt.y * aspectRatio, inpt.z);
+//	
+//	// As a matrix multiplication, thi operation would use the following matrix
+//	//return inpt * mat3(1.0f,    0.0f,     0.0f,
+//	//					  0.0f, aspectRatio, 0.0f,
+//	//					  0.0f,    0.0f,     1.0f);
+//}
+
+
+ void rotateX(inout vec3 vert, in float theta) {
+	mat3 xRot = mat3( 1.0,     0.0,         0.0,
+					  0.0,  cos(theta), -sin(theta),
+		              0.0,  sin(theta),  cos(theta));
+	vert = xRot * vert;
+}
+
+void rotateY(inout vec3 vert, in float theta) {
+	mat3 yRot = mat3( cos(theta),  0.0,   -sin(theta),
+					     0.0,      1.0,       0.0f,
+					  sin(theta),  0.0,    cos(theta));
+	vert = (yRot * vert);
+}
+
+void rotateZ(inout vec3 vert, in float theta) {
+	mat3 zRot = mat3( cos(theta), -sin(theta), 0.0,
+					  sin(theta),  cos(theta), 0.0,
+					     0.0,         0.0,     1.0);
+	vert = (zRot * vert);
+}
+
+
+
+//Todo 
+//  vec4 PerspectiveProjection

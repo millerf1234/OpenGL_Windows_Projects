@@ -3,7 +3,7 @@
 using namespace ShaderInterface;
 
 
-int RenderProject1::numTriangles = 20000;
+
 
 
 void RenderProject1::initialize() {
@@ -13,20 +13,19 @@ void RenderProject1::initialize() {
 	frameUnpaused = 0ull;
 	frameOfMostRecentColorRecording = 0ull;
 	counter = 0.0f;
+	zRotation = 0.0f;
 
 	txtEngine = nullptr;
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
 
-	//vertices = nullptr;
-	testVAO = nullptr;
-	testVBO = 0u;
 
+	
 
-	createTriangles2D();
 
 }
+
 
 
 RenderProject1::RenderProject1(std::shared_ptr<MonitorData> screenInfo) {
@@ -99,50 +98,41 @@ void RenderProject1::loadAssets() {
 	//txtEngine = std::make_unique<TextEngine>("Fonts\\Roboto-Black.ttf");
 
 	loadShaders();
+	createTriangles2D();
 	
 	//createDataBuffer();
-
-	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 0.5f);
-
 	//Test Updating/Caching uniform locations too!
 }
 
-//This function just does some random math to make the triangles
-void RenderProject1::createTriangles2D() {  
-	//glm::vec3 eulerAngles(0.0f, 0.0f, 0.5f);
-	//glm::quat rotation(eulerAngles);
-	//rotationMat = glm::quaternion::toMat4(rotation);
 
-	//Rotation
-	glm::mat2 rotation(cos(0.01f), sin(0.01f), -sin(0.01f), cos(0.01f));
+void RenderProject1::loadShaders() {
+	fprintf(MSGLOG, "\nInitializing Shaders!\n");
+	sceneShader = std::make_unique<ShaderProgram>();
 
-	//Translation
-	glm::vec2 translation(0.01f, 0.02f);
+	fprintf(MSGLOG, "\nAttaching secondary helper vertex shader!\n");
+	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>("VertMath.vert");
+	if (!vertHelper)
+		return;
+	vertHelper->makeSecondary();
 
-	glm::vec2 vert0(triangleBase2D[0], triangleBase2D[1]);
-	glm::vec2 vert1(triangleBase2D[2], triangleBase2D[3]);
-	glm::vec2 vert2(triangleBase2D[4], triangleBase2D[5]);
+	sceneShader->attachSecondaryVert(vertHelper.get());
 
-	
-	for (int i = 0; i < numTriangles; i++) {
-		vert0 = vert0 + (rotation * translation);
-		vert1 = vert1 + (rotation * translation);
-		vert2 = vert2 + (rotation * (translation + vert2));
+	fprintf(MSGLOG, "\nAttaching main vertex shader!\n");
+	sceneShader->attachVert("RenderProject1.vert");
+	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
+	sceneShader->attachFrag("RenderProject1.frag");
 
-		triangles2D.push_back(vert0.x);
-		triangles2D.push_back(vert0.y);
-		triangles2D.push_back(vert1.x);
-		triangles2D.push_back(vert1.y);
-		triangles2D.push_back(vert2.x);
-		triangles2D.push_back(vert2.y);
+	fprintf(MSGLOG, "\nAttempting to link program!\n");
+	sceneShader->link();
+	if (sceneShader->checkIfLinked()) {
+		fprintf(MSGLOG, "Program Successfully linked!\n");
+	}
+	else {
+		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 	}
 
 	
-}
-
-void RenderProject1::loadShaders() {
-	fprintf(MSGLOG, "\nCreating a new shader program for scene!\n");
+	/*fprintf(MSGLOG, "\nCreating a new shader program for scene!\n");
 	sceneShader = std::make_unique<ShaderProgram>();
 
 	fprintf(MSGLOG, "\nAttaching vertex shader!\n");
@@ -157,7 +147,7 @@ void RenderProject1::loadShaders() {
 	}
 	else {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
-	}
+	}*/
 }
 
 //void RenderProject1::createDataBuffer() {
@@ -179,6 +169,21 @@ void RenderProject1::loadShaders() {
 //
 //}
 
+
+void RenderProject1::createTriangles2D() {
+	std::vector<GLfloat> positions = { 0.75f, -0.75f, 0.0f, -0.75f, -0.75f, 0.0f, 0.75f, 0.75f, 0.05f };
+	std::vector<GLfloat> colors = { 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f, 0.75f, 0.75f, 0.75f };
+
+	constexpr int NUM_VERTEX_ARRAYS = 2;
+
+	vertexAttributes = std::make_unique<GenericVertexAttributeSet>(NUM_VERTEX_ARRAYS);
+	
+	if (!vertexAttributes)
+		return;
+	vertexAttributes->sendDataToVertexBuffer(0, positions, 3, 0);
+	vertexAttributes->sendDataToVertexBuffer(1, colors, 3, 0);
+}
+
 void RenderProject1::renderLoop() {
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
 		if (checkToSeeIfShouldCloseWindow()) {
@@ -195,6 +200,9 @@ void RenderProject1::renderLoop() {
 			recordColorToLog();
 
 		updateFrameClearColor();
+		
+		updateUniforms();
+
 
 		drawVerts();
 
@@ -299,9 +307,27 @@ void RenderProject1::updateFrameClearColor() {
 	glClearColor(*red, *green, *blue, 1.0f);
 }
 
-void RenderProject1::drawVerts() {
+void RenderProject1::updateUniforms() {
 	sceneShader->use();
+	//Update uniform locations
+	sceneShader->uniforms->updateUniform1f("zoom", 1.5f);
+	sceneShader->uniforms->updateUniform1f("time", counter);
+
 	
+	zRotation += 2.0f;
+	//fprintf(MSGLOG, "zRot is %f\n", zRotation);
+	sceneShader->uniforms->updateUniform1f("xRotation", 0.0f);
+	sceneShader->uniforms->updateUniform1f("yRotation", 0.0f);
+	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
+}
+
+void RenderProject1::drawVerts() {
+	if (sceneShader)
+		sceneShader->use();
+	if (vertexAttributes)
+		vertexAttributes->use();
+	
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 

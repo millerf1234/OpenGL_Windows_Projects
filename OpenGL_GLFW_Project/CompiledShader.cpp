@@ -294,7 +294,7 @@ namespace ShaderInterface {
 			GLchar compilationInfoLog[768];
 			glGetShaderInfoLog(mShaderID.mID, 768, NULL, compilationInfoLog);
 			fprintf(WRNLOG, "\nSHADER COMPILATION FAILURE WARNING!\n");
-			fprintf(WRNLOG, "\nThe Fragment Shader \"%s\" failed to compile...\n\t%s\n", mFilepath, compilationInfoLog);
+			fprintf(WRNLOG, "\nThe Vertex Shader \"%s\" failed to compile...\n\t%s\n", mFilepath, compilationInfoLog);
 			return false;
 		}
 		mReadyToBeAttached = true; //Important to keep this here in case derived types rely on it

@@ -1,3 +1,5 @@
+#if 0
+
 //Implementation for the MappableBuffer class
 //
 //Created by Forrest Miller on  September 7, 2018
@@ -38,3 +40,5 @@ namespace ShaderInterface {
 
 } //namespace ShaderInterface
 
+
+#endif

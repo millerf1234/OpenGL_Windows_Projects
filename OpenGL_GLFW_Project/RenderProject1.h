@@ -21,12 +21,8 @@
 #include "TextEngine.h"
 
 #include "ShaderProgram.h"
+#include "GenericVertexAttributeSet.h"
 
-//#include "SimpleVertexBuffer.h"
-
-
-//For testing my VAO class
-#include "VertexArrayObject.h"
 
 class RenderProject1 {
 public:
@@ -43,25 +39,18 @@ private:
 	GLFWwindow * window; //Pointer to target renderable window (Application should have this)
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
+	float zRotation;
 	glm::vec3 backgroundColor;
-
-	////////////////////////////////////////////
-	// Test Code
-	//std::unique_ptr<ShaderInterface::SimpleVertexBuffer> vertices;
-	std::unique_ptr<ShaderInterface::VertexArrayObject> testVAO;
-	GLuint testVBO;
-	void * ptrToMappedBuffer;
-	////////////////////////////////////////////
 
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
+	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
 
 
 	std::unique_ptr<TextEngine> txtEngine;
 
-	static int numTriangles;
-	std::vector<GLfloat> triangleBase2D = { 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f };
-	std::vector<GLfloat> triangles2D;
+	
+
 	
 	//   Helper Functions
 	void initialize(); 
@@ -69,10 +58,7 @@ private:
 	void createTriangles2D();
 
 	void loadShaders();
-	//void createDataBuffer(); //Creates an OpenGL Data Buffer and puts Data into it
-	//void updateDataBuffer(); 
 
-	
 
 
 	///////////////////////////////////////////////////////
@@ -133,7 +119,7 @@ private:
 	/////////////////////////////////
 	///  (4b)  Update Uniforms    ///
 	/////////////////////////////////
-
+	void updateUniforms();
 
 
 
@@ -155,8 +141,6 @@ private:
 	/*						+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							|	(5) Clean-up and Prepare for Next Frame     |
 							+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			   			     */
-	
-
 	
 	void prepareGLContextForNextFrame();
 };

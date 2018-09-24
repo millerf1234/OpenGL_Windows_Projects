@@ -133,9 +133,6 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer">
       <UniqueIdentifier>{afe1b40a-364e-4c65-a9e6-2450a9d7a2c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VAO">
-      <UniqueIdentifier>{57b3bcc5-b4db-4005-b8e7-ee7e563f0e22}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading">
       <UniqueIdentifier>{61aefebc-6b93-4f8d-a147-495f549eeeb1}</UniqueIdentifier>
     </Filter>
@@ -165,6 +162,18 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Generic\Old">
+      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\VertexUtility">
+      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProject1">
+      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
+      <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -238,9 +247,6 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="VertexArrayObject.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\VAO</Filter>
-    </ClCompile>
     <ClCompile Include="MappableBuffer.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
     </ClCompile>
@@ -261,6 +267,9 @@
     </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericVertexAttributeSet.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,9 +611,6 @@
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
-    <ClInclude Include="VertexArrayObject.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\VAO</Filter>
-    </ClInclude>
     <ClInclude Include="MappableBuffer.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
     </ClInclude>
@@ -629,17 +635,11 @@
     <ClInclude Include="MeshLoader.h">
       <Filter>Source Files\Utility\Asset Loading\Model Loading</Filter>
     </ClInclude>
+    <ClInclude Include="GenericVertexAttributeSet.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="passthrough2D.vert">
-      <Filter>Resource Files\Shaders\Generic</Filter>
-    </None>
-    <None Include="passthrough3D.vert">
-      <Filter>Resource Files\Shaders\Generic</Filter>
-    </None>
-    <None Include="constantcolor.frag">
-      <Filter>Resource Files\Shaders\Generic</Filter>
-    </None>
     <None Include="harfbuzz.dll">
       <Filter>Third Party\HarfBuzz</Filter>
     </None>
@@ -652,14 +652,32 @@
     <None Include="glfw3dll.exp">
       <Filter>Third Party\GLFW</Filter>
     </None>
-    <None Include="TestGeom.geom">
-      <Filter>Resource Files\Shaders\Generic</Filter>
-    </None>
     <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
       <Filter>Resource Files\Models\OBJ</Filter>
+    </None>
+    <None Include="constantcolor.frag">
+      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+    </None>
+    <None Include="passthrough2D.vert">
+      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+    </None>
+    <None Include="passthrough3D.vert">
+      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+    </None>
+    <None Include="TestGeom.geom">
+      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+    </None>
+    <None Include="VertMath.vert">
+      <Filter>Resource Files\Shaders\VertexUtility</Filter>
+    </None>
+    <None Include="RenderProject1.vert">
+      <Filter>Resource Files\Shaders\RenderProject1</Filter>
+    </None>
+    <None Include="RenderProject1.frag">
+      <Filter>Resource Files\Shaders\RenderProject1</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

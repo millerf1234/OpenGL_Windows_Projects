@@ -8,6 +8,8 @@
 //
 //
 
+#if 0
+
 #ifndef MAPPABLE_BUFFER_H_
 #define MAPPABLE_BUFFER_H_
 
@@ -15,7 +17,7 @@
 
 //#include <vector>
 
-#include "VertexArrayObject.h"
+//#include "VertexArrayObject.h"
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -122,3 +124,6 @@ namespace ShaderInterface {
 } //namespace ShaderInterface
 
 #endif //MAPPABLE_BUFFER_H_
+
+
+#endif //if 0 at top
