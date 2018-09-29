@@ -8,6 +8,12 @@
 //
 //
 
+
+//TEST CODE:
+//int x = 4;
+//int test = 1 << x;
+//fprintf(MSGLOG, "\nTEST:  x is %d and test is %d\n\n", x, test);
+
 #if 0
 
 #ifndef MAPPABLE_BUFFER_H_
