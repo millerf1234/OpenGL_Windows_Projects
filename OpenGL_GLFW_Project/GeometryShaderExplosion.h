@@ -1,11 +1,15 @@
-//An OpenGL Render Project
-
-//Created by Forrest Miller on July 18, 2018
+//This is a test of using a geometry shader for an explosion effect of a mesh.
+//The shader code for this is based off the code example at
+//  http://web.engr.oregonstate.edu/~mjb/cs519/Handouts/geometry_shaders.6pp.pdf
+//      (Slides 29-32) 
+//
+// The application code also is based off the code I wrote for RenderProject1 
+//
 
 #pragma once
 
-#ifndef RENDER_PROJECT_1_H_
-#define RENDER_PROJECT_1_H_
+#ifndef GEOMETRY_SHADER_EXPLOSION_H_
+#define GEOMETRY_SHADER_EXPLOSION_H_
 
 #include <limits>
 #include <thread>
@@ -19,19 +23,18 @@
 
 #include "ProjectResourceFilepaths.h"
 
-#include "TextEngine.h"
-
 #include "ShaderProgram.h"
 #include "GenericVertexAttributeSet.h"
 
+#include "teapot.h"  //From the internet, is a file containing the vertices for a teapot
 
-static constexpr int NUMBER_TRIANGLES = 1000;
+static constexpr int EXPLOSION_LEVELS = 10;
 
-class RenderProject1 {
+class GeometryShaderExplosion {
 public:
-	RenderProject1() = delete;
-	RenderProject1(std::shared_ptr<MonitorData> screenInfo);
-	~RenderProject1();
+	GeometryShaderExplosion() = delete;
+	GeometryShaderExplosion(std::shared_ptr<MonitorData> screenInfo);
+	~GeometryShaderExplosion();
 
 	void run();
 	void loadAssets();
@@ -39,7 +42,7 @@ public:
 
 private:
 	bool error;
-	GLFWwindow * window; //Pointer to target renderable window (Application should have this)
+	GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
 	float zRotation;
@@ -50,15 +53,13 @@ private:
 	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
 
 
-	std::unique_ptr<TextEngine> txtEngine;
-
 	
 
 	
 	//   Helper Functions
 	void initialize(); 
 
-	void createTriangles2D();
+	void loadTeapot();
 
 	void loadShaders();
 
@@ -148,5 +149,6 @@ private:
 	void prepareGLContextForNextFrame();
 };
 
-#endif //RENDER_PROJECT_1_H_
 
+
+#endif //GEOMETRY_SHADER_EXPLOSION_H_

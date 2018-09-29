@@ -3,9 +3,6 @@
 using namespace ShaderInterface;
 
 
-
-
-
 void RenderProject1::initialize() {
 	error = false;
 	window = nullptr;
@@ -56,7 +53,6 @@ RenderProject1::RenderProject1(std::shared_ptr<MonitorData> screenInfo) {
 
 
 RenderProject1::~RenderProject1() {
-
 
 }
 
@@ -122,6 +118,9 @@ void RenderProject1::loadShaders() {
 	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
 	sceneShader->attachFrag("RenderProject1.frag");
 
+	fprintf(MSGLOG, "\nAttaching a geometry shader!\n");
+	sceneShader->attachGeom("gst.geom");
+
 	fprintf(MSGLOG, "\nAttempting to link program!\n");
 	sceneShader->link();
 	if (sceneShader->checkIfLinked()) {
@@ -171,8 +170,49 @@ void RenderProject1::loadShaders() {
 
 
 void RenderProject1::createTriangles2D() {
-	std::vector<GLfloat> positions = { 0.75f, -0.75f, 0.0f, -0.75f, -0.75f, 0.0f, 0.75f, 0.75f, 0.05f };
-	std::vector<GLfloat> colors = { 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f, 0.75f, 0.75f, 0.75f };
+	//std::vector<GLfloat> positions = { 0.75f, -0.75f, 0.0f, -0.75f, -0.75f, 0.0f, 0.75f, 0.75f, 0.000f };
+	//std::vector<GLfloat> colors = { 0.15f, 0.25f, 0.35f, 0.45f, 0.55f, 0.65f, 0.75f, 0.95f, 0.75f };
+
+	std::vector<GLfloat> positions;
+	std::vector<GLfloat> colors;
+	float xStart = -0.5f;
+	float yStart = -0.5f;
+	float z = 0.0f;
+
+	float increment = 0.0f;
+
+	for (int i = 0; i < NUMBER_TRIANGLES; i++) {
+		positions.push_back(xStart + (float)((float)(i*(0.75f*(float)i)) / (float)(NUMBER_TRIANGLES+NUMBER_TRIANGLES)));
+		positions.push_back(yStart + (float)((float)(i+i) / (float)NUMBER_TRIANGLES));
+		positions.push_back(z);
+
+
+		increment += 0.05f;
+		if (increment > 0.6f) {
+			increment = -0.05f;
+			//increment = 0.01f;
+		}
+		
+		for (int j = 0; j < 3; j++) {
+			colors.push_back(0.59f + (float)j / increment);
+		} 
+		//colors.push_back(MathFunc::getRandomInRangef(0.001f + increment, 0.33f+increment));
+		//colors.push_back(MathFunc::getRandomInRangef(0.0f, increment));
+		//colors.push_back(MathFunc::getRandomInRangef(0.667f, 0.88f));
+	}
+
+	float colorZeroReplacer = 0.0f;
+	std::vector<GLfloat>::iterator colorIterator = colors.begin();
+	for (; colorIterator != colors.end(); colorIterator++) {
+		if (*colorIterator <= 0.0f) {
+			colorZeroReplacer += 0.05f;
+			if (colorZeroReplacer > 1.00f) {
+				colorZeroReplacer = 0.15f;
+			}
+		
+			*colorIterator = (colorZeroReplacer);
+		}
+	}
 
 	constexpr int NUM_VERTEX_ARRAYS = 2;
 
@@ -288,7 +328,7 @@ void RenderProject1::updateFrameClearColor() {
 	float * blue = &(backgroundColor.z);
 
 	*red = glm::min(1.0f, (*red + *green + *blue) / 3.0f);
-	*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
+	//*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
 	*blue = 0.5f + 0.25f*cos(counter);
 
 	//static bool sleep = false;
@@ -314,10 +354,10 @@ void RenderProject1::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("time", counter);
 
 	
-	zRotation += 2.0f;
+	zRotation += 0.02f;
 	//fprintf(MSGLOG, "zRot is %f\n", zRotation);
 	sceneShader->uniforms->updateUniform1f("xRotation", 0.0f);
-	sceneShader->uniforms->updateUniform1f("yRotation", 0.0f);
+	sceneShader->uniforms->updateUniform1f("yRotation", 0.0f*zRotation * 4.0f);
 	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
 }
 
@@ -327,7 +367,8 @@ void RenderProject1::drawVerts() {
 	if (vertexAttributes)
 		vertexAttributes->use();
 	
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	/*glDrawArrays(GL_TRIANGLES, 0, 3);*/
+	glDrawArrays(GL_POINTS, 0, NUMBER_TRIANGLES);
 }
 
 

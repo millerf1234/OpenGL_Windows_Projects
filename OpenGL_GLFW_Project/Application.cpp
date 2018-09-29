@@ -48,7 +48,9 @@ void Application::launch() {
 	//runHarfBuzzSetupTest(); //Confirmed that HarfBuzz works as intended. Unfortunatly I currently have no use for it (not until I get billboards/glyphs set up)
 
 	fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
-	runRenderProject1();
+	//runRenderProject1();
+
+	runGeometryShaderExplosion();
 
 
 
@@ -190,5 +192,18 @@ void Application::runHarfBuzzSetupTest() {
 		fprintf(ERRLOG, "Error loading HarfBuzzSetupTest! The Application is"
 			"\ninvalid or the display information is null!\n");
 
+	}
+}
+
+void Application::runGeometryShaderExplosion() {
+	fprintf(MSGLOG, "Loading Geometry Shader Explosion...\n");
+	if (mDisplayInfo && mApplicationValid) {
+		std::unique_ptr<GeometryShaderExplosion> gseDemo = std::make_unique<GeometryShaderExplosion>(mDisplayInfo);
+		gseDemo->loadAssets();
+		gseDemo->run();
+	}
+	else {
+		fprintf(ERRLOG, "Error loading GeometryShaderExplosion demo! The Application is"
+			"\ninvalid or the display information is null!\n");
 	}
 }

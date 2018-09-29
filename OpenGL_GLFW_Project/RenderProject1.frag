@@ -24,11 +24,11 @@
 #version 450 core
 
 in vec3 pos;
-in vec3 Color;
+/*flat*/ noperspective in vec3 Color;
 
 out vec4 FragColor;
 
 void main() {
-	FragColor = vec4(Color, 1.0);
+	FragColor = vec4(Color + pos, 1.0);
 
 }

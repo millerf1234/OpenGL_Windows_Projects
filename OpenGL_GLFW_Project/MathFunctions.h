@@ -23,8 +23,8 @@ namespace MathFunc {
 	//Random number generation
 	//   (Future Idea: Use function pointers to swap out random number generation algorithms). Have a static variable that dictates which rand generation method to use.
 	//   Include the option to toggle seeding random number generation
-	float getRandomInRangef(const float, const float);
-	int getRandomInRangei(const int, const int);
+	float getRandomInRangef(float, float);
+	int getRandomInRangei(int, int);
 
 
 
@@ -38,15 +38,9 @@ namespace MathFunc {
 	static bool randomUseCustomSeed = false;
 	static long long customRandomSeed = 0ll;
 
-
-	void setCustomRandomSeed(const long long seed) {
-		randomUseCustomSeed = true;
-		customRandomSeed = seed;
-	}
-	void unsetCustomRandomSeed() {
-		randomUseCustomSeed = false;
-		customRandomSeed = 0ll;
-	}
+	void setCustomRandomSeed(const long long seed);
+	void unsetCustomRandomSeed();
+	
 
 } //namespace MathFunc
 

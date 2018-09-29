@@ -175,6 +175,15 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
       <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\GeometryShaderTest">
+      <UniqueIdentifier>{8074e451-630a-4f67-81a7-7db7baaa6174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\GeometryShaderExplosion">
+      <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\GeometryShaderExplosion">
+      <UniqueIdentifier>{76e52312-243d-4b1b-bea3-f0e1c689a7f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -270,6 +279,9 @@
     </ClCompile>
     <ClCompile Include="GenericVertexAttributeSet.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryShaderExplosion.cpp">
+      <Filter>Source Files\Projects\GeometryShaderExplosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -638,6 +650,12 @@
     <ClInclude Include="GenericVertexAttributeSet.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClInclude>
+    <ClInclude Include="GeometryShaderExplosion.h">
+      <Filter>Source Files\Projects\GeometryShaderExplosion</Filter>
+    </ClInclude>
+    <ClInclude Include="teapot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="harfbuzz.dll">
@@ -678,6 +696,24 @@
     </None>
     <None Include="RenderProject1.frag">
       <Filter>Resource Files\Shaders\RenderProject1</Filter>
+    </None>
+    <None Include="gst.vert">
+      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+    </None>
+    <None Include="gst.geom">
+      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+    </None>
+    <None Include="gst.frag">
+      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+    </None>
+    <None Include="GeometryShaderExplosion.vert">
+      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
+    </None>
+    <None Include="GeometryShaderExplosion.geom">
+      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
+    </None>
+    <None Include="GeometryShaderExplosion.frag">
+      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

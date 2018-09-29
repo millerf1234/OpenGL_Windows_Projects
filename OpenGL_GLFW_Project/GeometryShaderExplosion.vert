@@ -1,7 +1,8 @@
+//This shader should have the secondary "VertMath.vert" vertex math shader linked with it
+
 #version 450 core
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 color;
 
 uniform float zoom;
 uniform float time;
@@ -9,8 +10,7 @@ uniform float xRotation;
 uniform float yRotation;
 uniform float zRotation;
 
-out vec3 pos1;
-/* flat */ out vec3 Color1;
+out vec3 v2g_position;
 
 
 //Declarations of functions that are defined in a different file but are used within this file
@@ -20,23 +20,18 @@ void rotateY(inout vec3 vert, in float theta);
 void rotateZ(inout vec3 vert, in float theta);
 
 void main() {
-	//Process the color input for the vertex
-	vec3 modColor = color;
-	rotateY(modColor, time);
-	Color1 = modColor;
 
 	//Process the Position input for the vertex
-	vec3 tempPos = position;
-	rotateX(tempPos, xRotation);
-	rotateY(tempPos, yRotation);
-	rotateZ(tempPos, zRotation);
+	vec3 vertPos = position;
+	//rotateX(vertPos, xRotation);
+	rotateY(vertPos, zRotation);
+	//rotateZ(vertPos, zRotation);
 
-	setAspectRatio(tempPos, 2940.0 / 2160.0);
-	pos1 = tempPos;
-
-	//rotateX(rotateY(rotateZ(pos, xRotation), yRotation), zRotation);
+	setAspectRatio(vertPos, -3600.0 / 1800.0);
+	v2g_position = vertPos;
 
 
 
-	gl_Position = vec4(pos1, zoom);
+
+	gl_Position = vec4(vertPos, zoom);
 }

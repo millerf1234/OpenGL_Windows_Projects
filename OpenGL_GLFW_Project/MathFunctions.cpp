@@ -7,7 +7,7 @@
 namespace MathFunc {
 
 	//This function seems really inefficient since it looks like it has to recreate the twister each time it runs...
-	inline float getRandomInRangef(const float min, const float max) {
+	float getRandomInRangef(float min, float max) {
 		long long seed;
 		if (randomUseCustomSeed) 
 			seed = customRandomSeed;
@@ -18,7 +18,7 @@ namespace MathFunc {
 		return real_rand();
 	}
 
-	inline int getRandomInRangei(const int min, const int max) {
+	int getRandomInRangei(int min, int max) {
 		long long seed;
 		if (randomUseCustomSeed) 
 			seed = customRandomSeed;
@@ -29,7 +29,15 @@ namespace MathFunc {
 		return int_rand();
 	}
 
+	void setCustomRandomSeed(const long long seed) {
+		randomUseCustomSeed = true;
+		customRandomSeed = seed;
+	}
 
+	void unsetCustomRandomSeed() {
+		randomUseCustomSeed = false;
+		customRandomSeed = 0ll;
+	}
 
 
 } //namespace MathFunc

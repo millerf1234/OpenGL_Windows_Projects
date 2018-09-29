@@ -172,7 +172,10 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	}
 	else { //Open windowed
 		fprintf(MSGLOG, "\nWindow Context set to open in windowed mode...\n\nOpening Window\n");
-		mWindow = glfwCreateWindow(1670, 960, NAME_OF_GAME, nullptr, nullptr); //Open as window
+		//(If not on a 4k monitor, then this resolution works fine. However with 4k, this is tiny.
+		//mWindow = glfwCreateWindow(1670, 960, NAME_OF_GAME, nullptr, nullptr); //Open as window
+		//So if using a 4k monitor, then do something more like:
+		mWindow = glfwCreateWindow(3600, 1800, NAME_OF_GAME, nullptr, nullptr); //Open as window
 		defaultMonitor = 0;
 		if (mWindow)
 			fprintf(MSGLOG, "Window Successfully Opened!\n\n");

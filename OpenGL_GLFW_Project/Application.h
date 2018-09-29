@@ -21,6 +21,7 @@
 #include "ShaderInterfaceLogger.h" //Not yet in active use
 
 #include "RenderProject1.h"
+#include "GeometryShaderExplosion.h"
 
 
 class Application {
@@ -35,7 +36,7 @@ private:
 	std::unique_ptr<GLFW_Init> mGLFWInitializer;
 
 
-	//Initialization Helper Functions:
+	//Initialization Helper Functions (this was just me playing around and can be removed in future):
 	void callProjectSetupFunctions() { //Mostly just checks system/compiler configuration macros
 		OperatingSystemAndCompilerDependentConfiguationFunc::Call_Project_Setup_Functions(); //see project setup.h
 	} 
@@ -58,6 +59,7 @@ private:
 	//Projects:
 	void runHarfBuzzSetupTest();
 	void runRenderProject1();
+	void runGeometryShaderExplosion();
 
 
 
