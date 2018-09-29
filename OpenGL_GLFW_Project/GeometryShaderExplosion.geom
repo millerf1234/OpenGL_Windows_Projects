@@ -34,20 +34,20 @@ void main() {
 	//Use the three corners to calculate CG
 	CG = (V0 + V1 + V2) / 3.0f;
 
-	g2f_pos = CG;
+	//g2f_pos = CG;
 
 	//???
-	int numLayers = 1 << level; //???   (I think these are either steps or are number of pieces or sumthin)
+	int numLayers = 1 << level; //???   (I think these are either steps or are number of pieces or something)
 	//???
 
 	float dt = 1.0 / float(numLayers);
-	float t = -0.0;
+	float t = 00.0;
 
 	for (int it = 0; it <=numLayers; it++) {
-		float smax = 5.0 - t;
+		float smax = 1.0 - t;
 		int nums = it + 1;
 		float ds = smax / float(nums - 1.0);
-		float s = 0.;
+		float s = 3.0;
 
 		for (int is = 0; is < nums; is++) {
 			produceVertex(s, t);
@@ -72,8 +72,9 @@ void main() {
 void produceVertex(in float s, in float t) {
 	vec3 v = V0 + s*V1 + t*V2;
 	vec3 vel = velocityScale * (v - CG);
+	g2f_pos = vel + CG; //Write Velocity to frag shader
 	v = CG + (vel * time) + (0.5 * vec3(0.0, gravity, 0.0) * time * time); //Basic kinematic equation
 	gl_Position = vec4(v, 1.0 + 15.0*time);
-	gl_PointSize = 2.0;
+	gl_PointSize = 3.0;
 	EmitVertex();
 }

@@ -82,6 +82,7 @@ private:
 	bool checkIfShouldPause() const; //Probably 'space'
 	bool checkIfShouldRecordColor() const; //records the current frames background clear color, probably tied to input 'p' or 'P'
 	
+	bool checkIfShouldReset() const;
 
 
 
@@ -92,7 +93,7 @@ private:
 
 	void pause();
 	void recordColorToLog();
-
+	void reset();
 
 
 

@@ -23,9 +23,9 @@ void main() {
 
 	//Process the Position input for the vertex
 	vec3 vertPos = position;
-	//rotateX(vertPos, xRotation);
+	rotateX(vertPos, xRotation);
 	rotateY(vertPos, zRotation);
-	//rotateZ(vertPos, zRotation);
+	rotateZ(vertPos, yRotation);
 
 	setAspectRatio(vertPos, -3600.0 / 1800.0);
 	v2g_position = vertPos;

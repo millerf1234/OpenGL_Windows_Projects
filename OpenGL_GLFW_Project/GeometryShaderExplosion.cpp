@@ -14,7 +14,7 @@ void GeometryShaderExplosion::initialize() {
 	zRotation = 0.0f;
 
 	//Set initial background color
-	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
+	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
 
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
@@ -165,6 +165,9 @@ void GeometryShaderExplosion::renderLoop() {
 		if (checkIfShouldRecordColor())
 			recordColorToLog();
 
+		if (checkIfShouldReset())
+			reset();
+
 		updateFrameClearColor();
 
 		updateUniforms();
@@ -209,13 +212,10 @@ bool GeometryShaderExplosion::checkIfShouldRecordColor() const {
 	return false;
 }
 
-void GeometryShaderExplosion::recordColorToLog() {
-	frameOfMostRecentColorRecording = frameNumber;
-	int colorDigits = 6; //Digits to print out for each color
-
-						 //Syntax Note: With '%*f', the '*' means that the width will be provided as an additional parameter
-	fprintf(MSGLOG, "\nThe background color of frame %llu is:\n\tRed: %*f,\tGreen: %*f,\tBlue: %*f\n",
-		frameNumber, colorDigits, backgroundColor.r, colorDigits, backgroundColor.g, colorDigits, backgroundColor.b);
+bool GeometryShaderExplosion::checkIfShouldReset() const {
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) 
+		return true;
+	return false;
 
 }
 
@@ -241,9 +241,27 @@ void GeometryShaderExplosion::pause() {
 			return;
 		}
 		else { //wait for a little bit before polling again
-			std::this_thread::sleep_for(std::chrono::nanoseconds(333333333));
+			std::this_thread::sleep_for(std::chrono::nanoseconds(33333333));
 		}
 	}
+}
+
+void GeometryShaderExplosion::recordColorToLog() {
+	frameOfMostRecentColorRecording = frameNumber;
+	int colorDigits = 6; //Digits to print out for each color
+
+						 //Syntax Note: With '%*f', the '*' means that the width will be provided as an additional parameter
+	fprintf(MSGLOG, "\nThe background color of frame %llu is:\n\tRed: %*f,\tGreen: %*f,\tBlue: %*f\n",
+		frameNumber, colorDigits, backgroundColor.r, colorDigits, backgroundColor.g, colorDigits, backgroundColor.b);
+
+}
+
+void GeometryShaderExplosion::reset() {
+	fprintf(MSGLOG, "\nReseting Demo...\n");
+	counter = 0.0f; //Reset time to 0
+	zRotation = 0.0f; //Reset rotation
+	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
+	frameNumber = 0ull;
 }
 
 void GeometryShaderExplosion::updateFrameClearColor() {
@@ -266,10 +284,6 @@ void GeometryShaderExplosion::updateFrameClearColor() {
 		//sleep = true;
 	}
 
-	//red += red * glm::sin(static_cast<float>(counter++));
-	//green = cos(static_cast<float>(counter++));
-	//blue = 0.5*sin(red + (static_cast<float>(counter++)));
-
 	glClearColor(*red, *green, *blue, 1.0f);
 }
 
@@ -277,10 +291,10 @@ void GeometryShaderExplosion::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
 	sceneShader->uniforms->updateUniform1f("zoom", 1.0f);
-	sceneShader->uniforms->updateUniform1f("time", counter * 0.1f);
+	sceneShader->uniforms->updateUniform1f("time", counter);
 	
 	//Uniforms for the geometry shader effect
-	sceneShader->uniforms->updateUniform1i("level", 10);             //tweak this value as needed
+	sceneShader->uniforms->updateUniform1i("level", 2);             //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("gravity", -9.81f);       //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("velocityScale", 3.0f);  //tweak this value as needed
 	
