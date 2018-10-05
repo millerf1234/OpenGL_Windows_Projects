@@ -46,7 +46,7 @@ void main() {
 		red = blue / (blue + 3.0);
 	}
 
-	float cutoff = 0.02 + abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
+	float cutoff = 0.2 + 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
 
 	if ( (length(vec3(red, green, blue)) < cutoff)) {
 		red += abs(gl_FragCoord.x);
@@ -67,8 +67,8 @@ void main() {
 	}
 	*/
 
-	//FragColor = vec4(red, green, blue, 1.0);
-	FragColor = vec4( (red + green) / 2.0, (green + blue) / (2.0 + red), max(blue, 0.25), 1.0);
+	FragColor = vec4(red, green, blue, 1.0);
+	//FragColor = vec4( (red + green) / 2.0, (green + blue) / (2.0 + red), max(blue, 0.25), 1.0);
 	
 
 #endif //USE_COLOR_SCHEME_2

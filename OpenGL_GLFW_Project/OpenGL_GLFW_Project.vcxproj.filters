@@ -199,6 +199,9 @@
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion">
       <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AdditionalDLLs">
+      <UniqueIdentifier>{ee80c7a9-8958-4bc6-a636-a6821a74e3c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -762,6 +765,15 @@
     </None>
     <None Include="TeapotOutline.frag">
       <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="..\Debug\libbz2d.dll">
+      <Filter>AdditionalDLLs</Filter>
+    </None>
+    <None Include="..\Debug\libpng16d.dll">
+      <Filter>AdditionalDLLs</Filter>
+    </None>
+    <None Include="..\Debug\zlibd1.dll">
+      <Filter>AdditionalDLLs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

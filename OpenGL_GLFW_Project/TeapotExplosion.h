@@ -85,6 +85,8 @@ private:
 	
 	bool checkIfShouldReset() const;
 
+	
+
 
 
 

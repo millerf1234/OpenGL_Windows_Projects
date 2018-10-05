@@ -207,7 +207,7 @@ void TeapotExplosion::renderLoop() {
 			recordColorToLog();
 
 		if (checkIfShouldReset()) {
-			if (checkIfShouldPause()) {
+			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 				pause();
 				continue;
 			}

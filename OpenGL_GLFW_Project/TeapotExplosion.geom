@@ -43,7 +43,7 @@ void main() {
 
 
 	//???
-	int numLayers = 1 << level; //???   (I think these are either steps or are number of pieces or something)
+	int numLayers = 8 << level; //???   (I think these are either steps or are number of pieces or something)
 	//???
 
 	float dt = 15.0 / float(numLayers);    //Increasing this value increases the explosions vigour
