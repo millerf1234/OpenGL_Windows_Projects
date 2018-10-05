@@ -1,7 +1,7 @@
-//Class: CompiledShader
-//Namespace: ShaderInterface
+//Class:      CompiledShader
+//Namespace:  ShaderInterface
 //Programmer: Forrest Miller
-//Date(s): 7/24/2018 - 7/31/2018  
+//Date(s):    7/24/2018 - 7/31/2018  
 //
 //Description: The CompiledShader class is an abstract base class that
 //			   is intended to cover the common logic shared between all

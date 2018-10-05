@@ -9,6 +9,7 @@ layout ( points, max_vertices = 100 ) out;
 in vec3 v2g_position[];
 
 out vec3 g2f_pos;
+out vec3 g2f_vel;
 
 uniform int level;
 uniform float gravity;
@@ -34,20 +35,19 @@ void main() {
 	//Use the three corners to calculate CG
 	CG = (V0 + V1 + V2) / 3.0f;
 
-	//g2f_pos = CG;
 
 	//???
 	int numLayers = 1 << level; //???   (I think these are either steps or are number of pieces or something)
 	//???
 
 	float dt = 1.0 / float(numLayers);
-	float t = 00.0;
+	float t = 6.0;
 
 	for (int it = 0; it <=numLayers; it++) {
 		float smax = 1.0 - t;
 		int nums = it + 1;
 		float ds = smax / float(nums - 1.0);
-		float s = 3.0;
+		float s = 9.0;
 
 		for (int is = 0; is < nums; is++) {
 			produceVertex(s, t);
@@ -62,9 +62,6 @@ void main() {
 
 	//Finally, pass some of the position data on to the frag shader...
 
-	
-
-
 }
 
 
@@ -72,9 +69,29 @@ void main() {
 void produceVertex(in float s, in float t) {
 	vec3 v = V0 + s*V1 + t*V2;
 	vec3 vel = velocityScale * (v - CG);
-	g2f_pos = vel + CG; //Write Velocity to frag shader
+
+	g2f_pos = v;
+	g2f_vel = vel;
+
 	v = CG + (vel * time) + (0.5 * vec3(0.0, gravity, 0.0) * time * time); //Basic kinematic equation
-	gl_Position = vec4(v, 1.0 + 15.0*time);
-	gl_PointSize = 3.0;
+	gl_Position = vec4(v, zoom + 15.0 * time);
+	gl_PointSize = 9.0;
+	EmitVertex();
+
+	//Emit more vertices?
+	v.x += 0.05;
+	EmitVertex();
+	v.y += 0.05;
+	EmitVertex();
+	v.x -= 0.05;
+	EmitVertex();
+	v.x -= 0.05;
+	EmitVertex();
+	v.y -= 0.05;
+	EmitVertex();
+	v.y -= 0.05;
+	EmitVertex();
+	v.x += 0.05;
+	v.x += 0.05;
 	EmitVertex();
 }

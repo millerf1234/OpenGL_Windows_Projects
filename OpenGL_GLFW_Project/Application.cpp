@@ -48,54 +48,18 @@ void Application::launch() {
 	//runHarfBuzzSetupTest(); //Confirmed that HarfBuzz works as intended. Unfortunatly I currently have no use for it (not until I get billboards/glyphs set up)
 
 	fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
+	//The two legacy demos:
 	//runRenderProject1();
+	//runGeometryShaderExplosion();
 
-	runGeometryShaderExplosion();
-
-
-
-	//loop();
-
-	//std::cin.get();
 	
+	fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-	/*  From Space Game's main()
-
-	std::cout << std::endl << std::endl << "Preparing To Launch Game..." << std::endl;
-
-	std::cout << "    Generating a new instance of the game..." << std::endl;
-	Game Game(detectedDisplayInfo); //Create an instance of the game and tell
-	//the instance about all the monitor setup that has been done thus far.
-
-
-
-	//    //How I initially imagined loading would work:
-	//    std::cout << "Done\n    Loading Models...";
-	//    Game.loadGameObjects();
-	//    std::cout << "Done\n    Loading Shaders...";
-	//   // Game.loadShaders();
-	//    std::cout << "Done\n    Loading Textures...";
-	//    //Game.loadTextures();
-	//    std::cout << "Done\n" << std::endl;
-	//    std::cout << "Game Launched." << std::endl << std::endl;
-
-
-
-	//How loading actually works:
-	std::cout << "\n    Loading Game Assets...";
-	Game.loadGameObjects();
-	std::cout << "    Finished Loading Game Assets.\n" << std::endl;
-
-	///As you can see in this next line, I lie... The game clearly has not launched when
-	///I print out the message saying it has.
-	std::cout << "Game Launched." << std::endl << std::endl;
-
-	//Game.playIntroMovie(); //Implement later (when budget is bigger)
-
-	Game.launch(); ///Now the game has launched
-	//Launch will return only once the game has concluded its game loop
-	windowSetupRoutines.terminate(); //Handle closing the window
-	*/
+	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
+	fprintf(MSGLOG, "Loading TeapotExplosion...\n");
+	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(mDisplayInfo);
+	runRenderDemo(TeapotExplosionDemo, "Teapot Explosion Demo");
+	
 }
 
 void Application::setupGLFW() {
@@ -168,6 +132,37 @@ void Application::playIntroMovie() {
 	}*/
 	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
 }
+
+void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name) {
+	bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));
+
+	//Perform error check
+	if (renderDemo == nullptr) {
+		if (demoHasNameProvided)
+			fprintf(ERRLOG, "\n\n\t(While trying to run RenderDemo %s)\n", name);
+		else
+			fprintf(ERRLOG, "\n\n");
+		fprintf(ERRLOG, "\nWhoah! A 'nullptr' was passed in as the RenderDemo to\nthis Application's "
+			"member function 'runRenderDemo()'.\n"
+			"Passing around nullptrs is very dangerous, luckily this time it was caught.\n"
+			"Only reasonable thing to do here is crash and exit gracefully...\n  Demo is exiting!\n");
+		fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
+	}
+	//Perform a second error check
+	else if ( !(mDisplayInfo && mApplicationValid) ) {
+		fprintf(ERRLOG, "\nError launching RenderDemo!\n"
+			"The Application is invalid or the detected display information is null!\n");
+	}
+	//Else Proceed with loading and launching the RenderDemo
+	else {
+		if (demoHasNameProvided) {
+			fprintf(MSGLOG, "Loading %s... \n", name);
+		}
+		renderDemo->loadAssets();
+		renderDemo->run();
+	}
+}
+
 
 void Application::runRenderProject1() {
 	fprintf(MSGLOG, "Loading RenderProject1...\n");

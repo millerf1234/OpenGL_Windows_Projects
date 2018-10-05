@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AssetLoader.cpp" />
     <ClCompile Include="BBuffer.cpp" />
     <ClCompile Include="BufferPool.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
@@ -157,10 +158,12 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="GenericVertexAttributeSet.cpp" />
     <ClCompile Include="SimpleVertexBuffer.cpp" />
+    <ClCompile Include="TeapotExplosion.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="TextEngine.cpp" />
@@ -177,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssetLoader.h" />
     <ClInclude Include="BBuffer.h" />
     <ClInclude Include="BufferPool.h" />
     <ClInclude Include="CompiledShader.h" />
@@ -280,12 +284,14 @@
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectResourceFilepaths.h" />
     <ClInclude Include="ProjectSetup.h" />
+    <ClInclude Include="RenderDemoBase.h" />
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="GenericVertexAttributeSet.h" />
     <ClInclude Include="SimpleVertexBuffer.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="teapot.h" />
+    <ClInclude Include="TeapotExplosion.h" />
     <ClInclude Include="TesselationControlShader.h" />
     <ClInclude Include="TesselationEvaluationShader.h" />
     <ClInclude Include="TextEngine.h" />
@@ -315,6 +321,11 @@
     <None Include="harfbuzz.dll" />
     <None Include="RenderProject1.frag" />
     <None Include="RenderProject1.vert" />
+    <None Include="TeapotExplosion.frag" />
+    <None Include="TeapotExplosion.geom" />
+    <None Include="TeapotExplosion.vert" />
+    <None Include="TeapotOutline.frag" />
+    <None Include="TeapotOutline.geom" />
     <None Include="VertMath.vert" />
     <None Include="obj\Engine2_Textured.mtl" />
     <None Include="passthrough2D.vert" />
@@ -342,6 +353,10 @@
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="C_Preprocessor_Applications.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Text>
     <Text Include="Notes_and_ReadMe.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>

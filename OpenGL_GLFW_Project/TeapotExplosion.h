@@ -1,19 +1,17 @@
-//This is a test of using a geometry shader for an explosion effect of a mesh.
-//The shader code for this is based off the code example at
+//This file contains a class that is based upon my previous GeometryShaderExplosion class,
+//the differrence between the two being that this class uses RenderDemoBase to provide
+//the interface for the outside calling Application. 
+//
+//The original GeometryShaderExplosion class was based off the code example at
 //  http://web.engr.oregonstate.edu/~mjb/cs519/Handouts/geometry_shaders.6pp.pdf
 //      (Slides 29-32) 
-//
-// The application code also is based off the code I wrote for RenderProject1 
-//
 
 #pragma once
 
-#ifndef GEOMETRY_SHADER_EXPLOSION_H_
-#define GEOMETRY_SHADER_EXPLOSION_H_
+#ifndef TEAPOT_EXPLOSION_H_
+#define TEAPOT_EXPLOSION_H_
 
-#include <limits>
 #include <thread>
-#include <chrono>
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -28,30 +26,31 @@
 
 #include "teapot.h"  //From the internet, is a file containing the vertices for a teapot
 
-//inline static constexpr int EXPLOSION_LEVELS = 10;
+#include "RenderDemoBase.h"
 
 using ShaderInterface::GenericVertexAttributeSet; 
 
-class GeometryShaderExplosion {
+class TeapotExplosion : public RenderDemoBase {
 public:
-	GeometryShaderExplosion() = delete;
-	GeometryShaderExplosion(std::shared_ptr<MonitorData> screenInfo);
-	~GeometryShaderExplosion();
+	TeapotExplosion() = delete;
+	TeapotExplosion(std::shared_ptr<MonitorData> screenInfo);
+	virtual ~TeapotExplosion() override;
 
-	void run();
-	void loadAssets();
+	virtual void loadAssets() override;
+	virtual void run() override;
 	
-
 private:
 	bool error;
-	GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
-	float zRotation;
+	float xRotation, yRotation, zRotation;
 	glm::vec3 backgroundColor;
 
+	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
+	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
+	std::unique_ptr<ShaderProgram> sceneShaderLine;
 	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
 
 
@@ -154,4 +153,6 @@ private:
 
 
 
-#endif //GEOMETRY_SHADER_EXPLOSION_H_
+
+
+#endif //TEAPOT_EXPLOSION_H_

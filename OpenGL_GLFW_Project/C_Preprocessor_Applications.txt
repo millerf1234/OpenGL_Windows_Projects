@@ -1,0 +1,37 @@
+
+All of the information in this document has been either directly copied or 
+paraphrased from the following source:
+
+Proxy URL (Try this one first):
+               http://www.purl.org/stefan_ram/pub/c_preprocessor_applications_en
+Actual URL:    
+               http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/c_preprocessor_applications_en
+
+
+Notes from that URL above:
+
+-) PRINTING ENUM VALUES AS STRINGS (sorta)
+     (This is really more a way to declare enums and corresponding c-strings at the same time
+	 without having to do seperate declarations for each)
+
+	 // Let's say we have a file, called 'enumstring.c' which contains the following code
+	 
+	 #include <stdio.h>
+	 #define NAMES C(RED)C(GREEN)C(BLUE)
+	 #define C(x) x,
+	 enum color { NAMES TOP };
+	 #undef C
+	 #define C(x) #x
+	 const char * const color_name[] = { names };
+	 
+	 int main(void) {
+		printf( "The color is %s.\n", color_name[ RED] );
+		printf( "There are %d colors.\n", TOP ); 
+	 } 
+	
+   //After running, this file would print out 
+			The color is RED.
+			There are 3 colors.
+
+
+

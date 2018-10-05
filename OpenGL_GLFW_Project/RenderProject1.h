@@ -27,6 +27,8 @@
 
 static constexpr int NUMBER_TRIANGLES = 1000;
 
+using ShaderInterface::GenericVertexAttributeSet;
+
 class RenderProject1 {
 public:
 	RenderProject1() = delete;

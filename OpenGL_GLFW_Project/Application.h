@@ -18,10 +18,11 @@
 #include "ProjectResourceFilepaths.h"
 #include "HarfBuzzSetupTest.h"
 
-#include "ShaderInterfaceLogger.h" //Not yet in active use
-
 #include "RenderProject1.h"
 #include "GeometryShaderExplosion.h"
+
+#include "RenderDemoBase.h"
+#include "TeapotExplosion.h"
 
 
 class Application {
@@ -53,10 +54,12 @@ private:
 	void playIntroMovie();
 	
 
-	
+	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
+	//newly created, without either of the load() or run() methods having been called.
+	void runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name = "\0");
 
 
-	//Projects:
+	//(Pre-RenderDemo) Projects:
 	void runHarfBuzzSetupTest();
 	void runRenderProject1();
 	void runGeometryShaderExplosion();

@@ -22,23 +22,11 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Generic">
-      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects">
       <UniqueIdentifier>{428dca05-119d-462b-a72e-9ca33a9e091a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderProject1">
-      <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\HarfBuzzTest">
-      <UniqueIdentifier>{ff7f58ca-f085-4504-8bf9-60606d1c660a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ed0ef0ff-dece-473a-91eb-cf8eb2074bbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\TextEngine">
-      <UniqueIdentifier>{b6fdd42c-2e77-4d36-bb3c-5090900d250a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Math">
       <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
@@ -163,26 +151,53 @@
     <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Generic\Old">
-      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProject1">
-      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
       <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\GeometryShaderTest">
+    <Filter Include="Source Files\Utility\TextEngine">
+      <UniqueIdentifier>{b6fdd42c-2e77-4d36-bb3c-5090900d250a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos">
+      <UniqueIdentifier>{1e441985-93c9-425d-b6ff-9217ad2c8ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
+      <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy">
+      <UniqueIdentifier>{4c8bc92e-9b24-4d15-a98b-c274c4527f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\RenderProject1">
+      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderTest">
       <UniqueIdentifier>{8074e451-630a-4f67-81a7-7db7baaa6174}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\GeometryShaderExplosion">
-      <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\GeometryShaderExplosion">
+    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderExplosion">
       <UniqueIdentifier>{76e52312-243d-4b1b-bea3-f0e1c689a7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\Generic">
+      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
+      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\TeapotExplosion">
+      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo">
+      <UniqueIdentifier>{5a97e638-bcd6-40df-a1e4-9636c9d32898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1">
+      <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest">
+      <UniqueIdentifier>{ff7f58ca-f085-4504-8bf9-60606d1c660a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion">
+      <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -196,13 +211,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderProject1.cpp">
-      <Filter>Source Files\Projects\RenderProject1</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
     </ClCompile>
     <ClCompile Include="HarfBuzzTester.cpp">
-      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
     </ClCompile>
     <ClCompile Include="HarfBuzzSetupTest.cpp">
-      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
     </ClCompile>
     <ClCompile Include="TextEngine.cpp">
       <Filter>Source Files\Utility\TextEngine</Filter>
@@ -281,7 +296,16 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClCompile>
     <ClCompile Include="GeometryShaderExplosion.cpp">
-      <Filter>Source Files\Projects\GeometryShaderExplosion</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDemoBase.cpp">
+      <Filter>Source Files\Projects\RenderDemos</Filter>
+    </ClCompile>
+    <ClCompile Include="TeapotExplosion.cpp">
+      <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,7 +339,7 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderProject1.h">
-      <Filter>Source Files\Projects\RenderProject1</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzz\hb.h">
       <Filter>Third Party\HarfBuzz</Filter>
@@ -537,10 +561,10 @@
       <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzzTester.h">
-      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
     </ClInclude>
     <ClInclude Include="HarfBuzzSetupTest.h">
-      <Filter>Source Files\Projects\HarfBuzzTest</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
     </ClInclude>
     <ClInclude Include="TextEngine.h">
       <Filter>Source Files\Utility\TextEngine</Filter>
@@ -651,10 +675,19 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClInclude>
     <ClInclude Include="GeometryShaderExplosion.h">
-      <Filter>Source Files\Projects\GeometryShaderExplosion</Filter>
+      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion</Filter>
     </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDemoBase.h">
+      <Filter>Source Files\Projects\RenderDemos</Filter>
+    </ClInclude>
+    <ClInclude Include="TeapotExplosion.h">
+      <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -677,43 +710,58 @@
       <Filter>Resource Files\Models\OBJ</Filter>
     </None>
     <None Include="constantcolor.frag">
-      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
     </None>
     <None Include="passthrough2D.vert">
-      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
     </None>
     <None Include="passthrough3D.vert">
-      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
     </None>
     <None Include="TestGeom.geom">
-      <Filter>Resource Files\Shaders\Generic\Old</Filter>
+      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
     </None>
     <None Include="VertMath.vert">
       <Filter>Resource Files\Shaders\VertexUtility</Filter>
     </None>
     <None Include="RenderProject1.vert">
-      <Filter>Resource Files\Shaders\RenderProject1</Filter>
+      <Filter>Resource Files\Shaders\Legacy\RenderProject1</Filter>
     </None>
     <None Include="RenderProject1.frag">
-      <Filter>Resource Files\Shaders\RenderProject1</Filter>
+      <Filter>Resource Files\Shaders\Legacy\RenderProject1</Filter>
     </None>
     <None Include="gst.vert">
-      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
     </None>
     <None Include="gst.geom">
-      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
     </None>
     <None Include="gst.frag">
-      <Filter>Resource Files\Shaders\GeometryShaderTest</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
     </None>
     <None Include="GeometryShaderExplosion.vert">
-      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
     </None>
     <None Include="GeometryShaderExplosion.geom">
-      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
     </None>
     <None Include="GeometryShaderExplosion.frag">
-      <Filter>Resource Files\Shaders\GeometryShaderExplosion</Filter>
+      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
+    </None>
+    <None Include="TeapotExplosion.vert">
+      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="TeapotExplosion.geom">
+      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="TeapotExplosion.frag">
+      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="TeapotOutline.geom">
+      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="TeapotOutline.frag">
+      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -778,6 +826,9 @@
     </Text>
     <Text Include="TextureWebsiteResources.txt">
       <Filter>Resource Files\Textures</Filter>
+    </Text>
+    <Text Include="C_Preprocessor_Applications.txt">
+      <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
