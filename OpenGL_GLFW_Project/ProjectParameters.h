@@ -18,7 +18,7 @@
 static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 
 
-static constexpr bool USE_FULLSCREEN = false;
+static constexpr bool USE_FULLSCREEN = true;
 
 static constexpr bool USE_VSYNC = true;
 
@@ -26,14 +26,14 @@ static constexpr int DEFAULT_AA_SAMPLES = 4;
 
 
 
-static constexpr int FONT_SIZE = 24;
-static constexpr float MARGIN = FONT_SIZE * 0.5f;
+//static constexpr int FONT_SIZE = 24;
+//static constexpr float MARGIN = FONT_SIZE * 0.5f;
 
 
 
 
 //Mostly constant parameters (these parameters can be tweaked but usually doing so will have a negative effect)
-static constexpr unsigned long long DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE = 10ull;
+static constexpr unsigned long long DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE = 8ull;
 static constexpr unsigned long long DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1 = 15ull;
 
 

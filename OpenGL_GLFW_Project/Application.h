@@ -16,7 +16,6 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 #include "ProjectResourceFilepaths.h"
-#include "HarfBuzzSetupTest.h"
 
 #include "RenderProject1.h"
 #include "GeometryShaderExplosion.h"
@@ -60,7 +59,6 @@ private:
 
 
 	//(Pre-RenderDemo) Projects:
-	void runHarfBuzzSetupTest();
 	void runRenderProject1();
 	void runGeometryShaderExplosion();
 

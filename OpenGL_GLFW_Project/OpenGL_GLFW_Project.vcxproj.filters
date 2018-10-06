@@ -46,9 +46,6 @@
     <Filter Include="Third Party">
       <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\HarfBuzz">
-      <UniqueIdentifier>{33c2c045-52f5-4e25-b6e3-8480c9046c78}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party\GLFW">
       <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
     </Filter>
@@ -157,9 +154,6 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
       <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\TextEngine">
-      <UniqueIdentifier>{b6fdd42c-2e77-4d36-bb3c-5090900d250a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects\RenderDemos">
       <UniqueIdentifier>{1e441985-93c9-425d-b6ff-9217ad2c8ec2}</UniqueIdentifier>
     </Filter>
@@ -193,14 +187,8 @@
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1">
       <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest">
-      <UniqueIdentifier>{ff7f58ca-f085-4504-8bf9-60606d1c660a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion">
       <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AdditionalDLLs">
-      <UniqueIdentifier>{ee80c7a9-8958-4bc6-a636-a6821a74e3c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -215,15 +203,6 @@
     </ClCompile>
     <ClCompile Include="RenderProject1.cpp">
       <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
-    </ClCompile>
-    <ClCompile Include="HarfBuzzTester.cpp">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
-    </ClCompile>
-    <ClCompile Include="HarfBuzzSetupTest.cpp">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
-    </ClCompile>
-    <ClCompile Include="TextEngine.cpp">
-      <Filter>Source Files\Utility\TextEngine</Filter>
     </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
@@ -301,9 +280,6 @@
     <ClCompile Include="GeometryShaderExplosion.cpp">
       <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion</Filter>
     </ClCompile>
-    <ClCompile Include="AssetLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderDemoBase.cpp">
       <Filter>Source Files\Projects\RenderDemos</Filter>
     </ClCompile>
@@ -312,9 +288,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="harfbuzz.lib">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </Library>
     <Library Include="freetype.lib">
       <Filter>Third Party\FreeType</Filter>
     </Library>
@@ -343,69 +316,6 @@
     </ClInclude>
     <ClInclude Include="RenderProject1.h">
       <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-blob.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-buffer.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-common.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-deprecated.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-face.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-font.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ft.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-map.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-font.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-layout.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-math.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-shape.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-tag.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-ot-var.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-set.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-shape.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-shape-plan.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-unicode.h">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzz\hb-version.h">
-      <Filter>Third Party\HarfBuzz</Filter>
     </ClInclude>
     <ClInclude Include="ft2build.h">
       <Filter>Third Party\FreeType</Filter>
@@ -563,18 +473,6 @@
     <ClInclude Include="freetype\config\ftstdlib.h">
       <Filter>Third Party\FreeType\freetype\config</Filter>
     </ClInclude>
-    <ClInclude Include="HarfBuzzTester.h">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
-    </ClInclude>
-    <ClInclude Include="HarfBuzzSetupTest.h">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\HarfBuzzTest</Filter>
-    </ClInclude>
-    <ClInclude Include="TextEngine.h">
-      <Filter>Source Files\Utility\TextEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="TextLine.h">
-      <Filter>Source Files\Utility\TextEngine</Filter>
-    </ClInclude>
     <ClInclude Include="UniformLocationBucket.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClInclude>
@@ -683,9 +581,6 @@
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AssetLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderDemoBase.h">
       <Filter>Source Files\Projects\RenderDemos</Filter>
     </ClInclude>
@@ -694,9 +589,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="harfbuzz.dll">
-      <Filter>Third Party\HarfBuzz</Filter>
-    </None>
     <None Include="freetype.dll">
       <Filter>Third Party\FreeType</Filter>
     </None>
@@ -765,15 +657,6 @@
     </None>
     <None Include="TeapotOutline.frag">
       <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
-    </None>
-    <None Include="..\Debug\libbz2d.dll">
-      <Filter>AdditionalDLLs</Filter>
-    </None>
-    <None Include="..\Debug\libpng16d.dll">
-      <Filter>AdditionalDLLs</Filter>
-    </None>
-    <None Include="..\Debug\zlibd1.dll">
-      <Filter>AdditionalDLLs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

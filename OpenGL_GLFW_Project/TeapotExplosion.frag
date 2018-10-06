@@ -46,7 +46,7 @@ void main() {
 		red = blue / (blue + 3.0);
 	}
 
-	float cutoff = 0.2 + 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
+	float cutoff = 0.2; //+ 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
 
 	if ( (length(vec3(red, green, blue)) < cutoff)) {
 		red += abs(gl_FragCoord.x);

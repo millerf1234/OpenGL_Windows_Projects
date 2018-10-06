@@ -19,8 +19,6 @@
 
 #include "ProjectResourceFilepaths.h"
 
-#include "TextEngine.h"
-
 #include "ShaderProgram.h"
 #include "GenericVertexAttributeSet.h"
 
@@ -50,11 +48,6 @@ private:
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
-
-
-	std::unique_ptr<TextEngine> txtEngine;
-
-	
 
 	
 	//   Helper Functions

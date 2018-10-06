@@ -12,13 +12,8 @@ void RenderProject1::initialize() {
 	counter = 0.0f;
 	zRotation = 0.0f;
 
-	txtEngine = nullptr;
-
 	//Set initial background color
 	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
-
-
-	
 
 
 }
@@ -65,18 +60,9 @@ void RenderProject1::run() {
 	fprintf(MSGLOG, "\nRENDER PROJECT 1 IS LOADED AND RUNNING!\n");
 
 
-	//fprintf(MSGLOG, "\nLoading TextEngine...\n");
+	
 	
 
-	//fprintf(MSGLOG, "\nRender PROJECT 1 will attempt a HarfBuzz test...\n");
-	//std::unique_ptr<HarfBuzzTester> hbTest = std::make_unique<HarfBuzzTester>();
-
-	//hbTest->runTest();
-	if (txtEngine) {
-		fprintf(MSGLOG, "\nLoaded TextEngine! Text Engine ready status: %d\n", txtEngine->ready());
-	}
-	
-	txtEngine.release();
 	fprintf(MSGLOG, "\nUnloaded TextEngine since no text rendering is yet possible...\n");
 
 	fprintf(MSGLOG, "\nTesting graphics language!\n");
