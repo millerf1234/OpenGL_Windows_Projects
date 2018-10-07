@@ -12,7 +12,7 @@ out vec4 FragColor;
 uniform float time;
 
 
-//Only define 1
+//Only define 1 of the following to determine color scheme
 //#define USE_COLOR_SCHEME_0 
 //#define USE_COLOR_SCHEME_1  
 #define USE_COLOR_SCHEME_2
@@ -68,6 +68,7 @@ void main() {
 	*/
 
 	FragColor = vec4(red, green, blue, 1.0);
+	//FragColor = vec4(max(red, green), abs(sin((green + red)*(3.14159*2.0))), max(max(red, green),blue), 1.0);
 	//FragColor = vec4( (red + green) / 2.0, (green + blue) / (2.0 + red), max(blue, 0.25), 1.0);
 	
 
