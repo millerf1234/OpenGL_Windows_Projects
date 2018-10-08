@@ -8,8 +8,9 @@
 #ifndef PROJECT_SETUP_H_
 #define PROJECT_SETUP_H_
 
-//If building for debug
-#define USE_DEBUG 
+//If building for debug    (leaving this defined (should) enable debugging within both the GL Context and GLFW)
+#define USE_DEBUG_ 
+
 
 //Glad version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
 #include "glad.h"
@@ -44,9 +45,12 @@
 #include "LoggingMessageTargets.h"
 #include "OS_And_Compiler_Configuration_Check.h"
 
-#ifdef USE_DEBUG 
+#ifdef USE_DEBUG_ 
 #include "GL_Context_Debug_Message_Callback_Function.h"
-#endif //USE_DEBUG
+static constexpr bool USE_DEBUG = true;
+#else 
+static constexpr bool USE_DEBUG = false;
+#endif //USE_DEBUG_
 
 
 

@@ -17,6 +17,9 @@
 #include "ProjectParameters.h"
 #include "ProjectConstants.h"
 
+typedef struct MyGLWindow {
+	void leftClick
+} MyGLWindow;
 
 typedef struct MonitorData {
 	int numDetected, activeMonitorNum, width, height, refreshRate;
@@ -31,6 +34,7 @@ public:
 	//void glfwGetFramebufferSize(GLFWwindow* window, int* width, int* height);
 
 	GLFW_Init(); 
+	~GLFW_Init();
 
 	void openWindowed() { this->openFullScreen = false; }
 	void setDefaultMonitor(int monitorNumber) { this->defaultMonitor = monitorNumber; }
@@ -54,6 +58,10 @@ private:
 	int width, height, refreshRate;
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
+
+
+	void setupWindowEventProcessing(); 
+
 };
 
 

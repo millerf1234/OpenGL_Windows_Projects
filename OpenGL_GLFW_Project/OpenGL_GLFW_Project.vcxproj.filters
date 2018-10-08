@@ -190,6 +190,15 @@
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion">
       <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine">
+      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine\Engine2">
+      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample">
+      <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -601,9 +610,6 @@
     <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
     </None>
-    <None Include="obj\Engine2_Textured.mtl">
-      <Filter>Resource Files\Models\OBJ</Filter>
-    </None>
     <None Include="constantcolor.frag">
       <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
     </None>
@@ -657,6 +663,9 @@
     </None>
     <None Include="TeapotOutline.frag">
       <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+    </None>
+    <None Include="obj\Engine2_Textured.mtl">
+      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -728,12 +737,12 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="obj\Engine2_Textured.obj">
-      <Filter>Resource Files\Models\OBJ</Filter>
+      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">
-      <Filter>Resource Files\Models\OBJ</Filter>
+      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
     </Image>
   </ItemGroup>
 </Project>

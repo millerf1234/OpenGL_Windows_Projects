@@ -96,14 +96,15 @@ void Application::loadGraphicsLanguageFunctions() {
 
 void Application::checkIfGraphicsContextDebugCallbackFunctionEnabled() const {
 	fprintf(MSGLOG, "Graphics Context Debug Output: ");
-#ifdef USE_DEBUG    //defined in ProjectSetup.h
-	fprintf(MSGLOG, "Enabled\n\n");
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
-	glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
-#else
-	fprintf(MSGLOG, "Disabled\n\n");
-#endif //USE_DEBUG
+	if (USE_DEBUG) {   //set in ProjectSetup.h
+		fprintf(MSGLOG, "Enabled\n\n");
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
+		glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
+	}
+	else {
+		fprintf(MSGLOG, "Disabled\n\n");
+	}
 }
 
 

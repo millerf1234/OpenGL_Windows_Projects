@@ -22,7 +22,7 @@ static constexpr bool USE_FULLSCREEN = true;
 
 static constexpr bool USE_VSYNC = true;
 
-static constexpr int DEFAULT_AA_SAMPLES = 4;
+static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 
 

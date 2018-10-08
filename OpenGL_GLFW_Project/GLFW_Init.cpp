@@ -36,6 +36,14 @@ GLFW_Init::GLFW_Init() {
 	contextIsValid = false;
 }
 
+GLFW_Init::~GLFW_Init() {
+	
+}
+
+void GLFW_Init::terminate() {
+	glfwTerminate(); //Terminating is quite a bit easier than setting up, as you can see
+}
+
 
 //Do window setup routines and return a struct representing information on detected monitors
 std::shared_ptr<MonitorData> GLFW_Init::initialize() {
@@ -59,25 +67,36 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	fprintf(MSGLOG, "\t  GL Profile: CORE\n"); //Always use CORE 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+
+	fprintf(MSGLOG, "\t  Create as debug context: ");  //Enabling this may reduce performance
+	if (USE_DEBUG) {
+		fprintf(MSGLOG, "ENABLED\n");
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+	}
+	else {
+		fprintf(MSGLOG, "DISABLED\n");
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+	}
+
 	
 	fprintf(MSGLOG, "\t  FORWARD COMPATIBILITY: ");
 	if (this->forwardCompatible) {
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 		fprintf(MSGLOG, "TRUE\n");
 	}
 	else {
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
 		fprintf(MSGLOG, "FALSE\n");
 	}
 
 	
 	fprintf(MSGLOG, "\t  WINDOW RESIZEABLE: ");
 	if (this->resizeable) {
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		fprintf(MSGLOG, "TRUE\n");
 	}
 	else {
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		fprintf(MSGLOG, "FALSE\n");
 	}
 
@@ -99,6 +118,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		fprintf(WRNLOG, "WARNING! VSYNC INTERVAL IS SET TO A NON-STANDARD VALUE AND MAY RESULT IN UNDEFINED BEHAVIOR\n");
 		fprintf(WRNLOG, "VSYNC interval set to %d while the value must be only either 0 or 1!\n", vSyncInterval);
 	}
+
+
 
 	fprintf(MSGLOG, "OpenGL context configured!\n");
 
@@ -198,6 +219,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
 		contextIsValid = true;
+
 	}
 	return (generateDetectedMonitorsStruct());
 }
@@ -246,6 +268,12 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 	}
 }
 
-void GLFW_Init::terminate() {
-	glfwTerminate(); //Terminating is quite a bit easier than setting up, as you can see
+
+
+void setupWindowEventProcessing() {
+	//For what I intend to do here, see https://stackoverflow.com/a/28660673
+	//However, to do this the way I have start to do it would require defining the apporpriate 
+	//callback functions here, which doesn't seem right. Application should somehow do the callbacks,
+	//and maybe by doing so just note that an event occured and mark it in some shared part of data that
+	//then the individual projects can respond to.
 }
