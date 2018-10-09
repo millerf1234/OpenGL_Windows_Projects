@@ -36,7 +36,7 @@ void main() {
 	V2 = (gl_in[2].gl_Position - gl_in[0].gl_Position).xyz; 
 
 	//Use the three corners to calculate CG
-	CG = (V0 + V1 + V2) / 3.0f;
+	CG = (V0 + V1 + V2) / 2.5f;
 
 	//Calculate the Adjusted zoom
 	float adjustedZoom = zoom + 65.0 * time * (0.5 * time);
@@ -103,8 +103,10 @@ void produceVertex(in float s, in float t, in float adjustedZoom) {
 		//v.x = (v.x * (-1.0 * gl_InvocationID));
 		v.y *= 1.15 + (atan(time) / 1.55);
 
+		//gl_Position = vec4(v*atanh(length(v*v)), adjustedZoom);
+
 		gl_Position = vec4(v, adjustedZoom);
-		gl_PointSize = 3.0 + (gl_InvocationID / 2.2);
+		gl_PointSize = 1.0 + (gl_InvocationID / 2.2);
 		EmitVertex();
 	}
 

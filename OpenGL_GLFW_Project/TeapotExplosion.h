@@ -30,6 +30,8 @@
 
 using ShaderInterface::GenericVertexAttributeSet; 
 
+enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };
+
 class TeapotExplosion : public RenderDemoBase {
 public:
 	TeapotExplosion() = delete;
@@ -44,7 +46,12 @@ private:
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
 	float xRotation, yRotation, zRotation;
+	float redRotationTheta, greenRotationTheta, blueRotationTheta;
 	glm::vec3 backgroundColor;
+
+	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
+
+	float colorChangeThreshold;
 
 	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
 	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
@@ -85,10 +92,6 @@ private:
 	
 	bool checkIfShouldReset() const;
 
-	
-
-
-
 
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							   |  (2)  Input Processing    |
@@ -99,6 +102,11 @@ private:
 	void reset();
 
 
+	//1 and 2 in same function:
+	void changePrimitiveType(); 
+	void modifyColorThreshhold();
+	void rotateColor();
+	
 
 
 

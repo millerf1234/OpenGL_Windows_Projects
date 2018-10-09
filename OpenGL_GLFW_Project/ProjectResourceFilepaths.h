@@ -10,7 +10,15 @@
 #ifndef PROJECT_RESOURCE_FILEPATHS_H_
 #define PROJECT_RESOURCE_FILEPATHS_H_
 
+
 #include "ProjectSetup.h" //To get access to GL types
+
+///////////////////////////////
+//  MODELS 
+///////////////////////////////
+
+#include "ModelFilepaths.h"  //Models get their own file
+
 
 ///////////////////////////////
 //  FONTS

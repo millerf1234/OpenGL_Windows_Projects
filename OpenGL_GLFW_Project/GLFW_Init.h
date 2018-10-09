@@ -17,9 +17,6 @@
 #include "ProjectParameters.h"
 #include "ProjectConstants.h"
 
-typedef struct MyGLWindow {
-	void leftClick
-} MyGLWindow;
 
 typedef struct MonitorData {
 	int numDetected, activeMonitorNum, width, height, refreshRate;

@@ -243,7 +243,7 @@
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="ObjAnalyzer.h" />
-    <ClInclude Include="ObjFilepaths.h" />
+    <ClInclude Include="ModelFilepaths.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MappableBuffer.h" />
@@ -287,6 +287,7 @@
     <None Include="gst.frag" />
     <None Include="gst.geom" />
     <None Include="gst.vert" />
+    <None Include="obj\BeveledCube.mtl" />
     <None Include="RenderProject1.frag" />
     <None Include="RenderProject1.vert" />
     <None Include="TeapotExplosion.frag" />
@@ -331,9 +332,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
     </Text>
-    <Text Include="TextureWebsiteResources.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="obj\BeveledCube.obj">
+      <FileType>Document</FileType>
+    </None>
     <Object Include="obj\Engine2_Textured.obj">
       <SubType>Designer</SubType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -341,6 +344,7 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="obj\BeveledCube.png" />
     <Image Include="obj\RocketEngine_UV.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

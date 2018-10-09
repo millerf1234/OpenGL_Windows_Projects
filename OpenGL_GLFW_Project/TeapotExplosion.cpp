@@ -13,9 +13,17 @@ void TeapotExplosion::initialize() {
 	xRotation = 90.0f;
 	yRotation = 120.0f;
 	zRotation = 0.0f;
+	redRotationTheta = 0.0f;
+	greenRotationTheta = 0.0f;
+	blueRotationTheta = 0.0f;
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
+
+	//Set the starting input primitive type
+	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+
+	colorChangeThreshold = 0.12f;
 
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
@@ -213,7 +221,11 @@ void TeapotExplosion::renderLoop() {
 			}
 			reset();
 		}
-			
+
+		changePrimitiveType();
+		modifyColorThreshhold();
+		rotateColor();
+
 
 		updateFrameClearColor();
 
@@ -224,9 +236,8 @@ void TeapotExplosion::renderLoop() {
 
 		counter += 0.000125f;
 
-
-
 		glfwSwapBuffers(window);
+		
 		glfwPollEvents();
 		frameNumber++; //Increment the frame counter
 		prepareGLContextForNextFrame();
@@ -311,6 +322,41 @@ void TeapotExplosion::reset() {
 	frameNumber = 0ull;
 }
 
+void TeapotExplosion::changePrimitiveType() {
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) 
+		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+
+	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) 
+		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::STRIP;
+
+	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) 
+		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::FAN;
+}
+
+void TeapotExplosion::modifyColorThreshhold() {
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		if (colorChangeThreshold < 1.0f)
+			colorChangeThreshold += 0.005f;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		if (colorChangeThreshold > 0.0f)
+			colorChangeThreshold -= 0.005f;
+	}
+}
+
+void TeapotExplosion::rotateColor() {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+		blueRotationTheta += 0.025f;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		blueRotationTheta -= 0.025f;
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		greenRotationTheta += 0.025f;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		greenRotationTheta -= 0.025f;
+}
+
 void TeapotExplosion::updateFrameClearColor() {
 	//To look into:
 	//GL_UseProgram_Stages 
@@ -337,7 +383,7 @@ void TeapotExplosion::updateFrameClearColor() {
 void TeapotExplosion::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 1.75f);
+	sceneShader->uniforms->updateUniform1f("zoom", 1.75f + counter);
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
@@ -345,18 +391,25 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("gravity", -0.31f /*-29.81f*/);       //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
 
-	xRotation += 0.0f;
-	yRotation += 0.0045f;
-	zRotation += 0.00035f;
+	xRotation += 0.00000f;
+	yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
+	zRotation += 0.0012375035f;
 
 	//fprintf(MSGLOG, "xRot is %f, yRot is %s, zRot is %f\n", xRotation, yRotation, zRotation);
 	sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
-	sceneShader->uniforms->updateUniform1f("yRotation", 2.75f * yRotation);
-	sceneShader->uniforms->updateUniform1f("zRotation", 2.75f*zRotation);
+	sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
+	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
+
+	sceneShader->uniforms->updateUniform1f("colorShiftThreshhold", colorChangeThreshold);
+
+	sceneShader->uniforms->updateUniform1f("redRotationTheta", redRotationTheta);
+	sceneShader->uniforms->updateUniform1f("greenRotationTheta", greenRotationTheta);
+	sceneShader->uniforms->updateUniform1f("blueRotationTheta", blueRotationTheta);
 
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
 
+	/*
 	sceneShaderLine->use();
 	//Update uniform locations
 	sceneShaderLine->uniforms->updateUniform1f("zoom", 1.75f);
@@ -375,7 +428,7 @@ void TeapotExplosion::updateUniforms() {
 	sceneShaderLine->uniforms->updateUniform1f("xRotation", xRotation + counter);
 	sceneShaderLine->uniforms->updateUniform1f("yRotation", 2.75f * yRotation);
 	sceneShaderLine->uniforms->updateUniform1f("zRotation", 2.75f*zRotation);
-
+	*/
 
 }
 
@@ -385,9 +438,15 @@ void TeapotExplosion::drawVerts() {
 	if (vertexAttributes)
 		vertexAttributes->use();
 
+	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL) 
+		glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3);
 	
-	glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3);
+	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::STRIP) 
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
 	
+	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::FAN)
+		glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
+
 	/*
 	if (sceneShaderLine)
 		sceneShaderLine->use();
