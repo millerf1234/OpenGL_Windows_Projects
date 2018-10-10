@@ -602,6 +602,9 @@
     <ClInclude Include="AsciiAsset.h">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClInclude>
+    <ClInclude Include="FilepathHelperFunctions.h">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">

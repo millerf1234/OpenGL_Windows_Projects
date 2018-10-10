@@ -182,6 +182,7 @@
     <ClInclude Include="BufferPool.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="FilepathHelperFunctions.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
