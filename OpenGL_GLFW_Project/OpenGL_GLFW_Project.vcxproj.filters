@@ -187,8 +187,11 @@
     <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj">
       <UniqueIdentifier>{0655cef6-b647-4bf0-bb60-4aeccfc7b7cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\LoadedModel">
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Model">
       <UniqueIdentifier>{afa31294-8c01-4034-a07d-fb406ea2e981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\NewFilter1">
+      <UniqueIdentifier>{7ad8320d-19c9-4ac3-9f9f-8c7fcbdc3263}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +288,12 @@
     </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
       <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="AsciiAsset.cpp">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -586,6 +595,12 @@
     </ClInclude>
     <ClInclude Include="MeshLoader.h">
       <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="AsciiAsset.h">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
