@@ -1,4 +1,10 @@
 //See header file for more detail
+//
+// Important Implementation Note: A lot of the logic in this class is dependent upon this object's member vector
+//								  'mLineOffsets_' being completly accurate based on the stored filetext string. If any
+//                                modifications are to be made to stored filetext, the private member function
+//                                'parseFileText()' must be called afterwords to recreate this vector, which will ensure 
+//                                that all of the additional public functions keep working properly. 
 
 #include "AsciiAsset.h"
 
@@ -132,25 +138,36 @@ namespace AssetLoadingInternal {
 		}
 	}
 
-	std::string AsciiAsset::getLine(int line) const {
-		if ( (mFileTextLineCount_ <= line) || (0 > line) ) {
-			return "";
+	size_t AsciiAsset::getLineLength(int line) const {
+		if (!mHasLocalCopyOfFileText_) {
+			return 0u;
 		}
-		NewLineLocation lineLocation = mLineOffsets_[line];
+		if ((line < 0) || (line >= mFileTextLineCount_)) {
+			return 0u;
+		}
+		
+		//This will always work, but is inefficient
+		//return (getLine(line).length());
+		
+
+	}
+
+	// Precondition:
+	//			This function assumes that the member vector 'mLineOffsets_' is complete 
+	//			and up to date.
+	std::string AsciiAsset::getLine(int line) const {
+		if ( (line < 0) || (line >= mFileTextLineCount_) ) {
+			fprintf(WRNLOG, "\nWARNING! The function getLine() was called trying to\n"
+				"retrieve line number %d from the file %s\n"
+				"This file consists of %d lines in total.\n"
+				"Note that the first line of text is treated as line 0, making the\n"
+				"range of lines eligible for retrival as [0, %d].\n\n", line,
+				mFilepath_, mFileTextLineCount_, (mFileTextLineCount_ - 1) );
+			return std::move(" ");
+		}
+		NewLineLocation lineLocation = mLineOffsets_[line]; 
 		return (mFileText_.substr(lineLocation.offset, lineLocation.lineLength));
 	}
-
-	const char * AsciiAsset::getLine_CStr(int line) const {
-		if ( (mFileTextLineCount_ <= line) || (0 > line) ) {
-			return "\0";
-		}
-		NewLineLocation lineLocation = mLineOffsets_[line];
-		return (mFileText_.substr(lineLocation.offset, lineLocation.lineLength).c_str());
-	}
-
-	//void AsciiAsset::changeFilepath(const char * newFP) {
-	//
-	//}
 
 	void AsciiAsset::aquireLocalCopyOfFileText() {
 		if (!mValidFilepath_) {
@@ -167,10 +184,20 @@ namespace AssetLoadingInternal {
 		}
 	}
 
-	//This function assumes that the mLineOffsets_ vector is complete and up to date. This
-	//function will update that vector as it proceeds. Psych! Actually if it operates on the file 
-	//backwards, then it doesn't have to worry about modifying the vector until after all the lines 
-	//were deleted.
+
+	// Precondition:
+	//			This function assumes that the member vector 'mLineOffsets_' is complete 
+	//			and up to date. This function will update 'mLineOffsets_' if any changes to 
+	//          the filetext are made. 
+	//Implementation Overview: 
+	//			To avoid unnecessary string creations/deletions, this functions' implementation
+	//			works by first going through the entire stored filetext string and marking each 
+	//			line that is eligable for deletion by storing its corresponding line number in 
+	//          a vector. Then after confirming that there are indeed lines that should be removed,                    
+	//          this function copies the original filetext line by line into a new filetext string,
+	//          skipping over lines that are to be deleted. Finally the contents of the new string
+	//          are swapped with this object's stored filetext string, and the 'mLineOffsets_' vector
+	//          is recreated from the updated filetext string.
 	void AsciiAsset::removeLinesBeginningWithCharacter(char c) { //For filtering out comments
 		if (!mValidFilepath_ || !mHasLocalCopyOfFileText_) {
 			return;
@@ -227,8 +254,9 @@ namespace AssetLoadingInternal {
 		if (linesToDelete.size() > 0u) {
 			//Now we can use substrings to create the updated filetext
 			std::string updatedFileText;
+			updatedFileText.reserve(mFileText_.length()); //Reserve space for the string ahead of time
 			int linesToDeleteIndex = 0;
-			for (int i = 0; i < mLineOffsets_.size(); i++) {
+			for (size_t i = 0; i < mLineOffsets_.size(); i++) {
 				if (linesToDelete[linesToDeleteIndex] == i) {
 					continue;
 				}
@@ -250,21 +278,10 @@ namespace AssetLoadingInternal {
 		mFileText_ = { std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
 	}
 
-
 	void AsciiAsset::loadFileNoLocalCopy(std::string & target) const {
 		std::ifstream inFile{ mFilepath_ }; //Open a file stream from the filepath 
 		target = { std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
 	}
-
-	//This function is not yet fully implemented. See "FilepathHelperFunctions.h" for replacement
-	/*bool AsciiAsset::checkFilepathValidity() {
-		std::ifstream inFile;
-		inFile.open(mFilepath_);
-		if (!(inFile.good())) {
-			mValidFilepath_ = false;
-			mFileText_ = "";
-		}
-	}*/
 
 	void AsciiAsset::parseFileText() {
 		if (mFileText_.length() > 0u) {

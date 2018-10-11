@@ -193,6 +193,12 @@
     <Filter Include="Source Files\Utility\Asset Loading\Model Loading\NewFilter1">
       <UniqueIdentifier>{7ad8320d-19c9-4ac3-9f9f-8c7fcbdc3263}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Filepath">
+      <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Filepath\Unfinished">
+      <UniqueIdentifier>{7249dd21-8bd2-4ccd-bd58-31391a16cfe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -295,11 +301,11 @@
     <ClCompile Include="AsciiAsset.cpp">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
-    <ClCompile Include="FilepathHelperFunctions.cpp">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
+    <ClCompile Include="FilepathWrapper.cpp">
+      <Filter>Source Files\Utility\Filepath\Unfinished</Filter>
     </ClCompile>
-    <ClCompile Include="Filepath.cpp">
-      <Filter>Source Files\Utility</Filter>
+    <ClCompile Include="FilepathHelperFunctions.cpp">
+      <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,11 +614,11 @@
     <ClInclude Include="AsciiAsset.h">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClInclude>
-    <ClInclude Include="FilepathHelperFunctions.h">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
+    <ClInclude Include="FilepathWrapper.h">
+      <Filter>Source Files\Utility\Filepath\Unfinished</Filter>
     </ClInclude>
-    <ClInclude Include="Filepath.h">
-      <Filter>Source Files\Utility</Filter>
+    <ClInclude Include="FilepathHelperFunctions.h">
+      <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

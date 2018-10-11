@@ -1,12 +1,30 @@
-//Description:  The AsciiAsset class is a simple wrapper for an ASCII-based asset 
-//				(for instance '.obj' and '.mtl' assets are ASCII-based) which provides
-//			    provides a simple interface for dealing with the data.
-//              This class has no notion of what type of file it is wrapping, its only job is
-//				to manage filetext aquisition and management. It is the responsibility of code
-//				using this class to make sure that the aquired filetext is not an empty string.
+// Description:  The AsciiAsset class is a simple wrapper for an ASCII-based asset 
+//               (for instance '.obj' and '.mtl' assets are ASCII-based) which provides
+//               provides a simple interface for dealing with the data.
+//               This class has no notion of what type of file it is wrapping, its only job is
+//               to manage filetext aquisition and management. It is the responsibility of code
+//               using this class to make sure that the aquired filetext is not an empty string.
 //
-//Programmer:   Forrest Miller
-//Date:         October 9, 2018  
+// Programmer:   Forrest Miller
+// Date:         October 9, 2018  
+//
+//
+//
+// POSSIBLE ISSUES/PITFALLS/INCONSISTENCIES:
+//
+//       Portability Issue:    
+//                              This class relies on the potentially non-portable 'file_exists()'
+//                                function found in "FilepathHelperFunctions.h" file. The only 
+//                                place this function is called is in this class's constructor.
+//
+//       FileText Line Indexing Inconsistency:
+//                              The public interface functions 'getLineLength()' and 'getLine()'
+//                                treat the first line of text of the filetext string as line 0. 
+//                                However this might not match up properly with both general 
+//                                intuition and the member variable 'mFileTextLineCount_'.
+//                                Basically just be carful when using these functions to ensure
+//                                the correct line of text is being accessed.
+//                              
 
 #pragma once
 
@@ -74,28 +92,36 @@ namespace AssetLoadingInternal {
 		//Object will be cast to a string containing whatever is stored in its 
 		//local copy of the filetext. If the file is invalid or no local file-text
 		//copy was aquired, then this will just be an empty string.
-		operator std::string() const { return (std::move(this->getTextCopy())); }
+		explicit operator std::string() const { return (std::move(this->getTextCopy())); }
 
-		//Object will be cast to a c-string containing whatever is stored in its
-		//local copy of the asset. If the filepath is invalid or if no local copy
-		//was ever loaded, then this will just be an empty string.
-		operator const char*() const { return mFileText_.c_str(); }
 
-		//Returns the character located at the specified offset into this object's 
-		//stored filetext. Will cause issues if index goes beyond the end of this object's
-		//stored filetext string or if called on an object that does not store a 
-		//local copy of it's filetext. Will return '\0' if filepath is invalid.
-		const char * operator[] (size_t offset) const {
-			if (mHasLocalCopyOfFileText_) {
-				if (mValidFilepath_ && (offset < mFileText_.length())) {
-					const char * tempCopy = mFileText_.c_str();
-					tempCopy += offset;
-					return tempCopy;
-					//return (mFileText_.substr(offset, 1u).c_str());
-				}
-			}
-			return '\0';
-		}
+		//TODO: Delete the following:
+		/*
+		//NOTE: these following 2 don't work correctly because they return pointers
+		//      to stack objects that leave scope (and thus become invalidated) once
+		//      the function exits.
+		////
+		////Object will be cast to a c-string containing whatever is stored in its
+		////local copy of the asset. If the filepath is invalid or if no local copy
+		////was ever loaded, then this will just be an empty string.
+		//operator const char*() const { return mFileText_.c_str(); }
+        //
+		////Returns the character located at the specified offset into this object's 
+		////stored filetext. Will cause issues if index goes beyond the end of this object's
+		////stored filetext string or if called on an object that does not store a 
+		////local copy of it's filetext. Will return '\0' if filepath is invalid.
+		//const char * operator[] (size_t offset) const {
+		//	if (mHasLocalCopyOfFileText_) {
+	    //		if (mValidFilepath_ && (offset < mFileText_.length())) {
+		//			const char * tempCopy = mFileText_.c_str();
+		//			tempCopy += offset;
+		//			return tempCopy;
+		//			//return (mFileText_.substr(offset, 1u).c_str());
+		//		}
+		//	}
+		//	return '\0';
+		//}
+		*/
 
 		//Copies the contents of a different AsciiAsset object.
 		AsciiAsset& operator=(const AsciiAsset& that);
@@ -122,15 +148,15 @@ namespace AssetLoadingInternal {
 		//             never specified after this object was constructed by the default 
 		//             constructor) then this function will just return an empty string.
 		std::string getTextCopy() const; 
+		
+		//Retrieves the number of characters on the specified line. If the parameter
+		//'line' does not correspond to a valid line number, this function returns 0.
+		//The first line of FileText is treated by this function as line number 0. 
+		size_t getLineLength(int line) const;
 
 		//Retrieves the line of text at the specified line. Line indexing starts at 0.
 		//Please stay in bounds.
 		std::string getLine(int line) const;
-
-		//Retrieves the line of text at the specified line number as a c-string. Line
-		//indexing begins at 0. Getting the line as a cstring may be useful when parsing 
-		//the file.
-		const char * getLine_CStr(int line) const;
 		
 		//Gets the length of the stored file-text. Will return 0 if this object has an invalid
 		//filepath or if no local copy of the file was ever made.
@@ -140,10 +166,11 @@ namespace AssetLoadingInternal {
 		//                          Setters
 		//------------------------------------------------------------
 
-		//NOTE:This setter is not worth implementing at the moment. Just reconstruct a new object 
-		//     and avoid the default constructor.
-		////Basically equivalent to comepletly reconstructing this object from a new filepath.
-		//void changeFilepath(const char * newFP);
+		//Changes the filepath to the new filepath. This will erase all of the current state
+		//of the object.
+		void changeFilepath(const char * newFP) { 
+			(*this) = std::move(AsciiAsset(newFP)); //Basically just reconstruct the object with new filepath
+		}
 
 
 
