@@ -26,6 +26,11 @@ void TeapotExplosion::initialize() {
 
 	colorChangeThreshold = 0.12f;
 
+
+	//AssetLoadingInternal::AsciiAsset tst("obj/BeveledCube.mtl");
+	//fprintf(MSGLOG, "\nLine 4 is %u long.\n", tst.getLineLength(3));
+	//std::cin.get();
+
 	glEnable(GL_PROGRAM_POINT_SIZE);
 }
 

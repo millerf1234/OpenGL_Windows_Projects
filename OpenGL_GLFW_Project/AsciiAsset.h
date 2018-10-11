@@ -60,10 +60,21 @@ namespace AssetLoadingInternal {
 		//std::string unless specifially told not to through the parameter 
 		//'storeLocalCopy'.
 		//   Parameters:
-		//     const char * fp       --  A filepath to an ascii-based resource
+		//     const char * fp       --  A filepath to an ascii-encoded resource
 		//     bool storeLocalCopy   --  Dictates whether an object-local copy of
 		//                                  the resource should be aquired
 		AsciiAsset(const char * fp, bool storeLocalCopy = true);
+
+		//Creates an AsciiAsset object based off the provided filepath. On
+		//construction, an attempt will be made to open the file at the provided
+		//filepath. The file will be automatically loaded into an object-local C++
+		//std::string unless specifially told not to through the parameter 'storeLocalCopy'
+		//
+		//  Parameters:
+		//        std::string fp      --  A filepath to an ascii-encoded resource
+		//        bool storeLocalCopy --  Dictates whether an object-local copy of
+		//                                     the resource should be aquired
+		AsciiAsset(const std::string& fp, bool storeLocalCopy = true);
 
 		//Creates a copy of another AsciiAsset object
 		AsciiAsset(const AsciiAsset& that);
@@ -76,8 +87,7 @@ namespace AssetLoadingInternal {
 		//                      Destructor
 		//------------------------------------------------------------
 
-		~AsciiAsset() { /*std::unique_ptr handles releasing aquired resources*/ }
-
+		~AsciiAsset() { }
 
 		//------------------------------------------------------------
 		//                          Operators
@@ -92,36 +102,7 @@ namespace AssetLoadingInternal {
 		//Object will be cast to a string containing whatever is stored in its 
 		//local copy of the filetext. If the file is invalid or no local file-text
 		//copy was aquired, then this will just be an empty string.
-		explicit operator std::string() const { return (std::move(this->getTextCopy())); }
-
-
-		//TODO: Delete the following:
-		/*
-		//NOTE: these following 2 don't work correctly because they return pointers
-		//      to stack objects that leave scope (and thus become invalidated) once
-		//      the function exits.
-		////
-		////Object will be cast to a c-string containing whatever is stored in its
-		////local copy of the asset. If the filepath is invalid or if no local copy
-		////was ever loaded, then this will just be an empty string.
-		//operator const char*() const { return mFileText_.c_str(); }
-        //
-		////Returns the character located at the specified offset into this object's 
-		////stored filetext. Will cause issues if index goes beyond the end of this object's
-		////stored filetext string or if called on an object that does not store a 
-		////local copy of it's filetext. Will return '\0' if filepath is invalid.
-		//const char * operator[] (size_t offset) const {
-		//	if (mHasLocalCopyOfFileText_) {
-	    //		if (mValidFilepath_ && (offset < mFileText_.length())) {
-		//			const char * tempCopy = mFileText_.c_str();
-		//			tempCopy += offset;
-		//			return tempCopy;
-		//			//return (mFileText_.substr(offset, 1u).c_str());
-		//		}
-		//	}
-		//	return '\0';
-		//}
-		*/
+		operator std::string() const { return (std::move(this->getTextCopy())); }
 
 		//Copies the contents of a different AsciiAsset object.
 		AsciiAsset& operator=(const AsciiAsset& that);
@@ -151,6 +132,8 @@ namespace AssetLoadingInternal {
 		
 		//Retrieves the number of characters on the specified line. If the parameter
 		//'line' does not correspond to a valid line number, this function returns 0.
+		//Note that a newline character at the end of the line will be included as part of the
+		//line length.
 		//The first line of FileText is treated by this function as line number 0. 
 		size_t getLineLength(int line) const;
 
@@ -167,37 +150,48 @@ namespace AssetLoadingInternal {
 		//------------------------------------------------------------
 
 		//Changes the filepath to the new filepath. This will erase all of the current state
-		//of the object.
-		void changeFilepath(const char * newFP) { 
-			(*this) = std::move(AsciiAsset(newFP)); //Basically just reconstruct the object with new filepath
+		//of the object. Use the bool parameter to dictate whether or not to load an object-local
+		//copy of the filetext.
+		void changeFilepath(const char * newFP, bool storeLocalCopyOfNewFile = true) {
+			(*this) = std::move(AsciiAsset(newFP, storeLocalCopyOfNewFile)); //Basically just reconstruct the object with new filepath
 		}
 
+		//Changes the filepath to the new filepath. This will erase all of the current state
+		//of the object. Use the bool parameter to dictate whether or not to load an object-local
+		//copy of the filetext.
+		void changeFilepath(const std::string& newFP, bool storeLocalCopyOfNewFile = true) {
+			(*this) = std::move(AsciiAsset(newFP, storeLocalCopyOfNewFile)); //Basically just reconstruct the object with new filepath
+		}
 
 
 		//------------------------------------------------------------
 		//                    Interface Functions
 		//------------------------------------------------------------
 
-		//     todo  --   Write a better description for this function...
-		//This function is intended to allow for finer control over when an AsciiAsset 
-		//parses an ASCII-based file into its own locally stored memory. This
-		//object will replace the contents of its current local copy of the 
-		//Ascii filetext, then will attempt to open the resource at the resource filepath
-		//and extract a copy of the data. An invalid filepath will cause the operation 
-		//to abort, however no exception will be thrown for failure at opening a file
-		//(at least, no exceptions will be thrown by this class, but system code called by
-		//this function may still throw).
+		//Loads a string copy of the filetext into this object's memory. Intended to 
+		//allow finer control over if/when this class aquires filetext. Has no effect if
+		//a copy of the FileText has already been aquired.
 		void aquireLocalCopyOfFileText();
+		
 
 		//This function will remove all of the lines of the filetext string held within this
 		//object that begin with the specified character. Note that doing so will reset this 
 		//object's internel LineOffset vector, which may cause issues with iterators and such
 		//set before this function was called. This function will ignore whitespace and tabs
 		//when searching for a first character.
+		//Requires locally-stored filetext. The characters ' ', '\n' and '\t' are illegal.
 		void removeLinesBeginningWithCharacter(char c);
 
+
+		//Requires locally-stored filetext. Returns a vector containing all of the lines 
+		//in the filetext that contain the specified substring.
+		//It is illegal to specify a substring containing any newline characters.
+		std::vector<int> findAllLinesContainingSubstr(const std::string& substr) const;
+
+
+
 	private:        //Fields
-		const char * mFilepath_;
+		std::string mFilepath_;
 		std::string mFileText_;
 		int mFileTextLineCount_;
 

@@ -34,6 +34,18 @@ namespace AssetLoadingInternal {
 			parseFileText(); 
 		}
 	}
+
+	AsciiAsset::AsciiAsset(const std::string& fp, bool storeLocalCopy) {
+		initialize();
+		mFilepath_ = fp;
+		mValidFilepath_ = file_exists(mFilepath_); //checkFilepathValidity();
+		if (mValidFilepath_ && storeLocalCopy) {
+			mHasLocalCopyOfFileText_ = true;
+			loadFile();
+			addNewlineToOneLineFiletexts();
+			parseFileText();
+		}
+	}
 	 
 	//I don't expect these to be called that much (at least not within a loop)
 	AsciiAsset::AsciiAsset(const AsciiAsset& that) {
@@ -138,17 +150,27 @@ namespace AssetLoadingInternal {
 		}
 	}
 
+	// Precondition:
+	//			This function assumes that the member vector 'mLineOffsets_' is complete 
+	//			and up to date.
 	size_t AsciiAsset::getLineLength(int line) const {
+		if (!mValidFilepath_) {  //This here would be a perfect example of a function who's implementation is state dependent
+			return 0u;
+		}
 		if (!mHasLocalCopyOfFileText_) {
+			fprintf(WRNLOG, "\nWarning! Possible Improper function use!\nThe function"
+				"getLineLength() called from AsciiAsset object for file %s\n"
+				"but this AsciiAsset never loaded a local copy of the filetext.\n"
+				"Load an object-local copy of the filetext for this function to behave properly!\n",
+				mFilepath_.c_str());
 			return 0u;
 		}
 		if ((line < 0) || (line >= mFileTextLineCount_)) {
 			return 0u;
 		}
 		
-		//This will always work, but is inefficient
-		//return (getLine(line).length());
-		
+		//Just look-up the stored line-length in the vector of line-lengths
+		return (mLineOffsets_[line].lineLength);
 
 	}
 
@@ -156,17 +178,30 @@ namespace AssetLoadingInternal {
 	//			This function assumes that the member vector 'mLineOffsets_' is complete 
 	//			and up to date.
 	std::string AsciiAsset::getLine(int line) const {
-		if ( (line < 0) || (line >= mFileTextLineCount_) ) {
+		if (!mValidFilepath_) {
+			return std::move("");
+		}
+		else if (!mHasLocalCopyOfFileText_) {
+			fprintf(WRNLOG, "\nWarning! Possible Improper function use!\nThe function"
+				"getLine() called from AsciiAsset object for file %s\n"
+				"but this AsciiAsset never loaded a local copy of this file.\n"
+				"Load an object-local copy of the filetext for this function to behave properly!\n",
+				mFilepath_.c_str());
+			return std::move("");
+		}
+		if ((line < 0) || (line >= mFileTextLineCount_)) {
 			fprintf(WRNLOG, "\nWARNING! The function getLine() was called trying to\n"
 				"retrieve line number %d from the file %s\n"
 				"This file consists of %d lines in total.\n"
-				"Note that the first line of text is treated as line 0, making the\n"
+				"Note that the first line of text is treated as line 0, which makes the\n"
 				"range of lines eligible for retrival as [0, %d].\n\n", line,
-				mFilepath_, mFileTextLineCount_, (mFileTextLineCount_ - 1) );
-			return std::move(" ");
+				mFilepath_.c_str(), mFileTextLineCount_, (mFileTextLineCount_ - 1));
+			return std::move("");
 		}
-		NewLineLocation lineLocation = mLineOffsets_[line]; 
+
+		NewLineLocation lineLocation = mLineOffsets_[line];
 		return (mFileText_.substr(lineLocation.offset, lineLocation.lineLength));
+		
 	}
 
 	void AsciiAsset::aquireLocalCopyOfFileText() {
@@ -276,6 +311,10 @@ namespace AssetLoadingInternal {
 	void AsciiAsset::loadFile() {
 		std::ifstream inFile{ mFilepath_ }; //Open a file stream from the filepath 
 		mFileText_ = { std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
+		if (mFileText_.length() > 0u) {
+			//(Implementation note: Adding a newline to the string's end reduces edge conditions)
+			mFileText_ += '\n'; //(Side note: I added this after most of class was already implemented) 
+		}
 	}
 
 	void AsciiAsset::loadFileNoLocalCopy(std::string & target) const {
@@ -330,16 +369,21 @@ namespace AssetLoadingInternal {
 		//fprintf(MSGLOG, "\nThe file %s was parsed. This file is %u lines.\n", mFilepath_, mFileTextLineCount_);
 	}
 
-	//I am not sure if this function is actually necessary...
+	//Note From Programmer: I wrote this function to be used to make sure 1-line files always
+	//                      contained a newline character to solidify my definition of a 'line', 
+	//                      but this becomes unnecessary once I decided to have a new line get 
+	//                      added regardless of file length as part of the filetext loading process.
 	void AsciiAsset::addNewlineToOneLineFiletexts() {
 		if (mFileText_.length() > 0) {
 			std::string::iterator it;
-
-			it = std::find(mFileText_.begin(), mFileText_.end(), '\n');
-			if (it != mFileText_.end())
-				return; //No need to add a newline character
-			else
+			//Try to find a newline character in the filetext
+			it = std::find(mFileText_.begin(), mFileText_.end(), '\n'); 
+			if (it == mFileText_.end()) //If no newlines are in the filetext
 				mFileText_ += '\n'; //Add a newline at the end of the one liner program
+
+			if (mFileTextLineCount_ == 0)
+				mFileTextLineCount_ = 1; //Set mFileTextLineCount_ to the proper value 
+			
 		}
 	}
 
