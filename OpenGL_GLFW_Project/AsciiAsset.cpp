@@ -25,7 +25,7 @@ namespace AssetLoadingInternal {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
 			addNewlineToOneLineFiletexts();
-			parseFiletext(); 
+			parseFileText(); 
 		}
 	}
 	 
@@ -163,20 +163,93 @@ namespace AssetLoadingInternal {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
 			addNewlineToOneLineFiletexts();
-			parseFiletext();
+			parseFileText();
 		}
 	}
 
 	//This function assumes that the mLineOffsets_ vector is complete and up to date. This
-	//function will update that vector as it proceeds.
+	//function will update that vector as it proceeds. Psych! Actually if it operates on the file 
+	//backwards, then it doesn't have to worry about modifying the vector until after all the lines 
+	//were deleted.
 	void AsciiAsset::removeLinesBeginningWithCharacter(char c) { //For filtering out comments
-		//todo
+		if (!mValidFilepath_ || !mHasLocalCopyOfFileText_) {
+			return;
+		}
+		//If the text is empty
+		if (mFileText_.length() <= 1) {
+			return;
+		}
+		//If the vector of offsets has not been populated
+		if (mLineOffsets_.size() == 0u) { //If we just have one line of text
+			return;
+		}
+
+		//Don't remove if c is any of the following 3 char
+		if ((c == ' ') || (c == '\n') || (c == '\t') ) {
+			if (c == ' ')
+				fprintf(WRNLOG, "\nWARNING! Removing character ' ' from the filetext is an invalid operation.\n");
+			else if (c == '\n')
+				fprintf(WRNLOG, "\nWARNING! Removing character '\\n' from the filetext is an invalid operation.\n");
+			else 
+				fprintf(WRNLOG, "\nWARNING! Removing character '\\t' from the filetext is an invalid operation.\n");
+			
+			return;
+		}
+
+		//Otherwise, search for lines beginning with the specified character and delete to create an updated filetext
+		std::vector<NewLineLocation>::iterator textLineIter = mLineOffsets_.begin();
+		std::vector<int> linesToDelete;
+		bool readyToMoveToNextLine;
+
+		//Here we just loop through and get a second vector recording lines to delete
+		while (textLineIter != mLineOffsets_.end()) { //For each line
+			const char * text = mFileText_.c_str();
+			text += textLineIter->offset;
+			readyToMoveToNextLine = false;
+			while ( (!readyToMoveToNextLine) &&
+				            ((*text != '\n') && (*text != '\0'))) { //For each character in the line
+				if (*text == ' ') { 
+					text++; //Skip over spaces
+					continue;
+				}
+				else if (*text == c) {
+					linesToDelete.push_back(textLineIter->lineNumber);
+					readyToMoveToNextLine = true;
+				}
+				else {
+					readyToMoveToNextLine = true;
+				}
+			}
+			textLineIter++;
+		}
+
+		//If we detected the filetext contains lines that are eligable for deletion
+		if (linesToDelete.size() > 0u) {
+			//Now we can use substrings to create the updated filetext
+			std::string updatedFileText;
+			int linesToDeleteIndex = 0;
+			for (int i = 0; i < mLineOffsets_.size(); i++) {
+				if (linesToDelete[linesToDeleteIndex] == i) {
+					continue;
+				}
+				else {
+					updatedFileText = mFileText_.substr(mLineOffsets_[i].offset, mLineOffsets_[i].lineLength);
+				}
+			}
+
+			//fprintf(MSGLOG, "AsciiAsset has removed all lines from FileText that began with char '%c'\n"
+			//	"The result of this operation was that %u lines were removed!\n", c, linesToDelete.size());
+
+			mFileText_.swap(updatedFileText);
+			parseFileText(); //Reparse the new fileText
+		}
 	}
 	
 	void AsciiAsset::loadFile() {
 		std::ifstream inFile{ mFilepath_ }; //Open a file stream from the filepath 
 		mFileText_ = { std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>() };
 	}
+
 
 	void AsciiAsset::loadFileNoLocalCopy(std::string & target) const {
 		std::ifstream inFile{ mFilepath_ }; //Open a file stream from the filepath 
@@ -193,7 +266,7 @@ namespace AssetLoadingInternal {
 		}
 	}*/
 
-	void AsciiAsset::parseFiletext() {
+	void AsciiAsset::parseFileText() {
 		if (mFileText_.length() > 0u) {
 			int lineNumberCounter = 0;
 			std::string::iterator textIterator;
@@ -236,6 +309,8 @@ namespace AssetLoadingInternal {
 			}
 
 		}
+		mFileTextLineCount_ = mLineOffsets_.size();
+		//fprintf(MSGLOG, "\nThe file %s was parsed. This file is %u lines.\n", mFilepath_, mFileTextLineCount_);
 	}
 
 	//I am not sure if this function is actually necessary...

@@ -36,24 +36,25 @@ void main() {
 	V2 = (gl_in[2].gl_Position - gl_in[0].gl_Position).xyz; 
 
 	//Use the three corners to calculate CG
-	CG = (V0 + V1 + V2) / 2.5f;
+	CG = (V0 + V1 + V2) / 3.0f;
 
 	//Calculate the Adjusted zoom
 	float adjustedZoom = zoom + 65.0 * time * (0.5 * time);
 
 
 	//???
-	int numLayers = 8 << level; //???   (I think these are either steps or are number of pieces or something)
+	int numLayers = 5 << level; //???   (I think these are either steps or are number of pieces or something)
 	//???
 
-	float dt = 15.0 / float(numLayers);    //Increasing this value increases the explosions vigour
+	float dt = 15.0 / float(numLayers);
+	//float dt = 5.0 / float(numLayers);    //Increasing this value increases the explosions vigour
 	float t = 2.0 + (110.0 * time * time * time)*asin(time);	//Increasing this value causes the particles to spread out more and faster
 
 	for (int it = 0; it <=numLayers; it++) {
 		float smax = 15.0 - t;                     //Max Sample?
-		int nums = it + 10;                       //Number of samples?
+		int nums = it + 7;                       //Number of samples?
 		float ds = smax / float(nums + 1.0);      
-		float s = -4.0;// -170.0;
+		float s = -14.0;// -170.0;
 
 		for (int is = 0; is < nums; is++) {
 			produceVertex(s, t, adjustedZoom);
@@ -79,7 +80,7 @@ void produceVertex(in float s, in float t, in float adjustedZoom) {
 	g2f_pos = v;
 	g2f_vel = vel;
 
-	v = CG + (vel * time);// + (0.05 * vec3(2.0*sin(300.0 * time * gravity), gravity, 0.0) * time * time); //Basic kinematic equation
+	v = CG + (vel * time); // + (0.05 * vec3(2.0*sin(300.0 * time * gravity), gravity, 0.0) * time * time); //Basic kinematic equation
 	gl_Position = vec4(v, adjustedZoom);
 	gl_PointSize = 89.5 *(1.0 + 0.15*cos(time));// + (gl_InvocationID / 3.0);
 
@@ -99,14 +100,14 @@ void produceVertex(in float s, in float t, in float adjustedZoom) {
 		v.z = clamp(v.z, -1.0, 1.0);
 		
 		
-		v.x = (v.x * (-0.45 * gl_InvocationID));
+		v.x = (v.x * (-0.45 * gl_InvocationID) );
 		//v.x = (v.x * (-1.0 * gl_InvocationID));
 		v.y *= 1.15 + (atan(time) / 1.55);
 
 		//gl_Position = vec4(v*atanh(length(v*v)), adjustedZoom);
 
 		gl_Position = vec4(v, adjustedZoom);
-		gl_PointSize = 1.0 + (gl_InvocationID / 2.2);
+		gl_PointSize = 3.0 + (gl_InvocationID / 2.2);
 		EmitVertex();
 	}
 

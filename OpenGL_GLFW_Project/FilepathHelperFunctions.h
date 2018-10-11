@@ -1,3 +1,6 @@
+//
+//
+//
 //This file defines a few functions that should be helpful for working
 //with filepaths
 
@@ -24,7 +27,4 @@ bool file_exists(const std::string& fn) {
 
 //Method 2   (currently not part of the C++ standard but should be added with C++20)   (borrowed from stack exchange link posted above)  
 #include <experimental/filesystem> 
-bool file_exists(const std::string& fn) {
-	//As of C++14:
-	return std::experimental::filesystem::exists(fn);
-}
+bool file_exists(const std::string& fn);

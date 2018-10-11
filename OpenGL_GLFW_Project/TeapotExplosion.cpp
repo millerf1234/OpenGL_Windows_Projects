@@ -3,6 +3,7 @@
 
 #include "TeapotExplosion.h"
 
+#include "AsciiAsset.h"
 
 void TeapotExplosion::initialize() {
 	error = false;
@@ -24,7 +25,6 @@ void TeapotExplosion::initialize() {
 	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
 
 	colorChangeThreshold = 0.12f;
-
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 }
@@ -383,12 +383,12 @@ void TeapotExplosion::updateFrameClearColor() {
 void TeapotExplosion::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 1.75f + counter);
+	sceneShader->uniforms->updateUniform1f("zoom", 1.7f + counter);
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
 	sceneShader->uniforms->updateUniform1i("level", 1);             //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("gravity", -0.31f /*-29.81f*/);       //tweak this value as needed
+	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
 
 	xRotation += 0.00000f;

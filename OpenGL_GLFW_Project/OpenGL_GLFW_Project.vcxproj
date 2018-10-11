@@ -142,6 +142,8 @@
     <ClCompile Include="BufferPool.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="Filepath.cpp" />
+    <ClCompile Include="FilepathHelperFunctions.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="GeometryShaderExplosion.cpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="BufferPool.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="Filepath.h" />
     <ClInclude Include="FilepathHelperFunctions.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />

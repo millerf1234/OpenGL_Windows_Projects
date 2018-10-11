@@ -295,6 +295,12 @@
     <ClCompile Include="AsciiAsset.cpp">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
+    <ClCompile Include="FilepathHelperFunctions.cpp">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Filepath.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib">
@@ -604,6 +610,9 @@
     </ClInclude>
     <ClInclude Include="FilepathHelperFunctions.h">
       <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Filepath.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

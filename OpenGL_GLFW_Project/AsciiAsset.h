@@ -194,7 +194,7 @@ namespace AssetLoadingInternal {
 		void loadFile();
 		void loadFileNoLocalCopy(std::string & target) const; //Bypasses this object's stored filetext string
 		//void checkFilepathValidity();
-		void parseFiletext(); //Basically build the vector of NewLineLocations    
+		void parseFileText(); //Basically build the vector of NewLineLocations    
 		//void populateNewLineLocationsVector();
 
 		//If a file contains text but no newlines, tack one on at the end manually
