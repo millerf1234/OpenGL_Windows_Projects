@@ -24,7 +24,16 @@
 //                                intuition and the member variable 'mFileTextLineCount_'.
 //                                Basically just be carful when using these functions to ensure
 //                                the correct line of text is being accessed.
-//                              
+//                             
+//     
+// Note from Programmer:   This class has undergone some modifications since I first wrote it 
+//                         and as such it could benefit from some refactoring to make parts of
+//                         its implementation more coherent and make more sense. For example, 
+//                         this class manages its filepath itself instead of relying on the Filepath
+//                         object type, but still uses the static functionality of the Filepath 
+//                         class to verify a files existance. 
+//                         Basically this class is function as is but it's implementation could 
+//                         desperatly use an overhaul and some refactoring. 
 
 #pragma once
 
@@ -37,8 +46,10 @@
 #include <algorithm>  //for std::find
 #include <vector>	  //for std::vector
 
+#include "FilepathWrapper.h"  //Really this class should use the object defined in this header for filepath 
+//                            //management, but right now this class does it's own filepath management and just
+//                            //uses a few static functions from this file. 
 
-#include "FilepathHelperFunctions.h"
 #include "LoggingMessageTargets.h"
 
 namespace AssetLoadingInternal {
@@ -186,7 +197,7 @@ namespace AssetLoadingInternal {
 		//Requires locally-stored filetext. Returns a vector containing all of the lines 
 		//in the filetext that contain the specified substring.
 		//It is illegal to specify a substring containing any newline characters.
-		std::vector<int> findAllLinesContainingSubstr(const std::string& substr) const;
+		std::vector<int> findAllLinesThatContainSubstr(const std::string& substr) const;
 
 
 

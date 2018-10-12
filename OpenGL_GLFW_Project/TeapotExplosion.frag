@@ -16,6 +16,15 @@ uniform float redRotationTheta;
 uniform float greenRotationTheta;
 uniform float blueRotationTheta;
 
+uniform float colorModificationValue0;
+uniform float colorModificationValue1;
+uniform float colorModificationValue2;
+uniform float colorModificationValue3;
+uniform float colorModificationValue4;
+uniform float colorModificationValue5;
+uniform float colorModificationValue6;
+
+
 //Rotation Functions
 //Implementation for the rotation functions
 	void rotateColorX(inout vec3 color, in float theta) {
@@ -45,7 +54,8 @@ uniform float blueRotationTheta;
 //Only define 1 of the following to determine color scheme
 //#define USE_COLOR_SCHEME_0 
 //#define USE_COLOR_SCHEME_1  
-#define USE_COLOR_SCHEME_2
+//#define USE_COLOR_SCHEME_2
+#define USE_COLOR_SCHEME_3
 
 void main() {
 
@@ -120,10 +130,49 @@ void main() {
 
 #endif //USE_COLOR_SCHEME_2
 
+#ifdef USE_COLOR_SCHEME_3
+	float blue = (g2f_pos.y+g2f_pos.x + colorModificationValue0) / 2.0;
+	float green = 0.05 * (20.3 * sin(time*5.0) - length(g2f_vel.xyz));
+	float red = length(g2f_vel.xyz) / (9.0 * length(g2f_pos.xyz)) + (length(dFdxCoarse(g2f_vel.xyz)) + length(dFdy(g2f_vel.xyz)) / 2.5);
 
+	if (blue > 1.0 + colorModificationValue3 * sin(colorModificationValue4 * time * g2f_pos.y / (1.0f + colorModificationValue2))) {
+		blue -= (1.0 + colorModificationValue5) + (colorModificationValue6 * g2f_vel.y * 3.0*acosh(time));
+		red = blue / (blue + 3.0 + 0.5 * cos(length(g2f_vel)*(time + colorModificationValue4) + colorModificationValue5 * sqrt(gl_FragCoord.x*length(gl_FragCoord.xyz + dFdy(g2f_pos)))));
+	}
+
+	float cutoff = colorShiftThreshhold; //+ 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
+
+	if ((length(vec3(red, green, blue)) < cutoff)) {
+		red += abs(gl_FragCoord.x + pow((0.5 + colorModificationValue1), (6.5*sin(colorModificationValue2*time + time * g2f_vel.x))));
+		green += abs( ((gl_FragCoord.x * gl_FragCoord.x) + (abs(g2f_pos.x)/abs(g2f_vel.x))) - gl_FragCoord.y / 2.0);
+		blue += 0.75 * (sin(time * gl_FragCoord.y) + cos(time * gl_FragCoord.x));
+	}
+
+	//Add the ability to rotate the color using uniforms
+	vec3 rotatedColor = vec3(red, green, blue);
+
+	rotateColorX(rotatedColor, redRotationTheta);
+	//rotatedColor = clamp(rotatedColor, 0.01, 1.0); //Clamp the rotation to prevent out-of-range colors
+
+	rotateColorY(rotatedColor, greenRotationTheta);
+	//rotatedColor = clamp(rotatedColor, 0.01, 1.0);
+
+	rotateColorZ(rotatedColor, blueRotationTheta);
+	//rotatedColor = clamp(rotatedColor, 0.01, 1.0);
+
+	if (rotatedColor.z < min(abs(colorModificationValue0 + colorModificationValue1) + length(g2f_vel + gl_FragCoord.yxx), abs(colorModificationValue2 + colorModificationValue3 + colorModificationValue4 - colorModificationValue5 * sin(time + colorModificationValue6)))) {
+		red = max(red, length(dFdx(g2f_vel.xxx) + dFdy(g2f_vel.yyy)));
+		if (red > 0.9) {
+			red = red / (red + abs(green) + abs(blue));
+		}
+		green = (red + green + blue) / 3.0;
+		rotatedColor += dFdy(cross(vec3(red, -green, -blue), dFdx(g2f_pos + g2f_vel + gl_FragCoord.zyx) * abs(sin(gl_FragCoord.y - gl_FragCoord.x))));
+	}
+	rotatedColor = abs(rotatedColor + vec3(red, green, (red + green) / 2.0));
+	Color = vec4(abs(cross(rotatedColor.zyx, dFdx(rotatedColor))), 1.0);
 
 
 	
+#endif //USE_COLOR_SCHEME_3
 
-		
 }

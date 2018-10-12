@@ -143,7 +143,6 @@
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
-    <ClCompile Include="FilepathHelperFunctions.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="GeometryShaderExplosion.cpp" />
@@ -185,7 +184,6 @@
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="FilepathWrapper.h" />
-    <ClInclude Include="FilepathHelperFunctions.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
@@ -285,6 +283,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="AssetLoadingClassesOverview.cd" />
     <None Include="constantcolor.frag" />
     <None Include="freetype.dll" />
     <None Include="GeometryShaderExplosion.frag" />

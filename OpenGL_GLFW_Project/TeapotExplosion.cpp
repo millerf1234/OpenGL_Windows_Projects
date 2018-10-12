@@ -21,15 +21,15 @@ void TeapotExplosion::initialize() {
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
 
+	colorModificationValues[0] = 1.0f; //The first value is a special value
+	for (int i = 1; i < COLOR_MOD_VALUES_COUNT; i++) {
+		colorModificationValues[i] = 0.0f;
+	}
+
 	//Set the starting input primitive type
 	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
 
 	colorChangeThreshold = 0.12f;
-
-
-	//AssetLoadingInternal::AsciiAsset tst("obj/BeveledCube.mtl");
-	//fprintf(MSGLOG, "\nLine 4 is %u long.\n", tst.getLineLength(3));
-	//std::cin.get();
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 }
@@ -230,6 +230,7 @@ void TeapotExplosion::renderLoop() {
 		changePrimitiveType();
 		modifyColorThreshhold();
 		rotateColor();
+		updateColorModificationValues();
 
 
 		updateFrameClearColor();
@@ -362,6 +363,63 @@ void TeapotExplosion::rotateColor() {
 		greenRotationTheta -= 0.025f;
 }
 
+void TeapotExplosion::updateColorModificationValues() {
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		colorModificationValues[0] += 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		colorModificationValues[0] -= 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		colorModificationValues[1] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+		colorModificationValues[1] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		colorModificationValues[2] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+		colorModificationValues[2] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		colorModificationValues[3] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+		colorModificationValues[3] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		colorModificationValues[4] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+		colorModificationValues[4] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+		colorModificationValues[5] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+		colorModificationValues[5] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+		colorModificationValues[6] += COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		colorModificationValues[6] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
+			colorModificationValues[i] = 0.0f;
+		}
+		colorModificationValues[0] = 1.0f;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
+			colorModificationValues[i] = colorModificationValues[i] * 0.5f;
+		}
+	}
+}
+
 void TeapotExplosion::updateFrameClearColor() {
 	//To look into:
 	//GL_UseProgram_Stages 
@@ -410,6 +468,14 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("redRotationTheta", redRotationTheta);
 	sceneShader->uniforms->updateUniform1f("greenRotationTheta", greenRotationTheta);
 	sceneShader->uniforms->updateUniform1f("blueRotationTheta", blueRotationTheta);
+
+	sceneShader->uniforms->updateUniform1f("colorModificationValue0", colorModificationValues[0]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue1", colorModificationValues[1]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue2", colorModificationValues[2]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue3", colorModificationValues[3]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue4", colorModificationValues[4]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue5", colorModificationValues[5]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
 
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------

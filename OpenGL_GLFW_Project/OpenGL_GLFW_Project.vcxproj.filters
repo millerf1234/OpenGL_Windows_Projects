@@ -181,23 +181,20 @@
     <Filter Include="Resource Files\Models\OBJ\Sample\BeveledCube">
       <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation">
-      <UniqueIdentifier>{b639b1aa-13af-44cd-8fa6-f252928fe052}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj">
-      <UniqueIdentifier>{0655cef6-b647-4bf0-bb60-4aeccfc7b7cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Model">
-      <UniqueIdentifier>{afa31294-8c01-4034-a07d-fb406ea2e981}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\NewFilter1">
-      <UniqueIdentifier>{7ad8320d-19c9-4ac3-9f9f-8c7fcbdc3263}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Filepath">
       <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Filepath\Unfinished">
-      <UniqueIdentifier>{7249dd21-8bd2-4ccd-bd58-31391a16cfe0}</UniqueIdentifier>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished">
+      <UniqueIdentifier>{7ad8320d-19c9-4ac3-9f9f-8c7fcbdc3263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation">
+      <UniqueIdentifier>{b639b1aa-13af-44cd-8fa6-f252928fe052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj">
+      <UniqueIdentifier>{0655cef6-b647-4bf0-bb60-4aeccfc7b7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model">
+      <UniqueIdentifier>{afa31294-8c01-4034-a07d-fb406ea2e981}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -272,10 +269,10 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClCompile>
     <ClCompile Include="ObjAnalyzer.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
     </ClCompile>
     <ClCompile Include="ObjLoader.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
     </ClCompile>
     <ClCompile Include="GenericVertexAttributeSet.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
@@ -290,21 +287,18 @@
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\Model</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model</Filter>
     </ClCompile>
     <ClCompile Include="AsciiAsset.cpp">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
     <ClCompile Include="FilepathWrapper.cpp">
-      <Filter>Source Files\Utility\Filepath\Unfinished</Filter>
-    </ClCompile>
-    <ClCompile Include="FilepathHelperFunctions.cpp">
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
   </ItemGroup>
@@ -579,10 +573,10 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
     </ClInclude>
     <ClInclude Include="ObjAnalyzer.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
     </ClInclude>
     <ClInclude Include="ObjLoader.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation\Obj</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
     </ClInclude>
     <ClInclude Include="GenericVertexAttributeSet.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
@@ -603,21 +597,18 @@
       <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClInclude>
     <ClInclude Include="MeshLoader.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldUnfinishedImplementation</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\Model</Filter>
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model</Filter>
     </ClInclude>
     <ClInclude Include="AsciiAsset.h">
       <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClInclude>
     <ClInclude Include="FilepathWrapper.h">
-      <Filter>Source Files\Utility\Filepath\Unfinished</Filter>
-    </ClInclude>
-    <ClInclude Include="FilepathHelperFunctions.h">
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
   </ItemGroup>
@@ -697,6 +688,7 @@
     <None Include="obj\BeveledCube.obj">
       <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
     </None>
+    <None Include="AssetLoadingClassesOverview.cd" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">

@@ -28,9 +28,14 @@
 
 #include "RenderDemoBase.h"
 
+#include "FilepathWrapper.h"
+
 using ShaderInterface::GenericVertexAttributeSet; 
 
 enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };
+
+static constexpr int COLOR_MOD_VALUES_COUNT = 7;
+static constexpr float COLOR_MOD_VALUE_CHANGE_SPEED = 0.3f;
 
 class TeapotExplosion : public RenderDemoBase {
 public:
@@ -52,6 +57,7 @@ private:
 	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
 
 	float colorChangeThreshold;
+	GLfloat colorModificationValues[COLOR_MOD_VALUES_COUNT];
 
 	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
 	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
@@ -106,7 +112,7 @@ private:
 	void changePrimitiveType(); 
 	void modifyColorThreshhold();
 	void rotateColor();
-	
+	void updateColorModificationValues();
 
 
 

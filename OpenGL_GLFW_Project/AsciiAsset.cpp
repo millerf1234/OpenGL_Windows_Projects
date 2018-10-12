@@ -26,7 +26,7 @@ namespace AssetLoadingInternal {
 	AsciiAsset::AsciiAsset(const char * fp, bool storeLocalCopy) {
 		initialize();
 		mFilepath_ = fp;
-		mValidFilepath_ = file_exists(mFilepath_); //checkFilepathValidity();
+		mValidFilepath_ = Filepath::file_exists(mFilepath_.c_str()); 
 		if (mValidFilepath_ && storeLocalCopy) {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
@@ -38,7 +38,7 @@ namespace AssetLoadingInternal {
 	AsciiAsset::AsciiAsset(const std::string& fp, bool storeLocalCopy) {
 		initialize();
 		mFilepath_ = fp;
-		mValidFilepath_ = file_exists(mFilepath_); //checkFilepathValidity();
+		mValidFilepath_ = Filepath::file_exists(mFilepath_.c_str());
 		if (mValidFilepath_ && storeLocalCopy) {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
@@ -80,58 +80,60 @@ namespace AssetLoadingInternal {
 				this->mFileTextLineCount_ = that.mFileTextLineCount_;
 				this->mLineOffsets_.swap(that.mLineOffsets_);
 			} 
+			//else 'initialize()' will have already handled setting everything else
 		}
-		else {
+		/* else { //This is not needed I believe
 			this->mFileText_ = "";
 			this->mFileTextLineCount_ = 0;
 			this->mLineOffsets_.clear();
-		}
+		} */
 	}
 
 	AsciiAsset& AsciiAsset::operator=(const AsciiAsset& that) {
-		fprintf(WRNLOG, "\nWarning! AsciiAsset operator= was called (copy, not the move) but I\n"
-			"can't shake the sense I made a mistake with this operator. Please verify a correct copy occured!\n");
-		initialize();
-		std::string tempFilepathCopy = that.mFilepath_;
-		this->mFilepath_ = tempFilepathCopy.c_str();
+		if (this != &that) {
+			initialize();
+			std::string tempFilepathCopy = that.mFilepath_;
+			this->mFilepath_ = tempFilepathCopy.c_str();
 
-		this->mValidFilepath_ = that.mValidFilepath_;
-		this->mHasLocalCopyOfFileText_ = that.mHasLocalCopyOfFileText_;
-		if (that.mValidFilepath_) {
-			if (that.mHasLocalCopyOfFileText_) {
-				this->mFileText_ = that.mFileText_;
-				this->mFileTextLineCount_ = that.mFileTextLineCount_;
-				this->mLineOffsets_ = that.mLineOffsets_;
-			}
-		}
-		else {
-			this->mFileText_ = "";
-			this->mFileTextLineCount_ = 0;
-			this->mLineOffsets_.clear();
+			this->mValidFilepath_ = that.mValidFilepath_;
+			this->mHasLocalCopyOfFileText_ = that.mHasLocalCopyOfFileText_;
+			if (that.mValidFilepath_) {
+				if (that.mHasLocalCopyOfFileText_) {
+					this->mFileText_ = that.mFileText_;
+					this->mFileTextLineCount_ = that.mFileTextLineCount_;
+					this->mLineOffsets_ = that.mLineOffsets_;
+				}
+				//else 'initialize()' will have already handled setting everything else
+			} 
+			/*else {  //This is not needed?
+				this->mFileText_ = "";
+				this->mFileTextLineCount_ = 0;
+				this->mLineOffsets_.clear();
+			}*/
 		}
 		return (*this);
 	}
 
 	AsciiAsset& AsciiAsset::operator=(AsciiAsset&& that) {
-		fprintf(WRNLOG, "\nWarning! AsciiAsset operator= was called (the move, not the copy) but I\n"
-			"can't shake the sense I made a mistake with this operator. Please verify a correct move occured!\n");
-		initialize();
-		std::string tempFilepathCopy = that.mFilepath_;
-		this->mFilepath_ = tempFilepathCopy.c_str();
-		this->mValidFilepath_ = that.mValidFilepath_;
-		this->mHasLocalCopyOfFileText_ = that.mHasLocalCopyOfFileText_;
+		if (this != &that) {
+			initialize();
+			std::string tempFilepathCopy = that.mFilepath_;
+			this->mFilepath_ = tempFilepathCopy.c_str();
+			this->mValidFilepath_ = that.mValidFilepath_;
+			this->mHasLocalCopyOfFileText_ = that.mHasLocalCopyOfFileText_;
 
-		if (that.mValidFilepath_) {
-			if (that.mHasLocalCopyOfFileText_) {
-				this->mFileText_ = that.mFileText_;
-				this->mFileTextLineCount_ = that.mFileTextLineCount_;
-				this->mLineOffsets_ = that.mLineOffsets_;
+			if (that.mValidFilepath_) {
+				if (that.mHasLocalCopyOfFileText_) {
+					this->mFileText_ = that.mFileText_;
+					this->mFileTextLineCount_ = that.mFileTextLineCount_;
+					this->mLineOffsets_ = that.mLineOffsets_;
+				}
 			}
-		}
-		else {
-			this->mFileText_ = "";
-			this->mFileTextLineCount_ = 0;
-			this->mLineOffsets_.clear();
+			/* else { //These are not needed I believe
+				this->mFileText_ = "";
+				this->mFileTextLineCount_ = 0;
+				this->mLineOffsets_.clear();
+			} */
 		}
 		return (*this);
 	}
@@ -171,7 +173,6 @@ namespace AssetLoadingInternal {
 		
 		//Just look-up the stored line-length in the vector of line-lengths
 		return (mLineOffsets_[line].lineLength);
-
 	}
 
 	// Precondition:
@@ -201,7 +202,6 @@ namespace AssetLoadingInternal {
 
 		NewLineLocation lineLocation = mLineOffsets_[line];
 		return (mFileText_.substr(lineLocation.offset, lineLocation.lineLength));
-		
 	}
 
 	void AsciiAsset::aquireLocalCopyOfFileText() {
@@ -209,6 +209,8 @@ namespace AssetLoadingInternal {
 			return;
 		}
 		else if (mHasLocalCopyOfFileText_) {
+			fprintf(WRNLOG, "\nWARNING! aquireLocalCopyOfFileText() was called from this AsciiAsset\n"
+				"object but this object already has aquired a local copy.\nThis may be a bug.\n\n");
 			return;
 		}
 		else {
@@ -383,7 +385,6 @@ namespace AssetLoadingInternal {
 
 			if (mFileTextLineCount_ == 0)
 				mFileTextLineCount_ = 1; //Set mFileTextLineCount_ to the proper value 
-			
 		}
 	}
 
