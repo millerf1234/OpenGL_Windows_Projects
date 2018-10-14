@@ -157,9 +157,6 @@
     <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
       <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\TeapotExplosion">
-      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo">
       <UniqueIdentifier>{5a97e638-bcd6-40df-a1e4-9636c9d32898}</UniqueIdentifier>
     </Filter>
@@ -195,6 +192,27 @@
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model">
       <UniqueIdentifier>{afa31294-8c01-4034-a07d-fb406ea2e981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Obj">
+      <UniqueIdentifier>{37f27ada-4ce3-477e-824d-d9c8a125bc32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Mtl">
+      <UniqueIdentifier>{aee561b4-26ae-4123-b047-dc22d6ba10be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
+      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\FragmentUtility">
+      <UniqueIdentifier>{68849a5e-e5a2-496c-ac9e-5d69b7427bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\TeapotExplosion">
+      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\QuickModel">
+      <UniqueIdentifier>{16d5958c-344a-45d2-8c86-90270cc0ee0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
+      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -286,9 +304,6 @@
     <ClCompile Include="TeapotExplosion.cpp">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
-    </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
       <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClCompile>
@@ -300,6 +315,18 @@
     </ClCompile>
     <ClCompile Include="FilepathWrapper.cpp">
       <Filter>Source Files\Utility\Filepath</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjModel.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexSet.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\QuickModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -596,9 +623,6 @@
     <ClInclude Include="ModelFilepaths.h">
       <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
-    </ClInclude>
     <ClInclude Include="MeshLoader.h">
       <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
     </ClInclude>
@@ -610,6 +634,18 @@
     </ClInclude>
     <ClInclude Include="FilepathWrapper.h">
       <Filter>Source Files\Utility\Filepath</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjModel.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexSet.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\QuickModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -688,7 +724,21 @@
     <None Include="obj\BeveledCube.obj">
       <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
     </None>
-    <None Include="AssetLoadingClassesOverview.cd" />
+    <None Include="obj\SubdivisionCube.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
+    </None>
+    <None Include="obj\SubdivisionCube.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
+    </None>
+    <None Include="ColorTransforms.frag">
+      <Filter>Resource Files\Shaders\FragmentUtility</Filter>
+    </None>
+    <None Include="obj\Splines.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
+    </None>
+    <None Include="obj\Splines.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">

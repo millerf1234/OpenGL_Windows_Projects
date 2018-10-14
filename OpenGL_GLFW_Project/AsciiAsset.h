@@ -14,7 +14,7 @@
 //
 //       Portability Issue:    
 //                              This class relies on the potentially non-portable 'file_exists()'
-//                                function found in "FilepathHelperFunctions.h" file. The only 
+//                                function found in "FilepathWrapper.h" file. The only 
 //                                place this function is called is in this class's constructor.
 //
 //       FileText Line Indexing Inconsistency:
@@ -140,6 +140,15 @@ namespace AssetLoadingInternal {
 		//             never specified after this object was constructed by the default 
 		//             constructor) then this function will just return an empty string.
 		std::string getTextCopy() const; 
+
+		//Returns the number of lines of the loaded filetext. If no local filetext was loaded, 
+		//then this function will return 0.
+		int getNumberOfLines() const {
+			if (mHasLocalCopyOfFileText_) {
+				return mLineOffsets_.size();
+			}
+			return 0;
+		}
 		
 		//Retrieves the number of characters on the specified line. If the parameter
 		//'line' does not correspond to a valid line number, this function returns 0.
@@ -197,7 +206,7 @@ namespace AssetLoadingInternal {
 		//Requires locally-stored filetext. Returns a vector containing all of the lines 
 		//in the filetext that contain the specified substring.
 		//It is illegal to specify a substring containing any newline characters.
-		std::vector<int> findAllLinesThatContainSubstr(const std::string& substr) const;
+		//std::vector<int> findAllLinesThatContainSubstr(const std::string& substr) const;
 
 
 

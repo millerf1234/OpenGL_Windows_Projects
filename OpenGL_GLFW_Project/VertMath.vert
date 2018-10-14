@@ -19,42 +19,43 @@ float rad2Dg(float radians) {
 	return (radians * 180.0f / 3.1415927);
 }
 
-
+//Scales a vector's y-component to compensate for destortion from the aspect-ratio 
 void setAspectRatio(inout vec3 vert, in float aspectRatio) {
+	//Simple Implementation
 	vert.y *= aspectRatio;
-	// As a matrix multiplication, thi operation would use the following matrix
-	//return inpt * mat3(1.0f,    0.0f,     0.0f,
-	//					  0.0f, aspectRatio, 0.0f,
-	//					  0.0f,    0.0f,     1.0f);
-}
-//void setAspectRatio(in vec3 inpt, in float aspectRatio, out vec3 AspectScaledVertex) {
-//	AspectScaledVertex = vec3(inpt.x, inpt.y * aspectRatio, inpt.z);
-//	
-//	// As a matrix multiplication, thi operation would use the following matrix
-//	//return inpt * mat3(1.0f,    0.0f,     0.0f,
-//	//					  0.0f, aspectRatio, 0.0f,
-//	//					  0.0f,    0.0f,     1.0f);
-//}
 
+	// As a matrix multiplication, this operation would use the following matrix
+	//mat3 aspectCorrection =  mat3(1.0f,    0.0f,     0.0f,
+	//					            0.0f, aspectRatio, 0.0f,
+	//					            0.0f,    0.0f,     1.0f);
+	//
+
+}
 
  void rotateX(inout vec3 vert, in float theta) {
-	mat3 xRot = mat3( 1.0,     0.0,         0.0,
+
+	mat3 xRot = mat3( 1.0,     0.0    ,     0.0    ,
 					  0.0,  cos(theta), -sin(theta),
 		              0.0,  sin(theta),  cos(theta));
+
 	vert = xRot * vert;
 }
 
 void rotateY(inout vec3 vert, in float theta) {
+
 	mat3 yRot = mat3( cos(theta),  0.0,   -sin(theta),
-					     0.0,      1.0,       0.0f,
-					  sin(theta),  0.0,    cos(theta));
+					     0.0,      1.0,       0.0    ,
+					  sin(theta),  0.0,    cos(theta) );
+
 	vert = (yRot * vert);
 }
 
 void rotateZ(inout vec3 vert, in float theta) {
+
 	mat3 zRot = mat3( cos(theta), -sin(theta), 0.0,
 					  sin(theta),  cos(theta), 0.0,
 					     0.0,         0.0,     1.0);
+
 	vert = (zRot * vert);
 }
 

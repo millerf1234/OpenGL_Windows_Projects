@@ -3,8 +3,6 @@
 
 #include "TeapotExplosion.h"
 
-#include "AsciiAsset.h"
-
 void TeapotExplosion::initialize() {
 	error = false;
 	frameNumber = 0ull;
@@ -144,6 +142,7 @@ void TeapotExplosion::loadShaders() {
 		std::cin.get(); //Hold the window open if there was an error
 	}
 
+	/*
 	//Psych
 	//Build the sceneShaderLine as a second graphics pipeline
 	fprintf(MSGLOG, "\nCreating a second Graphics Pipeline...\n");
@@ -181,6 +180,7 @@ void TeapotExplosion::loadShaders() {
 			std::cin.get(); //Hold the window open if there was an error
 		}
 	}
+	*/
 }
 
 void TeapotExplosion::loadTeapot() {
@@ -241,6 +241,7 @@ void TeapotExplosion::renderLoop() {
 		drawVerts();
 
 		counter += 0.000125f;
+		//counter += 0.00000002f*0.000125f;
 
 		glfwSwapBuffers(window);
 		
@@ -292,8 +293,8 @@ void TeapotExplosion::pause() {
 		end = std::chrono::high_resolution_clock::now();
 	}
 
-	//Enter an infinite loop checking for the unpaused key to be pressed
-	while (true) {
+	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
+	while (true) { 
 		glfwPollEvents();
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 			frameUnpaused = frameNumber;
@@ -314,10 +315,9 @@ void TeapotExplosion::recordColorToLog() {
 	frameOfMostRecentColorRecording = frameNumber;
 	int colorDigits = 6; //Digits to print out for each color
 
-						 //Syntax Note: With '%*f', the '*' means that the width will be provided as an additional parameter
+						 //Syntax Note: Within '%*f', the '*' means that the width will be provided as an additional parameter
 	fprintf(MSGLOG, "\nThe background color of frame %llu is:\n\tRed: %*f,\tGreen: %*f,\tBlue: %*f\n",
 		frameNumber, colorDigits, backgroundColor.r, colorDigits, backgroundColor.g, colorDigits, backgroundColor.b);
-
 }
 
 void TeapotExplosion::reset() {
@@ -409,13 +409,13 @@ void TeapotExplosion::updateColorModificationValues() {
 
 	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
 		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
-			colorModificationValues[i] = 0.0f;
+			colorModificationValues[i] = MathFunc::getRandomInRangef(-110.0f, 110.0f);
 		}
 		colorModificationValues[0] = 1.0f;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
 		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
-			colorModificationValues[i] = colorModificationValues[i] * 0.5f;
+			colorModificationValues[i] = colorModificationValues[i] * 0.8f;
 		}
 	}
 }
@@ -454,7 +454,7 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
 
-	xRotation += 0.00000f;
+	xRotation += 0.0000f;
 	yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
 	zRotation += 0.0012375035f;
 
@@ -474,7 +474,7 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("colorModificationValue2", colorModificationValues[2]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue3", colorModificationValues[3]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue4", colorModificationValues[4]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue5", colorModificationValues[5]);
+	sceneShader->uniforms->updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
 
 	//----------------------------------------------------------------------------

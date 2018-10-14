@@ -24,6 +24,12 @@ uniform float colorModificationValue4;
 uniform float colorModificationValue5;
 uniform float colorModificationValue6;
 
+//Only define 1 of the following to determine color scheme
+//#define USE_COLOR_SCHEME_0 
+//#define USE_COLOR_SCHEME_1  
+#define USE_COLOR_SCHEME_2
+//#define USE_COLOR_SCHEME_3
+
 
 //Rotation Functions
 //Implementation for the rotation functions
@@ -51,11 +57,6 @@ uniform float colorModificationValue6;
 //void rotateColorY(inout vec3 color, in float theta);
 //void rotateColorZ(inout vec3 color, in float theta);
 
-//Only define 1 of the following to determine color scheme
-//#define USE_COLOR_SCHEME_0 
-//#define USE_COLOR_SCHEME_1  
-//#define USE_COLOR_SCHEME_2
-#define USE_COLOR_SCHEME_3
 
 void main() {
 
@@ -143,13 +144,20 @@ void main() {
 	float cutoff = colorShiftThreshhold; //+ 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
 
 	if ((length(vec3(red, green, blue)) < cutoff)) {
-		red += abs(gl_FragCoord.x + pow((0.5 + colorModificationValue1), (6.5*sin(colorModificationValue2*time + time * g2f_vel.x))));
+		red += abs(gl_FragCoord.z + pow((0.5 + colorModificationValue1), (0.65*sin(colorModificationValue2*time + time * g2f_vel.x))));
 		green += abs( ((gl_FragCoord.x * gl_FragCoord.x) + (abs(g2f_pos.x)/abs(g2f_vel.x))) - gl_FragCoord.y / 2.0);
 		blue += 0.75 * (sin(time * gl_FragCoord.y) + cos(time * gl_FragCoord.x));
+	}
+	else {
+		red *= g2f_vel.z;
+		green = (red * sin(g2f_vel.x + g2f_vel.y) + green * sin(g2f_vel.z * 2.0 + time + colorModificationValue1)) / (red + green - 1.0 / colorModificationValue2);
 	}
 
 	//Add the ability to rotate the color using uniforms
 	vec3 rotatedColor = vec3(red, green, blue);
+	vec3 rotatedColor2 = vec3(max(red + green, red+blue), max(red - green + blue, blue-red+green), blue + 0.25*sinh((gl_FragCoord.y-gl_FragCoord.x) * 13.7*time));
+
+	//rotatedColor = clamp(-abs(cross(rotatedColor, rotatedColor2)), -1.0, 1.0);
 
 	rotateColorX(rotatedColor, redRotationTheta);
 	//rotatedColor = clamp(rotatedColor, 0.01, 1.0); //Clamp the rotation to prevent out-of-range colors
@@ -163,13 +171,17 @@ void main() {
 	if (rotatedColor.z < min(abs(colorModificationValue0 + colorModificationValue1) + length(g2f_vel + gl_FragCoord.yxx), abs(colorModificationValue2 + colorModificationValue3 + colorModificationValue4 - colorModificationValue5 * sin(time + colorModificationValue6)))) {
 		red = max(red, length(dFdx(g2f_vel.xxx) + dFdy(g2f_vel.yyy)));
 		if (red > 0.9) {
-			red = red / (red + abs(green) + abs(blue));
+			red = red / (red + abs(green) + abs(blue) - colorModificationValue3);
 		}
 		green = (red + green + blue) / 3.0;
 		rotatedColor += dFdy(cross(vec3(red, -green, -blue), dFdx(g2f_pos + g2f_vel + gl_FragCoord.zyx) * abs(sin(gl_FragCoord.y - gl_FragCoord.x))));
 	}
 	rotatedColor = abs(rotatedColor + vec3(red, green, (red + green) / 2.0));
 	Color = vec4(abs(cross(rotatedColor.zyx, dFdx(rotatedColor))), 1.0);
+
+	if (length(Color.xyz) < (0.25*colorModificationValue5 + 0.05*sin(g2f_pos.x + gl_FragCoord.y*time))) {
+		Color = abs(abs(vec4(max(max(g2f_pos.x, g2f_vel.x), 2.0*sin(time+abs(gl_FragCoord.x))), 0.75, 0.75 + 0.2*sinh(time+length(g2f_vel)), 0.0) - Color) - Color) ;
+	}
 
 
 	

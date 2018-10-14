@@ -47,16 +47,9 @@ Filepath::Filepath(const Filepath& that) {
 }
 
 Filepath::Filepath(Filepath&& that) {
-	//One of these next 2 may be slightly faster. Will have to test each one day...
 	this->mPath_ = std::move(that.mPath_); 
-	//this->mPath_.swap(that.mPath_);
-
 	this->mFileExists_ = that.mFileExists_;
-
-	//Same deal as before, these next 2 lines do the same thing but one may execute faster
 	this->mExtension_ = std::move(that.mExtension_);
-	//this->mExtension_.swap(that.mPath_);
-	
 	this->mExtensionExists_ = that.mExtensionExists_;
 }
 
@@ -76,16 +69,9 @@ Filepath& Filepath::operator=(const Filepath& that) {
 
 Filepath& Filepath::operator=(Filepath&& that) {
 	if (this != &that) {
-		//Choose one of the following 2 lines:
-		//this->mPath_ = std::move(that.mPath_);
-		this->mPath_.swap(that.mPath_);
-
+		this->mPath_ = std::move(that.mPath_);
 		this->mFileExists_ = that.mFileExists_;
-
-		//Chose one of the following 2 lines:
-		//this->mExtension_ = std::move(that.mExtension_);
-		this->mExtension_.swap(that.mExtension_);
-
+		this->mExtension_ = std::move(that.mExtension_);
 		this->mExtensionExists_ = that.mExtensionExists_;
 	}
 	return *this;

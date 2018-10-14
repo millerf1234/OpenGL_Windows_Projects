@@ -28,7 +28,6 @@
 
 #include "RenderDemoBase.h"
 
-#include "FilepathWrapper.h"
 
 using ShaderInterface::GenericVertexAttributeSet; 
 
