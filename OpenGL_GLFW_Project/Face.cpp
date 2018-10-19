@@ -19,15 +19,12 @@ namespace AssetLoadingInternal {
 	Face::FaceComponent::~FaceComponent() { ; }
 	Face::~Face() { ; }
 
-
 	void Face::initialize() {
 		mValidData_ = false;
 		mIsQuad_ = false;
 		mHasTexCoords_ = false;
 		mHasNormals_ = false;
 	}
-
-	
 
 	Face::Face() {
 		initialize();
@@ -57,6 +54,7 @@ namespace AssetLoadingInternal {
 			faceLine++; //Move past the 'f'
 		}
 
+		
 		if (!parseFaceLine(faceLine)) { //parseFaceLine handles setting member fields as appropriate
 			return;
 		}
@@ -127,10 +125,9 @@ namespace AssetLoadingInternal {
 	bool Face::parseFaceLine(const char * faceLine) {
 		//The following variables are used to facilitate parsing the line of text
 		enum class NextComponentType { POSITION, TEX_COORD, NORMAL };
-		NextComponentType next = NextComponentType::POSITION;
+		NextComponentType next = NextComponentType::POSITION; //The first value read will be a position value. 
 		bool previousCharWasASlash = false; //Used to determine where in string we are
-		bool previousTwoCharsWereEachSlashes = false;
-		Offset positions[4], texCoord[4], normals[4];
+		Offset positions[QUAD_VERTICE_COUNT], texCoord[QUAD_VERTICE_COUNT], normals[QUAD_VERTICE_COUNT];
 		int readPositions = 0; //By the end this number must be either 3 or 4.  Otherwise invalid parse occured
 		int readTexCoords = 0; //By end, this number must be either 0, 3, or 4.        "           "
 		int readNormals = 0;  //By end, this number must be either 0, 3, or 4.         "           "
@@ -140,122 +137,103 @@ namespace AssetLoadingInternal {
 		while ((*stringIter != '\n') && (*stringIter != '\0') && (!parseError)) {
 			////////////////////////////////////////////////////////////////////////////////////////
 			//////////   A Valid ".OBJ" face line should always take one of the following paths ////
+			//////////    (as opposed to the invalid paths marked near the bottom of this loop) ////
 			////////////////////////////////////////////////////////////////////////////////////////
 			if (*stringIter == ' ') {
 				previousCharWasASlash = false;
-				previousTwoCharsWereEachSlashes = false;
-				next = NextComponentType::POSITION;
+				next = NextComponentType::POSITION; //Reading a space means we automatically revert to looking for a position
 			}
 			else if (*stringIter == '/') {
 				if (!previousCharWasASlash) {
-					previousCharWasASlash = true;
+					previousCharWasASlash = true; //Mark that we read a slash for the next loop iteration
 					switch (next) {
 					case NextComponentType::POSITION:
-						next = NextComponentType::TEX_COORD;
-						break;
+						fprintf(ERRLOG, "\nERROR! Expected to read a position value but this face has no position!\n");
+						parseError = true;
+						continue;
 					case NextComponentType::TEX_COORD:
-						next = NextComponentType::NORMAL;
 						break;
 					case NextComponentType::NORMAL:
-						fprintf(ERRLOG, "\nERROR! Unable to parse the line \"f%s\" from this file!\n"
-							"It looks like this file might use more than just Position/Tex_Coord/Normal indices\n"
-							"for the object's faces.\nOr there is a bug in the code!\n"
-							"Here is one last helpful value:\n\tNumber of Characters read "
-							"(including the 'f'): %u\n", faceLine,
-							(std::distance(faceLine, stringIter) + 1));
+						break;
+					}
+				}
+				else { //This is the second slash in a row we encounter
+					switch (next) {
+					case NextComponentType::POSITION:  //This case shouldn't happen ever unless file is corrupt or my logic is off
+						fprintf(ERRLOG, "\nA parse error occured involving the enum 'NextComponentType' in the Face class!\n"
+							"Parser is for some reason expecting to read a position after 2 slashes, which is not correct.\n"
+							"The line that caused this issue is: \"f%s\"\n", faceLine);
+						parseError = true;
+						continue;
+					case NextComponentType::TEX_COORD: //If we hit a second slash while looking for a tex coord, then
+						next = NextComponentType::NORMAL; //there must be no texture coordinates. Thus we can move on to 
+						break;//                          //looking for a normal.
+					case NextComponentType::NORMAL: //If we hit a second slash while looking for a normal, then the file is corrupt/invalid.
+						fprintf(ERRLOG, "\nERROR: A '/' was encountered while trying to read a normal! This line is ill-formed!\n");
 						parseError = true;
 						continue;
 					}
 				}
-				else { //Else the previously read character was a '\'
-					if (previousTwoCharsWereEachSlashes) { //If two forward-slashes in a row were read
-						if (*(stringIter + 1) != '\\') {
-							previousCharWasASlash = false;
-							previousTwoCharsWereEachSlashes = false;
-						}
-						switch (next) {
-						case NextComponentType::POSITION:  //This case shouldn't happen ever unless file is corrupt or my logic is off
-							fprintf(ERRLOG, "\nA parse error occured involving the enum 'NextComponentType' in the Face class!\n"
-								"Parser is for some reason expecting to read a position after 2 slashes, which is not correct.\n"
-								"The line that caused this issue is: \"f%s\"\n", faceLine);
-							next = NextComponentType::NORMAL; //Look for a NORMAL next anyways
-							break;
-						case NextComponentType::TEX_COORD:
-							next = NextComponentType::NORMAL;
-							break;
-						case NextComponentType::NORMAL:
-							//fprintf(ERRLOG, "\n\t\t!!!ERROR!!!\nIt looks like the text to be parsed"
-							//	" has 3 forward-slashes in a row!\n");
-							//parseError = true;
-							continue;
-						}
-					}
-					else { //Two slashes in a row are being encountered as of the parsing of this char
-						previousTwoCharsWereEachSlashes = true;
-						switch (next) {
-						case NextComponentType::POSITION:
-							fprintf(ERRLOG, "\nThis case should not occur like this. Check ya code!\n");
-							parseError = true;
-							break;
-						case NextComponentType::TEX_COORD:
-							fprintf(ERRLOG, "\nError! 2 '/' characters were read while Face class is still looking to\n"
-								"get input for texture coordinates. This means an an enum was not properly cycled somewhere...");
-							parseError = true;
-							break;
-						case NextComponentType::NORMAL:
-							//fprintf(ERRLOG, "\nThis case should not occur like that! Check your code again!\n");
-							//parseError = true;
-							stringIter++;
-							continue;
-						}
-					}
-				}
 			}
-			//Else if the character is between '0' (i.e. 48u in ASCII) and '9' (i.e. 57u in ASCII)
-			else if ((*stringIter >= static_cast<uint8_t>(48u)) &&
-				(*stringIter <= static_cast<uint8_t>(57u))) {
-				previousCharWasASlash = false;
-				previousTwoCharsWereEachSlashes = false;
 
+			else if (isNumber(stringIter)) {
 				if (next == NextComponentType::POSITION) {
 					next = NextComponentType::TEX_COORD;
-					if (readPositions < 4) {
-						positions[readPositions++] = static_cast<Offset>(strtoul(stringIter, const_cast<char**>(&(stringIter)), 0)); //This is a c function, but it works here just as well
-						stringIter--; //Need to do this to offset the loop increment
+					if (readPositions < QUAD_VERTICE_COUNT) {
+						positions[readPositions++] = static_cast<Offset>(strtoul(stringIter, NULL, 0)); //This is a c function, but it works here just as well
+						do {
+							stringIter++;
+						} while (isNumber(stringIter));
+						//Let's do a quick (and perhaps unnecessary) reality check. The string iterator should now be on a '/' character.
+						if (*stringIter != '/') {
+							parseError = true;
+						}
+						if (readPositions == QUAD_VERTICE_COUNT) {
+							mIsQuad_ = true;
+						}
 					}
 					else {
 						fprintf(ERRLOG, "\nError! Too many positions were read!\n");
 						parseError = true;
-						stringIter++;
-						continue;
 					}
 				}
 				else if (next == NextComponentType::TEX_COORD) {
-					next = NextComponentType::NORMAL;
-					if (readTexCoords < 4) {
-						texCoord[readTexCoords++] = static_cast<Offset>(strtoul(stringIter, const_cast<char**>(&(stringIter)), 0));
-						stringIter--;
+					if (!previousCharWasASlash) {
+						parseError = true;
 					}
 					else {
-						fprintf(ERRLOG, "\nError! Too many texture coordinates (over 4) were read!\n");
-						parseError = true;
-						stringIter++;
-						continue;
+						previousCharWasASlash = false;
+						next = NextComponentType::NORMAL;
+						if (readTexCoords < QUAD_VERTICE_COUNT) {
+							texCoord[readTexCoords++] = static_cast<Offset>(strtoul(stringIter, NULL, 0));
+							do {
+								stringIter++;
+							} while (isNumber(stringIter));
+							//Let's do a quick (and perhaps unnecessary) reality check. The string iterator should now be on a '/' character.
+							if (*stringIter != '/') {
+								parseError = true;
+							}
+						}
+						else {
+							fprintf(ERRLOG, "\nError! Too many texture coordinates (over %d) were read!\n", QUAD_VERTICE_COUNT);
+							parseError = true;
+						}
 					}
 				}
 				else { //(next component type must be NORMAL)
 					next = NextComponentType::POSITION;
-					if (readNormals < 4) {
-						normals[readNormals++] = static_cast<Offset>(strtoul(stringIter, const_cast<char**>(&(stringIter)), 0));
-						stringIter--;
+					if (readNormals < QUAD_VERTICE_COUNT) {
+						normals[readNormals++] = static_cast<Offset>(strtoul(stringIter, NULL, 0));
+						do {
+							stringIter++;
+						} while (isNumber(stringIter));
 					}
 					else {
-						fprintf(ERRLOG, "\nError! Too many per-vertex Normals (over 4) were read!\n");
+						fprintf(ERRLOG, "\nError! Too many per-vertex Normals (over %d) were read!\n", QUAD_VERTICE_COUNT);
 						parseError = true;
-						stringIter++;
-						continue;
 					}
 				}
+				continue; 
 			}
 			////////////////////////////////////////////////////////////////////////////////////////
 			//////////   Any of these following paths will always result in an invalid parse    ////
@@ -265,34 +243,26 @@ namespace AssetLoadingInternal {
 				parseError = true;
 				continue;
 			}
-			else if (*stringIter == 'f') {
-				fprintf(WRNLOG, "\nUh-Oh! It looks like the Face parser went on to the next face line!\n"
+			else if ( (*stringIter >= 'a') && (*stringIter <= 'z') ) {
+				fprintf(WRNLOG, "\nUh-Oh! It looks like the Face parser went on to a new line!\n"
 					"Here is the input provided to this Face constructor:\n\tf%s\n", faceLine);
 				parseError = true;
 				continue;
-
 			}
 			stringIter++;
-		} //End of parsing 'while' loop 
+		} //End of while loop 
 
 		if (!parseError) {
 			//Perform a check on each parsed dataset to make sure the correct amount of data was parsed.
 			if (!verifyPositions(readPositions, faceLine)) {
 				mValidData_ = false;
-				goto ParseError;     //Please forgive my lazy code
-			}
-			else { //Here is where the member field mIsQuad_ gets set.
-				(readPositions == 3) ? (mIsQuad_ = false) : mIsQuad_ = true;
 			}
 			if (!verifyTexCoords(readTexCoords, faceLine)) {
-				//mValidData_ = false; 
 				mHasTexCoords_ = false;
-				goto ParseError;     //When it rains, it pours
 			}
 			if (!verifyNormals(readNormals, faceLine)) {
 				//mValidData = false;
 				mHasNormals_ = false;
-				goto ParseError;     //These 'goto' statements will most likely be removed once this code has undergone some testing anyways...
 			}
 
 			//print a message for debug purposes before returning...
@@ -302,10 +272,15 @@ namespace AssetLoadingInternal {
 			if (!mHasTexCoords_) { texCoord[0] = 0u; texCoord[1] = 0u; texCoord[2] = 0u; }
 			fprintf(MSGLOG, "Line Reconstruction: \"f %u/%u/%u %u/%u/%u/ %u/%u/%u\"\n", positions[0], texCoord[0], normals[0], positions[1], texCoord[1], normals[1], positions[2], texCoord[2], normals[2]);
 			fillFaceComponents(positions, texCoord, normals);
-			return true; //no Parse Error
+			if (mValidData_) {
+				return true; //Valid data, no Parse Error
+			}
+			else {
+				fprintf(ERRLOG, "\nERROR! It looks like not enough data was parsed from the line:\n\t\"%s\"\n", faceLine);
+				return false;
+			}
 		}
 		else {
-		ParseError:
 			fprintf(ERRLOG, "\nERROR Parsing Face! %u characters read from line\n"
 				"before error! Text that was parsed:\t\"f%s\"\n",
 				(std::distance(faceLine, stringIter) + 1), faceLine); //The '+ 1' is for the 'f' that gets removed early on
@@ -315,20 +290,20 @@ namespace AssetLoadingInternal {
 
 
 	bool Face::verifyPositions(const int & parsedPositions, const char * faceLine) const {
-		if (parsedPositions < 3) {
+		if (parsedPositions < TRIANGLE_VERTICE_COUNT) {
 			fprintf(ERRLOG, "\nError parsing file! Only %d position indices were read for this face!\n"
 				"There must be at least 3 position indices present to form a valid face!\n"
 				"The line that is cause issues looks like: \n\tf%s\n", parsedPositions, faceLine);
 			return false;
 		}
-		else if (parsedPositions > 4) {
+		else if (parsedPositions > QUAD_VERTICE_COUNT) {
 			fprintf(ERRLOG, "\nError parsing file! More than 4 positions were read!\n"
 				"%d 'positions' (i.e. <x,y,z>) were read in total. The line that caused\n"
 				"this issue looks like:\n\tf%s\n",
 				parsedPositions, faceLine);
 			return false;
 		}
-		else if (parsedPositions == 3 && mIsQuad_) {
+		else if (parsedPositions == TRIANGLE_VERTICE_COUNT && mIsQuad_) {
 			return false;
 		}
 		else {
@@ -338,7 +313,7 @@ namespace AssetLoadingInternal {
 
 	bool Face::verifyTexCoords(const int & parsedTexCoord, const char * faceLine) const {
 		if (parsedTexCoord == 0)
-			return true;
+			return false;
 		else if ((parsedTexCoord == 3) && (!mIsQuad_))
 			return true;
 		else if ((parsedTexCoord == 4) && (mIsQuad_))

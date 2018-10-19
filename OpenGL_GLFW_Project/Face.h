@@ -19,6 +19,8 @@ namespace AssetLoadingInternal {
 	//Dictates how the '==' operator evaluates invalid faces
 	static constexpr bool INVALID_FACES_HAVE_EQUIVALENCE = true;
 
+	static constexpr const int QUAD_VERTICE_COUNT = 4;
+	static constexpr const int TRIANGLE_VERTICE_COUNT = 3;
 	class Face {
 		//Class that represents the component of a face (such as position, normal or tex coord). There are
 		//up to four vertices per face if the input mesh uses quads.
@@ -152,6 +154,9 @@ namespace AssetLoadingInternal {
 		bool verifyTexCoords(const int & parsedTexCoord, const char * faceLine) const;
 		bool verifyNormals(const int & parsedNormals, const char * faceLine) const;
 		void fillFaceComponents(Offset* positions, Offset* texCoord, Offset* normals);
+		//Checks to see if a string character is between '0' (i.e. 48u in ASCII) and '9' (i.e. 57u in ASCII) (i.e. if it's a number)
+		bool isNumber(const char * c) const { return ((*c >= static_cast<char>(48u)) && (*c <= static_cast<char>(57u))); }
+		
 	};
 
 } //namespace AssetLoadingInternal
