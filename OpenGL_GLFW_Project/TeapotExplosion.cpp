@@ -4,6 +4,16 @@
 #include "TeapotExplosion.h"
 
 void TeapotExplosion::initialize() {
+	AssetLoadingInternal::AsciiAsset test("obj/BlockThing_Quads.obj");
+	for (int i = 0; i < test.getNumberOfLines(); i++) {
+		std::string LINE = test.getLine(i);
+		if (LINE.at(0) == 'f') 
+			AssetLoadingInternal::Face testFace(LINE.c_str());
+	}
+
+	fprintf(MSGLOG, "\nTest Completed!\n");
+	std::cin.get();
+
 	error = false;
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;

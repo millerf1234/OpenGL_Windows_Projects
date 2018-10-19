@@ -1,0 +1,90 @@
+This is imporant enough (and I have forgotten the rule enough) that I am going to write down
+here the difference between a virtual and non-virtual desctructor. 
+
+Bascially, destructors should be virtual unless it is guarenteed that a class will not be 
+inherited from. This is because destructors will always be called going up the inheritance 
+chain, but will not be called down the inheritance chain without being virtual. However, if
+it is known that the class will definitly not be a base class, then the class's destructor
+should not be virtual. See: https://www.quora.com/Why-arent-all-destructors-in-C++-virtual-by-default
+IMPORTANT: DESCTRUCTORS SHOULD (PRETTY MUCH ALWAYS) NEVER BE MARKED 'OVERRIDE'.
+
+For why a base class should have virtual destructors, consider the following example:
+
+**************************************************
+**************************************************
+*********  Without Virtual Desctructors  *********
+**************************************************
+**************************************************
+
+class Base {   //Let's pretend this code checks malloc for NULL and other such necessities
+	void * baseAllocatedMemory;
+public:
+	Base () {
+		baseAllocatedMemory = malloc(10);  //Something like this 
+	}
+	~Base() {
+		free(baseAllocatedMemory);
+	}
+}
+
+class Derived: public Base {
+	void * derivedAllocatedMemory;  
+public:
+	Derived() : Base() {
+		derivedAllocatedMemory = malloc(10);  
+	}
+	~Derived() {
+		free(derivedAllocatedMemory);
+	}
+	
+}
+
+int main() {
+	//Have a Base pointer enter scope
+	if (true) {
+		std::unique_ptr<Base> base = std::make_unique<Derived>();
+	} //LEAK!
+	//Once base pointer leaves scope, the desctructor for Base will be called. However, since 
+	//the destructor for Base was not virtual, there is no way for the destructor for Derived to
+	//be called, and thus a memory leak ensues. 
+}
+
+
+**************************************************
+**************************************************
+*********    With Virtual Desctructors   *********
+**************************************************
+**************************************************
+
+class Base {   //Again, let's pretend this code checks malloc for NULL and other such necessities
+	void * baseAllocatedMemory;
+public:
+	Base () {
+		baseAllocatedMemory = malloc(10);  //Something like this 
+	}
+	virtual ~Base() {
+		free(baseAllocatedMemory);
+	}
+}
+
+class Derived final: public Base {
+	void * derivedAllocatedMemory;  
+public:
+	Derived() : Base() {
+		derivedAllocatedMemory = malloc(10);  
+	}
+	~Derived() {
+		free(derivedAllocatedMemory);
+	}
+	
+}
+
+int main() {
+	//Have a Base pointer enter scope
+	if (true) {
+		std::unique_ptr<Base> base = std::make_unique<Derived>();
+	} //No More Leak!
+	//Once base pointer leaves scope, the desctructor for Base will be called. Since the 
+	//destructor for Base is now virtual, the destructor for Derived will be called when 
+	//the base pointer leaves scope. Thus no more memory leak.
+}

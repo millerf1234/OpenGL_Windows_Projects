@@ -59,7 +59,7 @@ public:
 	static float getFloatingPointTolerance() { return fpTolerance; }
 
 private:
-	std::array<float, VERTEX_SIZE> mComponents_;
+	std::array<float, VERTEX_SIZE> mComponents_; 
 	friend class FullVertex;
 	friend class ExtendedVertex;
 
@@ -107,6 +107,7 @@ private:
 
 //An ExtendedVertex is intended to be used to store a large amount of per-vertex information.
 class ExtendedVertex {
+public:
 	ExtendedVertex() = delete;
 	~ExtendedVertex();
 
@@ -126,14 +127,14 @@ class ExtendedVertex {
 
 	bool operator==(const ExtendedVertex& other) const;
 
-	float& operator[] (int indx) { return mComponents_[indx]; }
+	float& operator[] (int indx) { return mExtendedComponents_[indx]; }
 	
 	constexpr size_t getSize() const { return EXTENDED_VERTEX_SIZE; }
 
-	std::array<float, EXTENDED_VERTEX_SIZE>& data() { return mComponents_; }
+	std::array<float, EXTENDED_VERTEX_SIZE>& data() { return mExtendedComponents_; }
 
 private:
-	std::array<float, EXTENDED_VERTEX_SIZE> mComponents_;
+	std::array<float, EXTENDED_VERTEX_SIZE> mExtendedComponents_; //can't be called mComponents_ because of friendship with class Vertex, which has it's own mComponents_
 	//eventually... Add other parameters
 
 	//Helper functions

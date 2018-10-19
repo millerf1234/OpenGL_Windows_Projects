@@ -29,6 +29,11 @@
 #include "RenderDemoBase.h"
 
 
+//For testing:
+#include "AsciiAsset.h"
+#include "Face.h"
+
+
 using ShaderInterface::GenericVertexAttributeSet; 
 
 enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };

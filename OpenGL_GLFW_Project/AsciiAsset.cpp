@@ -204,6 +204,8 @@ namespace AssetLoadingInternal {
 		return (mFileText_.substr(lineLocation.offset, lineLocation.lineLength));
 	}
 
+
+
 	void AsciiAsset::aquireLocalCopyOfFileText() {
 		if (!mValidFilepath_) {
 			return;

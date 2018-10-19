@@ -43,7 +43,7 @@ private:
 
 	void setupGLFW(); //Loads the GLFW library
 	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
-	void checkIfGraphicsContextDebugCallbackFunctionEnabled() const; //The callback function is provided by Application and is found in its own header file
+	void checkIfGraphicsContextDebugCallbackFunctionEnabled() const; //The callback function is provided by Application and is found in its own header file 
 	
 	void doExtraSetup() const;
 	void checkMSAA() const; //Prints MSAA config to MSGLOG

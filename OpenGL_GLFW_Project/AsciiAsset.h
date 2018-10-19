@@ -5,6 +5,11 @@
 //               to manage filetext aquisition and management. It is the responsibility of code
 //               using this class to make sure that the aquired filetext is not an empty string.
 //
+// (NOTE ON HOW THIS FITS INTO OVERALL PROJECT): This class is designed to be held by other classes
+//                                               which manage parsing and storing the loaded data. 
+//                                               Thus this class is seperate from the whole 'AssetInterface'
+//                                               inheritance structure.
+//
 // Programmer:   Forrest Miller
 // Date:         October 9, 2018  
 //
@@ -108,12 +113,14 @@ namespace AssetLoadingInternal {
 		//If a valid file exists at the filepath held by this object, then this
 		//will cast the object to 'true'. If there is an issue with the filepath, 
 		//then this will cast the object to 'false'.
-		explicit operator bool() { return (this->mValidFilepath_); }
+		explicit operator bool() const { return (this->mValidFilepath_); }
 
+		/*  Note: This is a bad idea
 		//Object will be cast to a string containing whatever is stored in its 
 		//local copy of the filetext. If the file is invalid or no local file-text
 		//copy was aquired, then this will just be an empty string.
 		operator std::string() const { return (std::move(this->getTextCopy())); }
+		*/
 
 		//Copies the contents of a different AsciiAsset object.
 		AsciiAsset& operator=(const AsciiAsset& that);
@@ -208,6 +215,8 @@ namespace AssetLoadingInternal {
 		//It is illegal to specify a substring containing any newline characters.
 		//std::vector<int> findAllLinesThatContainSubstr(const std::string& substr) const;
 
+		//Returns the filepath for the Ascii-file wrapped by this class
+		std::string getFilepath() const { return mFilepath_; }
 
 
 	private:        //Fields

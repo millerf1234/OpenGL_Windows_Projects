@@ -138,42 +138,32 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
-    <ClCompile Include="BBuffer.cpp" />
-    <ClCompile Include="BufferPool.cpp" />
+    <ClCompile Include="AssetInterface.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="GeometryShaderExplosion.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
-    <ClCompile Include="ImageFileLoader.cpp" />
-    <ClCompile Include="MeshLoader.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ObjAnalyzer.cpp" />
-    <ClCompile Include="ObjLoader.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MappableBuffer.cpp" />
-    <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="GenericVertexAttributeSet.cpp" />
-    <ClCompile Include="SimpleVertexBuffer.cpp" />
     <ClCompile Include="TeapotExplosion.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TexturePool.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="VertexSet.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WavefrontObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
@@ -182,10 +172,10 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="AsciiAsset.h" />
-    <ClInclude Include="BBuffer.h" />
-    <ClInclude Include="BufferPool.h" />
+    <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="Face.h" />
     <ClInclude Include="FilepathWrapper.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
@@ -247,19 +237,12 @@
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />
-    <ClInclude Include="ImageFileLoader.h" />
     <ClInclude Include="khrplatform.h" />
-    <ClInclude Include="MeshLoader.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="ObjAnalyzer.h" />
-    <ClInclude Include="ModelFilepaths.h" />
-    <ClInclude Include="ObjLoader.h" />
-    <ClInclude Include="LoggingMessageTargets.h" />
-    <ClInclude Include="MappableBuffer.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="MathFunctions.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="ObjModel.h" />
+    <ClInclude Include="ModelFilepaths.h" />
+    <ClInclude Include="LoggingMessageTargets.h" />
+    <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="OS_And_Compiler_Configuration_Check.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
@@ -269,20 +252,17 @@
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="GenericVertexAttributeSet.h" />
-    <ClInclude Include="SimpleVertexBuffer.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="teapot.h" />
     <ClInclude Include="TeapotExplosion.h" />
     <ClInclude Include="TesselationControlShader.h" />
     <ClInclude Include="TesselationEvaluationShader.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TexturePool.h" />
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VertexSet.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
@@ -301,6 +281,12 @@
     <None Include="gst.geom" />
     <None Include="gst.vert" />
     <None Include="obj\BeveledCube.mtl" />
+    <None Include="obj\BlockThing_Quads.mtl" />
+    <None Include="obj\BlockThing_Triangulated.mtl" />
+    <None Include="obj\ExperimentalEngine.mtl" />
+    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl" />
+    <None Include="obj\MultiPrimitiveTest.mtl" />
+    <None Include="obj\ParentedPrimatives.mtl" />
     <None Include="obj\Splines.mtl" />
     <None Include="obj\SubdivisionCube.mtl" />
     <None Include="RenderProject1.frag" />
@@ -347,9 +333,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
     </Text>
+    <Text Include="VirtualDesctructors.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\BeveledCube.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\BlockThing_Quads.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\BlockThing_Triangulated.obj">
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
     </None>
@@ -365,6 +360,22 @@
     <None Include="obj\Splines.obj">
       <SubType>Designer</SubType>
       <FileType>Document</FileType>
+    </None>
+    <None Include="obj\MultiPrimitiveTest.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\ExperimentalEngine.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.obj">
+      <SubType>Designer</SubType>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\ParentedPrimatives.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

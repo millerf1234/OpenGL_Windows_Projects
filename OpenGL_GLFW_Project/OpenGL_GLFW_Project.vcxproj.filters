@@ -19,9 +19,6 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects">
       <UniqueIdentifier>{428dca05-119d-462b-a72e-9ca33a9e091a}</UniqueIdentifier>
     </Filter>
@@ -39,27 +36,6 @@
     </Filter>
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party">
-      <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\GLFW">
-      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\glad">
-      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType">
-      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType\freetype">
-      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType\freetype\config">
-      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\stb_image">
-      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
     </Filter>
     <Filter Include="SetupAndConfiguration\Debug">
       <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
@@ -85,50 +61,14 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform">
       <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished">
-      <UniqueIdentifier>{4d3962e5-8631-4841-8689-42beb88c4ee3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture">
-      <UniqueIdentifier>{513a15fd-78a1-4385-a898-aef9133d890b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal">
-      <UniqueIdentifier>{424dd3f0-6ce4-4430-a588-539e9d3d55d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material">
-      <UniqueIdentifier>{76988fe0-c6ec-4aeb-880d-1680bb78e838}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer">
-      <UniqueIdentifier>{ab520b4f-9fb8-4ad8-8ef1-e9f50fe62e2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation">
-      <UniqueIdentifier>{e8af1029-f566-4bd3-b2c4-62a7329be774}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished">
-      <UniqueIdentifier>{058efdb2-c5c4-4bfa-89fd-57267456f54f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer">
-      <UniqueIdentifier>{35e20b50-2663-4be0-a164-5fff69c3e5f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool">
-      <UniqueIdentifier>{e3901447-8802-4e60-8b61-193fcda2bba8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer">
-      <UniqueIdentifier>{afe1b40a-364e-4c65-a9e6-2450a9d7a2c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading">
       <UniqueIdentifier>{61aefebc-6b93-4f8d-a147-495f549eeeb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading">
-      <UniqueIdentifier>{582d1e40-ce19-4354-9e96-d84656ad1a2b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models">
       <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\VertexUtility">
-      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
       <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
@@ -138,24 +78,6 @@
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
       <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy">
-      <UniqueIdentifier>{4c8bc92e-9b24-4d15-a98b-c274c4527f7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\RenderProject1">
-      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderTest">
-      <UniqueIdentifier>{8074e451-630a-4f67-81a7-7db7baaa6174}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderExplosion">
-      <UniqueIdentifier>{76e52312-243d-4b1b-bea3-f0e1c689a7f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\Generic">
-      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
-      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo">
       <UniqueIdentifier>{5a97e638-bcd6-40df-a1e4-9636c9d32898}</UniqueIdentifier>
@@ -181,26 +103,62 @@
     <Filter Include="Source Files\Utility\Filepath">
       <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished">
-      <UniqueIdentifier>{7ad8320d-19c9-4ac3-9f9f-8c7fcbdc3263}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation">
-      <UniqueIdentifier>{b639b1aa-13af-44cd-8fa6-f252928fe052}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj">
-      <UniqueIdentifier>{0655cef6-b647-4bf0-bb60-4aeccfc7b7cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model">
-      <UniqueIdentifier>{afa31294-8c01-4034-a07d-fb406ea2e981}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Obj">
-      <UniqueIdentifier>{37f27ada-4ce3-477e-824d-d9c8a125bc32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\Mtl">
-      <UniqueIdentifier>{aee561b4-26ae-4123-b047-dc22d6ba10be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
       <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
+      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EntityComponents">
+      <UniqueIdentifier>{0dfbfc85-f03b-441f-9cd3-8bbee7a5d1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EntityComponents\Mesh">
+      <UniqueIdentifier>{652b5ccd-e9d6-4564-b565-e0119f2128d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing">
+      <UniqueIdentifier>{b27f6ba1-997a-4053-abd2-295730fb77ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads">
+      <UniqueIdentifier>{796caf25-89a3-42cb-8c45-8fcdefe3d0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated">
+      <UniqueIdentifier>{a4d5854e-8b4e-43f1-8565-7522d1d234e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets">
+      <UniqueIdentifier>{dbe0ec7f-4cd2-48c8-a42a-8668b8980862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj">
+      <UniqueIdentifier>{612d584d-fa74-4e7c-bcc7-fe6dbe9bbdbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\MultiPrimitiveTest">
+      <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine">
+      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\VertexUtility">
+      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy">
+      <UniqueIdentifier>{4c8bc92e-9b24-4d15-a98b-c274c4527f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\RenderProject1">
+      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderTest">
+      <UniqueIdentifier>{8074e451-630a-4f67-81a7-7db7baaa6174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderExplosion">
+      <UniqueIdentifier>{76e52312-243d-4b1b-bea3-f0e1c689a7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\Generic">
+      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
+      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\FragmentUtility">
       <UniqueIdentifier>{68849a5e-e5a2-496c-ac9e-5d69b7427bfd}</UniqueIdentifier>
@@ -208,11 +166,32 @@
     <Filter Include="Resource Files\Shaders\TeapotExplosion">
       <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\Model Loading\QuickModel">
-      <UniqueIdentifier>{16d5958c-344a-45d2-8c86-90270cc0ee0c}</UniqueIdentifier>
+    <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
+      <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
-      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
+    <Filter Include="Resource Files\Models\OBJ\Sample\ParentedPrimatives">
+      <UniqueIdentifier>{5f3c8f11-43ac-4194-86dd-ebf2270af7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party">
+      <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLFW">
+      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad">
+      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType">
+      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype">
+      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype\config">
+      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\stb_image">
+      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,37 +240,6 @@
     <ClCompile Include="TesselationEvaluationShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
-    <ClCompile Include="ImageFileLoader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="TexturePool.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleVertexBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MappableBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="BBuffer.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="BufferPool.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjAnalyzer.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="GenericVertexAttributeSet.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClCompile>
@@ -304,29 +252,32 @@
     <ClCompile Include="TeapotExplosion.cpp">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLoader.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="AsciiAsset.cpp">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
-    </ClCompile>
     <ClCompile Include="FilepathWrapper.cpp">
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
-    <ClCompile Include="ObjModel.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexSet.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\QuickModel</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished</Filter>
-    </ClCompile>
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\EntityComponents\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="WavefrontObj.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AsciiAsset.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetInterface.cpp">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Face.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,21 +505,6 @@
     <ClInclude Include="stb_image.h">
       <Filter>Third Party\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="ImageFileLoader.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\TextureInternal</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="TexturePool.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleVertexBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation\Unfinished\SimpleVertexBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="LoggingMessageTargets.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
@@ -590,21 +526,6 @@
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
-    <ClInclude Include="MappableBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="BBuffer.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\BetterBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="BufferPool.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Unfinished\Buffer\BufferPool</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjAnalyzer.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjLoader.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="GenericVertexAttributeSet.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClInclude>
@@ -623,29 +544,29 @@
     <ClInclude Include="ModelFilepaths.h">
       <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
-    <ClInclude Include="MeshLoader.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\OldUnfinishedImplementation</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="AsciiAsset.h">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
-    </ClInclude>
     <ClInclude Include="FilepathWrapper.h">
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
-    <ClInclude Include="ObjModel.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexSet.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\QuickModel</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Utility\Asset Loading\Model Loading\OldAndUnfinished</Filter>
-    </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Source Files\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\EntityComponents\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="WavefrontObj.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClInclude>
+    <ClInclude Include="AsciiAsset.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetInterface.h">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Face.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -739,6 +660,42 @@
     <None Include="obj\Splines.obj">
       <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
     </None>
+    <None Include="obj\BlockThing_Quads.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
+    </None>
+    <None Include="obj\BlockThing_Quads.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
+    </None>
+    <None Include="obj\BlockThing_Triangulated.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
+    </None>
+    <None Include="obj\BlockThing_Triangulated.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
+    </None>
+    <None Include="obj\MultiPrimitiveTest.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
+    </None>
+    <None Include="obj\MultiPrimitiveTest.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
+    </None>
+    <None Include="obj\ExperimentalEngine.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine</Filter>
+    </None>
+    <None Include="obj\ExperimentalEngine.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine</Filter>
+    </None>
+    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
+      <Filter>Resource Files\Models\OBJ\3D_Coat Imported</Filter>
+    </None>
+    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.obj">
+      <Filter>Resource Files\Models\OBJ\3D_Coat Imported</Filter>
+    </None>
+    <None Include="obj\ParentedPrimatives.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
+    </None>
+    <None Include="obj\ParentedPrimatives.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -801,6 +758,9 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="C_Preprocessor_Applications.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="VirtualDesctructors.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
