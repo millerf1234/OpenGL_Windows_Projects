@@ -77,7 +77,116 @@ bool Vertex::operator==(const Vertex& other) const {
 	return false;
 }
 
+bool Vertex::operator!=(const Vertex& other) const {
+	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
+		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
+			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
+				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
 
+//-------------------------------------------------------
+//                     PTN VERTEX
+//-------------------------------------------------------
+
+//      (Position, Texture, Normal) Vertex
+
+PTNVertex::PTNVertex() {
+	mComponents_[0] = 0.0f; //x
+	mComponents_[1] = 0.0f; //y
+	mComponents_[2] = 0.0f; //z
+	mComponents_[3] = 0.0f; //s
+	mComponents_[4] = 0.0f; //t
+	mComponents_[5] = 0.0f; //xn
+	mComponents_[6] = 0.0f; //yn
+	mComponents_[7] = 0.0f; //zn
+}
+
+
+PTNVertex::~PTNVertex() {
+
+}
+
+PTNVertex::PTNVertex(float x, float y, float z, float s, float t, float xn, float yn, float zn) {
+	mComponents_[0] = x;
+	mComponents_[1] = y;
+	mComponents_[2] = z;
+	mComponents_[3] = s;
+	mComponents_[4] = t;
+	mComponents_[5] = xn;
+	mComponents_[6] = yn;
+	mComponents_[7] = zn;
+}
+
+
+PTNVertex::PTNVertex(const PTNVertex& that) {
+	mComponents_ = that.mComponents_;
+}
+
+PTNVertex::PTNVertex(PTNVertex&& that) {
+	mComponents_ = std::move(that.mComponents_);
+}
+
+PTNVertex& PTNVertex::operator=(const PTNVertex& that) {
+	if (this != &that) {
+		mComponents_ = that.mComponents_;
+	}
+	return *this;
+}
+
+PTNVertex& PTNVertex::operator=(PTNVertex&& that) {
+	if (this != &that) {
+		mComponents_ = std::move(that.mComponents_);
+	}
+	return *this;
+}
+
+bool PTNVertex::operator==(const PTNVertex& other) const {
+	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
+		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
+			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
+				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
+					if (abs(mComponents_[4] - other.mComponents_[4]) < fpTolerance) {
+						if (abs(mComponents_[5] - other.mComponents_[5]) < fpTolerance) {
+							if (abs(mComponents_[6] - other.mComponents_[6] < fpTolerance)) {
+								if (abs(mComponents_[7] - other.mComponents_[7]) < fpTolerance) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool PTNVertex::operator!=(const PTNVertex& other) const {
+	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
+		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
+			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
+				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
+					if (abs(mComponents_[4] - other.mComponents_[4]) < fpTolerance) {
+						if (abs(mComponents_[5] - other.mComponents_[5]) < fpTolerance) {
+							if (abs(mComponents_[6] - other.mComponents_[6] < fpTolerance)) {
+								if (abs(mComponents_[7] - other.mComponents_[7]) < fpTolerance) {
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return true;
+}
 
 //-------------------------------------------------------
 //                     FULL VERTEX
@@ -85,6 +194,21 @@ bool Vertex::operator==(const Vertex& other) const {
 
 FullVertex::~FullVertex() {
 
+}
+
+FullVertex::FullVertex(float x0, float x1, float x2, float x3, float x4, float x5, float x6, float x7, float x8, float x9, float x10, float x11) {
+	mComponents_[0] = x0;
+	mComponents_[1] = x1;
+	mComponents_[2] = x2;
+	mComponents_[3] = x3;
+	mComponents_[4] = x4;
+	mComponents_[5] = x5;
+	mComponents_[6] = x6;
+	mComponents_[7] = x7;
+	mComponents_[8] = x8;
+	mComponents_[9] = x9;
+	mComponents_[10] = x10;
+	mComponents_[11] = x11;
 }
 
 FullVertex::FullVertex(const Vertex& v1, const Vertex& v2) {

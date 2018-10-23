@@ -18,6 +18,7 @@
 
 GLFW_Init::GLFW_Init() {
 	width = height = refreshRate = 0;
+	pixelWidth = pixelHeight = 0; //Since GLFW3, screen coordinates and viewport pixels are seperate concepts
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
@@ -270,10 +271,18 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 
 
 
-void setupWindowEventProcessing() {
+void GLFW_Init::setupWindowEventProcessing() {
 	//For what I intend to do here, see https://stackoverflow.com/a/28660673
 	//However, to do this the way I have start to do it would require defining the apporpriate 
 	//callback functions here, which doesn't seem right. Application should somehow do the callbacks,
 	//and maybe by doing so just note that an event occured and mark it in some shared part of data that
 	//then the individual projects can respond to.
+}
+
+//??? Not sure now if I am using screen coords or actual pixels with the Width and Height I use before...
+void GLFW_Init::getFramebufferSize() {
+	if (mWindow) {
+		glfwGetFramebufferSize(mWindow, &pixelWidth, &pixelHeight);
+		//DO stuff with this information (such as add it to log?)
+	}
 }

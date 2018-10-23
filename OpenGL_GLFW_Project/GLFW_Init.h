@@ -52,12 +52,20 @@ private:
 	bool contextIsValid; //Will be false if an initialization step fails
 	bool openFullScreen; 
 	int defaultMonitor;
-	int width, height, refreshRate;
+	int width, height, refreshRate; 
+	int pixelWidth, pixelHeight;
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
 
 
 	void setupWindowEventProcessing(); 
+
+	//Since GLFW3, there is a difference between a window's position (in screen coordinates)
+	//and the number of pixels shown on the screen. Since OpenGL works with pixels (and not
+	//screen coordinates), it is necessary to use the function glfwGetFramebufferSize() to 
+	//correctly do certain OpenGL calls, such as glViewport(). 
+    //see: http://www.glfw.org/docs/latest/moving.html#moving_hidpi
+	void getFramebufferSize();
 
 };
 

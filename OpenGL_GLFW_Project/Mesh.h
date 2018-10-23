@@ -10,6 +10,8 @@
 #define MESH_H_
 
 #include <vector>
+#include <array>
+#include <tuple>
 
 #include "LoggingMessageTargets.h"
 #include "Vertex.h"

@@ -5,16 +5,22 @@
 
 void TeapotExplosion::initialize() {
 
-
+	  //Delete this code eventually. This was just for doing some quick testing...
 	AssetLoadingInternal::AsciiAsset test("obj/BlockThing_Quads.obj");
 	for (int i = 0; i < test.getNumberOfLines(); i++) {
 		std::string LINE = test.getLine(i);
-		if (LINE.at(0) == 'f') 
-			AssetLoadingInternal::Face testFace(LINE.c_str());
+		if (LINE.at(0) == 'f') {
+			AssetLoadingInternal::Face testFace;
+			testFace = AssetLoadingInternal::Face(LINE.c_str());
+		}
 	}
-	AssetLoadingInternal::Face testFace("f 20// 5055// 110//");
+	AssetLoadingInternal::Face testFace("f 20//   005055// 110//");
+	AssetLoadingInternal::Face testFace2("f 2  3  5"); //No slashes...
+	AssetLoadingInternal::Face testFace3("f //2  3  5"); //extra slashes...
 	fprintf(MSGLOG, "\nTest Completed!\n");
 	std::cin.get();
+	
+
 
 	error = false;
 	frameNumber = 0ull;
