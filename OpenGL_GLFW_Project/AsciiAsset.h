@@ -11,11 +11,16 @@
 //                                               inheritance structure.
 //
 // Programmer:   Forrest Miller
-// Date:         October 9, 2018  
+// Date:         October 9-23, 2018  
 //
 //
 //
 // POSSIBLE ISSUES/PITFALLS/INCONSISTENCIES:
+//
+//      Carriage Returns:       Right now this class's implementation detects a new line of text by
+//                              looking for newline characters (or the '/0' end-of-c-string character)
+//                              and as such has no notion of carriage returns. Asset files which include
+//                              carriage returns will thus run into problems when using this class.
 //
 //       Portability Issue:    
 //                              This class relies on the potentially non-portable 'file_exists()'
@@ -37,7 +42,7 @@
 //                         this class manages its filepath itself instead of relying on the Filepath
 //                         object type, but still uses the static functionality of the Filepath 
 //                         class to verify a files existance. 
-//                         Basically this class is function as is but it's implementation could 
+//                         Basically this class is functional as is but it's implementation could 
 //                         desperatly use an overhaul and some refactoring. 
 
 #pragma once
@@ -55,7 +60,7 @@
 //                            //management, but right now this class does it's own filepath management and just
 //                            //uses a few static functions from this file. 
 
-#include "LoggingMessageTargets.h"
+#include "LoggingMessageTargets.h" 
 
 namespace AssetLoadingInternal {
 
@@ -150,13 +155,19 @@ namespace AssetLoadingInternal {
 
 		//Returns the number of lines of the loaded filetext. If no local filetext was loaded, 
 		//then this function will return 0.
-		int getNumberOfLines() const {
-			if (mHasLocalCopyOfFileText_) {
-				return mLineOffsets_.size();
-			}
-			return 0;
-		}
+		int getNumberOfLines() const;
 		
+		//Returns the number of lines that begin with the specified character. Whitespaces (' ') and tabs
+		//('\t') are skipped over at the start of a line. 
+		int getNumberOfLinesThatBeginWith(char c) const;
+
+		//Finds all lines that begin with the character c and stores their line number in the
+		//vector 'lines'. Both tabs and whitespace are skipped over when looking for the first 
+		//character on a line. Any data in the vector before this function is called is left in
+		//place, each found line number is appended to the end of the vector in ascending order. 
+		//Line indexing begins at 0.
+		void getLinesThatBeginWithCharacter(char c, std::vector<int>& lines) const;
+
 		//Retrieves the number of characters on the specified line. If the parameter
 		//'line' does not correspond to a valid line number, this function returns 0.
 		//Note that a newline character at the end of the line will be included as part of the
@@ -171,6 +182,9 @@ namespace AssetLoadingInternal {
 		//Gets the length of the stored file-text. Will return 0 if this object has an invalid
 		//filepath or if no local copy of the file was ever made.
 		size_t getStoredTextLength() const { return mFileText_.length(); }
+
+
+
 
 		//------------------------------------------------------------
 		//                          Setters

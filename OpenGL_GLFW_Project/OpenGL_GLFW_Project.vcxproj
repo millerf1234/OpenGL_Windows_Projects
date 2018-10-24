@@ -81,6 +81,7 @@
       <AdditionalOptions>-std:c++17</AdditionalOptions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -103,7 +104,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -111,6 +112,8 @@
       <AdditionalOptions>-std:c++17</AdditionalOptions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +142,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetInterface.cpp" />
+    <ClCompile Include="AssetLoadingDemo.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="Face.cpp" />
@@ -152,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -173,6 +178,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AsciiAsset.h" />
     <ClInclude Include="AssetInterface.h" />
+    <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="Face.h" />
@@ -248,6 +254,7 @@
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectResourceFilepaths.h" />
     <ClInclude Include="ProjectSetup.h" />
+    <ClInclude Include="QuickObj.h" />
     <ClInclude Include="RenderDemoBase.h" />
     <ClInclude Include="RenderProject1.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -269,6 +276,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="AssetLoadingDemo.frag" />
+    <None Include="AssetLoadingDemo.vert" />
     <None Include="ColorTransforms.frag" />
     <None Include="constantcolor.frag" />
     <None Include="freetype.dll" />

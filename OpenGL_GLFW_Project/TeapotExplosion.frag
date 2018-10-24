@@ -1,9 +1,17 @@
 //Fragment shader for the GeomtryShaderExplosion demo project. 
+//
+// This shader code has been me just messing around and as such it is
+// quite sloppy. I wasn't ever really trying to go for anything in particular,
+// just seeing what patterns I could make. 
+//
+// To Use:  Uncomment one of the "USE_COLOR_SCHEME" macros at a time
+//          to switch between color schemes. 
+//
 // Forrest Miller on 9/28/2018
 
 #version 450 core
 
-in vec3 g2f_pos;  //Position data from geomtry shader
+flat in vec3 g2f_pos;  //Position data from geomtry shader
 in vec3 g2f_vel;  //Velocity data from geometry shader
 
 out vec4 Color;
@@ -27,12 +35,13 @@ uniform float colorModificationValue6;
 //Only define 1 of the following to determine color scheme
 //#define USE_COLOR_SCHEME_0 
 //#define USE_COLOR_SCHEME_1  
-#define USE_COLOR_SCHEME_2
+//#define USE_COLOR_SCHEME_2
 //#define USE_COLOR_SCHEME_3
-
+//#define USE_COLOR_SCHEME_4
+#define USE_COLOR_SCHEME_4_1
 
 //Rotation Functions
-//Implementation for the rotation functions
+//Implementation for the rotation functions (these were here before I made a seperate file of frag shader utility functions)
 	void rotateColorX(inout vec3 color, in float theta) {
 		mat3 xRot = mat3( 1.0,     0.0,         0.0,
 					      0.0,  cos(theta), -sin(theta),
@@ -68,26 +77,38 @@ void main() {
 
 
 #if defined USE_COLOR_SCHEME_1
-	float minColor = 0.0f;
-	float maxColor = 0.0f;
 
-	Color = vec4(abs(g2f_pos.x), abs(g2f_pos.y), abs(g2f_pos.z), 1.0);
+	vec3 color = vec3((abs(sin(time - g2f_pos.x + g2f_pos.y * 3.14159)*g2f_vel.x)), abs(g2f_pos.y), abs(g2f_pos.z));
 
-	clamp(FragColor, minColor, maxColor);
+	rotateColorX(color, redRotationTheta);
+	color = clamp(color, 0.01, 1.0); //Clamp the rotation to prevent out-of-range colors
+
+	rotateColorY(color, greenRotationTheta);
+	color = clamp(color, 0.01, 1.0);
+
+	rotateColorZ(color, blueRotationTheta);
+	color = clamp(color, 0.01, 1.0);
+
+	if (length(color) < 0.25) {
+		color = vec3(1.0, 1.0, 1.0) - color;
+	}
+	Color = vec4(color, 1.0);
+
+	
 #endif //USE_COLOR_SCHEME_1
 
 
 #if defined USE_COLOR_SCHEME_2
 	float blue = (g2f_pos.y + 1.0) / 2.0;
 	float green = 0.05 * (20.3 * sin(time*5.0) - length(g2f_vel.xyz));
-	float red = length(g2f_vel.xyz) / (9.0 * length(g2f_pos.xyz)) + (length(dFdxCoarse(g2f_vel.xyz)) + length(dFdy(g2f_vel.xyz)) / 2.5);
+	float red = length(g2f_vel.xyz) / (9.0 * length(g2f_pos.xyz));
 
 	if (blue > 1.0) {
 		blue -= 1.0;
 		red = blue / (blue + 3.0);
 	}
 
-	float cutoff = colorShiftThreshhold; //+ 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
+	float cutoff = colorShiftThreshhold; 
 
 	if ( (length(vec3(red, green, blue)) < cutoff)) {
 		red += abs(gl_FragCoord.x);
@@ -112,10 +133,10 @@ void main() {
 	vec3 rotatedColor = vec3(red, green, blue);
 	
 	rotateColorX(rotatedColor, redRotationTheta);
-	rotatedColor = clamp(rotatedColor, 0.01, 1.0); //Clamp the rotation to prevent out-of-range colors
+	//rotatedColor = clamp(rotatedColor, 0.01, 1.0); //Clamp the rotation to prevent out-of-range colors
 
 	rotateColorY(rotatedColor, greenRotationTheta);
-	rotatedColor = clamp(rotatedColor, 0.01, 1.0);
+	//rotatedColor = clamp(rotatedColor, 0.01, 1.0);
 
 	rotateColorZ(rotatedColor, blueRotationTheta);
 	rotatedColor = clamp(rotatedColor, 0.01, 1.0);
@@ -131,14 +152,21 @@ void main() {
 
 #endif //USE_COLOR_SCHEME_2
 
+	//I have since learned that the way I was using the GLSL functions dFdx and dFdy 
+	//within this color scheme broke the rules of those functions. I think I removed 
+	//every place I was causing undefined behavior, but there may still be a few lingering.
+	//Basically it is not allowed to use those functions in code that has branching, in addition
+	//to some other restrictions. 
+	//This guys website provides an excellent overview:
+	//       http://www.aclockworkberry.com/shader-derivative-functions/
 #ifdef USE_COLOR_SCHEME_3
 	float blue = (g2f_pos.y+g2f_pos.x + colorModificationValue0) / 2.0;
 	float green = 0.05 * (20.3 * sin(time*5.0) - length(g2f_vel.xyz));
-	float red = length(g2f_vel.xyz) / (9.0 * length(g2f_pos.xyz)) + (length(dFdxCoarse(g2f_vel.xyz)) + length(dFdy(g2f_vel.xyz)) / 2.5);
+	float red = length(g2f_vel.xyz) / (9.0 * length(g2f_pos.xyz));
 
 	if (blue > 1.0 + colorModificationValue3 * sin(colorModificationValue4 * time * g2f_pos.y / (1.0f + colorModificationValue2))) {
 		blue -= (1.0 + colorModificationValue5) + (colorModificationValue6 * g2f_vel.y * 3.0*acosh(time));
-		red = blue / (blue + 3.0 + 0.5 * cos(length(g2f_vel)*(time + colorModificationValue4) + colorModificationValue5 * sqrt(gl_FragCoord.x*length(gl_FragCoord.xyz + dFdy(g2f_pos)))));
+		red = blue / (blue + 3.0 + 0.5 * cos(length(g2f_vel)*(time + colorModificationValue4) + colorModificationValue5 * sqrt(gl_FragCoord.x*length(gl_FragCoord.xyz + g2f_pos))));
 	}
 
 	float cutoff = colorShiftThreshhold; //+ 0.25*abs(sin(time)); //length((0.15 + noise3(vec3(red, green, blue))));  //0.2 
@@ -169,22 +197,100 @@ void main() {
 	//rotatedColor = clamp(rotatedColor, 0.01, 1.0);
 
 	if (rotatedColor.z < min(abs(colorModificationValue0 + colorModificationValue1) + length(g2f_vel + gl_FragCoord.yxx), abs(colorModificationValue2 + colorModificationValue3 + colorModificationValue4 - colorModificationValue5 * sin(time + colorModificationValue6)))) {
-		red = max(red, length(dFdx(g2f_vel.xxx) + dFdy(g2f_vel.yyy)));
+		red = max(red, length(g2f_vel.xxx + g2f_vel.yyy));
 		if (red > 0.9) {
 			red = red / (red + abs(green) + abs(blue) - colorModificationValue3);
 		}
 		green = (red + green + blue) / 3.0;
-		rotatedColor += dFdy(cross(vec3(red, -green, -blue), dFdx(g2f_pos + g2f_vel + gl_FragCoord.zyx) * abs(sin(gl_FragCoord.y - gl_FragCoord.x))));
+		//rotatedColor += cross(vec3(red, -green, -blue), g2f_pos + g2f_vel + gl_FragCoord.zyx * abs(sin(gl_FragCoord.y - gl_FragCoord.x))));
 	}
 	rotatedColor = abs(rotatedColor + vec3(red, green, (red + green) / 2.0));
-	Color = vec4(abs(cross(rotatedColor.zyx, dFdx(rotatedColor))), 1.0);
+	Color = vec4(abs(cross(rotatedColor.zyx, rotatedColor)), 1.0);
 
 	if (length(Color.xyz) < (0.25*colorModificationValue5 + 0.05*sin(g2f_pos.x + gl_FragCoord.y*time))) {
 		Color = abs(abs(vec4(max(max(g2f_pos.x, g2f_vel.x), 2.0*sin(time+abs(gl_FragCoord.x))), 0.75, 0.75 + 0.2*sinh(time+length(g2f_vel)), 0.0) - Color) - Color) ;
 	}
-
+	Color.a = 1.0; //Just in case the alpha channel got messed up somewhere in there along the way
 
 	
 #endif //USE_COLOR_SCHEME_3
 
+	//This color scheme tells me that the velocity written in thge geometry shader is not what I think it is
+#if defined USE_COLOR_SCHEME_4
+	vec3 baseColor = vec3(0.25, 0.25, 0.25);
+	vec3 slowColor = vec3(0.0, 1.0 - abs(0.75 * sin(time)), 0.0);
+	vec3 medColor = vec3(0.0, 0.0, 1.0);
+	vec3 fastColor = vec3(1.0, 0.0, 0.0);
+
+	float speed = 0.25 * length(g2f_vel.xyz);
+	vec3 col;
+	if (speed < 0.5)
+		col = baseColor;
+	else if (speed < 0.95)
+		col = baseColor + slowColor; //col = baseColor + (vec3(2.0) - (speed * slowColor));
+	else if (speed < 1.85)
+		col = baseColor + medColor;
+	else if (speed < 5.5)
+		col = baseColor + slowColor + medColor;
+	else if (speed < 19.5)
+		col = baseColor + medColor + fastColor;
+	else
+		col = baseColor + fastColor /*- slowColor*/;
+	Color = vec4(col, 1.0);
+#endif //USE_COLOR_SCHEME_4
+
+
+	//This color scheme was me trying to play around with assigning color based on 
+	//the velocity written in the geometry shader. It did not work as I had intended.
+#if defined USE_COLOR_SCHEME_4
+	vec3 baseColor = vec3(0.25, 0.25, 0.25);
+	vec3 slowColor = vec3(0.0, 1.0, 0.0);
+	vec3 medColor = vec3(0.0, 0.0, 1.0);
+	vec3 fastColor = vec3(1.0, 0.0, 0.0);
+
+	float speed = 0.25 * length(g2f_vel.xyz);
+	vec3 col;
+	if (speed < 0.5)
+		col = baseColor;
+	else if (speed < 0.95)
+		col = baseColor + slowColor; //col = baseColor + (vec3(2.0) - (speed * slowColor));
+	else if (speed < 1.85)
+		col = baseColor + medColor;
+	else if (speed < 5.5)
+		col = baseColor + slowColor + medColor;
+	else if (speed < 19.5)
+		col = baseColor + medColor + fastColor;
+	else
+		col = baseColor + fastColor /*- slowColor*/;
+	Color = vec4(col, 1.0);
+#endif //USE_COLOR_SCHEME_4
+
+
+	//This is based off color scheme 4, but with some more fancy modifications
+#if defined USE_COLOR_SCHEME_4_1
+	//vec3 posNoise = noise3(g2f_pos);
+	//vec3 coordNoise = noise3(gl_FragCoord.xyz);
+
+	vec3 baseColor = vec3(0.25, 0.25, 0.25);
+	vec3 slowColor = vec3(0.0, 1.0 - abs(0.75 * sin(time)), 0.0);
+	vec3 medColor = vec3(0.0, 0.0, 1.0);
+	vec3 fastColor = vec3(1.0, 0.0, 0.0);
+
+	float speed = 0.25 * length(g2f_vel.xyz);
+	vec3 col;
+	if (speed < 0.5)
+		col = baseColor;
+	else if (speed < 0.95)
+		col = baseColor + slowColor; //col = baseColor + (vec3(2.0) - (speed * slowColor));
+	else if (speed < 1.85)
+		col = baseColor + medColor;
+	else if (speed < 5.5)
+		col = baseColor + slowColor + medColor;
+	else if (speed < 19.5)
+		col = baseColor + medColor + fastColor;
+	else
+		col = baseColor + fastColor;
+
+	Color = vec4(col, 1.0);
+#endif //USE_COLOR_SCHEME_4_1
 }

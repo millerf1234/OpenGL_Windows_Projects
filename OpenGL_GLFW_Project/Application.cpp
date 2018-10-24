@@ -54,6 +54,10 @@ void Application::launch() {
 	
 	fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
+	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
+		runAssetLoadingDemo();
+		if (true) { return; }
+
 	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
 	fprintf(MSGLOG, "Loading TeapotExplosion...\n");
 	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(mDisplayInfo);
@@ -188,4 +192,11 @@ void Application::runGeometryShaderExplosion() {
 		fprintf(ERRLOG, "Error loading GeometryShaderExplosion demo! The Application is"
 			"\ninvalid or the display information is null!\n");
 	}
+}
+
+void Application::runAssetLoadingDemo() {
+	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(mDisplayInfo);
+	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
+
+
 }

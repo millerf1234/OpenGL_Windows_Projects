@@ -44,7 +44,7 @@ namespace AssetLoadingInternal {
 			bool compareAsTriangles(const FaceComponent& that) const;
 
 			//Getters
-			Offset& operator[] (int indx) { return mVertIndices_[indx]; }
+			Offset& operator[] (int indx) { return mVertIndices_.data()[indx]; }
 			std::array<Offset, QUAD_VERTICE_COUNT>& get() { return mVertIndices_; }
 		private:
 			std::array<Offset, QUAD_VERTICE_COUNT> mVertIndices_;

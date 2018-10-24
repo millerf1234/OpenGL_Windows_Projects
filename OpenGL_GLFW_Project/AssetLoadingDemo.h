@@ -1,15 +1,16 @@
-//This file contains a class that is based upon my previous GeometryShaderExplosion class,
-//the differrence between the two being that this class uses RenderDemoBase to provide
-//the interface for the outside calling Application. 
+//This file contains sample code that I wrote for testing 
+//the asset loading implementation code. It isn't finished 
+//yet as I write this comment, but expect the code to have
+//something to do with loading and rendering assets from
+//'.obj' and '.mtl' files.
 //
-//The original GeometryShaderExplosion class was based off the code example at
-//  http://web.engr.oregonstate.edu/~mjb/cs519/Handouts/geometry_shaders.6pp.pdf
-//      (Slides 29-32) 
+// Programmer:   Forrest Miller
+// Date:         10/23/2018
 
 #pragma once
 
-#ifndef TEAPOT_EXPLOSION_H_
-#define TEAPOT_EXPLOSION_H_
+#ifndef	ASSET_LOADING_DEMO_H_
+#define ASSET_LOADING_DEMO_H_
 
 #include <thread>
 
@@ -24,28 +25,20 @@
 #include "ShaderProgram.h"
 #include "GenericVertexAttributeSet.h"
 
-#include "teapot.h"  //From the internet, is a file containing the vertices for a teapot
-
 #include "RenderDemoBase.h"
 
-
-//For testing:
-#include "AsciiAsset.h"
-#include "Face.h"
+#include "QuickObj.h" //For loading '.obj' files
 
 
 using ShaderInterface::GenericVertexAttributeSet; 
 
+//enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };
 
-
-static constexpr int COLOR_MOD_VALUES_COUNT = 7;
-static constexpr float COLOR_MOD_VALUE_CHANGE_SPEED = 0.15f;
-
-class TeapotExplosion : public RenderDemoBase {
+class AssetLoadingDemo : public RenderDemoBase { 
 public:
-	TeapotExplosion() = delete;
-	TeapotExplosion(std::shared_ptr<MonitorData> screenInfo);
-	virtual ~TeapotExplosion() override;
+	AssetLoadingDemo() = delete;
+	AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo);
+	virtual ~AssetLoadingDemo() override;
 
 	virtual void loadAssets() override;
 	virtual void run() override;
@@ -60,24 +53,22 @@ private:
 
 	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
 
-	float colorChangeThreshold;
-	GLfloat colorModificationValues[COLOR_MOD_VALUES_COUNT];
-
 	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
 	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<ShaderProgram> sceneShaderLine;
+	std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
 	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
-
-
 	
 
-	
 	//   Helper Functions
 	void initialize(); 
 
-	void loadTeapot();
+	//This function will only be correct if this objects sceneObjectPtrs all have the exact same type of components.
+	GLsizei computeSceneObjectPtrsTotalIndices() const;
+
+	void loadModels();
 
 	void loadShaders();
 
@@ -112,11 +103,8 @@ private:
 	void reset();
 
 
-	//1 and 2 in same function:
+	
 	void changePrimitiveType(); 
-	void modifyColorThreshhold();
-	void rotateColor();
-	void updateColorModificationValues();
 
 
 
@@ -175,4 +163,4 @@ private:
 
 
 
-#endif //TEAPOT_EXPLOSION_H_
+#endif //ASSET_LOADING_DEMO_H_

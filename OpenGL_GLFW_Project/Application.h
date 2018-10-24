@@ -19,6 +19,7 @@
 
 #include "RenderProject1.h"
 #include "GeometryShaderExplosion.h"
+#include "AssetLoadingDemo.h"
 
 #include "RenderDemoBase.h"
 #include "TeapotExplosion.h"
@@ -61,7 +62,7 @@ private:
 	//(Pre-RenderDemo) Projects:
 	void runRenderProject1();
 	void runGeometryShaderExplosion();
-
+	void runAssetLoadingDemo();
 
 
 	//for now:

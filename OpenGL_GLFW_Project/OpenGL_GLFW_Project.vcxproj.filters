@@ -193,6 +193,15 @@
     <Filter Include="Third Party\stb_image">
       <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl">
+      <UniqueIdentifier>{cdaf0160-e6f0-4017-abec-92a6ea34e00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading">
+      <UniqueIdentifier>{83427107-e9aa-4c51-83bb-91ecd9565e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\AssetLoadingDemo">
+      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -278,6 +287,12 @@
     </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickObj.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetLoadingDemo.cpp">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -568,6 +583,12 @@
     <ClInclude Include="Line.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
     </ClInclude>
+    <ClInclude Include="QuickObj.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetLoadingDemo.h">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -695,6 +716,12 @@
     </None>
     <None Include="obj\ParentedPrimatives.obj">
       <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
+    </None>
+    <None Include="AssetLoadingDemo.vert">
+      <Filter>Resource Files\Shaders\AssetLoadingDemo</Filter>
+    </None>
+    <None Include="AssetLoadingDemo.frag">
+      <Filter>Resource Files\Shaders\AssetLoadingDemo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

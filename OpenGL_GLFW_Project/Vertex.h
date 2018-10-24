@@ -38,7 +38,7 @@
 #define VERTEX_H_
 
 static constexpr float INITAL_FLOATING_POINT_TOLERANCE = 0.0000001f;
-static constexpr size_t VERTEX_SIZE = 4u;
+static constexpr size_t VERTEX_SIZE = 4u; 
 static constexpr size_t PTN_VERTEX_SIZE = 3u + 2u + 3u;
 static constexpr size_t FULL_VERTEX_SIZE = 3u*VERTEX_SIZE;
 static constexpr size_t EXTENDED_VERTEX_SIZE = 6u*VERTEX_SIZE; 
@@ -48,8 +48,9 @@ static constexpr size_t EXTENDED_VERTEX_SIZE = 6u*VERTEX_SIZE;
 
 static float fpTolerance = INITAL_FLOATING_POINT_TOLERANCE; //Floating point tolerance (used in comparing equality)
 
-//To simplify logic and reduce unecessary copying, the following two classes are 
+//To simplify logic and reduce unnecessary copying, the following three classes are 
 //forward declared so that they can be made friends of the Vertex class.
+class PTNVertex;
 class FullVertex;
 class ExtendedVertex;
 

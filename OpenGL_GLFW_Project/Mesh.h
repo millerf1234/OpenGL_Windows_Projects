@@ -23,7 +23,7 @@ using DatapointCount = size_t;
 //mesh containing the entire model
 typedef std::pair<Offset, DatapointCount> SubMeshBounds;
 
-enum class VertType { BASIC, FULL, EXTENDED };
+enum class VertType { BASIC, VTN, FULL, EXTENDED };
 
 class Mesh {
 public:

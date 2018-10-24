@@ -225,11 +225,6 @@ namespace AssetLoadingInternal {
 				//////////    (as opposed to the invalid paths marked near the bottom of this loop) ////
 				////////////////////////////////////////////////////////////////////////////////////////
 				if (*stringIter == ' ') { //If we read a space
-					//if ((previousCharWasASlash) && (next == NextComponentType::NORMAL)) { //and we were looking for a normal
-					//	//No 'normal' component must have been present on this line. 
-					//	fprintf(MSGLOG, "\nAHA!\n");
-					//	next = NextComponentType::POSITION;
-					//}
 					previousCharWasASlash = false;
 					next = NextComponentType::POSITION; //Reading a space means we automatically revert to looking for a position
 				}
@@ -258,12 +253,6 @@ namespace AssetLoadingInternal {
 						case NextComponentType::TEX_COORD: //If we hit a second slash while looking for a tex coord, then
 							next = NextComponentType::NORMAL; //there must be no texture coordinates. Thus we can move on to 
 							break;                           //looking for a normal.
-							////There is a special case to handle here in case we hit the end of the line without reading a normal:
-							//stringIter++;
-							//if ((*stringIter == '\n') || (*stringIter == '\0')) {
-							//	fprintf(MSGLOG, "\nAHA!\n");
-							//}
-							//continue;
 						case NextComponentType::NORMAL: //If we hit a second slash while looking for a normal, then the file is corrupt/invalid.
 							fprintf(ERRLOG, "\nERROR: A '/' was encountered while trying to read a normal! This line is ill-formed!\n");
 							parseError = true;
@@ -389,6 +378,7 @@ namespace AssetLoadingInternal {
 			if (!mHasNormals_) { normals[0] = 0u; normals[1] = 0u; normals[2] = 0u; }
 			if (!mHasTexCoords_) { texCoord[0] = 0u; texCoord[1] = 0u; texCoord[2] = 0u; }
 
+			/*
 			/////////////////////////////////////////////////
 			//print a message for debug purposes before returning...
 			fprintf(MSGLOG, "\nFace Parsed! %u characters read from line:\n\tf%s",
@@ -398,6 +388,7 @@ namespace AssetLoadingInternal {
 				mHasTexCoords_, mHasNormals_, positions[0], texCoord[0], normals[0], positions[1], texCoord[1], normals[1],
 				positions[2], texCoord[2], normals[2]);
 			/////////////////////////////////////////////////
+			*/
 			fillFaceComponents(positions, texCoord, normals);
 			if (mValidData_) {
 				return true; //Valid data, no Parse Error
@@ -541,7 +532,7 @@ namespace AssetLoadingInternal {
 		}
 	}
 	
-
+	//This code here doesn't work!
 	void Face::convertIndexingToBeginAtZero() {
 		if (mValidData_) {
 			auto positions = mPositions_.get();

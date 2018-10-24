@@ -29,7 +29,7 @@ namespace ShaderInterface {
 	}
 
 	void GenericVertexAttributeSet::sendDataToVertexBuffer(int binding, const std::vector<GLfloat> &data,
-		int vertexSize, GLsizei vertexStride) {
+		int vertexSize, GLsizei vertexStride, GLvoid* offset) {
 		//Check to make sure everything is okay to proceed
 		if (binding > mActiveLocations) {
 			fprintf(ERRLOG, "\nERROR: Attempting to bind data to vertex location %d\n"
@@ -52,7 +52,7 @@ namespace ShaderInterface {
 		glEnableVertexAttribArray(binding);
 
 		//Bind the buffer to the binding spot
-		glVertexAttribPointer(binding, vertexSize, GL_FLOAT, GL_FALSE, 0, NULL); //Last 2 params are stride and offset-of-first-vertex-into-buffer
+		glVertexAttribPointer(binding, vertexSize, GL_FLOAT, GL_FALSE, vertexStride, offset); //Last 2 params are stride and offset-of-first-vertex-into-buffer
 
 	}
 

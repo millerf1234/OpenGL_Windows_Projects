@@ -26,19 +26,20 @@
 //
 //
 //  Programmer:       Forrest Miller
-//  Date:             October 15, 2018
-
+//  Date(s):      
+//       Created:     October 15, 2018
+//   Version 1.0:     October 23, 2018
 
 #pragma once
 
 #ifndef WAVEFRONT_OBJ_H_
 #define WAVEFRONT_OBJ_H_
 
-#include "AssetInterface.h"
-#include "Mesh.h"
-#include "Line.h"
-#include "Face.h"
-#include "AsciiAsset.h"
+#include "AssetInterface.h" //This class inherits from base class found in this file
+#include "Mesh.h"           //Loaded data will be placed into "Mesh.h"
+#include "Line.h"           //Used internally by class
+#include "Face.h"           //Used internally by class
+#include "AsciiAsset.h"     //Used internally by class
 
 class WavefrontObj final : public AssetInterface {
 public:

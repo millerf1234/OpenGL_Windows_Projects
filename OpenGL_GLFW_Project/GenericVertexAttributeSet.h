@@ -40,8 +40,9 @@ namespace ShaderInterface {
 		//						      instance.
 		//  (4)  GLsizei  vertexStride  This is the distance between successive vertices... This might not make sense actually and might not be needed...
 		//                              Chances are the input will be tightly packed, which means this parameter should be left at 0.
+		//  (5)  GLvoid&  offset      Distance into vertex where data starts
 		void sendDataToVertexBuffer(int binding, const std::vector<GLfloat> &data, int vertexSize,
-			GLsizei vertexStride);
+			GLsizei vertexStride, GLvoid* offset = 0);
 
 		void use() { glBindVertexArray(mVAO); }
 

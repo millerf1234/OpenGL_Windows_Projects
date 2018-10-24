@@ -138,6 +138,71 @@ namespace AssetLoadingInternal {
 		return (*this);
 	}
 
+	int AsciiAsset::getNumberOfLines() const {
+		if (mHasLocalCopyOfFileText_) {
+			return mLineOffsets_.size();
+		}
+		return 0;
+	}
+
+	int AsciiAsset::getNumberOfLinesThatBeginWith(char c) const {
+		if (!(mValidFilepath_ && mHasLocalCopyOfFileText_)) {
+			fprintf(ERRLOG, "\nERROR! Unable to get the number of lines beginning with the char '%c'\n"
+				"because this object does not have any stored filetext.\n", c);
+			return 0;
+		}
+
+		const char * fileText = mFileText_.c_str(); 
+		int lineCounter = 0;
+		const char * lineIter;
+
+		for (size_t i = 0; i < mLineOffsets_.size(); i++) {
+			lineIter = (fileText + mLineOffsets_[i].offset);
+			if (*lineIter == c) {
+				lineCounter++;
+			}
+			//Eat up the tabs and whitespace 
+			else if ( (*lineIter == ' ') || (*lineIter == '\t') ) { 
+				while ((*lineIter == ' ') || (*lineIter == '\t')) {
+					lineIter++;
+				} //Check for match with specified character
+				if (*lineIter == c) { 
+					lineCounter++;
+				}
+			}
+		}
+		return lineCounter;
+	}
+
+	//Implementation note: This function closely matches the 'getNumberOfLinesThatBeginWith(char c)' function.
+	void AsciiAsset::getLinesThatBeginWithCharacter(char c, std::vector<int>& lines) const {
+		if (!(mValidFilepath_ && mHasLocalCopyOfFileText_)) {
+			fprintf(ERRLOG, "\nERROR! Unable to get the number of lines beginning with the char '%c'\n"
+				"because this object does not have any stored filetext.\n", c);
+			return;
+		}
+
+		const char * fileText = mFileText_.c_str();
+		const char * lineIter;
+
+		for (size_t i = 0; i < mLineOffsets_.size(); i++) {
+			lineIter = (fileText + mLineOffsets_[i].offset);
+			if (*lineIter == c) {
+				lines.push_back(i);
+			}
+			//Eat up the tabs and whitespace 
+			else if ((*lineIter == ' ') || (*lineIter == '\t')) {
+				while ((*lineIter == ' ') || (*lineIter == '\t')) {
+					lineIter++;
+				} //Check for match with specified character
+				if (*lineIter == c) {
+					lines.push_back(i);
+				}
+			}
+		}
+	}
+
+
 	std::string AsciiAsset::getTextCopy() const {
 		if (mValidFilepath_ && mHasLocalCopyOfFileText_) {
 			return mFileText_;
