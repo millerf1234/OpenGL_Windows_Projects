@@ -133,9 +133,6 @@
     <Filter Include="Resource Files\Models\OBJ\Sample\MultiPrimitiveTest">
       <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine">
-      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
     </Filter>
@@ -201,6 +198,21 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\AssetLoadingDemo">
       <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
+      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Thing">
+      <UniqueIdentifier>{c0a6b5bf-70d6-49fc-9f1d-a486e6f5aff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships">
+      <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test">
+      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShip01">
+      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -700,10 +712,10 @@
       <Filter>Resource Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
     </None>
     <None Include="obj\ExperimentalEngine.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine</Filter>
+      <Filter>Resource Files\Models\OBJ\Sample\Experimental Engine</Filter>
     </None>
     <None Include="obj\ExperimentalEngine.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube\Experimental Engine</Filter>
+      <Filter>Resource Files\Models\OBJ\Sample\Experimental Engine</Filter>
     </None>
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
       <Filter>Resource Files\Models\OBJ\3D_Coat Imported</Filter>
@@ -722,6 +734,21 @@
     </None>
     <None Include="AssetLoadingDemo.frag">
       <Filter>Resource Files\Shaders\AssetLoadingDemo</Filter>
+    </None>
+    <None Include="obj\Thing.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
+    </None>
+    <None Include="obj\Thing.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
+    </None>
+    <None Include="obj\BlockThing_Triangulated01.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
+    </None>
+    <None Include="obj\BlockShipSample_01.mtl">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
+    </None>
+    <None Include="obj\BlockShipSample_01.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

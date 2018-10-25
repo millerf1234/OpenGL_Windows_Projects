@@ -45,11 +45,13 @@ public:
 	
 private:
 	bool error;
-	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
+	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording, frameLineTypeLastSwitched;
 	float counter;
 	float xRotation, yRotation, zRotation;
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
 	glm::vec3 backgroundColor;
+
+	GLuint vao, vbo;
 
 	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
 
@@ -59,7 +61,7 @@ private:
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<ShaderProgram> sceneShaderLine;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
-	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
+	//std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;  //Not used currently
 	
 
 	//   Helper Functions
@@ -106,6 +108,7 @@ private:
 	
 	void changePrimitiveType(); 
 
+	void rotate();
 
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+

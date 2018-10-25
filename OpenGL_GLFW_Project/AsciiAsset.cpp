@@ -356,25 +356,35 @@ namespace AssetLoadingInternal {
 
 		//If we detected the filetext contains lines that are eligable for deletion
 		if (linesToDelete.size() > 0u) {
+			
+			//Implementation note: The way the deleting works is a little unconventional. Basically, once
+			//it has been determined that there are lines that need deleting, the filetext is copied 
+			//line by line to a new string. However if it is determined a line should be deleted, instead 
+			//that line is skipped over without being copied. After the copying is finished, the new filetext
+			//is parsed just as if it were a freshly aquired file. 
+
 			//Now we can use substrings to create the updated filetext
 			std::string updatedFileText;
 			updatedFileText.reserve(mFileText_.length()); //Reserve space for the string ahead of time
-			int linesToDeleteIndex = 0;
-			for (size_t i = 0; i < mLineOffsets_.size(); i++) {
-				if (linesToDelete[linesToDeleteIndex] == i) {
-					continue;
+			size_t linesToDeleteIndex = 0;
+			bool finishedDeletingLines = false;
+			for (size_t i = 0u; i < mLineOffsets_.size(); i++) {  //For each line
+				if ( (!finishedDeletingLines) && (linesToDelete[linesToDeleteIndex] == i)) { //If we have more to delete and this line should be deleted
+					linesToDeleteIndex++; //Increment to next line to be deleted
+					if (linesToDeleteIndex >= linesToDelete.size()) { //Check to make sure there are more lines that need deleting
+						finishedDeletingLines = true;
+					}
+					continue; //Move on to the next line without making a copy
 				}
-				else {
-					updatedFileText = mFileText_.substr(mLineOffsets_[i].offset, mLineOffsets_[i].lineLength);
+				else { //Make a copy of the line for the new string
+					updatedFileText += mFileText_.substr(mLineOffsets_[i].offset, mLineOffsets_[i].lineLength);
 				}
 			}
 
-			//fprintf(MSGLOG, "AsciiAsset has removed all lines from FileText that began with char '%c'\n"
-			//	"The result of this operation was that %u lines were removed!\n", c, linesToDelete.size());
-
-			mFileText_.swap(updatedFileText);
+			mFileText_.swap(updatedFileText); 
 			parseFileText(); //Reparse the new fileText
 		}
+		
 	}
 	
 	void AsciiAsset::loadFile() {
@@ -392,6 +402,7 @@ namespace AssetLoadingInternal {
 	}
 
 	void AsciiAsset::parseFileText() {
+		mLineOffsets_.clear(); //Clear any pre-existing line offset data
 		if (mFileText_.length() > 0u) {
 			int lineNumberCounter = 0;
 			std::string::iterator textIterator;

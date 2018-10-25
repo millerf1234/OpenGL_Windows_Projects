@@ -535,31 +535,53 @@ namespace AssetLoadingInternal {
 	//This code here doesn't work!
 	void Face::convertIndexingToBeginAtZero() {
 		if (mValidData_) {
-			auto positions = mPositions_.get();
-			positions[0] -= 1u;
-			positions[1] -= 1u;
-			positions[2] -= 1u;
+			mPositions_[0] -= 1u;
+			mPositions_[1] -= 1u;
+			mPositions_[2] -= 1u;
 			if (mIsQuad_)
-				positions[3] -= 1u;
-
+				mPositions_[3] -= 1u;
 			if (mHasTexCoords_) {
-				auto textureCoords = mTexCoords_.get();
-				textureCoords[0] -= 1u;
-				textureCoords[1] -= 1u;
-				textureCoords[2] -= 1u;
+				mTexCoords_[0] -= 1u;
+				mTexCoords_[1] -= 1u;
+				mTexCoords_[2] -= 1u;
 				if (mIsQuad_)
-					textureCoords[3] -= 1u;
+					mTexCoords_[3] -= 1u;
 			}
-			
 			if (mHasNormals_) {
-				auto normals = mNormals_.get();
-				normals[0] -= 1u;
-				normals[1] -= 1u;
-				normals[2] -= 1u;
+				mNormals_[0] -= 1u;
+				mNormals_[1] -= 1u;
+				mNormals_[2] -= 1u;
 				if (mIsQuad_)
-					normals[3] -= 1u;
+					mNormals_[3] -= 1u;
 			}
 		}
+
+		//if (mValidData_) {
+		//	auto positions = mPositions_.get();
+		//	(positions[0]) -= 1u;
+		//	(positions[1]) -= 1u;
+		//	(positions[2]) -= 1u;
+		//	if (mIsQuad_)
+		//		positions[3] -= 1u;
+		//
+		//	if (mHasTexCoords_) {
+		//		auto textureCoords = mTexCoords_.get();
+		//		textureCoords[0] -= 1u;
+		//		textureCoords[1] -= 1u;
+		//		textureCoords[2] -= 1u;
+		//		if (mIsQuad_)
+		//			textureCoords[3] -= 1u;
+		//	}
+		//	
+		//	if (mHasNormals_) {
+		//		auto normals = mNormals_.get();
+		//		normals[0] -= 1u;
+		//		normals[1] -= 1u;
+		//		normals[2] -= 1u;
+		//		if (mIsQuad_)
+		//			normals[3] -= 1u;
+		//	}
+		//}
 	}
 
 } //namespace AssetLoadingInternal

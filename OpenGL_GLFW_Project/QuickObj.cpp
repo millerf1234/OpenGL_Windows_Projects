@@ -7,6 +7,7 @@ QuickObj::QuickObj(std::string filepath, float scale) {
 	mFile_ = std::make_unique<AssetLoadingInternal::AsciiAsset>(filepath);
 
 	if (mFile_->getStoredTextLength() > 0u) {
+		preparseFile();
 		parseFile();
 	}
 	else {
@@ -65,6 +66,10 @@ void QuickObj::parseFile() {
 			//No material loading for now...
 			continue;
 		}
+		else if (*lineIter == 'u') { //Line probably is a "usemtl ____"  instruction
+			//No material using for now
+			continue;
+		}
 		else {
 			fprintf(ERRLOG, "Ignoring line: %s\n", line.c_str());
 		}
@@ -108,10 +113,10 @@ void QuickObj::constructVerticesFromParsedData() {
 		}
 	}
 	fprintf(MSGLOG, "\nParsed  Lines: %d\tTriangleFaces: %d\tQuadFaces: %d\n", lines, triangleFaces, quadFaces);
-	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size() * 3, mTexCoords_.size() * 2, mNormals_.size() * 3);
+	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(), mTexCoords_.size(), mNormals_.size());
 
 	if (lines > 0) {
-		fprintf(MSGLOG, "\n  [TODO: Implement the converting of parsed line data to GPU-ready data...]\n");
+		fprintf(MSGLOG, "\n  [TODO: Implement the converting of parsed 'line' primitive data to GPU-ready data...]\n");
 	}
 
 	//Construct each face from the parsed data into the mVertices_ vector, with positions/textureCoords/Normals interlaced
@@ -314,7 +319,6 @@ void QuickObj::constructVerticesFromParsedData() {
 				}
 			}
 			else { //There must be normals but no texture coords
-
 				   //Triangle 1
 				auto qc0_pos = mPositions_[quadCorner0[POSITION_INDEX]]; //quad corner 0 _ positions
 				mVertices_.push_back(qc0_pos[0]); //corner0 x
@@ -510,6 +514,9 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c0_pos[2]); //corner0 z
 				mVertices_.push_back(mScale_);    //zoom / w component of position
 				//auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
+				//Going to introduce a quick hack to get textureless models to load as though they were textured
+				mVertices_.push_back(0.0f); 
+				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
 				//mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
 				auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
@@ -524,6 +531,9 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c1_pos[2]); //corner1 z
 				mVertices_.push_back(mScale_);   //zoom
 				//auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
+				//Going to introduce a quick hack to get textureless models to load as though they were textured
+				mVertices_.push_back(0.0f);
+				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
 				//mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
 				auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
@@ -538,6 +548,9 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c2_pos[2]); //corner2 z
 				mVertices_.push_back(mScale_);    //zoom / w component of position
 				//auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
+				//Going to introduce a quick hack to get textureless models to load as though they were textured
+				mVertices_.push_back(0.0f);
+				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
 				//mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
 				auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal

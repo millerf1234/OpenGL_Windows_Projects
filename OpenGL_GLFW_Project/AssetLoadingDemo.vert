@@ -7,9 +7,10 @@ layout(location = 1) in vec2 tex;
 layout(location = 2) in vec3 normal;
 
 out vec3 vertPos;
+out vec2 texCoord;
 out vec3 vertNormal;
 
-/*
+
 uniform float zoom;
 uniform float time;
 uniform float xRotation;
@@ -22,23 +23,25 @@ void setAspectRatio(inout vec3 vert, in float aspectRatio);
 void rotateX(inout vec3 vert, in float theta);
 void rotateY(inout vec3 vert, in float theta);
 void rotateZ(inout vec3 vert, in float theta);
-*/
+
 void main() {
 
+	
+	// Process the Position input for the vertex
+	vec3 rotatedPosition = position.xyz;
 
-	vertPos = position.xyz;
+	rotateX(rotatedPosition, xRotation);
+	rotateY(rotatedPosition, yRotation);
+	rotateZ(rotatedPosition, zRotation);
+	setAspectRatio(rotatedPosition, -3600.0 / 1800.0);
+	
+
+	vertPos = rotatedPosition;
+	texCoord = tex;
 	vertNormal = normal;
+	
+	
+	//gl_Position = vec4(position.xyz, 1.0);
+	gl_Position = vec4(rotatedPosition, clamp(position.w + zoom, 1.0, 10.0));
 
-	gl_Position = position;
-
-	//Process the Position input for the vertex
-	//vec3 vertPos = position;
-	//rotateX(vertPos, xRotation);
-	//rotateY(vertPos, yRotation - sin(time));// +(0.75*cosh(tan(time*45.0))));
-	//rotateZ(vertPos, zRotation);
-
-	//setAspectRatio(vertPos, -3600.0 / 1800.0);
-	//v2g_position = vertPos;
-
-	//gl_Position = vec4(vertPos, zoom);
 }

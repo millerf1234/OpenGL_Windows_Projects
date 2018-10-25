@@ -8,6 +8,7 @@ void AssetLoadingDemo::initialize() {
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameOfMostRecentColorRecording = 0ull;
+	frameLineTypeLastSwitched = 0ull;
 	counter = 0.0f;
 	xRotation = 90.0f;
 	yRotation = 120.0f;
@@ -16,12 +17,17 @@ void AssetLoadingDemo::initialize() {
 	greenRotationTheta = 0.0f;
 	blueRotationTheta = 0.0f;
 
+	vao = vbo = 0u;
+
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
 
 	//Set the starting input primitive type
 	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
 
+	glEnable(GL_DEPTH_TEST);
+	//glDepthMask(GL_FALSE);
+	//glDepthFunc(GL_LEQUAL);
 	//glEnable(GL_PROGRAM_POINT_SIZE); //Doesn't matter as of right now
 }
 
@@ -61,10 +67,10 @@ AssetLoadingDemo::~AssetLoadingDemo() {
 
 void AssetLoadingDemo::run() {
 	if (error) {
-		fprintf(ERRLOG, "An error occured while loading TeapotExplosion\n");
+		fprintf(ERRLOG, "An error occured while loading AssetLoadingDemo\n");
 		return;
 	}
-	fprintf(MSGLOG, "\nTeapotExplosion demo project has loaded and will begin running!\n");
+	fprintf(MSGLOG, "\nAsset Loading Demo project has loaded and will begin running!\n");
 
 
 	fprintf(MSGLOG, "\n\tDemo Starting...!\n");
@@ -187,23 +193,89 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 }
 
 void AssetLoadingDemo::loadModels() {
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/SubdivisionCube.obj"));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockThing_Triangulated01.obj"));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BeveledCube.obj"));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngine.obj"));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj"));
+	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 4.5f));
 
-	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockThing_Triangulated.obj"));
 
 	////Make a vertex attribute set to handle organizing the data for the graphics context
-	vertexAttributes = std::make_unique<GenericVertexAttributeSet>(1);
+	//vertexAttributes = std::make_unique<GenericVertexAttributeSet>(3);
 
-	if (!vertexAttributes)
-		return;
+	//if (!vertexAttributes)
+	//	return;
 
 	std::vector<float> combinedSceneObjects;
 	for (auto sceneObjIter = sceneObjectPtrs.begin(); sceneObjIter != sceneObjectPtrs.end(); sceneObjIter++) {
 		combinedSceneObjects.insert(combinedSceneObjects.end(), (*sceneObjIter)->mVertices_.begin(), (*sceneObjIter)->mVertices_.end());
+		int posCounter = 0;
+		for (auto iter = combinedSceneObjects.begin(); iter != combinedSceneObjects.end(); iter++) {
+			if (posCounter == 0) {
+				//(*iter) += 0.65f;
+			}
+			posCounter = (posCounter + 1) % 9;
+		}
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////
+	//DO it manually   (FAILED ATTEMPT 1)
+	/////////////////////////////////////////////////////////////////////////////////
+	//See pages 115-116 of OpenGL Super Bible   (THIS IS WRONG !!! IT NEEDS A glGEN*() call)
+	//
+	//static GLuint staticVAO = 0u;
+	//static GLuint staticBuffer = 0u; 
 
-	vertexAttributes->sendDataToVertexBuffer(0, combinedSceneObjects, 4, 6, static_cast<GLvoid*>(0));
-	vertexAttributes->sendDataToVertexBuffer(0, combinedSceneObjects, 4, 6, (GLvoid*)(static_cast<GLintptr>((4u * sizeof(float)))));
+	//glCreateVertexArrays(1, &staticVAO);
+	//glCreateBuffers(1, &staticBuffer);
+	//glNamedBufferStorage(staticBuffer, sizeof(combinedSceneObjects.data()), combinedSceneObjects.data(), 0);
+
+	////Set up positions
+	//glVertexArrayAttribBinding(staticVAO, 0, staticBuffer);
+	//glVertexArrayAttribFormat(staticVAO, 0, 4, GL_FLOAT, GL_FALSE, 7);
+	//glEnableVertexAttribArray(0u);
+
+	//glVertexArrayAttribBinding(staticVAO, 1, staticBuffer);
+	//glVertexArrayAttribFormat(staticVAO, 1, 3, GL_FLOAT, GL_FALSE, 7);
+	//glEnableVertexAttribArray(0u);
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	//ATTEMPT 2
+	glCreateVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glCreateBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	
+	fprintf(MSGLOG, "\nReality Check: sizeof(combinedSceneObjects.data() is: %u\n", sizeof(combinedSceneObjects.data()));
+	fprintf(MSGLOG, "ANd combinedSceneObjects.size() * sizeof(combinedSceneObjects.data()) is: %u\n", combinedSceneObjects.size() * sizeof(combinedSceneObjects.data()));
+
+	glBufferData(GL_ARRAY_BUFFER, combinedSceneObjects.size() * sizeof(combinedSceneObjects.data()), combinedSceneObjects.data(), GL_STATIC_DRAW);
+
+	//Positions (expects "layout (location=0)" in shader)
+	glEnableVertexArrayAttrib(vao, 0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (4u + 2u + 3u) * sizeof(GLfloat), (GLvoid*)0u);
+	//glEnableVertexAttribArray(0);
+
+	
+	//Texture Coords (expects "layout (location = 1)" in shader)
+	glEnableVertexArrayAttrib(vao, 1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (4u + 2u + 3u) * sizeof(GLfloat), (GLvoid*)(5u*sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
+
+	//Normals (expects "layout (location = 2)" in shader)
+	glEnableVertexArrayAttrib(vao, 2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, (4u + 2u + 3u) * sizeof(GLfloat), (GLvoid*)(7u * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(2);
+	
+
+
+	//
+
+
+
+	//vertexAttributes->sendDataToVertexBuffer(0, combinedSceneObjects, 4, 7, static_cast<GLvoid*>(0));
+	//vertexAttributes->sendDataToVertexBuffer(2, combinedSceneObjects, 3, 7, (GLvoid*)(static_cast<GLintptr>((4u * sizeof(float)))));
 	
 
 	fprintf(MSGLOG, "\n%u Objects have been successfully loaded to Video Memory!\n", sceneObjectPtrs.size());
@@ -252,7 +324,7 @@ void AssetLoadingDemo::renderLoop() {
 		}
 
 		changePrimitiveType();
-
+		rotate();
 
 		updateFrameClearColor();
 
@@ -347,6 +419,10 @@ void AssetLoadingDemo::reset() {
 	zRotation = 0.0f; //Reset rotation
 	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
 	frameNumber = 0ull;
+	frameUnpaused = 0ull;
+	frameOfMostRecentColorRecording = 0ull;
+	frameLineTypeLastSwitched = 0ull;
+
 }
 
 void AssetLoadingDemo::changePrimitiveType() {
@@ -359,6 +435,21 @@ void AssetLoadingDemo::changePrimitiveType() {
 
 	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::FAN;
+
+	if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
+		if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
+			frameLineTypeLastSwitched = frameNumber;
+		}
+		else {
+			frameLineTypeLastSwitched = frameNumber;
+			if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE) {
+				currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::LINE_STRIP;
+			}
+			else {
+				currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::LINE;
+			}
+		}
+	}	
 }
 
 //void AssetLoadingDemo::modifyColorThreshhold() {
@@ -372,17 +463,25 @@ void AssetLoadingDemo::changePrimitiveType() {
 //	}
 //}
 //
-//void AssetLoadingDemo::rotateColor() {
-//	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-//		blueRotationTheta += 0.025f;
-//	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-//		blueRotationTheta -= 0.025f;
-//
-//	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-//		greenRotationTheta += 0.025f;
-//	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-//		greenRotationTheta -= 0.025f;
-//}
+void AssetLoadingDemo::rotate() {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		xRotation += 0.1f;
+		//blueRotationTheta += 0.025f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		xRotation -= 0.1f;
+		//blueRotationTheta -= 0.025f;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		zRotation += 0.1f;
+		//greenRotationTheta += 0.025f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		zRotation -= 0.1f;
+		//greenRotationTheta -= 0.025f;
+	}	
+}
 
 //void AssetLoadingDemo::updateColorModificationValues() {
 //	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
@@ -467,7 +566,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 void AssetLoadingDemo::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 1.7f + counter);
+	sceneShader->uniforms->updateUniform1f("zoom", 1.0f);//1.7f + counter);
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
@@ -475,9 +574,9 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
 
-	xRotation += 0.0000f;
-	yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
-	zRotation += 0.0012375035f;
+	//xRotation += 0.0000f;
+	//yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
+	//zRotation += 0.0012375035f;
 
 	//fprintf(MSGLOG, "xRot is %f, yRot is %s, zRot is %f\n", xRotation, yRotation, zRotation);
 	sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
@@ -502,23 +601,33 @@ void AssetLoadingDemo::updateUniforms() {
 }
 
 void AssetLoadingDemo::drawVerts() {
+
 	if (sceneShader)
 		sceneShader->use();
-	if (vertexAttributes)
-		vertexAttributes->use();
+	//if (vertexAttributes)
+	//	vertexAttributes->use();
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
 
 	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL) {
-
+		//fprintf(MSGLOG, "\nTotalIndices are: %u\n", computeSceneObjectPtrsTotalIndices());
 		glDrawArrays(GL_TRIANGLES, 0, computeSceneObjectPtrsTotalIndices());
 	}
 
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::STRIP) {
+	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::STRIP) {
 		//glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, computeSceneObjectPtrsTotalIndices());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, computeSceneObjectPtrsTotalIndices());
 	}
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::FAN) {
+	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::FAN) {
 		//glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, computeSceneObjectPtrsTotalIndices());
+	}
+	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE) {
+		glDrawArrays(GL_LINES, 0, computeSceneObjectPtrsTotalIndices());
+	}
+	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE_STRIP) {
+		glDrawArrays(GL_LINE_STRIP, 0, computeSceneObjectPtrsTotalIndices());
 	}
 	/*
 	if (sceneShaderLine)

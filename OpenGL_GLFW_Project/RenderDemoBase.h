@@ -47,7 +47,7 @@
 #include "ProjectSetup.h"           //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
 
-enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };
+enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN, LINE, LINE_STRIP };
 
 class RenderDemoBase {
 public:

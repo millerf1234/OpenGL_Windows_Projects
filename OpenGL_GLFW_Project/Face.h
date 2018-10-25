@@ -45,7 +45,7 @@ namespace AssetLoadingInternal {
 
 			//Getters
 			Offset& operator[] (int indx) { return mVertIndices_.data()[indx]; }
-			std::array<Offset, QUAD_VERTICE_COUNT>& get() { return mVertIndices_; }
+			//std::array<Offset, QUAD_VERTICE_COUNT>& get() { return mVertIndices_; }
 		private:
 			std::array<Offset, QUAD_VERTICE_COUNT> mVertIndices_;
 		};
