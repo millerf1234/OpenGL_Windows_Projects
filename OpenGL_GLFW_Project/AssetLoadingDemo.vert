@@ -17,6 +17,14 @@ uniform float xRotation;
 uniform float yRotation;
 uniform float zRotation;
 
+//The following uniforms define the 'frustrum' 
+uniform float fNear;
+uniform float fFar;
+uniform float fLeft;
+uniform float fRight;
+uniform float fBottom;
+uniform float fTop;
+
 
 //Declarations of functions that are defined in a different file but are used within this file
 void setAspectRatio(inout vec3 vert, in float aspectRatio);
@@ -24,9 +32,25 @@ void rotateX(inout vec3 vert, in float theta);
 void rotateY(inout vec3 vert, in float theta);
 void rotateZ(inout vec3 vert, in float theta);
 
+//From experimental Frustrum matrix file called "PerspectiveProjection":
+void frustrumMult(inout vec4 vert, in float fNear, in float fFar, in float fLeft, in float fRight, in float fBottom, in float fTop);
+
 void main() {
 
-	
+	vec4 projPos = position;
+
+	frustrumMult(projPos, fNear, fFar, fLeft, fRight, fBottom, fTop);
+
+	rotateX(projPos.xyz, xRotation);
+	rotateY(projPos.xyz, yRotation);
+	rotateZ(projPos.xyz, zRotation);
+
+	vertPos = projPos.xyz;
+	texCoord = tex;
+	vertNormal = normal;
+
+	gl_Position = projPos + vec4(0.0, 0.0, 0.0, 2.0*zoom);
+	/*
 	// Process the Position input for the vertex
 	vec3 rotatedPosition = position.xyz;
 
@@ -42,6 +66,6 @@ void main() {
 	
 	
 	//gl_Position = vec4(position.xyz, 1.0);
-	gl_Position = vec4(rotatedPosition, clamp(position.w + zoom, 1.0, 10.0));
-
+	gl_Position = vec4(rotatedPosition, position.w + zoom);//clamp(position.w + zoom, 1.0, 10.0));
+	*/
 }

@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MissingAsset.cpp" />
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="RenderProject1.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MissingAsset.h" />
     <ClInclude Include="ModelFilepaths.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
@@ -300,6 +302,7 @@
     <None Include="obj\Splines.mtl" />
     <None Include="obj\SubdivisionCube.mtl" />
     <None Include="obj\Thing.mtl" />
+    <None Include="PerspectiveProjection.vert" />
     <None Include="RenderProject1.frag" />
     <None Include="RenderProject1.vert" />
     <None Include="TeapotExplosion.frag" />
@@ -361,6 +364,7 @@
     </None>
     <None Include="obj\BlockThing_Triangulated01.obj">
       <FileType>Document</FileType>
+      <SubType>Designer</SubType>
     </None>
     <None Include="obj\BlockShipSample_01.obj">
       <FileType>Document</FileType>
@@ -398,6 +402,15 @@
     <None Include="obj\Thing.obj">
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\NewTieFighter.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\Pokemon.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\Spaceship.obj">
+      <FileType>Document</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>

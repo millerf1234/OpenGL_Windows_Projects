@@ -268,6 +268,10 @@ namespace ShaderInterface {
 
 
 	bool CompiledShader::checkIfValidFilepath(std::ifstream& inFileStream) {
+		if (!inFileStream) {	
+			fprintf(WRNLOG, "\nWarning! Unable to locate file: \"%s\"", mFilepath);
+			return false;
+		}
 		try {
 			inFileStream.exceptions(inFileStream.failbit);
 		}

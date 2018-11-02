@@ -32,7 +32,7 @@
 
 using ShaderInterface::GenericVertexAttributeSet; 
 
-//enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN };
+
 
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
@@ -48,7 +48,12 @@ private:
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording, frameLineTypeLastSwitched;
 	float counter;
 	float xRotation, yRotation, zRotation;
+	float zoom;
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
+
+	//For the view frustrum testing:
+	float frustNear, frustFar, frustLeft, frustRight, frustTop, frustBottom;
+
 	glm::vec3 backgroundColor;
 
 	GLuint vao, vbo;
@@ -69,6 +74,13 @@ private:
 
 	//This function will only be correct if this objects sceneObjectPtrs all have the exact same type of components.
 	GLsizei computeSceneObjectPtrsTotalIndices() const;
+
+
+	void printFrustrumValues() const {
+		fprintf(MSGLOG, "\nFrustrum Updated:\n\tnear = %f\n\tfar = %f\n"
+			"\tleft = %f\n\tright = %f\n\tup = %f\n\tdown = %f\n", frustNear,
+			frustFar, frustLeft, frustRight, frustBottom, frustTop );
+	}
 
 	void loadModels();
 
@@ -109,6 +121,8 @@ private:
 	void changePrimitiveType(); 
 
 	void rotate();
+
+	void modifyFrustrum();
 
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+

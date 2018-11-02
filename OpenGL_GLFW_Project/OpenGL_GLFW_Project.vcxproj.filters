@@ -136,9 +136,6 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\VertexUtility">
-      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\Legacy">
       <UniqueIdentifier>{4c8bc92e-9b24-4d15-a98b-c274c4527f7c}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
       <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\FragmentUtility">
-      <UniqueIdentifier>{68849a5e-e5a2-496c-ac9e-5d69b7427bfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\TeapotExplosion">
       <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
@@ -213,6 +207,18 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShip01">
       <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\StarSuzerian">
+      <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common">
+      <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\FragmentUtility">
+      <UniqueIdentifier>{68849a5e-e5a2-496c-ac9e-5d69b7427bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\VertexUtility">
+      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +311,9 @@
     </ClCompile>
     <ClCompile Include="AssetLoadingDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
+    </ClCompile>
+    <ClCompile Include="MissingAsset.cpp">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +610,9 @@
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
+    <ClInclude Include="MissingAsset.h">
+      <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -626,9 +638,6 @@
     </None>
     <None Include="TestGeom.geom">
       <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
-    </None>
-    <None Include="VertMath.vert">
-      <Filter>Resource Files\Shaders\VertexUtility</Filter>
     </None>
     <None Include="RenderProject1.vert">
       <Filter>Resource Files\Shaders\Legacy\RenderProject1</Filter>
@@ -685,7 +694,7 @@
       <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
     </None>
     <None Include="ColorTransforms.frag">
-      <Filter>Resource Files\Shaders\FragmentUtility</Filter>
+      <Filter>Resource Files\Shaders\Common\FragmentUtility</Filter>
     </None>
     <None Include="obj\Splines.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
@@ -749,6 +758,17 @@
     </None>
     <None Include="obj\BlockShipSample_01.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
+    </None>
+    <None Include="obj\NewTieFighter.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
+    </None>
+    <None Include="obj\Pokemon.obj" />
+    <None Include="obj\Spaceship.obj" />
+    <None Include="PerspectiveProjection.vert">
+      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
+    </None>
+    <None Include="VertMath.vert">
+      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

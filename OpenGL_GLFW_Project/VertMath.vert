@@ -4,7 +4,7 @@
 //have input or output. This shader should be marked 
 //as 'secondary' within the application code.
 
-//IMPORTANT: Read the GLSL rules! https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
+//NOTE: Read the GLSL rules! https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
 
 #version 450 core
 
@@ -59,7 +59,3 @@ void rotateZ(inout vec3 vert, in float theta) {
 	vert = (zRot * vert);
 }
 
-
-
-//Todo 
-//  vec4 PerspectiveProjection

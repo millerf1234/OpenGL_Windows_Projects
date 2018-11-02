@@ -13,9 +13,18 @@ void AssetLoadingDemo::initialize() {
 	xRotation = 90.0f;
 	yRotation = 120.0f;
 	zRotation = 0.0f;
+	zoom = 1.0f;
 	redRotationTheta = 0.0f;
 	greenRotationTheta = 0.0f;
 	blueRotationTheta = 0.0f;
+
+	frustNear = 1.5f;
+	frustFar = -1.5f;
+	frustLeft = -3.0f;
+	frustRight = 3.0f;
+	frustTop = 3.0f;
+	frustBottom = -3.0f;
+	
 
 	vao = vbo = 0u;
 
@@ -93,12 +102,19 @@ void AssetLoadingDemo::loadShaders() {
 	fprintf(MSGLOG, "\nInitializing Shaders!\n");
 	sceneShader = std::make_unique<ShaderProgram>();
 
+	//Create and attach helper vertex shaders
+	std::unique_ptr<ShaderInterface::VertexShader> perspectiveProj = std::make_unique<ShaderInterface::VertexShader>("PerspectiveProjection.vert");
+	if (!perspectiveProj)
+		return;
+	perspectiveProj->makeSecondary();
+	sceneShader->attachSecondaryVert(perspectiveProj.get());
 
 	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>("VertMath.vert");
 	if (!vertHelper)
 		return;
 	vertHelper->makeSecondary();
 	sceneShader->attachSecondaryVert(vertHelper.get());
+
 	//Attach the primary vertex shader
 	fprintf(MSGLOG, "\nAttaching main vertex shader!\n");
 	//sceneShader->attachVert("TeapotExplosion.vert");
@@ -181,6 +197,8 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 	}
 	else if (sceneObjectPtrs.data()[0]->hasNormals()) {
 		vertexSize = 4u + 3u;
+		//GOing to insert an extra 2 padding here to go with my hack to fix non-texture-coord models to run with the code that expects texture coords
+		//vertexSize += 2u;
 	}
 	else {
 		vertexSize = 4u;
@@ -193,12 +211,14 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 }
 
 void AssetLoadingDemo::loadModels() {
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/Pokemon.obj")); //Doesn't load? Spend time in debugger on this one
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/spaceship.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/SubdivisionCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockThing_Triangulated01.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BeveledCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngine.obj"));
-	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj"));
-	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 4.5f));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj", 3.0f));
+	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
 
 
 	////Make a vertex attribute set to handle organizing the data for the graphics context
@@ -213,7 +233,7 @@ void AssetLoadingDemo::loadModels() {
 		int posCounter = 0;
 		for (auto iter = combinedSceneObjects.begin(); iter != combinedSceneObjects.end(); iter++) {
 			if (posCounter == 0) {
-				//(*iter) += 0.65f;
+				(*iter) += 0.65f;
 			}
 			posCounter = (posCounter + 1) % 9;
 		}
@@ -325,6 +345,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		changePrimitiveType();
 		rotate();
+		modifyFrustrum();
 
 		updateFrameClearColor();
 
@@ -364,7 +385,7 @@ bool AssetLoadingDemo::checkIfShouldPause() const {
 bool AssetLoadingDemo::checkIfShouldRecordColor() const {
 	if ((frameNumber >= (frameOfMostRecentColorRecording +
 		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1))
-		&& (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)) {
+		&& (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
@@ -417,12 +438,24 @@ void AssetLoadingDemo::reset() {
 	fprintf(MSGLOG, "\nReseting Demo...\n");
 	counter = 0.0f; //Reset time to 0
 	zRotation = 0.0f; //Reset rotation
+	xRotation = 0.0f;
+	yRotation = 0.0f;
 	backgroundColor = glm::vec3(0.0f, 0.5f, 0.75f);
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameOfMostRecentColorRecording = 0ull;
 	frameLineTypeLastSwitched = 0ull;
+	zoom = 1.0f;
 
+	//Reset frustrum
+	frustNear = 2.5f;
+	frustFar = -2.5f;
+	frustLeft = -3.0f;
+	frustRight = 3.0f;
+	frustTop = 3.0f;
+	frustBottom = -3.0f;
+
+	printFrustrumValues();
 }
 
 void AssetLoadingDemo::changePrimitiveType() {
@@ -464,6 +497,35 @@ void AssetLoadingDemo::changePrimitiveType() {
 //}
 //
 void AssetLoadingDemo::rotate() {
+
+	if ((glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
+		(glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
+
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+			yRotation += 0.105f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			yRotation -= 0.105f;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+			zoom += 0.095f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+			zoom -= 0.095f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+			zRotation += 0.51f;
+			//greenRotationTheta += 0.025f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			zRotation -= 0.51f;
+			//greenRotationTheta -= 0.025f;
+		}
+	}
+	else {
+
+
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		xRotation += 0.1f;
 		//blueRotationTheta += 0.025f;
@@ -480,8 +542,60 @@ void AssetLoadingDemo::rotate() {
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		zRotation -= 0.1f;
 		//greenRotationTheta -= 0.025f;
+	}
+
+
+	
+		//Sneak scaling in here as well..
+		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+			zoom += 0.025f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+			zoom -= 0.025f;
+		}
+	}
+}
+
+void AssetLoadingDemo::modifyFrustrum() {
+	bool modificationMade = false;
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+		modificationMade = true;
+		frustNear += 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+		modificationMade = true;
+		frustNear -= 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+		modificationMade = true;
+		frustFar += 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+		modificationMade = true;
+		frustFar -= 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		modificationMade = true;
+		frustTop += 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+		modificationMade = true;
+		frustBottom -= 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+		modificationMade = true;
+		frustLeft -= 0.01f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+		modificationMade = true;
+		frustRight += 0.01f;
+	}
+
+	if (modificationMade) {
+		printFrustrumValues();
 	}	
 }
+
 
 //void AssetLoadingDemo::updateColorModificationValues() {
 //	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
@@ -566,7 +680,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 void AssetLoadingDemo::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 1.0f);//1.7f + counter);
+	sceneShader->uniforms->updateUniform1f("zoom", zoom);//1.7f + counter);
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
@@ -598,6 +712,14 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
 	*/
+
+	sceneShader->uniforms->updateUniform1f("fNear", frustNear);
+	sceneShader->uniforms->updateUniform1f("fFar", frustFar);
+	sceneShader->uniforms->updateUniform1f("fLeft", frustLeft);
+	sceneShader->uniforms->updateUniform1f("fRight", frustRight);
+	sceneShader->uniforms->updateUniform1f("fTop", frustTop);
+	sceneShader->uniforms->updateUniform1f("fBottom", frustBottom);
+
 }
 
 void AssetLoadingDemo::drawVerts() {
