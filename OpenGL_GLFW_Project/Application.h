@@ -1,5 +1,9 @@
 // Header file for class that contains the application
 //Created by Forrest Miller on July 16, 2018
+//This file underwent continuous modifications up through November 2, 2018. 
+//On November 2, 2018, the programmer (me) decided to clean up both this file
+//and the '.cpp' implementation file to remove old/broken code. I'm on a bit 
+//of a limited time frame to do so, so I probably won't finish today. 
 
 
 //RANDOM NOTE: To see vcpkg commands, go to the link: https://docs.microsoft.com/en-us/cpp/vcpkg#command-line-reference
@@ -9,16 +13,15 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <memory>
-#include <fstream>
+#include <memory>   //Mostly for smart pointers
+#include <fstream>  //Gotta have that fstream
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
-#include "ProjectResourceFilepaths.h"
 
-#include "RenderProject1.h"
-#include "GeometryShaderExplosion.h"
+//#include "RenderProject1.h"
+//#include "GeometryShaderExplosion.h"
 #include "AssetLoadingDemo.h"
 
 #include "RenderDemoBase.h"
@@ -33,8 +36,8 @@ public:
 
 private:
 	bool mApplicationValid;
-	std::shared_ptr<MonitorData> mDisplayInfo;
-	std::unique_ptr<GLFW_Init> mGLFWInitializer;
+	std::shared_ptr<MonitorData> displayInfo;
+	std::unique_ptr<GLFW_Init> glfwInitializer;
 
 
 	//Initialization Helper Functions (this was just me playing around and can be removed in future):
@@ -49,8 +52,6 @@ private:
 	void doExtraSetup() const;
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
-
-
 	void playIntroMovie();
 	
 
@@ -58,21 +59,7 @@ private:
 	//newly created, without either of the load() or run() methods having been called.
 	void runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name = "\0");
 
-
-	//(Pre-RenderDemo) Projects:
-	void runRenderProject1();
-	void runGeometryShaderExplosion();
 	void runAssetLoadingDemo();
-
-
-	//for now:
-	//bool loop();
-
-	//eventually:
-	//void renderLoop(void *);
-	//void logicLoop(void *);
-
-	//void getInput(void * inputFlags);
 };
 
 

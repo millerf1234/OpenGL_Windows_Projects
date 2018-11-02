@@ -3,17 +3,16 @@
 
 Application::Application() {
 	mApplicationValid = true;
-	mDisplayInfo = nullptr;
-	mGLFWInitializer = nullptr;
+	displayInfo = nullptr;
+	glfwInitializer = nullptr;
 
 	//initialize the shader interface logger
 	//ShaderInterface::initializeShaderInterfaceLogger();
 
 	fprintf(MSGLOG, "Application is loading...\n");
-	//ShaderInterface::logMsgEvent("Application is loading...");
-	setupGLFW();
+	setupGLFW(); 
 	loadGraphicsLanguageFunctions();
-	doExtraSetup(); //This function call to doExtraSetup() isn't necessary (probably), it's more for informational purposes and testing/learning/experimenting
+	//doExtraSetup(); //This function call to doExtraSetup() isn't necessary (probably), it's more for informational purposes and testing/learning/experimenting
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -27,8 +26,8 @@ Application::Application() {
 
 
 Application::~Application() {
-	if (mGLFWInitializer) {
-		mGLFWInitializer->terminate();
+	if (glfwInitializer) {
+		glfwInitializer->terminate();
 	}
 }
 
@@ -60,17 +59,17 @@ void Application::launch() {
 
 	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
 	fprintf(MSGLOG, "Loading TeapotExplosion...\n");
-	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(mDisplayInfo);
+	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
 	runRenderDemo(TeapotExplosionDemo, "Teapot Explosion Demo");
 	
 }
 
 void Application::setupGLFW() {
 	fprintf(MSGLOG, "Loading GLFW...\n");
-	mGLFWInitializer = std::make_unique<GLFW_Init>();
-	mGLFWInitializer->setDefaultMonitor(MONITOR_TO_USE);
-	mDisplayInfo = mGLFWInitializer->initialize();
-	if (!mDisplayInfo) {
+	glfwInitializer = std::make_unique<GLFW_Init>();
+	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
+	displayInfo = glfwInitializer->initialize();
+	if (!displayInfo) {
 		mApplicationValid = false;
 		return;
 	}
@@ -131,8 +130,8 @@ void Application::checkMSAA() const { //hmm
 
 
 void Application::playIntroMovie() {
-	/*if ((nullptr != mDisplayInfo->activeMonitor) && (nullptr != glfwGetCurrentContext())) {
-		glfwMakeContextCurrent(mDisplayInfo->activeMonitor);
+	/*if ((nullptr != displayInfo->activeMonitor) && (nullptr != glfwGetCurrentContext())) {
+		glfwMakeContextCurrent(displayInfo->activeMonitor);
 	}*/
 	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
 }
@@ -153,7 +152,7 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 		fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
 	}
 	//Perform a second error check
-	else if ( !(mDisplayInfo && mApplicationValid) ) {
+	else if ( !(displayInfo && mApplicationValid) ) {
 		fprintf(ERRLOG, "\nError launching RenderDemo!\n"
 			"The Application is invalid or the detected display information is null!\n");
 	}
@@ -167,36 +166,7 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 	}
 }
 
-
-void Application::runRenderProject1() {
-	fprintf(MSGLOG, "Loading RenderProject1...\n");
-	if (mDisplayInfo && mApplicationValid) {
-		std::unique_ptr<RenderProject1> rp1 = std::make_unique<RenderProject1>(mDisplayInfo);
-		rp1->loadAssets();
-		rp1->run();
-	}
-	else {
-		fprintf(ERRLOG, "Error loading RenderProject1! The Application is"
-			"\ninvalid or the display information is null!\n");
-	}
-}
-
-void Application::runGeometryShaderExplosion() {
-	fprintf(MSGLOG, "Loading Geometry Shader Explosion...\n");
-	if (mDisplayInfo && mApplicationValid) {
-		std::unique_ptr<GeometryShaderExplosion> gseDemo = std::make_unique<GeometryShaderExplosion>(mDisplayInfo);
-		gseDemo->loadAssets();
-		gseDemo->run();
-	}
-	else {
-		fprintf(ERRLOG, "Error loading GeometryShaderExplosion demo! The Application is"
-			"\ninvalid or the display information is null!\n");
-	}
-}
-
 void Application::runAssetLoadingDemo() {
-	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(mDisplayInfo);
+	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
 	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
-
-
 }

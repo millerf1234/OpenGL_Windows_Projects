@@ -223,6 +223,9 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo">
       <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
+      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -762,16 +765,18 @@
     <None Include="obj\BlockShipSample_01.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
     </None>
-    <None Include="obj\NewTieFighter.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
-    </None>
     <None Include="obj\Pokemon.obj" />
-    <None Include="obj\Spaceship.obj" />
     <None Include="VertMath.vert">
       <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
     </None>
     <None Include="PerspectiveProjection.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+    </None>
+    <None Include="obj\Spaceship.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
+    </None>
+    <None Include="obj\NewTieFighter.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -839,6 +844,9 @@
     </Text>
     <Text Include="VirtualDesctructors.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NewTieFighterNotice.txt">
+      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

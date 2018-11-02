@@ -8,26 +8,55 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 
 -Forrest
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//Random Design Philosophy Note(s)   --   November 2, 2018
+// CLASS DESIGN
+//    Private Member Variables (henceforth PMVs):
+//	    When naming PMVs variables, if the class is used for a utility purpose (which is what
+//        ~90% of the classes in this project are), I [have tried to] follow the PMV naming 
+//        convention of both prefixing each PMV with a lowercase 'm' and postfixing
+//        each PMV with an underscore. For example, if the class has an integer PMV named 'counter',
+//        the variables declaration would be: 
+//                                  int  mCounter_;
+//      The remaining 10% of the classes are the exception to this rule. These are the classes which
+//        form the central/primary classes that provide the backbone/interface for the program. For example,
+//        these include clases such as 'Application'; or additionally anything inheriting from the abstract
+//        base class 'RenderDemoBase.' The reasoning for this is I am expecting much more frequent updates,
+//        modifications and even just programmer-reading/debugging to take place. 
+//     The purpose of having this distinction in the naming convention is to provide clear seperation between
+//        code/pmv's that are part of well tested and coordinated classes versus classes which are more likly 
+//        to contain bugs and/or fresher code. 
+//
+//
+//    
+////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//---------------------------------------------------------------------------//
 //August 23, 2018
 //  Here is a reference for types that may be encountered in OpenGL
 //         https://www.khronos.org/opengl/wiki/OpenGL_Type
+//---------------------------------------------------------------------------//
 
 
-//Web Links:
-		For Relating OpenGL types to Specific Types, see:  https://stackoverflow.com/questions/8932912/whats-the-advantage-of-using-gluint-instead-of-unsigned-int
-
-		For StackOverflow post on anonymous namespaces: https://stackoverflow.com/a/156834
-
-		LAMBDA EXPRESSIONS (YOU REALLY SHOULD LEARN THIS!) https://msdn.microsoft.com/en-us/library/dd293608(d=printer).aspx
-
-		Difference between glBufferStorage and glBufferData: https://stackoverflow.com/questions/27810542/what-is-the-difference-between-glbufferstorage-and-glbufferdata
-
-		Random OpenGL reading that is worth looking at again:
-				https://www.glprogramming.com/red/chapter03.html#name1
-				http://web.cse.ohio-state.edu/~shen.94/781/Site/Slides_files/pipeline.pdf
-
-		OpenGL Framebuffer intro: http://www.songho.ca/opengl/gl_fbo.html
+//|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//|  Web Links:
+  |		For Relating OpenGL types to Specific Types, see:  https://stackoverflow.com/questions/8932912/whats-the-advantage-of-using-gluint-instead-of-unsigned-int
+  |
+  |		For StackOverflow post on anonymous namespaces: https://stackoverflow.com/a/156834
+  |
+  |		LAMBDA EXPRESSIONS (YOU REALLY SHOULD LEARN THIS!) https://msdn.microsoft.com/en-us/library/dd293608(d=printer).aspx
+  |
+  |		Difference between glBufferStorage and glBufferData: https://stackoverflow.com/questions/27810542/what-is-the-difference-between-glbufferstorage-and-glbufferdata
+  |
+  |		Random OpenGL reading that is worth looking at again:
+  |				https://www.glprogramming.com/red/chapter03.html#name1
+  |				http://web.cse.ohio-state.edu/~shen.94/781/Site/Slides_files/pipeline.pdf
+  |
+  |		OpenGL Framebuffer intro: http://www.songho.ca/opengl/gl_fbo.html
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 //FUTURE IDEAS:
 

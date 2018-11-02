@@ -347,6 +347,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
     </Text>
+    <Text Include="NewTieFighterNotice.txt" />
     <Text Include="VirtualDesctructors.txt" />
   </ItemGroup>
   <ItemGroup>
