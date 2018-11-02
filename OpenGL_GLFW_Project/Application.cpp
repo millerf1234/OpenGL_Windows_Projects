@@ -46,7 +46,7 @@ void Application::launch() {
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	
 
-	fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
+	//fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
 	//The two legacy demos:
 	//runRenderProject1();
 	//runGeometryShaderExplosion();
@@ -54,9 +54,9 @@ void Application::launch() {
 	
 	fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
-		runAssetLoadingDemo();
-		if (true) { return; }
+	//fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
+		//runAssetLoadingDemo();
+		//if (true) { return; }
 
 	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
 	fprintf(MSGLOG, "Loading TeapotExplosion...\n");

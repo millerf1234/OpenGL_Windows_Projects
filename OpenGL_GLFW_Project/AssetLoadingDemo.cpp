@@ -18,12 +18,12 @@ void AssetLoadingDemo::initialize() {
 	greenRotationTheta = 0.0f;
 	blueRotationTheta = 0.0f;
 
-	frustNear = 1.5f;
-	frustFar = -1.5f;
-	frustLeft = -3.0f;
-	frustRight = 3.0f;
-	frustTop = 3.0f;
-	frustBottom = -3.0f;
+	frustNear = 1.0f;
+	frustFar = -1.0f;
+	frustLeft = -1.0f;
+	frustRight = 1.0f;
+	frustTop = 1.0f;
+	frustBottom = -1.0f;
 	
 
 	vao = vbo = 0u;

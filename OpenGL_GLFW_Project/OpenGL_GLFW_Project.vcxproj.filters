@@ -154,9 +154,6 @@
     <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
       <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\TeapotExplosion">
-      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
       <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
     </Filter>
@@ -190,9 +187,6 @@
     <Filter Include="Source Files\Projects\RenderDemos\AssetLoading">
       <UniqueIdentifier>{83427107-e9aa-4c51-83bb-91ecd9565e65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\AssetLoadingDemo">
-      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
       <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
     </Filter>
@@ -219,6 +213,15 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects">
+      <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion">
+      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo">
+      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -664,19 +667,19 @@
       <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
     </None>
     <None Include="TeapotExplosion.vert">
-      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="TeapotExplosion.geom">
-      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="TeapotExplosion.frag">
-      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="TeapotOutline.geom">
-      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="TeapotOutline.frag">
-      <Filter>Resource Files\Shaders\TeapotExplosion</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
       <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
@@ -739,10 +742,10 @@
       <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
     </None>
     <None Include="AssetLoadingDemo.vert">
-      <Filter>Resource Files\Shaders\AssetLoadingDemo</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
     <None Include="AssetLoadingDemo.frag">
-      <Filter>Resource Files\Shaders\AssetLoadingDemo</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
     <None Include="obj\Thing.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
@@ -764,11 +767,11 @@
     </None>
     <None Include="obj\Pokemon.obj" />
     <None Include="obj\Spaceship.obj" />
-    <None Include="PerspectiveProjection.vert">
-      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
-    </None>
     <None Include="VertMath.vert">
       <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
+    </None>
+    <None Include="PerspectiveProjection.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
