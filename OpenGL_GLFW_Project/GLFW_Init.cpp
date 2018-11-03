@@ -76,7 +76,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	}
 	else {
 		fprintf(MSGLOG, "DISABLED\n");
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
 	}
 
 	
@@ -119,8 +119,6 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		fprintf(WRNLOG, "WARNING! VSYNC INTERVAL IS SET TO A NON-STANDARD VALUE AND MAY RESULT IN UNDEFINED BEHAVIOR\n");
 		fprintf(WRNLOG, "VSYNC interval set to %d while the value must be only either 0 or 1!\n", vSyncInterval);
 	}
-
-
 
 	fprintf(MSGLOG, "OpenGL context configured!\n");
 
@@ -222,25 +220,25 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		contextIsValid = true;
 
 	}
-	return (generateDetectedMonitorsStruct());
+	return (std::move(generateDetectedMonitorsStruct()));
 }
 
 //Creates a struct from the members of this class
 std::shared_ptr<MonitorData> GLFW_Init::generateDetectedMonitorsStruct() {
-	std::shared_ptr<MonitorData> displayDetectionResults = std::make_shared<MonitorData>();
+	std::shared_ptr<MonitorData> detectedDisplayData = std::make_shared<MonitorData>();
 	
-	displayDetectionResults->numDetected = connectedDisplayCount;
-	displayDetectionResults->activeMonitorNum = defaultMonitor;
-	displayDetectionResults->width = this->width;
-	displayDetectionResults->height = this->height;
-	displayDetectionResults->refreshRate = this->refreshRate;
+	detectedDisplayData->numDetected = connectedDisplayCount;
+	detectedDisplayData->activeMonitorNum = defaultMonitor;
+	detectedDisplayData->width = this->width;
+	detectedDisplayData->height = this->height;
+	detectedDisplayData->refreshRate = this->refreshRate;
 	//Set monitor pointers
-	displayDetectionResults->monitorArray = monitors;
-	displayDetectionResults->activeMonitor = mWindow;
+	detectedDisplayData->monitorArray = monitors;
+	detectedDisplayData->activeMonitor = mWindow;
 
-	displayDetectionResults->validContext = contextIsValid;
+	detectedDisplayData->validContext = contextIsValid;
 
-	return displayDetectionResults; //This struct winds up getting copied a lot
+	return std::move(detectedDisplayData); //This struct winds up getting moved a lot
 }
 
 //Detects the resolution of the active display
@@ -255,16 +253,16 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 	//Make sure mode isn't nullptr for some reason
 	if (mode != nullptr) {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// Set screen resolution here?
+		// Set screen resolution here? //(Make sure to understand the difference between viewport size and framebuffer size, GLFW's documentation explains this)
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			width = mode->width;
 			height = mode->height;
 
 		refreshRate = mode->refreshRate;
-
 	}
 	else {
-		fprintf(ERRLOG, "Error! GLFW failed while communicating with your display.\nError is due to: UNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. TRY A DIFFERENT MONITOR\n");
+		fprintf(ERRLOG, "Error! GLFW failed while communicating with your display.\nError is due to the following reason:\n"
+			"\tUNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. PERHAPS TRY A DIFFERENT MONITOR? OR REBOOT? OR CALL I.T.\n");
 		this->contextIsValid = false;
 	}
 }

@@ -248,10 +248,8 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MissingAsset.h" />
-    <ClInclude Include="ModelFilepaths.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
-    <ClInclude Include="OS_And_Compiler_Configuration_Check.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectResourceFilepaths.h" />
@@ -274,10 +272,6 @@
     <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
     <None Include="AssetLoadingDemo.frag" />
     <None Include="AssetLoadingDemo.vert" />
     <None Include="ColorTransforms.frag" />
@@ -291,6 +285,7 @@
     <None Include="gst.frag" />
     <None Include="gst.geom" />
     <None Include="gst.vert" />
+    <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockShipSample_01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
@@ -337,18 +332,11 @@
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="C_Preprocessor_Applications.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="Notes_and_ReadMe.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
-    </Text>
     <Text Include="NewTieFighterNotice.txt" />
-    <Text Include="VirtualDesctructors.txt" />
+    <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt" />
+    <Text Include="NotesAndReferences\Notes_and_ReadMe.txt" />
+    <Text Include="NotesAndReferences\TextureWebsiteResources.txt" />
+    <Text Include="NotesAndReferences\VirtualDesctructors.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\BeveledCube.obj">
@@ -415,6 +403,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="obj\BeveledCube.png" />
     <Image Include="obj\RocketEngine_UV.png" />
   </ItemGroup>

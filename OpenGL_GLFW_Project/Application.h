@@ -1,4 +1,11 @@
-// Header file for class that contains the application
+//File:  Application.h
+//
+// Details:
+//
+// Header file for class that defines the application. The application's job is
+// essentially to get everything initialized properly and then call member functions
+// in classes it holds. Most of the interesting stuff happens below the application 
+// level. 
 //Created by Forrest Miller on July 16, 2018
 //This file underwent continuous modifications up through November 2, 2018. 
 //On November 2, 2018, the programmer (me) decided to clean up both this file
@@ -20,15 +27,11 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 
-//#include "RenderProject1.h"
-//#include "GeometryShaderExplosion.h"
 #include "AssetLoadingDemo.h"
-
-#include "RenderDemoBase.h"
 #include "TeapotExplosion.h"
 
 
-class Application {
+class Application final{
 public:
 	Application();
 	~Application();
@@ -39,17 +42,10 @@ private:
 	std::shared_ptr<MonitorData> displayInfo;
 	std::unique_ptr<GLFW_Init> glfwInitializer;
 
-
-	//Initialization Helper Functions (this was just me playing around and can be removed in future):
-	void callProjectSetupFunctions() { //Mostly just checks system/compiler configuration macros
-		OperatingSystemAndCompilerDependentConfiguationFunc::Call_Project_Setup_Functions(); //see project setup.h
-	} 
-
 	void setupGLFW(); //Loads the GLFW library
 	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
-	void checkIfGraphicsContextDebugCallbackFunctionEnabled() const; //The callback function is provided by Application and is found in its own header file 
+	void configureGraphicsContextDebugCallbackFunction() const; //The callback function is provided by Application and is found in its own header file 
 	
-	void doExtraSetup() const;
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
 	void playIntroMovie();

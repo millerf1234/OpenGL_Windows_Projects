@@ -5,6 +5,10 @@
 //  Created by Forrest Miller on July 25, 2018 
 
 
+//OOPS I have not been using this file to the extent that it was intended to be used. 
+//Most of the work I have done has been hacked together though, so this file will eventually
+//come much more into play
+
 #pragma once
 
 #ifndef PROJECT_RESOURCE_FILEPATHS_H_
@@ -17,7 +21,7 @@
 //  MODELS 
 ///////////////////////////////
 
-#include "ModelFilepaths.h"  //Models get their own file
+
 
 
 ///////////////////////////////

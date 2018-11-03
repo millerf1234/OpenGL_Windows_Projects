@@ -8,12 +8,14 @@
 #ifndef PROJECT_SETUP_H_
 #define PROJECT_SETUP_H_
 
+//#ifndef NDEBUG   //see: https://stackoverflow.com/questions/2290509/debug-vs-ndebug/2290616#2290616  Apparently this is standard across compilers for release builds?
+//               //(Though regarding NDEBUG, some of the other Stack Exchange responses were saying it's primary purpose is to turn on/off 'assert' statements)
 //If building for debug    (leaving this defined (should) enable debugging within both the GL Context and GLFW)
 #define USE_DEBUG_ 
-
+//#endif //NDEBUG
 
 //Glad version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
-#include "glad.h"
+#include "glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
 
 
 #include "glfw_config.h"  //Not sure if this is explicitly necessary
@@ -30,10 +32,6 @@
 //FreeType is required for HarfBuzz
 #include "ft2build.h"
 
-//HarfBuzz text library  //see: https://harfbuzz.github.io/
-#include "HarfBuzz/hb.h"
-#include "HarfBuzz/hb-ft.h"  //Font
-
 
 //Move this to .cpp file?
 //#ifndef STB_IMAGE_IMPLEMENTATION
@@ -43,13 +41,24 @@
 
 
 #include "LoggingMessageTargets.h"
-#include "OS_And_Compiler_Configuration_Check.h"
 
-#ifdef USE_DEBUG_ 
+#if defined USE_DEBUG_ 
 #include "GL_Context_Debug_Message_Callback_Function.h"
 static constexpr bool USE_DEBUG = true;
+#undef USE_DEBUG_ //To prevent confusion down the road with having 2 'USE_DEBUGs'
 #else 
 static constexpr bool USE_DEBUG = false;
+//This is the function that would be defined in "GL_Context_Debug_Message_Callback_Function.h"
+static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source, 
+															GLenum type,
+															GLuint id,
+															GLenum severity,
+															GLsizei length,
+															const GLchar* message,
+															const void* userParam)  {
+	//If not in debug mode, then this function can just have an empty definition. It shouldn't be called anywhere, but there's some set-up code
+	//that complains when it is not defined... 
+	}
 #endif //USE_DEBUG_
 
 

@@ -35,10 +35,10 @@ uniform float colorModificationValue6;
 //Only define 1 of the following to determine color scheme
 //#define USE_COLOR_SCHEME_0 
 //#define USE_COLOR_SCHEME_1  
-//#define USE_COLOR_SCHEME_2
+#define USE_COLOR_SCHEME_2
 //#define USE_COLOR_SCHEME_3
 //#define USE_COLOR_SCHEME_4
-#define USE_COLOR_SCHEME_4_1
+//#define USE_COLOR_SCHEME_4_1
 
 //Rotation Functions
 //Implementation for the rotation functions (these were here before I made a seperate file of frag shader utility functions)

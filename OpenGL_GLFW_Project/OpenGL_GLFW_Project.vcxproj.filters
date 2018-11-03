@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Setup">
-      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
     </Filter>
@@ -42,9 +39,6 @@
     </Filter>
     <Filter Include="SetupAndConfiguration\Parameters">
       <UniqueIdentifier>{bfee94b6-d826-4f00-b9f3-bc011d33faf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\Filepaths">
-      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
@@ -226,13 +220,19 @@
     <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
       <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW_Initialization">
+      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Filepaths">
+      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
       <Filter>Third Party\glad</Filter>
     </ClCompile>
     <ClCompile Include="GLFW_Init.cpp">
-      <Filter>Source Files\Setup</Filter>
+      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
@@ -344,7 +344,7 @@
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_Init.h">
-      <Filter>Source Files\Setup</Filter>
+      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
@@ -562,9 +562,6 @@
     <ClInclude Include="ProjectParameters.h">
       <Filter>SetupAndConfiguration\Parameters</Filter>
     </ClInclude>
-    <ClInclude Include="OS_And_Compiler_Configuration_Check.h">
-      <Filter>SetupAndConfiguration\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
@@ -582,9 +579,6 @@
     </ClInclude>
     <ClInclude Include="TeapotExplosion.h">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelFilepaths.h">
-      <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
     <ClInclude Include="FilepathWrapper.h">
       <Filter>Source Files\Utility\Filepath</Filter>
@@ -629,9 +623,6 @@
     </None>
     <None Include="glfw3dll.exp">
       <Filter>Third Party\GLFW</Filter>
-    </None>
-    <None Include="..\..\..\..\OneDrive\Documents\OpenGL_PipelineTransformations.pdf">
-      <Filter>NotesAndReferences</Filter>
     </None>
     <None Include="constantcolor.frag">
       <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
@@ -778,6 +769,9 @@
     <None Include="obj\NewTieFighter.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
+    <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf">
+      <Filter>NotesAndReferences</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -836,17 +830,20 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Notes_and_ReadMe.txt">
-      <Filter>NotesAndReferences</Filter>
-    </Text>
-    <Text Include="C_Preprocessor_Applications.txt">
-      <Filter>NotesAndReferences</Filter>
-    </Text>
-    <Text Include="VirtualDesctructors.txt">
-      <Filter>NotesAndReferences</Filter>
-    </Text>
     <Text Include="NewTieFighterNotice.txt">
       <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
+    </Text>
+    <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NotesAndReferences\Notes_and_ReadMe.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NotesAndReferences\TextureWebsiteResources.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NotesAndReferences\VirtualDesctructors.txt">
+      <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -860,6 +857,9 @@
     </Image>
     <Image Include="obj\BeveledCube.png">
       <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
+    </Image>
+    <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
+      <Filter>NotesAndReferences</Filter>
     </Image>
   </ItemGroup>
 </Project>

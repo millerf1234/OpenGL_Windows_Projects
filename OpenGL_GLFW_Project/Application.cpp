@@ -6,13 +6,11 @@ Application::Application() {
 	displayInfo = nullptr;
 	glfwInitializer = nullptr;
 
-	//initialize the shader interface logger
-	//ShaderInterface::initializeShaderInterfaceLogger();
-
 	fprintf(MSGLOG, "Application is loading...\n");
 	setupGLFW(); 
 	loadGraphicsLanguageFunctions();
-	//doExtraSetup(); //This function call to doExtraSetup() isn't necessary (probably), it's more for informational purposes and testing/learning/experimenting
+	checkMSAA(); //See if MSAA is being used as expected
+	configureGraphicsContextDebugCallbackFunction(); //If the variable USE_DEBUG is false, then callback function will be empty
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -27,7 +25,7 @@ Application::Application() {
 
 Application::~Application() {
 	if (glfwInitializer) {
-		glfwInitializer->terminate();
+		glfwInitializer->terminate();  
 	}
 }
 
@@ -39,22 +37,17 @@ void Application::launch() {
 		return;
 	}
 	
-	//fprintf(MSGLOG, "Loading Main Menu...\n");
+	fprintf(MSGLOG, "Loading Main Menu...\n"); //The context is active at this point, so any choice of what to load should happen on the render surface.
 	//have a function here that runs a main menu...  this menu returns a struct consisting of an enum for which mode/sim to launch and then additional configuration parameters (num_players, control scheme, etc...)
 
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	
+	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-	//fprintf(MSGLOG, "\n\nApplication is ready to switch to a new program...\n");
-	//The two legacy demos:
-	//runRenderProject1();
-	//runGeometryShaderExplosion();
+	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
+	runAssetLoadingDemo();
+	glfwSetWindowShouldClose(displayInfo->activeMonitor, GLFW_FALSE);
 
-	
-	fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
-
-	//fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
-		//runAssetLoadingDemo();
 		//if (true) { return; }
 
 	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
@@ -85,36 +78,38 @@ void Application::loadGraphicsLanguageFunctions() {
 		return;
 	}
 
-	fprintf(MSGLOG, "\tGraphics Language loaded.\n\tGraphics Language version: OpenGL %s", glGetString(GL_VERSION));
+	fprintf(MSGLOG, "  Graphics Language loaded.\n");
+	fprintf(MSGLOG, "\tGraphics Language version: OpenGL %s\n", glGetString(GL_VERSION));
+	fprintf(MSGLOG, "\tGraphics Language Vendor:  %s\n", glGetString(GL_VENDOR));
+	fprintf(MSGLOG, "\tGraphics Render Device:    %s\n", glGetString(GL_RENDERER));
+
 	
 	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
-	std::cout << "\tActivating GL depth-test\n";
+
+	fprintf(MSGLOG, "\tActivating GL depth-test\n");
 	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
-	std::cout << "\tActivating GL scissor-test\n";
-	glEnable(GL_SCISSOR_TEST);
+	
+	//fprintf(MSGLOG, "\tActivating GL scissor-test\n");
+	//glEnable(GL_SCISSOR_TEST);
 
 	//Is blending enabled here too as well? Or should blending be enabled/disabled as 
-	//needed for transparent objects?
+	//needed for transparent objects? I recall that in Vulkan, blending is a property assigned 
+	//to a graphics pipeline. Perhaps OpenGL has a modern similar approach to prevent having to 
+	//repeatedly modify the context's global state
 }
 
-void Application::checkIfGraphicsContextDebugCallbackFunctionEnabled() const {
-	fprintf(MSGLOG, "Graphics Context Debug Output: ");
+void Application::configureGraphicsContextDebugCallbackFunction() const {
+	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
 	if (USE_DEBUG) {   //set in ProjectSetup.h
-		fprintf(MSGLOG, "Enabled\n\n");
+		fprintf(MSGLOG, "Enabled\n");
 		glEnable(GL_DEBUG_OUTPUT);
+		fprintf(MSGLOG, "\t[For now] Forcing Synchronization Between Graphics Context and Application...\n\n");
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
 		glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
 	}
 	else {
 		fprintf(MSGLOG, "Disabled\n\n");
 	}
-}
-
-
-void Application::doExtraSetup() const {
-	checkMSAA();
-	//checkSomeCompilerMacros(); //This is now done during construction with functions in "ProjectSetup.h"
-	checkIfGraphicsContextDebugCallbackFunctionEnabled();
 }
 
 void Application::checkMSAA() const { //hmm

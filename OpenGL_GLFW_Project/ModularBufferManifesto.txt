@@ -1,3 +1,7 @@
+
+Update as of November 2018: Obviously, I never got around to implementing this idea for a modular buffer (I actually think I decided it wouldn't work the way I initially thought it would...)
+Heck I didn't even get around to finishing writing the manifesto... 
+
 August 2018
 
 	(side note) I have a sheet of paper with more information, maybe one day I will transfer

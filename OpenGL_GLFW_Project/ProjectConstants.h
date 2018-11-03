@@ -14,7 +14,7 @@
 #include "ProjectSetup.h"
 
 
-static const char * NAME_OF_GAME = "OpenGL Practice Test\0";
+static constexpr const char * NAME_OF_GAME = "OpenGL Render Demo";
 
 //Used in shader code for shader inputs
 enum class VertexAttribPointerType {

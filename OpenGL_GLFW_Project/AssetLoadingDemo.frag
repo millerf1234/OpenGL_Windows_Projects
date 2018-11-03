@@ -3,6 +3,10 @@
 
 #version 450 core
 
+#pragma debug(on)
+
+
+
 in flat /*noperspective*/ vec3 vertPos; //Vertex position from vertex shader
 in vec2 texCoord;
 in /*flat*/ /*noperspective*/ vec3 vertNormal; //Vertex normal from the vertex shader

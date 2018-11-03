@@ -212,13 +212,13 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 
 void AssetLoadingDemo::loadModels() {
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/Pokemon.obj")); //Doesn't load? Spend time in debugger on this one
-	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/spaceship.obj"));
+	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/spaceship.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/SubdivisionCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockThing_Triangulated01.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BeveledCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngine.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj", 3.0f));
-	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
 
 
 	////Make a vertex attribute set to handle organizing the data for the graphics context
@@ -655,6 +655,9 @@ void AssetLoadingDemo::modifyFrustrum() {
 //}
 
 void AssetLoadingDemo::updateFrameClearColor() {
+
+	
+
 	//To look into:
 	//GL_UseProgram_Stages 
 	float * red = &(backgroundColor.x);
@@ -673,6 +676,10 @@ void AssetLoadingDemo::updateFrameClearColor() {
 		*blue = temp;
 		//sleep = true;
 	}
+
+	*red = 0.25f * (*red);
+	*blue *= 0.25f;
+	*green *= 0.25f;
 
 	glClearColor(*red, *green, *blue, 1.0f);
 }
