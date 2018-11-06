@@ -23,7 +23,6 @@
 #include <unordered_map>
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
 #include "UniformLocationBucket.h"
 #include "CachedUniformLocation.h"
 

@@ -51,14 +51,11 @@ private:
 	float zoom;
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
 
-	//For the view frustrum testing:
-	float frustNear, frustFar, frustLeft, frustRight, frustTop, frustBottom;
-
 	glm::vec3 backgroundColor;
 
 	GLuint vao, vbo;
 
-	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
+	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
 
 	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
 	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
@@ -74,13 +71,6 @@ private:
 
 	//This function will only be correct if this objects sceneObjectPtrs all have the exact same type of components.
 	GLsizei computeSceneObjectPtrsTotalIndices() const;
-
-
-	void printFrustrumValues() const {
-		fprintf(MSGLOG, "\nFrustrum Updated:\n\tnear = %f\n\tfar = %f\n"
-			"\tleft = %f\n\tright = %f\n\tup = %f\n\tdown = %f\n", frustNear,
-			frustFar, frustLeft, frustRight, frustBottom, frustTop );
-	}
 
 	void loadModels();
 

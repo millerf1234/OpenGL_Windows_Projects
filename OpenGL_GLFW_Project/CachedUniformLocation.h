@@ -15,7 +15,6 @@
 #define CACHED_UNIFORM_LOCATION_H_
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
 #include "UniformLocationBucket.h"
 #include "UniformLocationTracker.h"
 

@@ -12,7 +12,6 @@
 #define GENERIC_VERTEX_ATTRIBUTE_SET_H_
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
 
 #include <vector>
 

@@ -20,7 +20,7 @@ static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of availab
 
 static constexpr bool USE_FULLSCREEN = false;
 
-static constexpr bool USE_VSYNC = true;
+static constexpr bool USE_VSYNC = false;
 
 static constexpr int DEFAULT_AA_SAMPLES = 8;
 

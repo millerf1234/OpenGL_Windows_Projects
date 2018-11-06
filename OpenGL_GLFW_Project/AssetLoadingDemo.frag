@@ -9,7 +9,7 @@
 
 in flat /*noperspective*/ vec3 vertPos; //Vertex position from vertex shader
 in vec2 texCoord;
-in /*flat*/ /*noperspective*/ vec3 vertNormal; //Vertex normal from the vertex shader
+in flat /*noperspective*/ vec3 vertNormal; //Vertex normal from the vertex shader
 
 out vec4 FragColor;
 

@@ -81,7 +81,6 @@
 #include <fstream>
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
 
 namespace ShaderInterface {
 

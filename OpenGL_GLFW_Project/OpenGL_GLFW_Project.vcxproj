@@ -241,6 +241,7 @@
     <ClInclude Include="GeometryShaderExplosion.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="glfw3.h" />
+    <ClInclude Include="GLFW_CallbackFunctions.h" />
     <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />

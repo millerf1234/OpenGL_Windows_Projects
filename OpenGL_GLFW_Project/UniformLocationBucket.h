@@ -29,7 +29,6 @@
 #include <string>
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
 
 namespace ShaderInterface {
 

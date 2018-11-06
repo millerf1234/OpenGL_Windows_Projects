@@ -25,7 +25,7 @@ void TeapotExplosion::initialize() {
 	}
 
 	//Set the starting input primitive type
-	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+	currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	colorChangeThreshold = 0.12f;
 
@@ -331,13 +331,13 @@ void TeapotExplosion::reset() {
 void TeapotExplosion::changePrimitiveType() {
 
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) 
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) 
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::STRIP;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
 
 	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) 
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::FAN;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
 }
 
 void TeapotExplosion::modifyColorThreshhold() {
@@ -509,13 +509,13 @@ void TeapotExplosion::drawVerts() {
 	if (vertexAttributes)
 		vertexAttributes->use();
 
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL) 
+	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) 
 		glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3);
 	
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::STRIP) 
+	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP) 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
 	
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::FAN)
+	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN)
 		glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
 
 	/*

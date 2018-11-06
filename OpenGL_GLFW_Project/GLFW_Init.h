@@ -8,14 +8,15 @@
 
 #pragma once
 
-#ifndef GLFW_INIT
-#define GLFW_INIT
+#ifndef GLFW_INIT_H_
+#define GLFW_INIT_H_
 
 #include <iostream>
 #include <sstream>
 
 #include "ProjectParameters.h"
 #include "ProjectConstants.h"
+#include "GLFW_CallbackFunctions.h"
 
 
 typedef struct MonitorData {
@@ -37,6 +38,8 @@ public:
 	void setDefaultMonitor(int monitorNumber) { this->defaultMonitor = monitorNumber; }
 
 	std::shared_ptr<MonitorData> initialize(); //Sets up the window
+	void specifyWindowCallbackFunctions(); //Sets up callback functions for the window
+
 	void terminate(); //Ends the window
 
 	//Here is a public function for detecting information about a connected display (undefined behavior if displayNum is not a connected display)
@@ -57,18 +60,8 @@ private:
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
 
-
-	void setupWindowEventProcessing(); 
-
-	//Since GLFW3, there is a difference between a window's position (in screen coordinates)
-	//and the number of pixels shown on the screen. Since OpenGL works with pixels (and not
-	//screen coordinates), it is necessary to use the function glfwGetFramebufferSize() to 
-	//correctly do certain OpenGL calls, such as glViewport(). 
-    //see: http://www.glfw.org/docs/latest/moving.html#moving_hidpi
-	void getFramebufferSize();
-
 };
 
 
 
-#endif // GLFW_INIT 
+#endif // GLFW_INIT_H_ 

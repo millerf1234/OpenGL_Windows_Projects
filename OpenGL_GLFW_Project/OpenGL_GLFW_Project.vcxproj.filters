@@ -226,6 +226,12 @@
     <Filter Include="SetupAndConfiguration\Filepaths">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\SpaceshipDemo">
+      <UniqueIdentifier>{f499aa02-e1a7-4bca-9887-57dc58eaf01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
+      <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -294,9 +300,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\EntityComponents\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="WavefrontObj.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -320,6 +323,9 @@
     </ClCompile>
     <ClCompile Include="MissingAsset.cpp">
       <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="WavefrontObj.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -559,9 +565,6 @@
     <ClInclude Include="ProjectResourceFilepaths.h">
       <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectParameters.h">
-      <Filter>SetupAndConfiguration\Parameters</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
@@ -589,9 +592,6 @@
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\EntityComponents\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="WavefrontObj.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClInclude>
     <ClInclude Include="AsciiAsset.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
     </ClInclude>
@@ -612,6 +612,15 @@
     </ClInclude>
     <ClInclude Include="MissingAsset.h">
       <Filter>Source Files\Utility\Asset Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFW_CallbackFunctions.h">
+      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectParameters.h">
+      <Filter>SetupAndConfiguration\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="WavefrontObj.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

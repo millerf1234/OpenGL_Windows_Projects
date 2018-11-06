@@ -31,7 +31,7 @@
 #include "TeapotExplosion.h"
 
 
-class Application final{
+class Application final {
 public:
 	Application();
 	~Application();

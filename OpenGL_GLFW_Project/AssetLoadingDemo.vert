@@ -11,7 +11,7 @@
 #pragma debug(on)
 
 //Use the frustrum transform at your own risk... It's not correct yet...
-#define DO_FRUSTRUM_PROJECTION   //Comment/Uncomment to define this macro which enables frustrum projection
+//#define DO_FRUSTRUM_PROJECTION   //Comment/Uncomment to define this macro which enables frustrum projection
 
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 tex;

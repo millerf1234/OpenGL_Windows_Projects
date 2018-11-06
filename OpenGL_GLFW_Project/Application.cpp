@@ -45,8 +45,8 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
-	runAssetLoadingDemo();
-	glfwSetWindowShouldClose(displayInfo->activeMonitor, GLFW_FALSE);
+	//runAssetLoadingDemo();
+	//glfwSetWindowShouldClose(displayInfo->activeMonitor, GLFW_FALSE);
 
 		//if (true) { return; }
 
@@ -62,6 +62,7 @@ void Application::setupGLFW() {
 	glfwInitializer = std::make_unique<GLFW_Init>();
 	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
 	displayInfo = glfwInitializer->initialize();
+	glfwInitializer->specifyWindowCallbackFunctions(); 
 	if (!displayInfo) {
 		mApplicationValid = false;
 		return;
@@ -117,8 +118,13 @@ void Application::checkMSAA() const { //hmm
 		//glad_glEnable(GL_MULTISAMPLE);
 		GLint bufs = -1;
 		GLint samples = -1;
+
 		glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
 		glad_glGetIntegerv(GL_SAMPLES, &samples);
+		fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+
+		glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+		glGetIntegerv(GL_SAMPLES, &samples);
 		fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 	}
 }

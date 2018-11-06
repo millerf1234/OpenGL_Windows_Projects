@@ -25,7 +25,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 														   GLsizei length,
 														   const GLchar* message,
 														   const void* userParam)  {
-	/*
+	/*  
 	fprintf(ERRLOG, "\n*******************************************************************************\n"); //80 characters
 	fprintf(ERRLOG, "GL CALLBACK:    Source = ");
 	switch (source) {
@@ -50,7 +50,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 }
 
 
-	/*
+	/*  //The following is every ENUM defined in OpenGL. These values will match the GLenums that are passed in to the debug callback function 
 	#define GL_DEBUG_OUTPUT_SYNCHRONOUS 0x8242
 #define GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH 0x8243
 #define GL_DEBUG_CALLBACK_FUNCTION 0x8244

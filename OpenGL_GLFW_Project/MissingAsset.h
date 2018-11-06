@@ -13,6 +13,7 @@
 
 #include "LoggingMessageTargets.h"
 #include <string>
+#include <vector>
 
 
 
@@ -28,6 +29,8 @@ public:
 
 private:
 	std::string mAssetTag_; //Chances are this is a filepath, but could be anything 
+
+
 
 };
 

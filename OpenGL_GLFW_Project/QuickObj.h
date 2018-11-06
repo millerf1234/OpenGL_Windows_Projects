@@ -1,3 +1,18 @@
+//Update: So it turns out that (as of early November 2018) the class WavefrontObj in
+//        the file "WavefrontObj.h" is only partially implemented and isn't yet 
+//        in a usable state. This file sets up a simpler ObjLoader, that doesn't
+//        have as many fancy bells and whistles but it can get the data from the 
+//        obj file into an interlaced form for OpenGL. As such, this class is the 
+//        one that most other code will be using.
+//
+//        Implementation Details:
+//             This class relies heavily on several classes beneath it to do the brunt of
+//             the work. This class uses an instance of the AsciiAsset class to aquire and 
+//             process the file from a filepath. Also used are the classes Line and Face,
+//             which are each stored in their own vector and are used to store Line and Face 
+//             data from the Obj file. Note that the actual parsing of the data is done by these
+//             two classes. Final assembly of the data is handled by this class. 
+
 //I am getting the sense that I do not have the time I would like to write
 //the '.obj' wrapper class I would like, so this is a quick and dirty implementation
 //just to get something working. No objects or groups will be marked, and only data 
@@ -53,7 +68,7 @@ private:
 	std::vector<Vertex> mNormals_;
 
 	void parseFile();
-	void preparseFile();
+	//void preparseFile();
 	void loadLineIntoVertex(const char * line, std::vector<Vertex>& verts);
 	void constructVerticesFromParsedData();
 

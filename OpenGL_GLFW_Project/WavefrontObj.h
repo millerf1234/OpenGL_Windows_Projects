@@ -1,3 +1,4 @@
+
 //File:           WavefrontObj.h
 //Class:          WavefrontObj
 //Base Class:     AssetInterface

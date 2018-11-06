@@ -58,7 +58,7 @@ private:
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
 	glm::vec3 backgroundColor;
 
-	PIPELINE_TRIANGLE_INPUT_TYPE currentTriangleInputType;
+	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
 
 	float colorChangeThreshold;
 	GLfloat colorModificationValues[COLOR_MOD_VALUES_COUNT];

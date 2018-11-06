@@ -1,3 +1,6 @@
+// NOTE: As of right now this class is not actually used for anything. In fact, it might not
+//       even be finished.
+//
 //File:         Mesh.h
 //Description:  A wrapper class for 3D mesh data for an object
 //

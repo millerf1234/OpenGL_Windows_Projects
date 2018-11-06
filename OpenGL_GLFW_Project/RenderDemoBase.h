@@ -42,12 +42,11 @@
 
 #include <iostream>  //fprintf 
 
-
 #include "LoggingMessageTargets.h"  //provides MSGLOG, WRNLOG and ERRLOG targets for fprintf
 #include "ProjectSetup.h"           //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
 
-enum class PIPELINE_TRIANGLE_INPUT_TYPE { NORMAL, STRIP, FAN, LINE, LINE_STRIP };
+enum class PIPELINE_PRIMATIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, LINE_STRIP };  //Technically LINE and LINE_STRIP are not triangles
 
 class RenderDemoBase {
 public:

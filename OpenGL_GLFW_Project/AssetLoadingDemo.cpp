@@ -18,21 +18,13 @@ void AssetLoadingDemo::initialize() {
 	greenRotationTheta = 0.0f;
 	blueRotationTheta = 0.0f;
 
-	frustNear = 1.0f;
-	frustFar = -1.0f;
-	frustLeft = -1.0f;
-	frustRight = 1.0f;
-	frustTop = 1.0f;
-	frustBottom = -1.0f;
-	
-
 	vao = vbo = 0u;
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
 
 	//Set the starting input primitive type
-	currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+	currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	glEnable(GL_DEPTH_TEST);
 	//glDepthMask(GL_FALSE);
@@ -212,13 +204,13 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 
 void AssetLoadingDemo::loadModels() {
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/Pokemon.obj")); //Doesn't load? Spend time in debugger on this one
-	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/spaceship.obj"));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/spaceship.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/SubdivisionCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockThing_Triangulated01.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BeveledCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngine.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj", 3.0f));
-	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
+	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
 
 
 	////Make a vertex attribute set to handle organizing the data for the graphics context
@@ -461,13 +453,13 @@ void AssetLoadingDemo::reset() {
 void AssetLoadingDemo::changePrimitiveType() {
 
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::STRIP;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
 
 	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
-		currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::FAN;
+		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
 
 	if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
 		if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
@@ -475,11 +467,11 @@ void AssetLoadingDemo::changePrimitiveType() {
 		}
 		else {
 			frameLineTypeLastSwitched = frameNumber;
-			if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE) {
-				currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::LINE_STRIP;
+			if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
+				currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP;
 			}
 			else {
-				currentTriangleInputType = PIPELINE_TRIANGLE_INPUT_TYPE::LINE;
+				currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE;
 			}
 		}
 	}	
@@ -739,23 +731,23 @@ void AssetLoadingDemo::drawVerts() {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 
-	if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::NORMAL) {
+	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
 		//fprintf(MSGLOG, "\nTotalIndices are: %u\n", computeSceneObjectPtrsTotalIndices());
 		glDrawArrays(GL_TRIANGLES, 0, computeSceneObjectPtrsTotalIndices());
 	}
 
-	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::STRIP) {
+	else if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP) {
 		//glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, computeSceneObjectPtrsTotalIndices());
 	}
-	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::FAN) {
+	else if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN) {
 		//glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, computeSceneObjectPtrsTotalIndices());
 	}
-	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE) {
+	else if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
 		glDrawArrays(GL_LINES, 0, computeSceneObjectPtrsTotalIndices());
 	}
-	else if (currentTriangleInputType == PIPELINE_TRIANGLE_INPUT_TYPE::LINE_STRIP) {
+	else if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP) {
 		glDrawArrays(GL_LINE_STRIP, 0, computeSceneObjectPtrsTotalIndices());
 	}
 	/*
