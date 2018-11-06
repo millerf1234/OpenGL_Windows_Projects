@@ -64,10 +64,9 @@ private:
 	GLsizei computeSceneObjectPtrsTotalIndices() const;
 
 	void loadModels();
-
 	void loadShaders();
 
-
+	
 
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////

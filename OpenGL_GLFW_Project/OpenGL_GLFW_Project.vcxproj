@@ -273,8 +273,16 @@
     <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AssetLoadingDemo.frag" />
-    <None Include="AssetLoadingDemo.vert" />
+    <None Include="AssetLoadingDemo_WithNormalWithoutTex.frag" />
+    <None Include="AssetLoadingDemo_WithNormalWithoutTex.vert" />
+    <None Include="AssetLoadingDemo_WithNormalWithTex.frag" />
+    <None Include="AssetLoadingDemo_WithNormalWithTex.vert" />
+    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.frag" />
+    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.vert" />
+    <None Include="AssetLoadingDemo_WithoutNormalWithTex.frag" />
+    <None Include="AssetLoadingDemo_WithoutNormalWithTex.vert" />
+    <None Include="AssetLoadingDemo_OldAndJustStraightBad.frag" />
+    <None Include="AssetLoadingDemo_OldAndUgly.vert" />
     <None Include="ColorTransforms.frag" />
     <None Include="constantcolor.frag" />
     <None Include="freetype.dll" />
@@ -298,7 +306,7 @@
     <None Include="obj\Splines.mtl" />
     <None Include="obj\SubdivisionCube.mtl" />
     <None Include="obj\Thing.mtl" />
-    <None Include="PerspectiveProjection.vert" />
+    <None Include="PerspectiveProjection_ExceptItIsNot.vert" />
     <None Include="RenderProject1.frag" />
     <None Include="RenderProject1.vert" />
     <None Include="TeapotExplosion.frag" />

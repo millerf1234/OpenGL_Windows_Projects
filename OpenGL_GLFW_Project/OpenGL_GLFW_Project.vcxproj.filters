@@ -226,11 +226,29 @@
     <Filter Include="SetupAndConfiguration\Filepaths">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\SpaceshipDemo">
-      <UniqueIdentifier>{f499aa02-e1a7-4bca-9887-57dc58eaf01e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal">
+      <UniqueIdentifier>{06e595cb-0f79-4ed5-95a0-80d9e64c6c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders">
+      <UniqueIdentifier>{e0ea8d2b-7720-40ee-b31d-b515781321c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders">
+      <UniqueIdentifier>{9bc8fbdb-688a-4ae5-abb5-224d7f73d9bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal">
+      <UniqueIdentifier>{3055026b-c17b-4189-a28d-33bbdcde18e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused">
+      <UniqueIdentifier>{5b8aebd4-630a-449f-b492-bec86a3867a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position">
+      <UniqueIdentifier>{42e335dd-0b7b-4078-b53d-81efa7ac7129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex">
+      <UniqueIdentifier>{944036bc-67a6-4987-a72b-b91a90d99060}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -744,12 +762,6 @@
     <None Include="obj\ParentedPrimatives.obj">
       <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
     </None>
-    <None Include="AssetLoadingDemo.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
-    </None>
-    <None Include="AssetLoadingDemo.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
-    </None>
     <None Include="obj\Thing.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
     </None>
@@ -769,9 +781,6 @@
     <None Include="VertMath.vert">
       <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
     </None>
-    <None Include="PerspectiveProjection.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
-    </None>
     <None Include="obj\Spaceship.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
     </None>
@@ -780,6 +789,39 @@
     </None>
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_OldAndJustStraightBad.frag">
+      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_OldAndUgly.vert">
+      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
+    </None>
+    <None Include="PerspectiveProjection_ExceptItIsNot.vert">
+      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithNormalWithTex.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithNormalWithTex.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithNormalWithoutTex.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithNormalWithoutTex.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithoutNormalWithTex.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
+    </None>
+    <None Include="AssetLoadingDemo_WithoutNormalWithTex.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

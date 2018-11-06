@@ -538,46 +538,6 @@ void AssetLoadingDemo::rotate() {
 	}
 }
 
-//void AssetLoadingDemo::modifyFrustrum() {
-//	bool modificationMade = false;
-//	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-//		modificationMade = true;
-//		
-//	}
-//
-//	if (modificationMade) {
-//		
-//	}	
-//}
-
 
 void AssetLoadingDemo::updateFrameClearColor() {
 	//To look into:
@@ -612,14 +572,14 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("zoom", zoom);//1.7f + counter);
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
-	//Uniforms for the geometry shader effect
-	sceneShader->uniforms->updateUniform1i("level", 1);                    //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);  //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);        //tweak this value as needed
+	////Uniforms for the geometry shader effect
+	//sceneShader->uniforms->updateUniform1i("level", 1);                    //tweak this value as needed
+	//sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);  //tweak this value as needed
+	//sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);        //tweak this value as needed
 
-	sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
-	sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
-	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
+	//sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
+	//sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
+	//sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
 }
 
 void AssetLoadingDemo::drawVerts() {
