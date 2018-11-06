@@ -152,6 +152,7 @@
     <ClCompile Include="GeometryShaderExplosion.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
+    <ClCompile Include="Lightsource.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="GLFW_Init.h" />
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />
     <ClInclude Include="khrplatform.h" />
+    <ClInclude Include="Lightsource.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MissingAsset.h" />
@@ -294,6 +296,9 @@
     <None Include="gst.frag" />
     <None Include="gst.geom" />
     <None Include="gst.vert" />
+    <None Include="Lightsource.frag" />
+    <None Include="Lightsource.glsl" />
+    <None Include="Lightsource.vert" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockShipSample_01.mtl" />
@@ -309,6 +314,7 @@
     <None Include="PerspectiveProjection_ExceptItIsNot.vert" />
     <None Include="RenderProject1.frag" />
     <None Include="RenderProject1.vert" />
+    <None Include="ShaderNoiseFunctions.glsl" />
     <None Include="TeapotExplosion.frag" />
     <None Include="TeapotExplosion.geom" />
     <None Include="TeapotExplosion.vert" />

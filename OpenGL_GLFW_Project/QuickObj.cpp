@@ -517,9 +517,6 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c0_pos[2]); //corner0 z
 				mVertices_.push_back(mScale_);    //zoom / w component of position
 				//auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
-				//Going to introduce a quick hack to get textureless models to load as though they were textured
-				mVertices_.push_back(0.0f); 
-				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
 				//mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
 				auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
@@ -534,9 +531,6 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c1_pos[2]); //corner1 z
 				mVertices_.push_back(mScale_);   //zoom
 				//auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
-				//Going to introduce a quick hack to get textureless models to load as though they were textured
-				mVertices_.push_back(0.0f);
-				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
 				//mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
 				auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
@@ -551,9 +545,6 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(c2_pos[2]); //corner2 z
 				mVertices_.push_back(mScale_);    //zoom / w component of position
 				//auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
-				//Going to introduce a quick hack to get textureless models to load as though they were textured
-				mVertices_.push_back(0.0f);
-				mVertices_.push_back(0.0f);
 				//mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
 				//mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
 				auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal
@@ -569,7 +560,6 @@ void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts)
 	float values[3];
 	int vertComponent = 0;
 	const char * strIter = line;
-
 
 	while ((*strIter != '\n') && (*strIter != '\0')) {
 		if (isNumber(strIter) || (*strIter == '-')) {

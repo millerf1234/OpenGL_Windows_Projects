@@ -250,6 +250,15 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex">
       <UniqueIdentifier>{944036bc-67a6-4987-a72b-b91a90d99060}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Lightsource">
+      <UniqueIdentifier>{a1e22b88-f253-4548-a540-ce8379c30e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\Lightsource">
+      <UniqueIdentifier>{f2596a4f-036e-477a-ad7f-32283bd83f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions">
+      <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -344,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="WavefrontObj.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightsource.cpp">
+      <Filter>Source Files\Utility\Lightsource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -640,6 +652,9 @@
     <ClInclude Include="WavefrontObj.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClInclude>
+    <ClInclude Include="Lightsource.h">
+      <Filter>Source Files\Utility\Lightsource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -822,6 +837,18 @@
     </None>
     <None Include="AssetLoadingDemo_WithoutNormalWithTex.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
+    </None>
+    <None Include="Lightsource.vert">
+      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
+    </None>
+    <None Include="Lightsource.frag">
+      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
+    </None>
+    <None Include="ShaderNoiseFunctions.glsl">
+      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+    </None>
+    <None Include="Lightsource.glsl">
+      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

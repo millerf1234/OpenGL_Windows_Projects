@@ -40,25 +40,39 @@ public:
 	
 private:
 	bool error;
-	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording, frameLineTypeLastSwitched;
 	float counter;
-	float xRotation, yRotation, zRotation;
-	float zoom;
-	float redRotationTheta, greenRotationTheta, blueRotationTheta;
+	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording, frameLineTypeLastSwitched;
 
 	glm::vec3 backgroundColor;
 
 	GLuint vao, vbo;
 
-	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
+	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
+	std::unique_ptr<ShaderProgram> sceneShaderWithoutTexture;
+	std::unique_ptr<ShaderProgram> sceneShaderWithTexture;
 
-	std::unique_ptr<ShaderProgram> sceneShader; 
-	std::unique_ptr<ShaderProgram> sceneShaderLine;
-	std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
+	//std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
+	
+	glm::vec3 cameraPosition;
+
+	//Asset Transformation information
+	float xRotation, yRotation, zRotation;
+	float zoom;
+	float scalingAppliedToAsset; //Needed for keeping normal vectors the right length after Model-View transforming
+	bool mvpMatrixNeedsUpdating;
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 proj;
+	glm::mat4 mvp;
+	glm::mat3 normalModelView;
+
+	
 	
 
 	//   Helper Functions
 	void initialize(); 
+
+	
 
 	//This function will only be correct if this objects sceneObjectPtrs all have the exact same type of components.
 	GLsizei computeSceneObjectPtrsTotalIndices() const;
@@ -67,7 +81,6 @@ private:
 	void loadShaders();
 
 	
-
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////
 	///////////////////////////////////////////////////////
@@ -99,7 +112,6 @@ private:
 
 	
 	void changePrimitiveType(); 
-
 	void rotate();
 
 
