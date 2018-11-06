@@ -337,7 +337,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		changePrimitiveType();
 		rotate();
-		modifyFrustrum();
+		
 
 		updateFrameClearColor();
 
@@ -438,16 +438,6 @@ void AssetLoadingDemo::reset() {
 	frameOfMostRecentColorRecording = 0ull;
 	frameLineTypeLastSwitched = 0ull;
 	zoom = 1.0f;
-
-	//Reset frustrum
-	frustNear = 2.5f;
-	frustFar = -2.5f;
-	frustLeft = -3.0f;
-	frustRight = 3.0f;
-	frustTop = 3.0f;
-	frustBottom = -3.0f;
-
-	printFrustrumValues();
 }
 
 void AssetLoadingDemo::changePrimitiveType() {
@@ -548,108 +538,48 @@ void AssetLoadingDemo::rotate() {
 	}
 }
 
-void AssetLoadingDemo::modifyFrustrum() {
-	bool modificationMade = false;
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
-		modificationMade = true;
-		frustNear += 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
-		modificationMade = true;
-		frustNear -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
-		modificationMade = true;
-		frustFar += 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-		modificationMade = true;
-		frustFar -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
-		modificationMade = true;
-		frustTop += 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
-		modificationMade = true;
-		frustBottom -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
-		modificationMade = true;
-		frustLeft -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-		modificationMade = true;
-		frustRight += 0.01f;
-	}
-
-	if (modificationMade) {
-		printFrustrumValues();
-	}	
-}
-
-
-//void AssetLoadingDemo::updateColorModificationValues() {
-//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-//		colorModificationValues[0] += 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
+//void AssetLoadingDemo::modifyFrustrum() {
+//	bool modificationMade = false;
+//	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
-//		colorModificationValues[0] -= 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-//		colorModificationValues[1] += COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-//		colorModificationValues[1] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-//		colorModificationValues[2] += COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-//		colorModificationValues[2] -= COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-//		colorModificationValues[3] += COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
-//		colorModificationValues[3] -= COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-//		colorModificationValues[4] += COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
-//		colorModificationValues[4] -= COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-//		colorModificationValues[5] += COLOR_MOD_VALUE_CHANGE_SPEED;
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
-//		colorModificationValues[5] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
 //	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
-//		colorModificationValues[6] += COLOR_MOD_VALUE_CHANGE_SPEED;
+//		modificationMade = true;
+//		
 //	}
-//	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-//		colorModificationValues[6] -= COLOR_MOD_VALUE_CHANGE_SPEED;
+//	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+//		modificationMade = true;
+//		
 //	}
 //
-//	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
-//		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
-//			colorModificationValues[i] = MathFunc::getRandomInRangef(-110.0f, 110.0f);
-//		}
-//		colorModificationValues[0] = 1.0f;
-//	}
-//	else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-//		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
-//			colorModificationValues[i] = colorModificationValues[i] * 0.8f;
-//		}
-//	}
+//	if (modificationMade) {
+//		
+//	}	
 //}
 
+
 void AssetLoadingDemo::updateFrameClearColor() {
-
-	
-
 	//To look into:
 	//GL_UseProgram_Stages 
 	float * red = &(backgroundColor.x);
@@ -683,42 +613,13 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
-	sceneShader->uniforms->updateUniform1i("level", 1);             //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
+	sceneShader->uniforms->updateUniform1i("level", 1);                    //tweak this value as needed
+	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);  //tweak this value as needed
+	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);        //tweak this value as needed
 
-	//xRotation += 0.0000f;
-	//yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
-	//zRotation += 0.0012375035f;
-
-	//fprintf(MSGLOG, "xRot is %f, yRot is %s, zRot is %f\n", xRotation, yRotation, zRotation);
 	sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
 	sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
 	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
-
-	/*
-	sceneShader->uniforms->updateUniform1f("colorShiftThreshhold", colorChangeThreshold);
-
-	sceneShader->uniforms->updateUniform1f("redRotationTheta", redRotationTheta);
-	sceneShader->uniforms->updateUniform1f("greenRotationTheta", greenRotationTheta);
-	sceneShader->uniforms->updateUniform1f("blueRotationTheta", blueRotationTheta);
-
-	sceneShader->uniforms->updateUniform1f("colorModificationValue0", colorModificationValues[0]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue1", colorModificationValues[1]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue2", colorModificationValues[2]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue3", colorModificationValues[3]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue4", colorModificationValues[4]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
-	*/
-
-	sceneShader->uniforms->updateUniform1f("fNear", frustNear);
-	sceneShader->uniforms->updateUniform1f("fFar", frustFar);
-	sceneShader->uniforms->updateUniform1f("fLeft", frustLeft);
-	sceneShader->uniforms->updateUniform1f("fRight", frustRight);
-	sceneShader->uniforms->updateUniform1f("fTop", frustTop);
-	sceneShader->uniforms->updateUniform1f("fBottom", frustBottom);
-
 }
 
 void AssetLoadingDemo::drawVerts() {

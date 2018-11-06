@@ -19,19 +19,14 @@
 #include "MathFunctions.h"
 #include "GLFW_Init.h"
 #include "ProjectSetup.h"
-
 #include "ProjectResourceFilepaths.h"
-
 #include "ShaderProgram.h"
 #include "GenericVertexAttributeSet.h"
-
 #include "RenderDemoBase.h"
-
 #include "QuickObj.h" //For loading '.obj' files
 
 
 using ShaderInterface::GenericVertexAttributeSet; 
-
 
 
 class AssetLoadingDemo : public RenderDemoBase { 
@@ -57,13 +52,9 @@ private:
 
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
 
-	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
-	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
-
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<ShaderProgram> sceneShaderLine;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
-	//std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;  //Not used currently
 	
 
 	//   Helper Functions
@@ -112,7 +103,6 @@ private:
 
 	void rotate();
 
-	void modifyFrustrum();
 
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+

@@ -45,8 +45,8 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
-	//runAssetLoadingDemo();
-	//glfwSetWindowShouldClose(displayInfo->activeMonitor, GLFW_FALSE);
+	runAssetLoadingDemo();
+	
 
 		//if (true) { return; }
 

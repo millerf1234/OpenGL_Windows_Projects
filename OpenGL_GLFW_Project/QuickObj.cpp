@@ -7,7 +7,7 @@ QuickObj::QuickObj(std::string filepath, float scale) {
 	mFile_ = std::make_unique<AssetLoadingInternal::AsciiAsset>(filepath);
 
 	if (mFile_->getStoredTextLength() > 0u) {
-		preparseFile();
+		//preparseFile(); //This is unnecessary 
 		parseFile();
 	}
 	else {
@@ -55,6 +55,10 @@ void QuickObj::parseFile() {
 				fprintf(ERRLOG, "\nERROR parsing line %s\n", line.c_str());
 			}
 		}
+		else if (*lineIter == '#') {
+			//Skip comments for now...
+			continue;
+		}
 
 		else if (*lineIter == 'f') {
 			mFaces_.emplace_back(AssetLoadingInternal::Face(lineIter, true));
@@ -83,21 +87,21 @@ void QuickObj::parseFile() {
 	}
 }
 
-void QuickObj::preparseFile() {
-	//Remove comments
-	mFile_->removeLinesBeginningWithCharacter('#');
-
-	//I know this is wrong, each vector is way too big:
-	size_t dataSize = mFile_->getNumberOfLinesThatBeginWith('v'); //I forgot to add a function that checks the character after the 'v'
-	mPositions_.reserve(dataSize);
-	mTexCoords_.reserve(dataSize);
-	mNormals_.reserve(dataSize);
-
-	//These next 2 are correct though
-	mFaces_.reserve(mFile_->getNumberOfLinesThatBeginWith('f'));
-	mLines_.reserve(mFile_->getNumberOfLinesThatBeginWith('l'));
-
-}
+//
+//void QuickObj::preparseFile() {
+//	//Remove comments
+//	mFile_->removeLinesBeginningWithCharacter('#');
+//
+//	//I know this is wrong, each vector is way too big:
+//	size_t dataSize = mFile_->getNumberOfLinesThatBeginWith('v'); //I forgot to add a function that checks the character after the 'v'
+//	mPositions_.reserve(dataSize);
+//	mTexCoords_.reserve(dataSize);
+//	mNormals_.reserve(dataSize);
+//
+//	//These next 2 are correct though
+//	mFaces_.reserve(mFile_->getNumberOfLinesThatBeginWith('f'));
+//	mLines_.reserve(mFile_->getNumberOfLinesThatBeginWith('l'));
+//}
 
 
 void QuickObj::constructVerticesFromParsedData() {
