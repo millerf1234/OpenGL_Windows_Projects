@@ -15,8 +15,6 @@
 #include <thread>
 #include <math.h>
 
-#include "glm/glm/gtc/type_ptr.hpp"
-
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "MathFunctions.h"

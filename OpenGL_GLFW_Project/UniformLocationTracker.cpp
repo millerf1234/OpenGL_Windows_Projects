@@ -120,35 +120,43 @@ namespace ShaderInterface {
 	}
 
 
+	//Matrix update functions
 
-	void UniformLocationTracker::updateUniformMat2x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, transpose, valPtr);
+	void updateUniformMat2(const GLchar*, const glm::mat2 * matrix, GLsizei count) {
+
 	}
-	void UniformLocationTracker::updateUniformMat2x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix2x3fv(lookupUniformLocation(M2x3_, uniformName, UniformType::MAT2X3), count, transpose, valPtr);
-	}
-	void UniformLocationTracker::updateUniformMat2x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix2x4fv(lookupUniformLocation(M2x4_, uniformName, UniformType::MAT2X4), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, valPtr);
 	}
 
-	void UniformLocationTracker::updateUniformMat3x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix3x2fv(lookupUniformLocation(M3x2_, uniformName, UniformType::MAT3X2), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat2x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, valPtr);
 	}
-	void UniformLocationTracker::updateUniformMat3x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat2x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix2x3fv(lookupUniformLocation(M2x3_, uniformName, UniformType::MAT2X3), count, GL_FALSE, valPtr);
 	}
-	void UniformLocationTracker::updateUniformMat3x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix3x4fv(lookupUniformLocation(M3x4_, uniformName, UniformType::MAT3X4), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat2x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix2x4fv(lookupUniformLocation(M2x4_, uniformName, UniformType::MAT2X4), count, GL_FALSE, valPtr);
 	}
 
-	void UniformLocationTracker::updateUniformMat4x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix4x2fv(lookupUniformLocation(M4x2_, uniformName, UniformType::MAT4X2), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat3x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix3x2fv(lookupUniformLocation(M3x2_, uniformName, UniformType::MAT3X2), count, GL_FALSE, valPtr);
 	}
-	void UniformLocationTracker::updateUniformMat4x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat3x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, valPtr);
 	}
-	void UniformLocationTracker::updateUniformMat4x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count, GLboolean transpose) {
-		glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, transpose, valPtr);
+	void UniformLocationTracker::updateUniformMat3x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix3x4fv(lookupUniformLocation(M3x4_, uniformName, UniformType::MAT3X4), count, GL_FALSE, valPtr);
+	}
+
+	void UniformLocationTracker::updateUniformMat4x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix4x2fv(lookupUniformLocation(M4x2_, uniformName, UniformType::MAT4X2), count, GL_FALSE, valPtr);
+	}
+	void UniformLocationTracker::updateUniformMat4x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, GL_FALSE, valPtr);
+	}
+	void UniformLocationTracker::updateUniformMat4x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, valPtr);
 	}
 
 

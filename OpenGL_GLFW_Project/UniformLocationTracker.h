@@ -22,6 +22,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "glm/glm/gtc/type_ptr.hpp"  //This is necessary to convert GLM matrices to GLfloat*
+
 #include "ProjectConstants.h"
 #include "UniformLocationBucket.h"
 #include "CachedUniformLocation.h"
@@ -74,17 +76,22 @@ namespace ShaderInterface {
 		void updateUniform4uv(const GLchar *, const GLuint *, GLsizei count = 1);
 		void updateUniform4fv(const GLchar *, const GLfloat *, GLsizei count = 1);
 
-		void updateUniformMat2x2(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat2x3(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat2x4(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
+		//For the matrices, it is possible to use either a GLM::mat of the corresponding type or to use a GLfloat* to data. 
 
-		void updateUniformMat3x2(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat3x3(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat3x4(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
+		void updateUniformMat2(const GLchar*, const glm::mat2 * matrix, GLsizei count = 1);
+		void updateUniformMat2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat2x2(const GLchar*, const glm::mat2 * matrix, GLsizei count = 1);
+		void updateUniformMat2x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat2x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat2x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
-		void updateUniformMat4x2(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat4x3(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
-		void updateUniformMat4x4(const GLchar *, const GLfloat *, GLsizei count = 1, GLboolean transpose = false);
+		void updateUniformMat3x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat3x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat3x4(const GLchar *, const GLfloat *, GLsizei count = 1);
+
+		void updateUniformMat4x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat4x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat4x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
 
 
