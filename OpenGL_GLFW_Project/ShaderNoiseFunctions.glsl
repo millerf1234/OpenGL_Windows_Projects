@@ -140,7 +140,11 @@ float randP(vec2 c) { //Updated name for this function
 }
 
 float noise(vec2 p, float freq) {
-	float unit = screenWidth / freq;
+	
+	/*float unit = screenWidth / freq;*/
+	float unit = 2160.0 / freq;
+	const float PI = 3.14159f;
+
 	vec2 ij = floor(p / unit);
 	vec2 xy = mod(p, unit) / unit;
 	//xy = 3.*xy*xy-2.*xy*xy*xy;
@@ -333,7 +337,7 @@ float cnoise(vec4 P, vec4 rep) {
 	vec4 iw0 = vec4(Pi0.wwww);
 	vec4 iw1 = vec4(Pi1.wwww);
 
-	vec4 ixy = permuteCP(permute(ix) + iy);
+	vec4 ixy = permuteCP(permuteCP(ix) + iy);
 	vec4 ixy0 = permuteCP(ixy + iz0);
 	vec4 ixy1 = permuteCP(ixy + iz1);
 	vec4 ixy00 = permuteCP(ixy0 + iw0);
@@ -498,7 +502,7 @@ float snoise(vec2 v) {
 	//	by Ian McEwan, Ashima Arts
 	//
 	vec4 permute(vec4 x) { return mod(((x*34.0) + 1.0)*x, 289.0); }
-	vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+	vec4 new_taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
 
 	float snoise(vec3 v) {
 		const vec2  C = vec2(1.0 / 6.0, 1.0 / 3.0);
@@ -556,7 +560,7 @@ float snoise(vec2 v) {
 		vec3 p3 = vec3(a1.zw, h.w);
 
 		//Normalise gradients
-		vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+		vec4 norm = new_taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
 		p0 *= norm.x;
 		p1 *= norm.y;
 		p2 *= norm.z;
@@ -576,7 +580,7 @@ float snoise(vec2 v) {
 	//
 	//vec4 permute(vec4 x) { return mod(((x*34.0) + 1.0)*x, 289.0); }         //Instead of renaming this one, I am simply removing it because an identical function is declared for 3D simplex noise
 	float permute(float x) { return floor(mod(((x*34.0) + 1.0)*x, 289.0)); }
-	vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+	//vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
 	float taylorInvSqrt(float r) { return 1.79284291400159 - 0.85373472095314 * r; }
 
 	vec4 grad4(float j, vec4 ip) {
@@ -648,7 +652,7 @@ float snoise(vec2 v) {
 		vec4 p4 = grad4(j1.w, ip);
 
 		// Normalise gradients
-		vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+		vec4 norm = new_taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
 		p0 *= norm.x;
 		p1 *= norm.y;
 		p2 *= norm.z;
@@ -689,7 +693,7 @@ float snoise(vec2 v) {
 		float a = 0.5;
 		float shift = float(100);
 		for (int i = 0; i < NUM_OCTAVES; ++i) {
-			v += a * noise(x);
+			v += a * noise(vec2(x));
 			x = x * 2.0 + shift;
 			a *= 0.5;
 		}

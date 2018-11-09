@@ -1,5 +1,6 @@
 //This file contains headers that are meant to be included globally only once. 
 //There is also some functions which are just Pre-Processor checking
+//This is also where some 
 
 //Created by Forrest Miller on July 16, 2018
 
@@ -8,11 +9,8 @@
 #ifndef PROJECT_SETUP_H_
 #define PROJECT_SETUP_H_
 
-//#ifndef NDEBUG   //see: https://stackoverflow.com/questions/2290509/debug-vs-ndebug/2290616#2290616  Apparently this is standard across compilers for release builds?
-//               //(Though regarding NDEBUG, some of the other Stack Exchange responses were saying it's primary purpose is to turn on/off 'assert' statements)
-//If building for debug    (leaving this defined (should) enable debugging within both the GL Context and GLFW)
 #define USE_DEBUG_ 
-//#endif //NDEBUG
+#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_  //Defining this will 
 
 //Glad version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
 #include "glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
@@ -21,7 +19,7 @@
 #include "glfw_config.h"  //Not sure if this is explicitly necessary
 #include "glfw3.h"
 
-
+   
 //Use the gl math library 
 #include "glm/glm/glm.hpp"  //Well... It works so I am not going to fix it  //see: https://stackoverflow.com/questions/17905794/how-to-setup-the-glm-library-in-visual-studio-2012
 //Explicitly include the following as well
@@ -29,7 +27,7 @@
 //#include "glm/glm/gtx/quaternion.hpp"
 
 
-//FreeType is required for HarfBuzz
+//Freetype will be useful for when I get around to implementing a kick-butt glpyh-based text rendering system.
 #include "ft2build.h"
 
 

@@ -42,6 +42,8 @@ GLFW_Init::~GLFW_Init() {
 }
 
 void GLFW_Init::terminate() {
+	if (mWindow)
+		glfwDestroyWindow(mWindow); //This function should be called for each window created by this application!
 	glfwTerminate(); //Terminating is quite a bit easier than setting up, as you can see
 }
 

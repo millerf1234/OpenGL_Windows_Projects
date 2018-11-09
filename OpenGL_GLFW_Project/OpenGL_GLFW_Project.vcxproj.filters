@@ -357,6 +357,9 @@
     <ClCompile Include="Lightsource.cpp">
       <Filter>Source Files\Utility\Lightsource</Filter>
     </ClCompile>
+    <ClCompile Include="LightsourceModel.cpp">
+      <Filter>Source Files\Utility\Lightsource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib">
@@ -653,6 +656,9 @@
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="Lightsource.h">
+      <Filter>Source Files\Utility\Lightsource</Filter>
+    </ClInclude>
+    <ClInclude Include="LightsourceModel.h">
       <Filter>Source Files\Utility\Lightsource</Filter>
     </ClInclude>
   </ItemGroup>

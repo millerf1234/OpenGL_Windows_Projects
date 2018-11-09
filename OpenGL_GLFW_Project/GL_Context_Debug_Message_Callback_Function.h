@@ -7,6 +7,16 @@
 //This code is based heavily off the example code provided
 //at https://www.khronos.org/opengl/wiki/Debug_Output
 //
+//
+// Update on November 6, 2018  --  While reading the book OpenGL Programming Guide 9e, I discovered
+//                                 in one of the appendixs (appendix g, to be exact) a complete guide
+//                                 to setting up this debug callback function. Up until now, callbacks 
+//                                 have been printing out GL Enum values directly without translating them
+//                                 and with hardly any distinction made between severity levels. I plan to
+//                                 overhaul the callback function based off the detail provided in Appendix G. [pages 863 - 877]
+//
+//     Turns out I am lazy and didn't actually update the callback... Looking at what I could have it print out,
+//      it seems to me like the callback function is already robust enough.
 
 #pragma once
 
@@ -14,6 +24,10 @@
 #define GL_CONTEXT_DEBUG_MESSAGE_CALLBACK_FUNCTION_H_
 
 #include <stdio.h>
+   
+
+   
+
 #include "ProjectSetup.h"
 #include "LoggingMessageTargets.h"
 

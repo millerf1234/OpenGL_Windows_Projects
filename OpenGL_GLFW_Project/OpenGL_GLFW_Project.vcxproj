@@ -153,6 +153,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="Lightsource.cpp" />
+    <ClCompile Include="LightsourceModel.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Lightsource.h" />
+    <ClInclude Include="LightsourceModel.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MissingAsset.h" />

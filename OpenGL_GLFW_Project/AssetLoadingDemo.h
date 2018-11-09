@@ -13,6 +13,9 @@
 #define ASSET_LOADING_DEMO_H_
 
 #include <thread>
+#include <math.h>
+
+#include "glm/glm/gtc/type_ptr.hpp"
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
@@ -24,6 +27,7 @@
 #include "GenericVertexAttributeSet.h"
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
+#include "LightSource.h"
 
 
 using ShaderInterface::GenericVertexAttributeSet; 
@@ -50,6 +54,8 @@ private:
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
 	std::unique_ptr<ShaderProgram> sceneShaderWithoutTexture;
 	std::unique_ptr<ShaderProgram> sceneShaderWithTexture;
+
+	std::unique_ptr<ShaderProgram> lightSourceShader;
 
 	//std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
 	

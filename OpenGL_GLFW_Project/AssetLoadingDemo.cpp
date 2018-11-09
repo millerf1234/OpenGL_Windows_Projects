@@ -15,17 +15,15 @@ void AssetLoadingDemo::initialize() {
 	//Set the starting input primitive type
 	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
-	
-
 	xRotation = 90.0f;
 	yRotation = 120.0f;
 	zRotation = 0.0f;
 	zoom = 1.0f;
 	mvpMatrixNeedsUpdating = false;
 
-	redRotationTheta = 0.0f;
-	greenRotationTheta = 0.0f;
-	blueRotationTheta = 0.0f;
+	//redRotationTheta = 0.0f;
+	//greenRotationTheta = 0.0f;
+	//blueRotationTheta = 0.0f;
 
 	
 
@@ -100,7 +98,35 @@ void AssetLoadingDemo::loadAssets() {
 
 void AssetLoadingDemo::loadShaders() {
 	fprintf(MSGLOG, "\nInitializing Shaders!\n");
-	sceneShader = std::make_unique<ShaderProgram>();
+
+	lightSourceShader = std::make_unique<ShaderProgram>();
+
+	lightSourceShader->attachVert("Lightsource.vert");
+
+
+	std::unique_ptr<ShaderInterface::GeometryShader> noiseShader = std::make_unique<ShaderInterface::GeometryShader>("ShaderNoiseFunctions.glsl");
+	noiseShader->makeSecondary();
+
+	lightSourceShader->attachSecondaryGeom(noiseShader.get());
+
+	lightSourceShader->attachGeom("Lightsource.glsl");
+
+	lightSourceShader->attachFrag("Lightsource.frag");
+	
+	lightSourceShader->link();
+	if (lightSourceShader->checkIfLinked()) {
+		fprintf(MSGLOG, "Program Successfully linked!\n");
+	}
+	else {
+		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+		std::cin.get(); //Hold the window open if there was an error
+	}
+
+
+
+	/*
+	//sceneShader = std::make_unique<ShaderProgram>();
 
 	//Create and attach helper vertex shaders
 	std::unique_ptr<ShaderInterface::VertexShader> perspectiveProj = std::make_unique<ShaderInterface::VertexShader>("PerspectiveProjection.vert");
@@ -181,10 +207,12 @@ void AssetLoadingDemo::loadShaders() {
 	//	fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
 	//	std::cin.get(); //Hold the window open if there was an error
 	//}
-
+	*/
 }
 
 GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
+	return 0;
+	/*
 	GLsizei indices = 0u;
 	GLsizei vertexSize;
 	if (sceneObjectPtrs.data()[0]->hasTexCoords()) {
@@ -208,6 +236,7 @@ GLsizei AssetLoadingDemo::computeSceneObjectPtrsTotalIndices() const {
 		indices += ((*sceneObjectIter)->mVertices_.size() / vertexSize);
 	}
 	return indices;
+	*/
 }
 
 void AssetLoadingDemo::loadModels() {
@@ -218,7 +247,7 @@ void AssetLoadingDemo::loadModels() {
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BeveledCube.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngine.obj"));
 	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/ExperimentalEngineUV_ToGOWithAlbedo.obj", 3.0f));
-	sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
+	//sceneObjectPtrs.emplace_back(std::make_unique<QuickObj>("obj/BlockShipSample_01.obj", 6.5f));
 
 
 	////Make a vertex attribute set to handle organizing the data for the graphics context
@@ -227,17 +256,22 @@ void AssetLoadingDemo::loadModels() {
 	//if (!vertexAttributes)
 	//	return;
 
-	std::vector<float> combinedSceneObjects;
-	for (auto sceneObjIter = sceneObjectPtrs.begin(); sceneObjIter != sceneObjectPtrs.end(); sceneObjIter++) {
-		combinedSceneObjects.insert(combinedSceneObjects.end(), (*sceneObjIter)->mVertices_.begin(), (*sceneObjIter)->mVertices_.end());
-		int posCounter = 0;
-		for (auto iter = combinedSceneObjects.begin(); iter != combinedSceneObjects.end(); iter++) {
-			if (posCounter == 0) {
-				(*iter) += 0.65f;
-			}
-			posCounter = (posCounter + 1) % 9;
-		}
-	}
+	std::vector<float> combinedSceneObjects = { 0.0f, 0.5000f, 0.000f, 0.9f, 0.55f, 0.525f };// , -0.60025f, -0.3025f, 0.025f, 0.1f, 0.975f, 0.9f
+
+	
+	
+	
+	// 0.0f, 0.0f, 0.0f
+	//for (auto sceneObjIter = sceneObjectPtrs.begin(); sceneObjIter != sceneObjectPtrs.end(); sceneObjIter++) {
+	//	combinedSceneObjects.insert(combinedSceneObjects.end(), (*sceneObjIter)->mVertices_.begin(), (*sceneObjIter)->mVertices_.end());
+	//	int posCounter = 0;
+	//	for (auto iter = combinedSceneObjects.begin(); iter != combinedSceneObjects.end(); iter++) {
+	//		if (posCounter == 0) {
+	//			(*iter) += 0.65f;
+	//		}
+	//		posCounter = (posCounter + 1) % 9;
+	//	}
+	//}
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	//DO it manually   (FAILED ATTEMPT 1)
@@ -272,6 +306,20 @@ void AssetLoadingDemo::loadModels() {
 
 	glBufferData(GL_ARRAY_BUFFER, combinedSceneObjects.size() * sizeof(combinedSceneObjects.data()), combinedSceneObjects.data(), GL_STATIC_DRAW);
 
+	glEnableVertexArrayAttrib(vao, 0); //Requires OpenGl 4.5 or newer, allows VAO to be specified as param
+	//glEnableVertexAttribArray(0);  //Since OpenGl 2.0, will use whatever VAO is bound globally to context
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6u) * sizeof(GLfloat), (GLvoid*)0u);
+
+
+	glEnableVertexArrayAttrib(vao, 1);
+	//glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (6u) * sizeof(GLfloat), (GLvoid*)(3u * sizeof(GLfloat)));
+	
+	
+
+
+
+	/*
 	//Positions (expects "layout (location=0)" in shader)
 	glEnableVertexArrayAttrib(vao, 0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (4u + 2u + 3u) * sizeof(GLfloat), (GLvoid*)0u);
@@ -288,6 +336,7 @@ void AssetLoadingDemo::loadModels() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, (4u + 2u + 3u) * sizeof(GLfloat), (GLvoid*)(7u * sizeof(GLfloat)));
 	//glEnableVertexAttribArray(2);
 	
+	*/
 
 
 	//
@@ -298,7 +347,7 @@ void AssetLoadingDemo::loadModels() {
 	//vertexAttributes->sendDataToVertexBuffer(2, combinedSceneObjects, 3, 7, (GLvoid*)(static_cast<GLintptr>((4u * sizeof(float)))));
 	
 
-	fprintf(MSGLOG, "\n%u Objects have been successfully loaded to Video Memory!\n", sceneObjectPtrs.size());
+	//fprintf(MSGLOG, "\n%u Objects have been successfully loaded to Video Memory!\n", sceneObjectPtrs.size());
 
 
 	//fprintf(MSGLOG, "\nLoading Teapot Vertices\n");
@@ -350,7 +399,6 @@ void AssetLoadingDemo::renderLoop() {
 		updateFrameClearColor();
 
 		updateUniforms();
-
 
 		drawVerts();
 
@@ -575,10 +623,35 @@ void AssetLoadingDemo::updateFrameClearColor() {
 }
 
 void AssetLoadingDemo::updateUniforms() {
-	sceneShader->use();
+
+	lightSourceShader->use();
+
+	//Vertex Shader Uniforms:
+	lightSourceShader->uniforms->updateUniform1f("distanceToCamera", 0.5f + 0.45f*sin(counter));
+	//glm::mat4 identity(1.0);
+	counter *= 25.0f;
+	glm::mat4 transform(cos(counter), sin(counter), 0.0f, 0.0f, -sin(counter), cos(counter), 0.0f, 0.1f*sin(counter), 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0f, 0.0f, 1.0f);
+	//glm::vec4 c1(cos(counter), sin(counter), 0.0f, 0.0f);
+	//glm::vec4 c2(-sin(counter), cos(counter), 0.0f, 0.1f*sin(counter));
+	
+	counter = counter / 25.0f;
+
+	lightSourceShader->uniforms->updateUniformMat4x4("projection", (const float*)glm::value_ptr(transform));
+
+	//Geometry Shader Uniforms:
+	lightSourceShader->uniforms->updateUniform1f("time", 0.725f*counter);
+	lightSourceShader->uniforms->updateUniform1f("zoom", 1.0f);
+	lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", 0);
+	lightSourceShader->uniforms->updateUniform1i("noiseResolution", 5);
+	lightSourceShader->uniforms->updateUniform1f("instabilityFactor", 2.0f);
+
+	//Fragment Shader Uniforms:
+	
+
+	//sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", zoom);//1.7f + counter);
-	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
+	//sceneShader->uniforms->updateUniform1f("zoom", zoom);//1.7f + counter);
+	//sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	////Uniforms for the geometry shader effect
 	//sceneShader->uniforms->updateUniform1i("level", 1);                    //tweak this value as needed
@@ -592,13 +665,16 @@ void AssetLoadingDemo::updateUniforms() {
 
 void AssetLoadingDemo::drawVerts() {
 
-	if (sceneShader)
-		sceneShader->use();
+	//if (sceneShader)
+		//sceneShader->use();
 	//if (vertexAttributes)
 	//	vertexAttributes->use();
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+	lightSourceShader->use();
+	glDrawArrays(GL_POINTS, 0, 1);
+	return;
 
 	if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
 		//fprintf(MSGLOG, "\nTotalIndices are: %u\n", computeSceneObjectPtrsTotalIndices());
