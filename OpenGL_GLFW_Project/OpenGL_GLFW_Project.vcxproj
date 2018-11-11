@@ -326,7 +326,7 @@
     <None Include="gst.geom" />
     <None Include="gst.vert" />
     <None Include="Lightsource.frag" />
-    <None Include="Lightsource_OldAndIncorrect.glsl" />
+    <None Include="Lightsource_OldAndIncorrect.geom" />
     <None Include="Lightsource.vert" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />

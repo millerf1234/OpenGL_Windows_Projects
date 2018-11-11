@@ -1,3 +1,6 @@
+//This started as the AssetLoadingDemo, but it morphed into now a noise-test demo
+//thing with light halo bleeding, before I added alpha really...
+
 //See header file for details
 //This file will most likely closely resemble the file "RenderProject1.cpp"
 
@@ -112,7 +115,7 @@ void AssetLoadingDemo::loadShaders() {
 
 	//lightSourceShader->attachSecondaryGeom(noiseShader.get());
 
-	//lightSourceShader->attachGeom("Lightsource.glsl");
+	//lightSourceShader->attachGeom("Lightsource.geom");
 
 	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>("ShaderNoiseFunctions.frag");
 	noiseShader->makeSecondary();
@@ -263,6 +266,9 @@ void AssetLoadingDemo::loadModels() {
 
 	//if (!vertexAttributes)
 	//	return;
+
+
+
 
 	//Going to wing something together...
 	std::array<float, 3> pos = { 0.0f, 0.25f, 0.0f };

@@ -268,6 +268,12 @@
     <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
       <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Common\Lightsource\NoAlpha">
+      <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\Lightsource\WithAlpha">
+      <UniqueIdentifier>{18210171-d658-4ff3-bad2-e2ea6142135a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -933,20 +939,20 @@
     <None Include="AssetLoadingDemo_WithoutNormalWithTex.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
     </None>
-    <None Include="Lightsource.vert">
-      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
-    </None>
-    <None Include="Lightsource.frag">
-      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
-    </None>
     <None Include="obj\Pokemon.obj">
       <Filter>Resource Files\Models\OBJ\Sample\Pokemon</Filter>
     </None>
-    <None Include="Lightsource_OldAndIncorrect.glsl">
-      <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
-    </None>
     <None Include="ShaderNoiseFunctions.frag">
       <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+    </None>
+    <None Include="Lightsource.frag">
+      <Filter>Resource Files\Shaders\Common\Lightsource\NoAlpha</Filter>
+    </None>
+    <None Include="Lightsource.vert">
+      <Filter>Resource Files\Shaders\Common\Lightsource\NoAlpha</Filter>
+    </None>
+    <None Include="Lightsource_OldAndIncorrect.geom">
+      <Filter>Resource Files\Shaders\Common\Lightsource\NoAlpha</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
