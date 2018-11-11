@@ -2,7 +2,7 @@
 
 
 
-LightsourceModel::LightsourceModel() {
+LightsourceModel::LightsourceModel(unsigned int numSides, unsigned int numLevels) {
 
 
 }

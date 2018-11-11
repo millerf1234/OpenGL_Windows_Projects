@@ -8,19 +8,24 @@
 #ifndef PROJECT_PARAMETERS_H_
 #define PROJECT_PARAMETERS_H_
 
-#include "ProjectSetup.h"
 
-#define PRINT_SHADER_COMPILE_MESSAGES  //Used within the CompiledShader classes
+//--------------------------------------------------------------------------
+//    Change the following variables to modify program behavior. Note that this will most likely
+//      necessitate a length recompilation of the entire project. Eventually there will be a way this
+//      project loads its settings from a file.
+//--------------------------------------------------------------------------
 
-//#define BUILD_WITH_APPLICATION_DEBUGGING //This isn't actually used anywhere
+
+
+#define USE_DEBUG_ 
+#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_  //Defining this will force synchnization between the graphics context and the app, which will affect performance but improve debugging 
 
 
 static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 
+static constexpr bool USE_FULLSCREEN = true;
 
-static constexpr bool USE_FULLSCREEN = false;
-
-static constexpr bool USE_VSYNC = false;
+static constexpr bool USE_VSYNC = true;
 
 static constexpr int DEFAULT_AA_SAMPLES = 8;
 
@@ -33,8 +38,7 @@ static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 
 //Mostly constant parameters (these parameters can be tweaked but usually doing so will have a negative effect)
-static constexpr unsigned long long DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE = 8ull;
-static constexpr unsigned long long DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1 = 15ull;
 
 
-#endif //define PROJECT_PARAMETERS_H_
+
+#endif //defizne PROJECT_PARAMETERS_H_

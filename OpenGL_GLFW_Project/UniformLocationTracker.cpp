@@ -21,7 +21,7 @@ namespace ShaderInterface {
 
 	static const uint8_t NOT_IN_VECTOR = 255u;
 	static const GLint NOT_IN_LIST = -2;
-	static constexpr size_t CACHED_UNIFORM_LOCATION_HASH_SIZE = 107; //Should be prime number?
+	static constexpr size_t CACHED_UNIFORM_LOCATION_HASH_SIZE = 107u; //Should be prime number?
 
 
 	UniformLocationTracker::UniformLocationTracker(const GLuint& programID) {
@@ -122,39 +122,293 @@ namespace ShaderInterface {
 
 	//Matrix update functions
 
-	void updateUniformMat2(const GLchar*, const glm::mat2 * matrix, GLsizei count) {
-
+	void UniformLocationTracker::updateUniformMat2(const GLchar * uniformName, const glm::mat2 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			//   vector to hold the multiple matrices worth of data. As such, this function is
+			//   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(4u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 4u; i++) { //Add the 4 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, matrixData.data());
+		}
 	}
+
 	void UniformLocationTracker::updateUniformMat2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, valPtr);
+	}
+
+	void UniformLocationTracker::updateUniformMat2x2(const GLchar * uniformName, const glm::mat2 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(4u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 4u; i++) { //Add the 4 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, matrixData.data());
+		}
 	}
 
 	void UniformLocationTracker::updateUniformMat2x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix2fv(lookupUniformLocation(M2x2_, uniformName, UniformType::MAT2), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat2x3(const GLchar * uniformName, const glm::mat2x3 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix2x3fv(lookupUniformLocation(M2x3_, uniformName, UniformType::MAT2X3), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(6u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 6u; i++) { //Add the 6 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix2x3fv(lookupUniformLocation(M2x3_, uniformName, UniformType::MAT2X3), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat2x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix2x3fv(lookupUniformLocation(M2x3_, uniformName, UniformType::MAT2X3), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat2x4(const GLchar * uniformName, const glm::mat2x4 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix2x4fv(lookupUniformLocation(M2x4_, uniformName, UniformType::MAT2X4), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(8u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 8u; i++) { //Add the 8 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix2x4fv(lookupUniformLocation(M2x4_, uniformName, UniformType::MAT2X4), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat2x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix2x4fv(lookupUniformLocation(M2x4_, uniformName, UniformType::MAT2X4), count, GL_FALSE, valPtr);
+	}
+
+
+	void UniformLocationTracker::updateUniformMat3x2(const GLchar * uniformName, const glm::mat3x2 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix3x2fv(lookupUniformLocation(M3x2_, uniformName, UniformType::MAT3X2), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(6u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 6u; i++) { //Add the 6 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix3x2fv(lookupUniformLocation(M3x2_, uniformName, UniformType::MAT3X2), count, GL_FALSE, matrixData.data());
+		}
 	}
 
 	void UniformLocationTracker::updateUniformMat3x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix3x2fv(lookupUniformLocation(M3x2_, uniformName, UniformType::MAT3X2), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat3(const GLchar * uniformName, const glm::mat3 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(9u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 9u; i++) { //Add the 9 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, matrixData.data());
+		}
+	}
+
+	void UniformLocationTracker::updateUniformMat3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, valPtr);
+	}
+
+	void UniformLocationTracker::updateUniformMat3x3(const GLchar * uniformName, const glm::mat3 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(9u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 9u; i++) { //Add the 9 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat3x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix3fv(lookupUniformLocation(M3x3_, uniformName, UniformType::MAT3), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat3x4(const GLchar * uniformName, const glm::mat3x4 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix3x4fv(lookupUniformLocation(M3x4_, uniformName, UniformType::MAT3X4), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(12u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 12u; i++) { //Add the 12 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix3x4fv(lookupUniformLocation(M3x4_, uniformName, UniformType::MAT3X4), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat3x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix3x4fv(lookupUniformLocation(M3x4_, uniformName, UniformType::MAT3X4), count, GL_FALSE, valPtr);
+	}
+
+
+
+	void UniformLocationTracker::updateUniformMat4x2(const GLchar * uniformName, const glm::mat4x2 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix4x2fv(lookupUniformLocation(M4x2_, uniformName, UniformType::MAT4X2), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(8u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 8u; i++) { //Add the 8 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix4x2fv(lookupUniformLocation(M4x2_, uniformName, UniformType::MAT4X2), count, GL_FALSE, matrixData.data());
+		}
 	}
 
 	void UniformLocationTracker::updateUniformMat4x2(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix4x2fv(lookupUniformLocation(M4x2_, uniformName, UniformType::MAT4X2), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat4x3(const GLchar * uniformName, const glm::mat4x3 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(12u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 12u; i++) { //Add the 12 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat4x3(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix4x3fv(lookupUniformLocation(M4x3_, uniformName, UniformType::MAT4X3), count, GL_FALSE, valPtr);
 	}
+
+	void UniformLocationTracker::updateUniformMat4(const GLchar * uniformName, const glm::mat4 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(16u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 16u; i++) { //Add the 16 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, matrixData.data());
+		}
+	}
+
+	void UniformLocationTracker::updateUniformMat4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
+		glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, valPtr);
+	}
+
+	void UniformLocationTracker::updateUniformMat4x4(const GLchar * uniformName, const glm::mat4 * matrix, GLsizei count) {
+		if (count == 0u) { return; }
+		else if (count == 1u) {
+			glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, static_cast<const GLfloat *>(glm::value_ptr(*matrix)));
+		}
+		else { //The way this is implemented currently involves an intermediate memory allocation for the 
+			   //   vector to hold the multiple matrices worth of data. As such, this function is
+			   //   inefficent for updating an array of matrices.
+			std::vector<GLfloat> matrixData;
+			matrixData.reserve(16u * count);
+			for (GLsizei i = 0u; i < count; i++) { //For each matrix 
+				const GLfloat * matData = static_cast<const GLfloat *>(glm::value_ptr(*matrix)); //Get matrix data
+				for (GLsizei i = 0u; i < 16u; i++) { //Add the 16 entries to the vector
+					matrixData.push_back(matData[i]);
+				}
+			}
+			glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, matrixData.data());
+		}
+	}
+
 	void UniformLocationTracker::updateUniformMat4x4(const GLchar * uniformName, const GLfloat * valPtr, GLsizei count) {
 		glUniformMatrix4fv(lookupUniformLocation(M4x4_, uniformName, UniformType::MAT4), count, GL_FALSE, valPtr);
 	}
@@ -343,71 +597,92 @@ namespace ShaderInterface {
 
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUnifromMat2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT2, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT2X3, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT2X4, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT2X3, count);
 		}
 	}
-
-
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT3X2, count, transpose);
-		}
-	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
-		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
-			return mCachedUniformLocations[uniformName];
-		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT3, count, transpose);
-		}
-	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
-		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
-			return mCachedUniformLocations[uniformName];
-		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT3X4, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT2X4, count);
 		}
 	}
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT4X2, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT3X2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT4X3, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT3, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
-			return addCachedUniformLocation(uniformName, UniformType::MAT4, count, transpose);
+			return addCachedUniformLocation(uniformName, UniformType::MAT3, count);
+		}
+	}
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count) {
+		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+			return mCachedUniformLocations[uniformName];
+		else {
+			return addCachedUniformLocation(uniformName, UniformType::MAT3X4, count);
+		}
+	}
+
+
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count) {
+		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+			return mCachedUniformLocations[uniformName];
+		else {
+			return addCachedUniformLocation(uniformName, UniformType::MAT4X2, count);
+		}
+	}
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count) {
+		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+			return mCachedUniformLocations[uniformName];
+		else {
+			return addCachedUniformLocation(uniformName, UniformType::MAT4X3, count);
+		}
+	}
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4(const GLchar * uniformName, GLsizei count) {
+		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+			return mCachedUniformLocations[uniformName];
+		else {
+			return addCachedUniformLocation(uniformName, UniformType::MAT4, count);
+		}
+	}
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count) {
+		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
+			return mCachedUniformLocations[uniformName];
+		else {
+			return addCachedUniformLocation(uniformName, UniformType::MAT4, count);
 		}
 	}
 
@@ -481,16 +756,15 @@ namespace ShaderInterface {
 
 
 
-
-
 	bool UniformLocationTracker::seeIfUniformLocationHasAlreadyBeenCached(const GLchar * uniformName) {
 		std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
 		//Important Note: This function's implementation relies on the behavior of 'operator[]' of an unordered_map. When using
 		//'operator[]' on an unordered_map, the map is searched using the provided key. If an element exists at that key, then
 		//the unordered_map returns a reference to that element. However, if an element is not found associated with the key, the 
-		//unordered_map creates a new element of that type using the elements default constructor (in this case shared_ptr's default
+		//unordered_map creates a new element of that type using the elements' default constructor (in this case shared_ptr's default
 		//constructor is called, which in turn calls the default CachedUniformLocation constructor). Thus in the following code,
-		//to tell if a CachedUniformLocation already exists, it suffices to just see if the object has been properly initialized.
+		//beacuse the default constructor of CachedUniformLocation constructs an invalid object, to tell if a CachedUniformLocation
+		//already exists, it suffices to just see if the object has been properly initialized.
 
 		if (cachedLocation->mWasInitialized) { //I am able to access the CachedUniformLocation's private parts directly because this class is friends with the CachedUniformLocation class.
 			return true;
@@ -498,7 +772,7 @@ namespace ShaderInterface {
 		return false;
 	}
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::addCachedUniformLocation(const GLchar * uniformName, UniformType type, GLsizei count, GLboolean transpose) {
+	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::addCachedUniformLocation(const GLchar * uniformName, UniformType type, GLsizei count) {
 		std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
 		if (cachedLocation->mWasInitialized) {
 			if (cachedLocation->mUniformType == UniformType::UNSPECIFIED) {
@@ -508,7 +782,7 @@ namespace ShaderInterface {
 				fprintf(WRNLOG, "\nWARNING! An initialized CachedUniformLocation for the variable %s\nhas already been initialized, but is now getting re-initialized!\n", cachedLocation->mUniformName);
 			}
 		}
-		cachedLocation.reset(new CachedUniformLocation(uniformName, mProgramID, type, count, transpose)); //Re-initialize with the proper data
+		cachedLocation.reset(new CachedUniformLocation(uniformName, mProgramID, type, count)); //Re-initialize with the proper data
 		mCachedLocationsCount++;
 		return cachedLocation;
 	}

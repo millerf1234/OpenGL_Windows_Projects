@@ -259,6 +259,15 @@
     <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions">
       <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party\GLM">
+      <UniqueIdentifier>{d67bba8a-509a-4284-9788-76ce98beb124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLM\gtc">
+      <UniqueIdentifier>{310d5a25-3241-4d25-8355-024386bfd8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
+      <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -661,6 +670,87 @@
     <ClInclude Include="LightsourceModel.h">
       <Filter>Source Files\Utility\Lightsource</Filter>
     </ClInclude>
+    <ClInclude Include="glm\common.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\exponential.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\ext.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\fwd.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\geometric.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\glm.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\integer.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat2x2.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat2x3.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat2x4.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat3x2.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat3x3.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat3x4.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat4x2.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat4x3.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\mat4x4.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\matrix.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\packing.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\trigonometric.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\vec2.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\vec3.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\vec4.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\vector_relational.hpp">
+      <Filter>Third Party\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\gtc\matrix_transform.hpp">
+      <Filter>Third Party\GLM\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\gtc\quaternion.hpp">
+      <Filter>Third Party\GLM\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\gtc\type_ptr.hpp">
+      <Filter>Third Party\GLM\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="LightsourceTest.h">
+      <Filter>Source Files\Utility\Lightsource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -798,7 +888,6 @@
     <None Include="obj\BlockShipSample_01.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
     </None>
-    <None Include="obj\Pokemon.obj" />
     <None Include="VertMath.vert">
       <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
     </None>
@@ -850,11 +939,14 @@
     <None Include="Lightsource.frag">
       <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
     </None>
-    <None Include="ShaderNoiseFunctions.glsl">
-      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+    <None Include="obj\Pokemon.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\Pokemon</Filter>
     </None>
-    <None Include="Lightsource.glsl">
+    <None Include="Lightsource_OldAndIncorrect.glsl">
       <Filter>Resource Files\Shaders\Common\Lightsource</Filter>
+    </None>
+    <None Include="ShaderNoiseFunctions.frag">
+      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

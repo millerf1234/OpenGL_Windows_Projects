@@ -10,6 +10,9 @@
 //				  used to update uniforms directly, skipping the lookup this object has to perform each time one of the
 //			      simpler 'updateUniformxx()' functions is called.
 //
+// Dependencies:  This class requires the inclusion of the GLM extension "type_ptr" which allows GLM vectors and
+//                matrices to be used for the uniform updates. 
+//
 //Created by Forrest Miller on July 20, 2018 
 //Completed on July 24, 2018 by Forrest Miller
 
@@ -21,8 +24,6 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
-
-#include "glm/glm/gtc/type_ptr.hpp"  //This is necessary to convert GLM matrices to GLfloat*
 
 #include "ProjectConstants.h"
 #include "UniformLocationBucket.h"
@@ -76,21 +77,37 @@ namespace ShaderInterface {
 		void updateUniform4uv(const GLchar *, const GLuint *, GLsizei count = 1);
 		void updateUniform4fv(const GLchar *, const GLfloat *, GLsizei count = 1);
 
-		//For the matrices, it is possible to use either a GLM::mat of the corresponding type or to use a GLfloat* to data. 
+		//For the matrices, it is possible to use either a GLM::mat of the
+		//corresponding type or to just provide a GLfloat * representing the
+		//data. Count can be used to update an array of matrices.
 
-		void updateUniformMat2(const GLchar*, const glm::mat2 * matrix, GLsizei count = 1);
+		void updateUniformMat2(const GLchar*, const glm::mat2 *, GLsizei count = 1);
 		void updateUniformMat2(const GLchar *, const GLfloat *, GLsizei count = 1);
-		void updateUniformMat2x2(const GLchar*, const glm::mat2 * matrix, GLsizei count = 1);
+		void updateUniformMat2x2(const GLchar*, const glm::mat2 *, GLsizei count = 1);
 		void updateUniformMat2x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat2x3(const GLchar *, const glm::mat2x3 *, GLsizei count = 1);
 		void updateUniformMat2x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat2x4(const GLchar *, const glm::mat2x4 *, GLsizei count = 1);
 		void updateUniformMat2x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
+		
+		void updateUniformMat3x2(const GLchar *, const glm::mat3x2 *, GLsizei count = 1);
 		void updateUniformMat3x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat3(const GLchar *, const glm::mat3 *, GLsizei count = 1);
+		void updateUniformMat3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat3x3(const GLchar *, const glm::mat3 *, GLsizei count = 1);
 		void updateUniformMat3x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat3x4(const GLchar *, const glm::mat3x4 *, GLsizei count = 1);
 		void updateUniformMat3x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
+
+		void updateUniformMat4x2(const GLchar *, const glm::mat4x2 *, GLsizei count = 1);
 		void updateUniformMat4x2(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat4x3(const GLchar *, const glm::mat4x3 *, GLsizei count = 1);
 		void updateUniformMat4x3(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat4(const GLchar *, const glm::mat4 *, GLsizei count = 1);
+		void updateUniformMat4(const GLchar *, const GLfloat *, GLsizei count = 1);
+		void updateUniformMat4x4(const GLchar *, const glm::mat4 *, GLsizei count = 1);
 		void updateUniformMat4x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
 
@@ -123,18 +140,21 @@ namespace ShaderInterface {
 		std::shared_ptr<CachedUniformLocation> getCachedUniform4iv(const GLchar *, GLsizei count = 1);
 		std::shared_ptr<CachedUniformLocation> getCachedUniform4uv(const GLchar *, GLsizei count = 1);
 		std::shared_ptr<CachedUniformLocation> getCachedUniform4fv(const GLchar *, GLsizei count = 1);
+		
+		std::shared_ptr<CachedUniformLocation> getCachedUnifromMat2(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x2(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x3(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x4(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x2(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x3(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x4(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x2(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x3(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x4(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x2(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x3(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x4(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x2(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar *, GLsizei count = 1, GLboolean transpose = false);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x2(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4(const GLchar *, GLsizei count = 1);
+		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar *, GLsizei count = 1);
 
 		//Gets the number of uniform locations being tracked directly by this object. Currently it is possible for a
 		//CachedUniformLocation to be requested which bypasses this object's internal storing of UniformLocationBuckets, so this 
@@ -175,7 +195,7 @@ namespace ShaderInterface {
 
 		//Helper functions for managing cachedUniformLocations
 		bool seeIfUniformLocationHasAlreadyBeenCached(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> addCachedUniformLocation(const GLchar * uniformName, UniformType, GLsizei count = 1, GLboolean transpose = false);
+		std::shared_ptr<CachedUniformLocation> addCachedUniformLocation(const GLchar * uniformName, UniformType, GLsizei count = 1);
 
 	};
 

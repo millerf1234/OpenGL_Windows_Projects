@@ -262,7 +262,7 @@ bool RenderProject1::checkIfShouldPause() const {
 
 bool RenderProject1::checkIfShouldRecordColor() const {
 	if ((frameNumber >= (frameOfMostRecentColorRecording +
-		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1))
+		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECTS))
 		&& (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)) {
 		return true;
 	}

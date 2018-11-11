@@ -50,7 +50,7 @@
 
 // (Parameters For FBM Noise)
 #ifndef NUM_OCTAVES
-#define NUM_OCTAVES 3     //Change this value to modify the FBM noise
+#define NUM_OCTAVES 7     //Change this value to modify the FBM noise
 #endif 
 
 
@@ -82,7 +82,7 @@ layout ( triangle_strip, max_vertices = (mPOLYGON_CORNERS_ * 2 + 1) ) out; //All
 ///////////////////////////////////////////////////////////////////////////
 // INPUT FROM VERTEX SHADER
 ///////////////////////////////////////////////////////////////////////////
-in vec3 lightPosition[];
+//in vec3 lightPosition[];
 in vec3 lightColor[];
 
 
@@ -139,7 +139,8 @@ const float hueFalloffRate = max(float(COLOR_HUE_FALLOFF_RATE), mCOLOR_HUE_FALLO
 
 
 void main() {
-	vec3 center = gl_Position.xyz;//lightPosition[0];
+	//vec3 center = gl_Position.xyz;//lightPosition[0];
+	vec3 center = gl_in[0].gl_Position.xyz;//lightPosition[0].
 	vec3 hue = lightColor[0]; //= clamp(lightColor[0], 0.0, 1.0);
 
 	vec2 evenIterationOffsets[POLYGON_CORNERS * NUM_INVOCATIONS]; //The following arrays are used whilest building outwards
@@ -194,12 +195,21 @@ void main() {
 		EndPrimitive();
 
 #elif (POLYGON_CORNERS == 6)
+		/*
+		emitCenterVertex(center, hue);
+		emitCenterVertex(center + vec3(0.1, 0.1, 0.3), hue);
+		emitCenterVertex(center + vec3(0.1, -0.1, 0.3), hue);
+		emitCenterVertex(center - vec3(0.1, 0.1, -0.3), hue);
+		emitCenterVertex(center - vec3(0.1, -0.1, -0.3), hue);
+		EndPrimitive();
+		return; 
+		*/
 		emitCornerVertex(center, evenIterationOffsets[0], diminishedHue);
 		emitCornerVertex(center, evenIterationOffsets[1], diminishedHue);
 		emitCenterVertex(center, hue);
 		emitCornerVertex(center, evenIterationOffsets[2], diminishedHue);
 		emitCornerVertex(center, evenIterationOffsets[3], diminishedHue);
-		EndPrimitive();
+		//EndPrimitive();
 		emitCornerVertex(center, evenIterationOffsets[0], diminishedHue);
 		emitCornerVertex(center, evenIterationOffsets[5], diminishedHue);
 		emitCenterVertex(center, hue);
@@ -268,7 +278,7 @@ void main() {
 //affect the noise
 float computeNoise(vec2 pos, int level) {
 	//meh
-	return (snoise(pos) - pNoise(pos, level));
+	return max(snoise(pos), pNoise(pos, level));
 
 	
 	////return  fbm(pos);

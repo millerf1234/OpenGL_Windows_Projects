@@ -26,6 +26,7 @@
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
 #include "LightSource.h"
+#include "LightsourceTest.h"
 
 
 using ShaderInterface::GenericVertexAttributeSet; 
@@ -47,7 +48,8 @@ private:
 
 	glm::vec3 backgroundColor;
 
-	GLuint vao, vbo;
+	GLuint vao, vbo, ebo;
+	size_t eboSize;
 
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
 	std::unique_ptr<ShaderProgram> sceneShaderWithoutTexture;
@@ -58,6 +60,9 @@ private:
 	//std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
 	
 	glm::vec3 cameraPosition;
+	
+
+	int noiseFunctionToUse, noiseResolution;
 
 	//Asset Transformation information
 	float xRotation, yRotation, zRotation;
@@ -114,7 +119,7 @@ private:
 	void reset();
 
 
-	
+	void changeNoiseType();
 	void changePrimitiveType(); 
 	void rotate();
 

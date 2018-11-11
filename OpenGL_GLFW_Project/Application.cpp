@@ -104,8 +104,20 @@ void Application::configureGraphicsContextDebugCallbackFunction() const {
 	if (USE_DEBUG) {   //set in ProjectSetup.h
 		fprintf(MSGLOG, "Enabled\n");
 		glEnable(GL_DEBUG_OUTPUT);
-		fprintf(MSGLOG, "\t[For now] Forcing Synchronization Between Graphics Context and Application...\n\n");
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
+		if (FORCE_SYNC_BETWEEN_CONTEXT_AND_APP) {
+			fprintf(MSGLOG, "\t[For now] Forcing Synchronization Between Graphics Context and Application...\n\n");
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
+		}
+		else {
+			const char * warnHeader = "**********";
+				fprintf(WRNLOG, "\n%s%s%s%s%s%s%s%s\n"
+					"WARNING! Context Has Been Created As A Debug Context Without Synchronization Between\n"
+					"The Application And The Context! Callback Messages May Not Match Up With The Events That Caused Them!\n"
+				"%s%s%s%s%s%s%s%s\n", warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
+					warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
+					warnHeader, warnHeader, warnHeader);
+				glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		}
 		glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
 	}
 	else {

@@ -17,16 +17,25 @@
 static constexpr const char * NAME_OF_GAME = "OpenGL Render Demo";
 
 //Used in shader code for shader inputs
+//Actually stuff like this is what happens when I only get several hours a day to code, I wind up with 
+//stuff I forget I am supposed to use. This enum is not used anywhere in this project...
 enum class VertexAttribPointerType {
 	BYTE, UNSIGNED_BYTE, SHORT, UNSIGNED_SHORT, INT, UNSIGNED_INT, HALF_FLOAT,
 	FLOAT, FIXED, INT_2_10_10_10_REV, UNSIGNED_INT_2_10_10_10_REV, UNSIGNED_INT_10f_11f_11f_REV,
 };
+
+
+
 
 //Useful Constants
 constexpr size_t INDEX_SHIFT = 1ull; //Useful for array indexing
 constexpr GLfloat PI = 3.14159265f;
 
 
+
+//Limits on input rate [measured in frames]
+static constexpr unsigned long long DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE = 8ull;
+static constexpr unsigned long long DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECTS = 15ull;
 
 
 //OpenGL Version:

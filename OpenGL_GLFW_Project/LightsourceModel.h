@@ -8,18 +8,33 @@
 //              be customized, as can the color of the light source.
 //              
 // Programmer:  Forrest Miller
-// Date:        November 11, 2018
+// Date:        November 9, 2018
 
 #pragma once
 
 #ifndef LIGHTSOURCE_MODEL_H_
 #define LIGHTSOURCE_MODEL_H_
 
+#include <array>
+#include <vector>
+
+#include "ProjectSetup.h"
+
+
 class LightsourceModel {
 public:
-	LightsourceModel();
-	LightsourceModel()
-	~LightsourceModel();
+	//Create's a default light source model
+	LightsourceModel(unsigned int numSides = 8, unsigned int numLevels = 24);
+	LightsourceModel(std::array<float, 3> color, unsigned int numSides = 8, unsigned int numLevels = 24);
+	LightsourceModel(glm::vec3 color, unsigned int numSides = 8, unsigned int numLevels = 24);
+
+	~LightsourceModel();//...
+
+private:
+	glm::vec3 mCenter_;
+	glm::vec3 mColor_;
+	
+	std::vector<float> vertices;
 };
 
 #endif //LIGHTSOURCE_MODEL_H_

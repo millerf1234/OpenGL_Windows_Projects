@@ -28,7 +28,7 @@ namespace ShaderInterface {
 											 //friend bool UniformLocationTracker::checkIfInitialized() const { return mWasInitialized; }
 
 		CachedUniformLocation(); //Default Constructs an invalid object that needs to be validated. See UniformLocationTracker
-		CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose);
+		CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count);
 		~CachedUniformLocation();
 
 		//Nothing fancy to do when it comes to copying...
@@ -52,12 +52,6 @@ namespace ShaderInterface {
 		//Matrix and Vector only:
 		GLsizei getCount() const { return mCount; }
 
-		//Matrices Only:
-		void enableTranspose() { mTranspose = true; }
-		void disableTranspose() { mTranspose = false; }
-		bool checkTranspose() const { return mTranspose; }
-
-
 
 	private:
 		const GLchar * mUniformName;
@@ -66,7 +60,6 @@ namespace ShaderInterface {
 		UniformType mUniformType;
 		bool mWasInitialized;
 		bool mValidLocation;
-		bool mTranspose; //Only matters for matrices
 		GLsizei mCount; //Only for vectors and matrices
 
 	};

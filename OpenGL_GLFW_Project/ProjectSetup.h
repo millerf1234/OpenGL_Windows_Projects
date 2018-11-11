@@ -3,28 +3,60 @@
 //This is also where some 
 
 //Created by Forrest Miller on July 16, 2018
+// Reorganized document on November 8, 2018. It is still pretty disorganized...
 
 #pragma once
 
 #ifndef PROJECT_SETUP_H_
 #define PROJECT_SETUP_H_
 
-#define USE_DEBUG_ 
-#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_  //Defining this will 
+#include "ProjectParameters.h"  //This header contains project configuration which will affect setup
+
+
+
 
 //Glad version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
 #include "glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
 
 
-#include "glfw_config.h"  //Not sure if this is explicitly necessary
+
+
+
+//#include "glfw_config.h"  //Not sure if this is explicitly necessary
 #include "glfw3.h"
 
-   
-//Use the gl math library 
-#include "glm/glm/glm.hpp"  //Well... It works so I am not going to fix it  //see: https://stackoverflow.com/questions/17905794/how-to-setup-the-glm-library-in-visual-studio-2012
-//Explicitly include the following as well
-#include "glm/glm/gtc/quaternion.hpp"
-//#include "glm/glm/gtx/quaternion.hpp"
+
+
+
+//////////////////////////////
+//  Set up the GLM library  //
+//////////////////////////////
+#ifndef GLM_FORCE_SSE2
+#define GLM_FORCE_SSE2
+#endif //GLM_FORCE_SSE2
+#ifndef GLM_FORCE_ALIGNED
+#define GLM_FORCE_ALIGNED
+#endif //GLM_FORCE_ALIGNED
+
+//Include the main GLM library
+#include "glm/glm.hpp"  
+
+//After including the main GLM header, it is still necessary to include
+//some additional GLM extensions that are used in this project:
+
+//'type_ptr' is a conversion function that allows GLM vector and GLM 
+// matrix types to be accessed as though they are just arrays through
+// a GLfloat* to their first element. This is necessary for sending them
+// as uniforms to shader programs.
+#include "glm/gtc/type_ptr.hpp"   
+
+//'quaternion' is a special data type used to efficently and cleanly express
+// rotations in 3D. They are both cheaper and more robust than relying on Euler angles.
+#include "glm/gtc/quaternion.hpp" 
+
+//'matrix_transform' provides functions for creating several useful matrices that 
+// are used within the course of rendering. 
+#include "glm/gtc/matrix_transform.hpp"
 
 
 
@@ -41,12 +73,18 @@
 
 #include "LoggingMessageTargets.h"
 
+
 #if defined USE_DEBUG_ 
 #include "GL_Context_Debug_Message_Callback_Function.h"
 static constexpr bool USE_DEBUG = true;
-#undef USE_DEBUG_ //To prevent confusion down the road with having 2 'USE_DEBUGs'
+#if defined FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
+static constexpr bool FORCE_SYNC_BETWEEN_CONTEXT_AND_APP = true;
+#else 
+static constexpr bool FORCE_SYNC_BETWEEN_CONTEXT_AND_APP = false;
+#endif //FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
 #else 
 static constexpr bool USE_DEBUG = false;
+static constexpr bool FORCE_SYNC_BETWEEN_CONTEXT_AND_APP = false;
 //This is the function that would be defined in "GL_Context_Debug_Message_Callback_Function.h"
 static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source, 
 															GLenum type,
@@ -56,7 +94,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 															const GLchar* message,
 															const void* userParam)  {
 	//If not in debug mode, then this function can just have an empty definition. It shouldn't be called anywhere, but there's some set-up code
-	//that complains when it is not defined... 
+	//that complains when this function is not defined... 
 	}
 #endif //USE_DEBUG_
 

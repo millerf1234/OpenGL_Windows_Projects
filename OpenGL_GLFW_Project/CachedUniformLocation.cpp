@@ -14,16 +14,14 @@ namespace ShaderInterface {
 		mUniformType = UniformType::UNSPECIFIED;
 		mValidLocation = false;
 		mCount = 0u;
-		mTranspose = false;
 		mUniformLocation = -1;
 	}
-	CachedUniformLocation::CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count, GLboolean transpose) {
+	CachedUniformLocation::CachedUniformLocation(const GLchar * name, GLuint programID, UniformType type, GLsizei count) {
 		mWasInitialized = true;
 		mUniformName = name;
 		mProgramID = programID;
 		mUniformType = type;
 		mCount = count;
-		mTranspose = transpose;
 
 		mUniformLocation = glGetUniformLocation(programID, name);
 		if (mUniformLocation == -1) {
@@ -155,36 +153,36 @@ namespace ShaderInterface {
 
 
 		case UniformType::MAT2:
-			glProgramUniformMatrix2fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix2fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 		case UniformType::MAT2X3:
-			glProgramUniformMatrix2x3fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix2x3fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 
 		case UniformType::MAT2X4:
-			glProgramUniformMatrix2x4fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix2x4fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 
 		case UniformType::MAT3X2:
-			glProgramUniformMatrix3x2fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix3x2fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 
 		case UniformType::MAT3:
-			glProgramUniformMatrix3fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix3fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 
 		case UniformType::MAT3X4:
-			glProgramUniformMatrix3x4fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix3x4fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 
 		case UniformType::MAT4X2:
-			glProgramUniformMatrix4x2fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix4x2fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 		case UniformType::MAT4X3:
-			glProgramUniformMatrix4x3fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix4x3fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 		case UniformType::MAT4:
-			glProgramUniformMatrix4fv(mProgramID, mUniformLocation, mCount, mTranspose, static_cast<GLfloat *>(data));
+			glProgramUniformMatrix4fv(mProgramID, mUniformLocation, mCount, GL_FALSE, static_cast<GLfloat *>(data));
 			break;
 		case UniformType::UNSPECIFIED:
 			fprintf(WRNLOG, "\nWarning! Update was called for a cached uniform location of type UNSPECIFIED! This means no uniform update will occur.\n");

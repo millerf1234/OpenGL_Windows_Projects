@@ -21,6 +21,9 @@ void AssetLoadingDemo::initialize() {
 	zoom = 1.0f;
 	mvpMatrixNeedsUpdating = false;
 
+	noiseFunctionToUse = 0;
+	noiseResolution = 5;
+
 	//redRotationTheta = 0.0f;
 	//greenRotationTheta = 0.0f;
 	//blueRotationTheta = 0.0f;
@@ -104,12 +107,17 @@ void AssetLoadingDemo::loadShaders() {
 	lightSourceShader->attachVert("Lightsource.vert");
 
 
-	std::unique_ptr<ShaderInterface::GeometryShader> noiseShader = std::make_unique<ShaderInterface::GeometryShader>("ShaderNoiseFunctions.glsl");
+	/*std::unique_ptr<ShaderInterface::GeometryShader> noiseShader = std::make_unique<ShaderInterface::GeometryShader>("ShaderNoiseFunctions.glsl");
+	noiseShader->makeSecondary();*/
+
+	//lightSourceShader->attachSecondaryGeom(noiseShader.get());
+
+	//lightSourceShader->attachGeom("Lightsource.glsl");
+
+	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>("ShaderNoiseFunctions.frag");
 	noiseShader->makeSecondary();
-
-	lightSourceShader->attachSecondaryGeom(noiseShader.get());
-
-	lightSourceShader->attachGeom("Lightsource.glsl");
+	
+	lightSourceShader->attachSecondaryFrag(noiseShader.get());
 
 	lightSourceShader->attachFrag("Lightsource.frag");
 	
@@ -256,7 +264,23 @@ void AssetLoadingDemo::loadModels() {
 	//if (!vertexAttributes)
 	//	return;
 
-	std::vector<float> combinedSceneObjects = { 0.0f, 0.5000f, 0.000f, 0.9f, 0.55f, 0.525f };// , -0.60025f, -0.3025f, 0.025f, 0.1f, 0.975f, 0.9f
+	//Going to wing something together...
+	std::array<float, 3> pos = { 0.0f, 0.25f, 0.0f };
+	std::array<float, 3> col = { 0.55f, 0.75f, 11.0f };
+	std::unique_ptr<LightEmitterSource> test = std::make_unique<LightEmitterSource>(pos, col, 15u, 12u, 0.65f, 1.05f);
+
+	std::vector<float> lightData = test->getData();
+	std::vector<float> combinedSceneObjects;
+	combinedSceneObjects.swap(lightData);
+
+
+	std::vector<GLuint> elementArray = test->getElemOrder();
+	eboSize = elementArray.size();
+	glCreateBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementArray.size() * sizeof(GLuint), &elementArray.data()[0], GL_STATIC_DRAW);
+
+	//std::vector<float> combinedSceneObjects = { 0.0f, 0.5000f, 0.000f, 0.9f, 0.55f, 0.525f };// , -0.60025f, -0.3025f, 0.025f, 0.1f, 0.975f, 0.9f
 
 	
 	
@@ -394,6 +418,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		changePrimitiveType();
 		rotate();
+		changeNoiseType();
 		
 
 		updateFrameClearColor();
@@ -402,7 +427,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		drawVerts();
 
-		counter += 0.000125f;
+		counter += 0.0125f;
 		//counter += 0.00000002f*0.000125f;
 
 		glfwSwapBuffers(window);
@@ -432,7 +457,7 @@ bool AssetLoadingDemo::checkIfShouldPause() const {
 
 bool AssetLoadingDemo::checkIfShouldRecordColor() const {
 	if ((frameNumber >= (frameOfMostRecentColorRecording +
-		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECT_1))
+		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECTS))
 		&& (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)) {
 		return true;
 	}
@@ -496,8 +521,48 @@ void AssetLoadingDemo::reset() {
 	zoom = 1.0f;
 }
 
-void AssetLoadingDemo::changePrimitiveType() {
+void AssetLoadingDemo::changeNoiseType() {
 
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		noiseResolution++;
+	}
+	else if ((glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)) {
+		noiseResolution--;
+		if (noiseResolution == 0)
+			noiseResolution = 1;
+	}
+	
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		noiseFunctionToUse = 0;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		noiseFunctionToUse = 1;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		noiseFunctionToUse = 2;
+	}
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+		noiseFunctionToUse = 3;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+		noiseFunctionToUse = 4;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+		noiseFunctionToUse = 5;
+	}
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+		noiseFunctionToUse = 6;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		noiseFunctionToUse = 7;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+		noiseFunctionToUse = 8;
+	}
+}
+
+void AssetLoadingDemo::changePrimitiveType() {
+	/*
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
@@ -521,6 +586,7 @@ void AssetLoadingDemo::changePrimitiveType() {
 			}
 		}
 	}	
+	*/
 }
 
 //void AssetLoadingDemo::modifyColorThreshhold() {
@@ -596,6 +662,10 @@ void AssetLoadingDemo::rotate() {
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
+
+	glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
+	
+	/*
 	//To look into:
 	//GL_UseProgram_Stages 
 	float * red = &(backgroundColor.x);
@@ -615,11 +685,12 @@ void AssetLoadingDemo::updateFrameClearColor() {
 		//sleep = true;
 	}
 
-	*red = 0.25f * (*red);
-	*blue *= 0.25f;
-	*green *= 0.25f;
+	//*red = 0.25f * (*red);
+	//*blue *= 0.25f;
+	//*green *= 0.25f;
 
 	glClearColor(*red, *green, *blue, 1.0f);
+	*/
 }
 
 void AssetLoadingDemo::updateUniforms() {
@@ -629,23 +700,32 @@ void AssetLoadingDemo::updateUniforms() {
 	//Vertex Shader Uniforms:
 	lightSourceShader->uniforms->updateUniform1f("distanceToCamera", 0.5f + 0.45f*sin(counter));
 	//glm::mat4 identity(1.0);
-	counter *= 25.0f;
-	glm::mat4 transform(cos(counter), sin(counter), 0.0f, 0.0f, -sin(counter), cos(counter), 0.0f, 0.1f*sin(counter), 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0f, 0.0f, 1.0f);
-	//glm::vec4 c1(cos(counter), sin(counter), 0.0f, 0.0f);
-	//glm::vec4 c2(-sin(counter), cos(counter), 0.0f, 0.1f*sin(counter));
+	//counter *= 25.0f;
+	//glm::mat4 transform(cos(counter), sin(counter), 0.0f, 0.0f, -sin(counter), cos(counter), 0.0f, 0.0f*sin(counter), 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0f, 0.0f, 1.0f);
 	
-	counter = counter / 25.0f;
+	
+	//counter = counter / 24.0f;
 
-	lightSourceShader->uniforms->updateUniformMat4x4("projection", (const float*)glm::value_ptr(transform));
+	glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+	lightSourceShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
 
 	//Geometry Shader Uniforms:
-	lightSourceShader->uniforms->updateUniform1f("time", 0.725f*counter);
+	lightSourceShader->uniforms->updateUniform1f("time", 3.0f*counter);
 	lightSourceShader->uniforms->updateUniform1f("zoom", 1.0f);
-	lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", 0);
-	lightSourceShader->uniforms->updateUniform1i("noiseResolution", 5);
-	lightSourceShader->uniforms->updateUniform1f("instabilityFactor", 2.0f);
+	//lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", 0);
+	//lightSourceShader->uniforms->updateUniform1i("noiseResolution", 500);
+	//lightSourceShader->uniforms->updateUniform1f("instabilityFactor", 2.0f);
 
 	//Fragment Shader Uniforms:
+	//lightSourceShader->uniforms->updateUniform1i("", );
+	lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", noiseFunctionToUse);
+	lightSourceShader->uniforms->updateUniform1i("noiseResolution", noiseResolution);
+
+
+
+	
 	
 
 	//sceneShader->use();
@@ -671,9 +751,16 @@ void AssetLoadingDemo::drawVerts() {
 	//	vertexAttributes->use();
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
 	lightSourceShader->use();
-	glDrawArrays(GL_POINTS, 0, 1);
+	//glDrawArrays(GL_POINTS, 0, 1);
+
+	glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+	glDrawElements(GL_TRIANGLES, eboSize, GL_UNSIGNED_INT, 0);
 	return;
 
 	if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
