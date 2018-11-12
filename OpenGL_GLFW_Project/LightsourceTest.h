@@ -1,4 +1,6 @@
-//Just a test before I write a better/more-robust version
+//Just a test before I write a better/more-robust version.
+//It turns out this is the only working/good version currently (as of November 11, 2018)
+//of the several LighsourceBody code attempts I have started
 
 #pragma once
 
@@ -11,7 +13,7 @@
 
 class LightEmitterSource final{
 public:
-	LightEmitterSource(std::array<float, 3> pos, std::array<float, 3> col,
+	LightEmitterSource(std::array<float, 3u> pos, std::array<float, 3u> col,
 		size_t sides = 12u, size_t iterations = 24u, float baseGrowth = 0.75f,
 		float incrementalGrowth = 1.1f) {
 		mSides_ = (sides > 3u) ? sides : 3u;
@@ -23,9 +25,7 @@ public:
 		build();
 		generateElementOrder();
 	}
-	LightEmitterSource(float x, float y, float z, float r, float g, float b, float size = 1.0f) {
-
-	}
+	
 
 	std::vector<float> getData() { return mData_; }
 
@@ -37,8 +37,8 @@ private:
 	size_t mIterations_;
 	float mBaseGrowth_;
 	float mIncrementalGrowth_;
-	std::array<float, 3> mPosition_;
-	std::array<float, 3> mColor_;
+	std::array<float, 3u> mPosition_;
+	std::array<float, 3u> mColor_;
 
 	std::vector<float> mData_;
 	std::vector<GLuint> mElemOrder_;
@@ -46,7 +46,7 @@ private:
 	void build() {
 		//Clear existing data
 		mData_.clear();
-		mData_.reserve((3u + 3u)*mSides_*mIterations_);
+		mData_.reserve((3u + 3u)*(mSides_*mIterations_ + 1u));
 		
 		//Add the center point
 		addVertex(mPosition_, mColor_);
@@ -56,24 +56,18 @@ private:
 		for (size_t i = 0; i < mIterations_; i++) {
 			float growth = (mBaseGrowth_ * (powf(mIncrementalGrowth_, static_cast<float>(i))));
 			for (size_t j = 0; j < mSides_; j++) {
-				std::array<float, 3> pos = mPosition_;
+				std::array<float, 3u> pos = mPosition_;
 				pos[0] += growth * cosf(offsetMultiplier * static_cast<float>(j));
 				pos[1] += growth * sinf(offsetMultiplier * static_cast<float>(j));
 
 				addVertex(pos, computeColor(growth));
-				fprintf(MSGLOG, "\nAdded position %f, %f, %f\n", pos[0], pos[1], pos[2]);
+				//fprintf(MSGLOG, "\nAdded position %f, %f, %f\n", pos[0], pos[1], pos[2]);
 			}
 		}
 	}
 
 	void generateElementOrder() {
 
-		//Add some padding to the end of the Vertex data in case I accidentally add too many elements here!
-		for (int i = 0; i < 45; i++) {
-			mData_.push_back(0.75f);
-			mData_.push_back(-0.75f);
-			mData_.push_back(0.2f);
-		}
 		//clear existing data
 		mElemOrder_.clear();
 		mElemOrder_.reserve(2u*(mSides_ * 3u) + ((mIterations_ - 1u) * (2u * mSides_))); //This is probably too big...
@@ -138,7 +132,7 @@ private:
 
 	std::array<float, 3> computeColor(float radius) {
 		std::array<float, 3> vertColor = mColor_;
-		float intensity = 5.0f / exp(30.94f * radius);
+		float intensity = 1.0f / exp(3.94f * radius);
 		vertColor[0] *= intensity;
 		vertColor[1] *= intensity;
 		vertColor[2] *= intensity;

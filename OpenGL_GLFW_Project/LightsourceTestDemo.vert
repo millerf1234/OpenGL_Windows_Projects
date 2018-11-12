@@ -10,9 +10,9 @@ out vec3 lightColor;
 
 
 //uniform float distanceToCamera;
-uniform mat4 projection;
+//uniform mat4 projection;
 uniform float time;
-
+uniform float zoom;
 
 void main() {
 	//Pass the light's color on to the geometry shader
@@ -25,5 +25,5 @@ void main() {
 	//lightPosition = projectedLightPosition.xyz;
 	//gl_Position = projectedLightPosition;
 	
-	gl_Position = vec4(position, 2.0);
+	gl_Position = vec4(position, zoom);
 }

@@ -23,7 +23,7 @@
 
 static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 
-static constexpr bool USE_FULLSCREEN = true;
+static constexpr bool USE_FULLSCREEN = false;
 
 static constexpr bool USE_VSYNC = true;
 

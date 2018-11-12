@@ -196,9 +196,26 @@
 			//Returns the OpenGL-assigned ID number for this shader program
 			GLuint ID() const { return mProgramID; }
 
+			//Deletes this object from the graphics language context
+			void release() {
+				if (!mState.mReleased) {
+					glDeleteProgram(mProgramID);
+					mState.mReleased = true;
+					mProgramID = 0u;
+					mState.mValid = false;
+				}
+			}
+
 			//-------------------------------
 			//	Object State Accessors                (Getters)
 			//-------------------------------
+
+			//Querries the current GL context to see if this object is a valid shader program
+			bool isProgram() const { return glIsProgram(mProgramID); }
+
+			//Checks to see if this program has had itself deleted from the gl context's state 
+			//through the function glDeleteProgram(). 
+			bool released() const { return mState.mReleased; }
 
 			//Returns true when this object is ready for use
 			bool valid() const { return mState.mValid; }
@@ -251,6 +268,7 @@
 				std::unordered_map<GLuint, std::string> mAttachedSecondaries;
 				bool mError;
 				bool mReadyToLink;
+				bool mReleased;
 
 				//Constructor
 				ProgramState() {
@@ -271,6 +289,7 @@
 					
 					mError = false;
 					mReadyToLink = false;
+					mReleased = false;
 				}
 			};
 

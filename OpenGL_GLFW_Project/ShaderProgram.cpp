@@ -17,18 +17,32 @@
 
 using namespace ShaderInterface;  //Hopefully this doesn't get imported into the global namespace
 	
+void ShaderProgram::initialize() {
+	mProgramID = 0u;
+	mState = ProgramState();  //Explicity call default constructor
+	uniforms = nullptr;
+	mVertexShader = nullptr;
+	mGeometryShader = nullptr;
+	mTesselationControlShader = nullptr;
+	mTesselationEvaluationShader = nullptr;
+	mFragmentShader = nullptr;
+	mComputeShader = nullptr;
+
+	generateGLProgramHandle(); //Creates a new program with OpenGL
+	initializeUniformLocationTracker();
+}
+
+
 ShaderProgram::ShaderProgram() {
 	initialize(); //Gives initial values to member variables
 }
 
 
-	ShaderProgram::~ShaderProgram() {
-		if (mProgramID != 0u) {
-			fprintf(MSGLOG, "\nDeleting ShaderProgram %u!\n", mProgramID);
-			glDeleteProgram(mProgramID);
-			mProgramID = 0u;
-		}
+ShaderProgram::~ShaderProgram() {
+	if ( (mProgramID != 0u) || (!(mState.mReleased)) ) {
+		release();
 	}
+}
 
 	//Move Constructor
 	ShaderProgram::ShaderProgram(ShaderProgram&& that) {
@@ -344,10 +358,9 @@ ShaderProgram::ShaderProgram() {
 
 
 
-
 	void ShaderProgram::attachTess(const ShaderInterface::TesselationControlShader * tessc, const ShaderInterface::TesselationEvaluationShader * tesse) {
-		//We avoid validating each parameter object's state here because each of these 2 functions will handle their
-		//own parameter evaluation.
+		//We can avoid validating each parameter object's state here because each of the following 2 functions
+		//will handle their own parameter evaluation.
 		attachTesse(tesse); 
 		attachTessc(tessc);
 	}
@@ -892,7 +905,12 @@ ShaderProgram::ShaderProgram() {
 	}
 	
 	void ShaderProgram::use() const {
-		if (mState.mValid) { //If the program is valid, go ahead and use it
+		if (mState.mReleased) { //Make sure the program hasn't been deleted from the graphics context
+			fprintf(ERRLOG, "\nERROR using shader program! This shader program has been deleted "
+				"from the graphics context!\n");
+			return;
+		}
+		else if (mState.mValid) { //If the program is valid, go ahead and use it
 			glUseProgram(mProgramID);
 			return;
 		}
@@ -913,22 +931,6 @@ ShaderProgram::ShaderProgram() {
 				return;
 			}*/
 		}
-	}
-
-
-	void ShaderProgram::initialize() {
-		mProgramID = 0u;
-		mState = ProgramState();  //Explicity call default constructor
-		uniforms = nullptr;
-		mVertexShader = nullptr;
-		mGeometryShader = nullptr;
-		mTesselationControlShader = nullptr;
-		mTesselationEvaluationShader = nullptr;
-		mFragmentShader = nullptr;
-		mComputeShader = nullptr;
-
-		generateGLProgramHandle(); //Creates a new program with OpenGL
-		initializeUniformLocationTracker();
 	}
 
 

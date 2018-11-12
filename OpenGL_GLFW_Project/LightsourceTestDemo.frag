@@ -14,9 +14,8 @@ out vec4 color;
 
 uniform float time;
 uniform float zoom;
-uniform float distanceToCamera;
 
-uniform int noiseFunctionToUse; //'0' for generic 2d, '1' for perlin , '2' for simplex, '3' for 1d FBM, any other value for 2d FBM 
+uniform int noiseFunctionToUse;
 uniform int noiseResolution; //Will only have an effect when using perlin noise
 
 
@@ -35,9 +34,6 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 void main() {
 
 	switch (noiseFunctionToUse) {
-	default:
-		color = vec4(fbm(vec2(lightPosition.x, lightPosition.y)), fbm(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
-		break;
 	case(0):
 		//color = vec4(noise(vec2(lightPosition.x, lightPosition.y)), noise(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
 		vec3 tempColor = vec3(noise(vec2(lightColor.z, lightPosition.y)), noise(vec2(lightColor.x, lightColor.y)), lightColor.z);
@@ -58,21 +54,11 @@ void main() {
 		break;
 	case(4):
 		color = vec4(lightColor, 1.0);
+	default:
+		color = vec4(fbm(vec2(lightPosition.x, lightPosition.y)), fbm(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
+		break;
 	}
 	
-
-
-
-
-	//color = vec4(lightColor, 1.0);
-	
-
-	/*
-	float distanceDrop = min(1.0, (25.0 / log(distanceToCamera)));
-
-	vec3 lightColor =  vertexColor;
-	color = vec4(lightColor, 1.0);
-	*/
 
 }
 

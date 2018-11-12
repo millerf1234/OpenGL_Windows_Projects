@@ -153,7 +153,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="Lightsource.cpp" />
-    <ClCompile Include="LightsourceModel.cpp" />
+    <ClCompile Include="LightsourceTestDemo.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
@@ -275,8 +275,8 @@
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Lightsource.h" />
-    <ClInclude Include="LightsourceModel.h" />
     <ClInclude Include="LightsourceTest.h" />
+    <ClInclude Include="LightsourceTestDemo.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MissingAsset.h" />
@@ -325,9 +325,9 @@
     <None Include="gst.frag" />
     <None Include="gst.geom" />
     <None Include="gst.vert" />
-    <None Include="Lightsource.frag" />
+    <None Include="LightsourceTestDemo.frag" />
     <None Include="Lightsource_OldAndIncorrect.geom" />
-    <None Include="Lightsource.vert" />
+    <None Include="LightsourceTestDemo.vert" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockShipSample_01.mtl" />

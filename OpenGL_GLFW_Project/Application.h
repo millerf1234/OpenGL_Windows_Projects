@@ -27,8 +27,10 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 
-#include "AssetLoadingDemo.h"
+//#include "AssetLoadingDemo.h"
+#include "LightsourceTestDemo.h"
 #include "TeapotExplosion.h"
+
 
 
 class Application final {
@@ -49,13 +51,21 @@ private:
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
 	void playIntroMovie();
-	
 
+
+	
 	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
-	//newly created, without either of the load() or run() methods having been called.
+	//newly created, without either of the load() or run() methods having been called. This
+	//function is intended to be called by the more specific run_____Demo() functions below.
 	void runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name = "\0");
 
-	void runAssetLoadingDemo();
+
+	//The following functions are for setting up and running different demo programs. These functions rely on
+	//the runRenderDemo() function above for polymorphically calling their overriden virtual functions. 
+	//void runAssetLoadingDemo();
+	void runLightsourceTestDemo();
+	void runTeapotExplosionDemo();
+
 };
 
 

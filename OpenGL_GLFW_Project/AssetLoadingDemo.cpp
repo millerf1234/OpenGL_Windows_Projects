@@ -4,7 +4,11 @@
 //See header file for details
 //This file will most likely closely resemble the file "RenderProject1.cpp"
 
+
+
 #include "AssetLoadingDemo.h"
+
+#ifndef ASSET_DEMO_NEEDS_FIXING_AND_REFACTORING  //Remove this once I fix AssetLoadingDemo to actually load assets properly
 
 void AssetLoadingDemo::initialize() {
 	error = false;
@@ -56,14 +60,14 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
 	if (glfwGetCurrentContext() != screenInfo->activeMonitor) {
 		std::ostringstream warning;
-		warning << "\nWARNING!\n[In TeapotExplosions's constructor]\n" <<
-			"TeapotExplosion detected that the GLFW active context was set" <<
+		warning << "\nWARNING!\n[In AssetLoadingDemo's constructor]\n" <<
+			"AssetLoadingDemo detected that the GLFW active context was set" <<
 			"\nto a different monitor or different execution-thread then\n" <<
-			"the one passed to TeapotExplosion's contructor!\n";
-		warning << "This means that running TeapotExplosion will invalidate\n" <<
+			"the one passed to AssetLoadingDemo's contructor!\n";
+		warning << "This means that running AssetLoadingDemo will invalidate\n" <<
 			"the previous context by replacing it with this one, which\n" <<
 			"could (probably) lead to errors! Please ensure that the correct context\n" <<
-			"is being passed to TeapotExplosion in the application code!\n";
+			"is being passed to AssetLoadingDemo in the application code!\n";
 
 		fprintf(WRNLOG, warning.str().c_str());
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
@@ -801,3 +805,8 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() {
 	glUseProgram(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+
+
+
+#endif //ASSET_DEMO_NEEDS_FIXING_AND_REFACTORING

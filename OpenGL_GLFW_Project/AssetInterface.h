@@ -28,12 +28,12 @@ public:
 	//////////////////////////
 
 	//Returns the size of the loaded asset data
-	virtual size_t size() const /* = 0; */ { return 0; }
+	virtual size_t size() const  = 0;  /* { return 0; } */
 	//Returns the amount of storage space required to store the asset
-	virtual GLsizei requiredStorageSpace() const /* = 0 */ { return 0; }
+	virtual GLsizei requiredStorageSpace() const = 0;  /* { return 0; } */
 	//Loads the asset into application memory. Most likely this will involve parsing a file.
 	//Does nothing if the asset has already been loaded.
-	virtual bool load() /* = 0; */ { return false; }
+	virtual bool load() = 0; /* { return false; } */
 
 
 	////////////////////////////////////////
@@ -44,7 +44,7 @@ public:
 	bool valid() const { return mValid_; }
 	
 	bool loaded() const { return mLoaded_; }
-	bool isLoaded() const { return mLoaded_; }
+	//bool isLoaded() const { return mLoaded_; }
 	explicit operator bool() const { return mLoaded_; }
 
 

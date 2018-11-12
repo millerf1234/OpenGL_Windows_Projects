@@ -9,8 +9,10 @@ Application::Application() {
 	fprintf(MSGLOG, "Application is loading...\n");
 	setupGLFW(); 
 	loadGraphicsLanguageFunctions();
-	checkMSAA(); //See if MSAA is being used as expected
-	configureGraphicsContextDebugCallbackFunction(); //If the variable USE_DEBUG is false, then callback function will be empty
+	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
+	//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
+	//checkMSAA(); //See if MSAA is being used as expected
+	configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -30,7 +32,6 @@ Application::~Application() {
 }
 
 
-
 void Application::launch() {
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "\nError launching Application, Application is invalid!\n");
@@ -42,20 +43,24 @@ void Application::launch() {
 
 	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 	
+
+
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-	fprintf(MSGLOG, "\nLoading AssetLoadingDemo...\n");
-	runAssetLoadingDemo();
+
+	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	//runAssetLoadingDemo();
 	
 
-		//if (true) { return; }
+	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
+	runLightsourceTestDemo();
+	return;
 
-	fprintf(MSGLOG, "\nTeapotExplosion demo selected\n");
-	fprintf(MSGLOG, "Loading TeapotExplosion...\n");
-	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
-	runRenderDemo(TeapotExplosionDemo, "Teapot Explosion Demo");
-	
+	fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
+	runTeapotExplosionDemo();
+	return;
 }
+
 
 void Application::setupGLFW() {
 	fprintf(MSGLOG, "Loading GLFW...\n");
@@ -87,21 +92,23 @@ void Application::loadGraphicsLanguageFunctions() {
 	
 	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
 
+	//For options of what can be activated/deactivated
+	//with glEnable()/glDisable(), see:
+	//   https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
+
 	fprintf(MSGLOG, "\tActivating GL depth-test\n");
 	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
 	
+	//NOTE: Both Scissor test and Blend test (and stencil buffer useage) should be activated and deactivated 
+	//      by parts of the rendering that actually need them. 
 	//fprintf(MSGLOG, "\tActivating GL scissor-test\n");
 	//glEnable(GL_SCISSOR_TEST);
-
-	//Is blending enabled here too as well? Or should blending be enabled/disabled as 
-	//needed for transparent objects? I recall that in Vulkan, blending is a property assigned 
-	//to a graphics pipeline. Perhaps OpenGL has a modern similar approach to prevent having to 
-	//repeatedly modify the context's global state
+	//
 }
 
 void Application::configureGraphicsContextDebugCallbackFunction() const {
 	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
-	if (USE_DEBUG) {   //set in ProjectSetup.h
+	if (USE_DEBUG) {   //set in ProjectParameters.h
 		fprintf(MSGLOG, "Enabled\n");
 		glEnable(GL_DEBUG_OUTPUT);
 		if (FORCE_SYNC_BETWEEN_CONTEXT_AND_APP) {
@@ -127,7 +134,7 @@ void Application::configureGraphicsContextDebugCallbackFunction() const {
 
 void Application::checkMSAA() const { //hmm
 	if (mApplicationValid) {
-		//glad_glEnable(GL_MULTISAMPLE);
+		//glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
 		GLint bufs = -1;
 		GLint samples = -1;
 
@@ -154,22 +161,25 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 
 	//Perform error check
 	if (renderDemo == nullptr) {
-		if (demoHasNameProvided)
+		if (demoHasNameProvided) {
 			fprintf(ERRLOG, "\n\n\t(While trying to run RenderDemo %s)\n", name);
-		else
+		}
+		else {
 			fprintf(ERRLOG, "\n\n");
+		}
 		fprintf(ERRLOG, "\nWhoah! A 'nullptr' was passed in as the RenderDemo to\nthis Application's "
 			"member function 'runRenderDemo()'.\n"
 			"Passing around nullptrs is very dangerous, luckily this time it was caught.\n"
 			"Only reasonable thing to do here is crash and exit gracefully...\n  Demo is exiting!\n");
 		fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
+		std::cin.get(); //Require acknowledgment from programmer that he/she/they messed up big time before crashing 
 	}
 	//Perform a second error check
 	else if ( !(displayInfo && mApplicationValid) ) {
 		fprintf(ERRLOG, "\nError launching RenderDemo!\n"
 			"The Application is invalid or the detected display information is null!\n");
 	}
-	//Else Proceed with loading and launching the RenderDemo
+	//Else proceed with loading and launching the RenderDemo
 	else {
 		if (demoHasNameProvided) {
 			fprintf(MSGLOG, "Loading %s... \n", name);
@@ -179,7 +189,17 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 	}
 }
 
-void Application::runAssetLoadingDemo() {
-	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
-	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
+//void Application::runAssetLoadingDemo() {
+//	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
+//	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
+//}
+
+void Application::runLightsourceTestDemo() {
+	std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(displayInfo);
+	runRenderDemo(lightsourceTestDemo, "Lightsource Test Demo");
+}
+
+void Application::runTeapotExplosionDemo() {
+	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
+	runRenderDemo(TeapotExplosionDemo, "Teapot Explosion Demo");
 }
