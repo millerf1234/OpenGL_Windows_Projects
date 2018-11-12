@@ -18,6 +18,7 @@ uniform float zoom;
 uniform int noiseFunctionToUse;
 uniform int noiseResolution; //Will only have an effect when using perlin noise
 
+uniform int colorShift; //Will just use sign of colorShift to do the colorShift
 
 
 
@@ -54,6 +55,45 @@ void main() {
 		break;
 	case(4):
 		color = vec4(lightColor, 1.0);
+		break;
+	case(5):
+		//color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))), pNoise(vec2(abs(5.5*gl_FragCoord.y-cos(lightPosition.x-time)), 5.0*gl_FragCoord.x-abs(sin(time))), abs(int(floor(500*cos(0.25*time))))), lightColor.b, 1.0 - abs(0.5*sin(time)*fbm(lightPosition)));
+		color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))),
+			snoise(
+				vec2(
+					snoise(
+						vec2(
+							abs(((1.0 / time)*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time)))),
+							(1.0 / time) * gl_FragCoord.x - abs(sinh(cos(0.0*time)))
+						)),
+					inversesqrt(pow((abs(gl_FragCoord.x) + abs(gl_FragCoord.y)), abs((gl_FragCoord.y + gl_FragCoord.x)))))),
+			snoise(
+				vec2(
+					snoise(
+						vec2(
+							abs(((1.0 / time)*gl_FragCoord.x + cosh(lightPosition.y - 0.25*cos(time+gl_FragCoord.y)))),
+							(1.0 / time) * gl_FragCoord.x * abs(sinh(gl_FragCoord.y))
+						)),
+					inversesqrt(gl_FragCoord.y))),
+			1.0);
+		color.r *= 0.15;
+		color.b = smoothstep(color.g, color.r, 20.0*float(sign(colorShift))) / color.g;
+		break;
+
+
+	case(6):
+		color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))),
+			snoise(
+				vec2(
+					snoise(
+						vec2(
+							abs(((1.0 / time)*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time)))),
+							(1.0 / time) * gl_FragCoord.x - abs(sinh(cos(0.0*time)))
+						)),
+					inversesqrt(gl_FragCoord.x/gl_FragCoord.y))), 0.0, 1.0);
+		color.r *= 0.15;
+		color.b = color.r / color.g;
+		break;
 	default:
 		color = vec4(fbm(vec2(lightPosition.x, lightPosition.y)), fbm(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
 		break;

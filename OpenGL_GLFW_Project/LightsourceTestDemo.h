@@ -57,6 +57,7 @@ private:
 
 	GLuint vao, vbo, ebo;
 	size_t eboSize;
+	int colorShift;
 
 	
 	//Shader Program 

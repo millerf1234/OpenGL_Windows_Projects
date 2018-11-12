@@ -14,6 +14,8 @@ void LightsourceTestDemo::initialize() {
 	vao = vbo = ebo = 0u;
 	eboSize = 0u;
 
+	colorShift = 1;
+
 	zoom = 1.0f;
 	zRotation = 0.0f;
 	
@@ -150,13 +152,13 @@ void LightsourceTestDemo::configureContext() {
 
 void LightsourceTestDemo::loadModels() {
 	
-	std::array<float, 3> pos = { 0.0f, 0.05f, 0.0f };
+	std::array<float, 3> pos = { 0.0f, 0.00f, 0.0f };
 	std::array<float, 3> col = { 0.55f, 0.75f, 1.0f };
 
 	size_t lightPolygonSides = 260u;
-	size_t lightPolygonLayers = 26u;
-	float lightPolygonBaseRadius = 0.75f; //0.65f
-	float lightPolygonLayerGrowth = 1.11f; //1.05f
+	size_t lightPolygonLayers = 6u;
+	float lightPolygonBaseRadius = 0.05f; //0.65f
+	float lightPolygonLayerGrowth = 2.1f; //1.05f
 
 	
 	testLightEmitter = std::make_unique<LightEmitterSource>(pos,
@@ -344,6 +346,11 @@ void LightsourceTestDemo::changeNoiseType() {
 	else if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
 		noiseFunctionToUse = 8;
 	}
+
+
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		colorShift *= -1;
+	}
 }
 
 void LightsourceTestDemo::togglePipelineEffects() {
@@ -434,7 +441,8 @@ void LightsourceTestDemo::updateUniforms() {
 
 	lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", noiseFunctionToUse);
 	lightSourceShader->uniforms->updateUniform1i("noiseResolution", noiseResolution);
-
+	
+	lightSourceShader->uniforms->updateUniform1i("colorShift", colorShift);
 }
 
 void LightsourceTestDemo::drawVerts() {
