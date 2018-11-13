@@ -22,12 +22,12 @@ GLFW_Init::GLFW_Init() {
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
-	resizeable = forwardCompatible = true;
+	decoratedBorder = resizeable = forwardCompatible =  true;
 	contextVersionMajor = DEFAULT_OPENGL_VERSION_MAJOR;
 	contextVersionMinor = DEFAULT_OPENGL_VERSION_MINOR; 
 	aaSamples = DEFAULT_AA_SAMPLES;
 	if (USE_VSYNC) {
-		vSyncInterval = 1; //Should only be 0 or 1;
+		vSyncInterval = 1; //Should only be 0 or 1
 	}
 	else {
 		vSyncInterval = 0;
@@ -80,10 +80,10 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		fprintf(MSGLOG, "DISABLED\n");
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
 	}
-
 	
+
 	fprintf(MSGLOG, "\t  FORWARD COMPATIBILITY: ");
-	if (this->forwardCompatible) {
+	if (forwardCompatible) {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 		fprintf(MSGLOG, "TRUE\n");
 	}
@@ -92,7 +92,18 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		fprintf(MSGLOG, "FALSE\n");
 	}
 
+
+	fprintf(MSGLOG, "\t  Decorate Window Border: ");
+	if (decoratedBorder) {
+		glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+		fprintf(MSGLOG, "TRUE\n");
+	}
+	else {
+		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+		fprintf(MSGLOG, "FALSE\n");
+	}
 	
+
 	fprintf(MSGLOG, "\t  WINDOW RESIZEABLE: ");
 	if (this->resizeable) {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -220,8 +231,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
 		contextIsValid = true;
-
 	}
+
 	return (std::move(generateDetectedMonitorsStruct()));
 }
 
@@ -229,7 +240,17 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 	if (mWindow) {
 		glfwSetWindowSizeCallback(mWindow, windowSizeCallback);
 		glfwSetFramebufferSizeCallback(mWindow, framebufferSizeCallback);
+	}
+}
 
+void GLFW_Init::setWindowUserPointer(void * userPointer) {
+	if (mWindow) {
+		glfwSetWindowUserPointer(mWindow, userPointer);
+	}
+	else {
+		fprintf(ERRLOG, "\nERROR setting user pointer for window! Window is NULL!!!\n");
+		fprintf(ERRLOG, "\t [Press ENTER to continue]\n");
+		std::cin.get();
 	}
 }
 
@@ -265,8 +286,8 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// Set screen resolution here? //(Make sure to understand the difference between viewport size and framebuffer size, GLFW's documentation explains this)
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			width = mode->width;
-			height = mode->height;
+		width = mode->width;
+		height = mode->height;
 
 		refreshRate = mode->refreshRate;
 	}

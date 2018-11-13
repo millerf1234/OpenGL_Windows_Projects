@@ -32,7 +32,12 @@ float fbm(float x);            //1d Fractal Brownian Motion
 float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
 
+
+
+
 void main() {
+
+	float timeShift = 9.5; //Used to start some of the noise functions at a better-looking resolution
 
 	switch (noiseFunctionToUse) {
 	case(0):
@@ -82,16 +87,16 @@ void main() {
 
 
 	case(6):
-		color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))),
+		color = vec4(length(inversesqrt(3.0*fbm(lightColor * 1.0 / (time + timeShift)))),
 			snoise(
 				vec2(
 					snoise(
 						vec2(
-							abs(((1.0 / time)*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time)))),
-							(1.0 / time) * gl_FragCoord.x - abs(sinh(cos(0.0*time)))
+							abs(((1.0 / (time + timeShift))*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time + timeShift)))),
+							(1.0 / (time + timeShift)) * gl_FragCoord.x
 						)),
 					inversesqrt(gl_FragCoord.x/gl_FragCoord.y))), 0.0, 1.0);
-		color.r *= 0.15;
+		color.r *= 0.15 + (0.075 + (0.075 * -1.0 * float(sign(colorShift)))) ;
 		color.b = color.r / color.g;
 		break;
 	default:

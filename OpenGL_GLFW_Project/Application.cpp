@@ -1,27 +1,41 @@
 #include "Application.h"
 
-
-Application::Application() {
+void Application::initialize() {
 	mApplicationValid = true;
 	displayInfo = nullptr;
 	glfwInitializer = nullptr;
 
 	fprintf(MSGLOG, "Application is loading...\n");
-	setupGLFW(); 
-	loadGraphicsLanguageFunctions();
-	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
-	//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
-	//checkMSAA(); //See if MSAA is being used as expected
-	configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
+	if ( !setupGLFW() ) {
+		fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
+	}
+	else {
+		if ( !loadGraphicsLanguageFunctions() ) {
+			fprintf(ERRLOG, "\nThe application encountered an error while loading the grpahics language!\n");
+		}
+		else {
+			configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
+			setInitialGLState();
+
+			//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
+			//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
+			//checkMSAA(); //See if MSAA is being used as expected
+		}
+	}
+	
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
 	}
 	else {
 		fprintf(MSGLOG, "Application loading complete!\nPlaying Intro Movie...\n");
-		playIntroMovie(); //Make intro movie a std::future while the rest of the application loads?
-		//keep loading?
+		playIntroMovie(); 
 	}
+}
+
+
+Application::Application() {
+	initialize();
 }
 
 
@@ -62,26 +76,32 @@ void Application::launch() {
 }
 
 
-void Application::setupGLFW() {
+bool Application::setupGLFW() {
 	fprintf(MSGLOG, "Loading GLFW...\n");
 	glfwInitializer = std::make_unique<GLFW_Init>();
 	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
 	displayInfo = glfwInitializer->initialize();
-	glfwInitializer->specifyWindowCallbackFunctions(); 
+	
 	if (!displayInfo) {
+		fprintf(ERRLOG, "\nAn Error Occured Setting Up The GLFW Window!\n");
 		mApplicationValid = false;
-		return;
+		return false;
+	}
+	else {
+		glfwInitializer->specifyWindowCallbackFunctions();
+		glfwInitializer->setWindowUserPointer(static_cast<void *>(displayInfo.get())); 
+		return true;
 	}
 }
 
-void Application::loadGraphicsLanguageFunctions() {
+bool Application::loadGraphicsLanguageFunctions() {
 	//Load OpenGL functions once window context has been set
 	fprintf(MSGLOG, "Loading Graphics Language Functions...\n");
 	int success = gladLoadGL();
 	if (!success) {
 		fprintf(ERRLOG, "\nERROR OCCURED LOADING GRAPHICS LANGUAGE FUNCTIONS!\n");
 		mApplicationValid = false;
-		return;
+		return false;
 	}
 
 	fprintf(MSGLOG, "  Graphics Language loaded.\n");
@@ -89,21 +109,7 @@ void Application::loadGraphicsLanguageFunctions() {
 	fprintf(MSGLOG, "\tGraphics Language Vendor:  %s\n", glGetString(GL_VENDOR));
 	fprintf(MSGLOG, "\tGraphics Render Device:    %s\n", glGetString(GL_RENDERER));
 
-	
-	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
-
-	//For options of what can be activated/deactivated
-	//with glEnable()/glDisable(), see:
-	//   https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
-
-	fprintf(MSGLOG, "\tActivating GL depth-test\n");
-	glEnable(GL_DEPTH_TEST); //Turn on the depth test for z-culling
-	
-	//NOTE: Both Scissor test and Blend test (and stencil buffer useage) should be activated and deactivated 
-	//      by parts of the rendering that actually need them. 
-	//fprintf(MSGLOG, "\tActivating GL scissor-test\n");
-	//glEnable(GL_SCISSOR_TEST);
-	//
+	return true;
 }
 
 void Application::configureGraphicsContextDebugCallbackFunction() const {
@@ -132,6 +138,17 @@ void Application::configureGraphicsContextDebugCallbackFunction() const {
 	}
 }
 
+void Application::setInitialGLState() {
+	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
+
+	//For options of what can be activated/deactivated
+	//with glEnable()/glDisable(), see:
+	//   https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
+
+	fprintf(MSGLOG, "\tActivating GL depth-test\n");
+	glEnable(GL_DEPTH_TEST); //Depth Test will be used for every draw call, so it is activated globally
+}
+
 void Application::checkMSAA() const { //hmm
 	if (mApplicationValid) {
 		//glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
@@ -150,9 +167,6 @@ void Application::checkMSAA() const { //hmm
 
 
 void Application::playIntroMovie() {
-	/*if ((nullptr != displayInfo->activeMonitor) && (nullptr != glfwGetCurrentContext())) {
-		glfwMakeContextCurrent(displayInfo->activeMonitor);
-	}*/
 	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
 }
 
@@ -189,6 +203,7 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 	}
 }
 
+//This is commented out until the AssetLoadingDemo is fixed
 //void Application::runAssetLoadingDemo() {
 //	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
 //	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
@@ -200,6 +215,6 @@ void Application::runLightsourceTestDemo() {
 }
 
 void Application::runTeapotExplosionDemo() {
-	std::unique_ptr<RenderDemoBase> TeapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
-	runRenderDemo(TeapotExplosionDemo, "Teapot Explosion Demo");
+	std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
+	runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
 }

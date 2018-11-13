@@ -10,6 +10,7 @@ void LightsourceTestDemo::initialize() {
 	frameDitherLastToggled = 0ull;
 	frameBlendLastToggled = 0ull;
 	framePolygonSmoothLastToggled = 0ull;
+	frameColorshiftLastToggled = 0ull;
 	counter = 0.0f;
 	vao = vbo = ebo = 0u;
 	eboSize = 0u;
@@ -153,12 +154,12 @@ void LightsourceTestDemo::configureContext() {
 void LightsourceTestDemo::loadModels() {
 	
 	std::array<float, 3> pos = { 0.0f, 0.00f, 0.0f };
-	std::array<float, 3> col = { 0.55f, 0.75f, 1.0f };
+	std::array<float, 3> col = { 0.9955f, 0.9975f, 1.0f };
 
-	size_t lightPolygonSides = 260u;
-	size_t lightPolygonLayers = 6u;
-	float lightPolygonBaseRadius = 0.05f; //0.65f
-	float lightPolygonLayerGrowth = 2.1f; //1.05f
+	size_t lightPolygonSides = 13u;
+	size_t lightPolygonLayers = 96u;
+	float lightPolygonBaseRadius = 0.0015f; //0.65f
+	float lightPolygonLayerGrowth = 1.09f; //1.05f
 
 	
 	testLightEmitter = std::make_unique<LightEmitterSource>(pos,
@@ -169,7 +170,7 @@ void LightsourceTestDemo::loadModels() {
 															lightPolygonLayerGrowth);
 
 
-	std::vector<GLfloat> sceneObjects = testLightEmitter->getData();;
+	std::vector<GLfloat> sceneObjects = testLightEmitter->getData();
 	std::vector<GLuint> elementArray = testLightEmitter->getElemOrder();
 	eboSize = elementArray.size();
 	glCreateBuffers(1, &ebo);
@@ -227,6 +228,7 @@ void LightsourceTestDemo::renderLoop() {
 		
 		changeNoiseType();
 		togglePipelineEffects();
+		toggleColorshift();
 
 		updateFrameClearColor();
 
@@ -304,6 +306,7 @@ void LightsourceTestDemo::reset() {
 	frameDitherLastToggled = 0ull;
 	frameBlendLastToggled = 0ull;
 	framePolygonSmoothLastToggled = 0ull;
+	frameColorshiftLastToggled = 0ull;
 	zoom = 1.0f;
 }
 
@@ -347,10 +350,6 @@ void LightsourceTestDemo::changeNoiseType() {
 		noiseFunctionToUse = 8;
 	}
 
-
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		colorShift *= -1;
-	}
 }
 
 void LightsourceTestDemo::togglePipelineEffects() {
@@ -415,6 +414,24 @@ void LightsourceTestDemo::togglePolygonSmooth() {
 	}
 }
 
+void LightsourceTestDemo::toggleColorshift() {
+	if ((noiseFunctionToUse != 5) && (noiseFunctionToUse != 6)) {
+		return;
+	}
+	else if ((frameColorshiftLastToggled + 8ull) >= frameNumber) {
+		return;
+	}
+	else if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		frameColorshiftLastToggled = frameNumber;
+		colorShift *= -1;
+		if (colorShift < 0) {
+			fprintf(MSGLOG, "Colorshift Set to Negative State\n");
+		}
+		else {
+			fprintf(MSGLOG, "Colorshift Set to Positive State\n");
+		}
+	}
+}
 
 void LightsourceTestDemo::updateFrameClearColor() {
 

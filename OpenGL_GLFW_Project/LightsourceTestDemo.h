@@ -10,9 +10,12 @@
 //             to cycle between different noise shaders and color schemes. 
 //          -Press SPACE to pause and ESC to exit
 //          -Press TAB to reset 
-//          -'D' to toggle Dither
+//          -'D' to toggle Dither   //Won't be noticable at high res... Dither was mostly used back in the 90's 
 //          -'B' to toggle blending
 //          -'S' to toggle polygon smoothing
+//
+//    (on some effects)
+//          - 'G' to toggle a color shift
 //
 // Programmer:   Forrest Miller
 // Date:         11/2/2018 - 11/12/2018  (or so)
@@ -28,7 +31,7 @@
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "MathFunctions.h"
-#include "GLFW_Init.h"
+//#include "GLFW_Init.h"
 #include "ProjectSetup.h"
 #include "ProjectResourceFilepaths.h"
 #include "ShaderProgram.h"
@@ -51,6 +54,7 @@ private:
 	float counter;
 	unsigned long long frameNumber, frameUnpaused;
 	unsigned long long frameDitherLastToggled, frameBlendLastToggled, framePolygonSmoothLastToggled;
+	unsigned long long frameColorshiftLastToggled;
 
 
 	glm::vec3 backgroundColor;
@@ -118,6 +122,7 @@ private:
 	void toggleDither();
 	void toggleBlend();
 	void togglePolygonSmooth();
+	void toggleColorshift();
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							    |	 (3)   Handle Events	 |

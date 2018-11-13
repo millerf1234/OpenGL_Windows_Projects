@@ -39,6 +39,7 @@ public:
 
 	std::shared_ptr<MonitorData> initialize(); //Sets up the window
 	void specifyWindowCallbackFunctions(); //Sets up callback functions for the window
+	void setWindowUserPointer(void * userPointer); //Sets a custom user pointer for the window
 
 	void terminate(); //Ends the window
 
@@ -50,7 +51,7 @@ private:
 	int connectedDisplayCount; //Number of detected connected displays
 	GLFWmonitor** monitors;  //Array of pointers to connected displays
 	GLFWwindow * mWindow; //The display to be rendering to (might add ability to change displays in the future
-	bool resizeable, forwardCompatible; //Configuration option booleans
+	bool decoratedBorder, resizeable, forwardCompatible; //Configuration option booleans
 	int contextVersionMajor, contextVersionMinor, aaSamples, vSyncInterval; //Configuration option integers
 	bool contextIsValid; //Will be false if an initialization step fails
 	bool openFullScreen; 

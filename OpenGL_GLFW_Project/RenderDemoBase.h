@@ -96,6 +96,8 @@ protected:
 
 	GLFWwindow * window; //Pointer to target renderable window (Application must provide this)
 
+	//void 
+
 
 };
 

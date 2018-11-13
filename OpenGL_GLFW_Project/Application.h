@@ -43,11 +43,15 @@ private:
 	bool mApplicationValid;
 	std::shared_ptr<MonitorData> displayInfo;
 	std::unique_ptr<GLFW_Init> glfwInitializer;
-
-	void setupGLFW(); //Loads the GLFW library
-	void loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
-	void configureGraphicsContextDebugCallbackFunction() const; //The callback function is provided by Application and is found in its own header file 
 	
+
+	void initialize();
+
+	bool setupGLFW(); //Loads the GLFW library
+	bool loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
+	void configureGraphicsContextDebugCallbackFunction() const; //The callback function is provided by Application and is found in its own header file 
+	void setInitialGLState();
+
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
 	void playIntroMovie();
