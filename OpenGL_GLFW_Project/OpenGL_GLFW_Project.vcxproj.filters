@@ -238,6 +238,9 @@
     <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest">
       <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EntityComponents\PhongIllumination">
+      <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -739,6 +742,9 @@
     <ClInclude Include="WavefrontMtl.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
     </ClInclude>
+    <ClInclude Include="PhongIllumination.h">
+      <Filter>Source Files\EntityComponents\PhongIllumination</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -866,6 +872,9 @@
     </None>
     <None Include="OpenAL\copyright">
       <Filter>Third Party\OpenAL</Filter>
+    </None>
+    <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf">
+      <Filter>NotesAndReferences</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -287,6 +287,7 @@
     <ClInclude Include="OpenAL\efx-presets.h" />
     <ClInclude Include="OpenAL\efx.h" />
     <ClInclude Include="OpenAL_Init.h" />
+    <ClInclude Include="PhongIllumination.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
     <ClInclude Include="ProjectResourceFilepaths.h" />
@@ -316,6 +317,7 @@
     <None Include="glfw3dll.exp" />
     <None Include="LightsourceTestDemo.frag" />
     <None Include="LightsourceTestDemo.vert" />
+    <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockShipSample_01.mtl" />

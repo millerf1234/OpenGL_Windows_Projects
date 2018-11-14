@@ -16,6 +16,16 @@
 // Dates:               July 2018       First Implemented a Callback Function
 //                      November 2018   Rewrote Callback Function to be much more detailed
 //                      
+//
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UPDATE/HACK: I realized after writing this that if synchronization is not forced between 
+//              the GL Context and the Application, then it would be possible to get asynchronus
+//              calls to fprintf occuring from both the application and this callback function. Thus to fix it
+//              I have a hack to divert this functions print calls to a buffer which can then be printed at the 
+//              very end.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
@@ -23,9 +33,29 @@
 #define GL_CONTEXT_DEBUG_MESSAGE_CALLBACK_FUNCTION_H_
 
 #include <stdio.h>
-   
 #include "ProjectSetup.h"
 #include "LoggingMessageTargets.h"
+
+//-------------------------------------------------------------------------------------
+//   ALERT!!!   HACK IN PROGRESS
+//   This hack will divert the outputs of the print statements to a temporary buffer as the 
+//   function executes, after which it will actually print the message out in one call to fprintf.
+//   I undo this hack at the bottom of this file.
+//
+//  (Why this works?   See: https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html      (hopefully this is portable)
+//
+// First define the following 2 macros 
+#define DEBUG_CALLBACK_BUFFER_NAME msgBuffer
+#define DEBUG_CALLBACK_BUFFER_SIZE 2048       
+
+//  Redefine the following
+#define fprintf(x, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
+//#define fprintf(MSGLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
+//#define fprintf(WRNLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
+//#define fprintf(ERRLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
+//-------------------------------------------------------------------------------------
+
+
 
 //The detail provided in this message could use a more detailed implementation
 static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
@@ -37,6 +67,14 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	const void* userParam) {
 	//Print a message based off severity 
 	if ((severity == GL_DEBUG_SEVERITY_HIGH) || (severity == GL_DEBUG_SEVERITY_MEDIUM)) {
+
+		//////////////////////////////////////////////////////////////////////////////
+		// As part of the hack, we need a buffer 
+		char DEBUG_CALLBACK_BUFFER_NAME[DEBUG_CALLBACK_BUFFER_SIZE];
+		//////////////////////////////////////////////////////////////////////////////
+		
+
+
 
 		//Message Format depends on the message's source
 

@@ -10,7 +10,7 @@
 
 
 
-WavefrontMtl::WavefrontMtl() {
+WavefrontMtl::WavefrontMtl() : AssetInterface() {
 
 }
 

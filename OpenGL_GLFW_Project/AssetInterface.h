@@ -20,7 +20,7 @@ class AssetInterface {
 public:
 	//Constructor
 	AssetInterface();
-	virtual ~AssetInterface();  //See my note's file on Virtual Destructors
+	virtual ~AssetInterface();  //See my notes file on Virtual Destructors
 
 	//No Copying is allowed for AssetInterfaces 
 	AssetInterface(const AssetInterface&) = delete;
