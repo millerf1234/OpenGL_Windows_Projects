@@ -241,6 +241,9 @@
     <Filter Include="Source Files\EntityComponents\PhongIllumination">
       <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DefaultAssets">
+      <UniqueIdentifier>{e31caeaf-6812-450e-a871-2c2ee1851b5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -744,6 +747,9 @@
     </ClInclude>
     <ClInclude Include="PhongIllumination.h">
       <Filter>Source Files\EntityComponents\PhongIllumination</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultPhongIllumination.h">
+      <Filter>Source Files\DefaultAssets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

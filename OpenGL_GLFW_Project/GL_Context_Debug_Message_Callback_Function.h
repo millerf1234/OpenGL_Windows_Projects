@@ -19,8 +19,8 @@
 // Changes:             November 14, 2018
 //                        This function used to use 'fprintf' for every single print statement. However,
 //						  if synchronization between the context and the application is not enabled, this 
-//                        could lead to garbled output from both attempting to write to fprintf  
-//                        asynchronously. To remedy this oversight, I have gone in and replaced all of 
+//                        could lead to garbled output from overlapping write calls to fprintf due to the
+//                        asynchronousity. To remedy this oversight, I have gone in and replaced all of 
 //                        the fprintf calls with snprintf, which prints into a buffer. Then at the end,
 //                        the buffer is printed all at once with a single call to fprintf. The code is 
 //                        somewhat uglier, but should behave better for asynchronus callbacks.
@@ -396,6 +396,8 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 	fprintf(MSGLOG, "%s\n", msgBuff);
 }
+
+
 
 //Extra formatting for just in case:
 			//switch (type) {

@@ -184,6 +184,7 @@
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="DefaultPhongIllumination.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="FilepathWrapper.h" />
     <ClInclude Include="FragmentShader.h" />

@@ -3,7 +3,9 @@
 //Description:                    Wrapper class for a '.mtl' file. More detailed description will be written 
 //                                once I have completed this class and have more time...
 //
-//Reference:                      (See the pdf under 'notes' for this project for the one on MTL files)      
+//Reference:                      (See the pdf under 'notes' for this project for the one on MTL files) 
+//                                https://www.ks.uiuc.edu/Research/vmd/vmd-1.8.7/ug/node86.html
+//
 // 
 //Programmer:                     Forrest Miller
 //Date:                           November 14, 2018
