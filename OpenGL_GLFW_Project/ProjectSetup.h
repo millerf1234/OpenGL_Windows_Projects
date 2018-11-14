@@ -64,6 +64,9 @@
 #include "ft2build.h"
 
 
+#include "AL/al.h"
+
+
 //Move this to .cpp file?
 //#ifndef STB_IMAGE_IMPLEMENTATION
 //#define STB_IMAGE_IMPLEMENTATION
@@ -97,9 +100,6 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	//that complains when this function is not defined... 
 	}
 #endif //USE_DEBUG_
-
-
-
 
 
 

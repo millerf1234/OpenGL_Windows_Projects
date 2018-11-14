@@ -22,7 +22,7 @@
 #include "ProjectResourceFilepaths.h"
 
 #include "ShaderProgram.h"
-#include "GenericVertexAttributeSet.h"
+#include "TeapotExplosionDemo_GenericVertexAttributeSet.h"
 
 #include "teapot.h"  //From the internet, is a file containing the vertices for a teapot
 
@@ -34,8 +34,7 @@
 #include "Face.h"
 
 
-using ShaderInterface::GenericVertexAttributeSet; 
-
+using ShaderInterface::TeapotExplosionDemo_GenericVertexAttributeSet; 
 
 
 static constexpr int COLOR_MOD_VALUES_COUNT = 7;
@@ -56,6 +55,7 @@ private:
 	float counter;
 	float xRotation, yRotation, zRotation;
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
+	float velocity;
 	glm::vec3 backgroundColor;
 
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
@@ -68,7 +68,7 @@ private:
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<ShaderProgram> sceneShaderLine;
-	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
+	std::unique_ptr<TeapotExplosionDemo_GenericVertexAttributeSet> vertexAttributes;
 
 
 	
@@ -117,6 +117,7 @@ private:
 	void modifyColorThreshhold();
 	void rotateColor();
 	void updateColorModificationValues();
+	void updateVelocity();
 
 
 

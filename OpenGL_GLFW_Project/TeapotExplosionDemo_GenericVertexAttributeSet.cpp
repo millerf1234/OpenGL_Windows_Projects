@@ -1,7 +1,7 @@
-//Implementation file for the GenericVertexAttributeSet class. This class 
+//Implementation file for the TeapotExplosionDemo_GenericVertexAttributeSet class. This class 
 //provides a simple interface for providing data to serve as inputs for a
 //GLProgram pipeline object. Is intended for static drawing (i.e. infrequent updates 
-//to vertex data). See the header file 'GenericVertexAttributeSet.h' for more detail.
+//to vertex data). See the header file 'TeapotExplosionDemo_GenericVertexAttributeSet.h' for more detail.
 //
 //  Code by Forrest Miller
 //  Date:  September 24, 2018
@@ -9,11 +9,11 @@
 
 
 
-#include "GenericVertexAttributeSet.h"
+#include "TeapotExplosionDemo_GenericVertexAttributeSet.h"
 
 namespace ShaderInterface {
 
-	GenericVertexAttributeSet::GenericVertexAttributeSet(int layoutLocations) {
+	TeapotExplosionDemo_GenericVertexAttributeSet::TeapotExplosionDemo_GenericVertexAttributeSet(int layoutLocations) {
 		if (layoutLocations < 1)
 			mActiveLocations = 1;
 		else
@@ -24,11 +24,11 @@ namespace ShaderInterface {
 	}
 
 
-	GenericVertexAttributeSet::~GenericVertexAttributeSet() {
+	TeapotExplosionDemo_GenericVertexAttributeSet::~TeapotExplosionDemo_GenericVertexAttributeSet() {
 
 	}
 
-	void GenericVertexAttributeSet::sendDataToVertexBuffer(int binding, const std::vector<GLfloat> &data,
+	void TeapotExplosionDemo_GenericVertexAttributeSet::sendDataToVertexBuffer(int binding, const std::vector<GLfloat> &data,
 		int vertexSize, GLsizei vertexStride, GLvoid* offset) {
 		//Check to make sure everything is okay to proceed
 		if (binding > mActiveLocations) {
@@ -59,7 +59,7 @@ namespace ShaderInterface {
 
 	//Private helper functions
 
-	void GenericVertexAttributeSet::createVertexBuffers(int buffersToCreate) {
+	void TeapotExplosionDemo_GenericVertexAttributeSet::createVertexBuffers(int buffersToCreate) {
 		GLuint * vboHandles = new GLuint[buffersToCreate];
 		glGenBuffers(buffersToCreate, vboHandles);
 
@@ -72,7 +72,7 @@ namespace ShaderInterface {
 		delete[] vboHandles;
 	}
 
-	void GenericVertexAttributeSet::createVAO() {
+	void TeapotExplosionDemo_GenericVertexAttributeSet::createVAO() {
 		mVAO = 0u;
 		glGenVertexArrays(1, &mVAO);
 		//glBindVertexArray(mVAO);

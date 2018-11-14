@@ -45,7 +45,7 @@
 #include "LoggingMessageTargets.h"  //provides MSGLOG, WRNLOG and ERRLOG targets for fprintf
 #include "ProjectSetup.h"           //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
-#include "MissingAsset.h"           //For assets that are missing
+//#include "MissingAsset.h"           //For assets that are missing
 
 enum class PIPELINE_PRIMATIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, LINE_STRIP };  //Technically LINE and LINE_STRIP are not triangles
 
@@ -88,7 +88,7 @@ public:
 	*/
 protected:
 
-	std::vector<MissingAsset> missingAssets;
+	//std::vector<MissingAsset> missingAssets;
 	/*
 	bool mRenderDemoError;
 	bool mRenderDemoLoaded;

@@ -1,3 +1,8 @@
+//This is a simple VertexAttributeSet class for handling VAO configuration for vertex data format
+//for OpenGL. This class's main limitation is that it does not support interleaved vertex data.
+//Since currently all of the model loading classes put their vertex data into an interleaved format,
+//this class doesn't have much use outside of for the teapot explosion demo.
+
 // This is just a simple ShaderInput class that is able to take 
 // data from the application with a layout location for the vertex
 // input and link them together. Multiple locations can be accepted 
@@ -8,8 +13,8 @@
 
 #pragma once
 
-#ifndef GENERIC_VERTEX_ATTRIBUTE_SET_H_
-#define GENERIC_VERTEX_ATTRIBUTE_SET_H_
+#ifndef TEAPOT_EXPLOSION_DEMO_GENERIC_VERTEX_ATTRIBUTE_SET_H_
+#define TEAPOT_EXPLOSION_DEMO_GENERIC_VERTEX_ATTRIBUTE_SET_H_
 
 #include "ProjectConstants.h"
 
@@ -17,14 +22,14 @@
 
 namespace ShaderInterface {
 
-	class GenericVertexAttributeSet {
+	class TeapotExplosionDemo_GenericVertexAttributeSet {
 	public:
-		GenericVertexAttributeSet(int layoutLocations = 1);
-		~GenericVertexAttributeSet();
+		TeapotExplosionDemo_GenericVertexAttributeSet(int layoutLocations = 1);
+		~TeapotExplosionDemo_GenericVertexAttributeSet();
 
 		//No Copying allowed
-		GenericVertexAttributeSet(const GenericVertexAttributeSet&) = delete;
-		GenericVertexAttributeSet& operator=(const GenericVertexAttributeSet&) = delete;
+		TeapotExplosionDemo_GenericVertexAttributeSet(const TeapotExplosionDemo_GenericVertexAttributeSet&) = delete;
+		TeapotExplosionDemo_GenericVertexAttributeSet& operator=(const TeapotExplosionDemo_GenericVertexAttributeSet&) = delete;
 
 		//Call this function to send data to a vertex buffer. This function is optimizied for 
 		//static rendering, which means the data sent to the vertex buffer is not intended to be 
@@ -65,4 +70,4 @@ namespace ShaderInterface {
 
 } //namespace ShaderInterface
 
-#endif //GENERIC_VERTEX_ATTRIBUTE_SET_H_
+#endif //TEAPOT_EXPLOSION_DEMO_GENERIC_VERTEX_ATTRIBUTE_SET_H_

@@ -25,7 +25,7 @@
 
 static constexpr int NUMBER_TRIANGLES = 1000;
 
-using ShaderInterface::GenericVertexAttributeSet;
+using ShaderInterface::TeapotExplosionDemo_GenericVertexAttributeSet;
 
 class RenderProject1 {
 public:
@@ -47,7 +47,7 @@ private:
 
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
-	std::unique_ptr<GenericVertexAttributeSet> vertexAttributes;
+	std::unique_ptr<TeapotExplosionDemo_GenericVertexAttributeSet> vertexAttributes;
 
 	
 	//   Helper Functions

@@ -6,7 +6,6 @@ in vec3 lightPosition;
 in  vec3 lightColor;
 
 
-
 //in vec3 vertexPosition;
 //in vec3 vertexColor;
 
@@ -37,7 +36,7 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 void main() {
 
-	float timeShift = 9.5; //Used to start some of the noise functions at a better-looking resolution
+	float timeShift = 9.5; //Used to start some of the noise functions at a better-looking resolution  (time == 0 is wayyy too zoomed out)
 
 	switch (noiseFunctionToUse) {
 	case(0):
@@ -51,15 +50,27 @@ void main() {
 	case(1):
 		color = vec4(fbm(vec2(250.5101*0.0555*time*lightColor.gb)), fbm(lightPosition + gl_FragCoord.xyx), snoise(vec2(fbm(lightPosition.xy), fbm(lightPosition.yx))), 1.0);
 		/*color = vec4(fbm(vec2(250.5101*sin(0.05*time)*lightColor.gb)), fbm(lightPosition), snoise(vec2(fbm(lightPosition.xy), fbm(lightPosition.yx))), 1.0);*/
+		if (int(sign(colorShift)) < 0) {
+			color.rgb = color.rrr + color.bbg + color.bbr;
+		}
 		break;
 	case(2): 
 		color = vec4(vec3(mix(fbm(lightPosition), fbm(lightColor), fbm(gl_FragCoord.xyz))), 1.0);
+		if (int(sign(colorShift)) < 0) {
+			color.rgb = vec3(1.0) - color.rgb;
+		}
 		break;
 	case(3):
 		color = vec4(lightColor.r * fbm(lightColor), lightColor.g * fbm(lightColor.gbr), lightColor.b - 0.5*fbm(lightColor), 0.15 + 0.1*sin(2.0*time));
+		if (int(sign(colorShift)) < 0) {
+			color.rgb = color.brg;
+		}
 		break;
 	case(4):
-		color = vec4(lightColor, 1.0);
+		color = vec4(vec3(0.8, 1.3 + (0.25*sin(gl_FragCoord.x)), 1.15) - (time * fbm(lightColor) * lightColor), 1.0 - 0.75 * sin(time));
+		if (int(sign(colorShift)) < 0) {
+			color.rgb = color.grb;
+		}
 		break;
 	case(5):
 		//color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))), pNoise(vec2(abs(5.5*gl_FragCoord.y-cos(lightPosition.x-time)), 5.0*gl_FragCoord.x-abs(sin(time))), abs(int(floor(500*cos(0.25*time))))), lightColor.b, 1.0 - abs(0.5*sin(time)*fbm(lightPosition)));

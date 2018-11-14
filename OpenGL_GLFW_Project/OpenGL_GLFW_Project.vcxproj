@@ -162,7 +162,7 @@
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
-    <ClCompile Include="GenericVertexAttributeSet.cpp" />
+    <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp" />
     <ClCompile Include="TeapotExplosion.cpp" />
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
@@ -296,7 +296,7 @@
     <ClInclude Include="RenderDemoBase.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="GenericVertexAttributeSet.h" />
+    <ClInclude Include="TeapotExplosionDemo_GenericVertexAttributeSet.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="teapot.h" />
     <ClInclude Include="TeapotExplosion.h" />
@@ -335,8 +335,6 @@
     <None Include="TeapotExplosion.frag" />
     <None Include="TeapotExplosion.geom" />
     <None Include="TeapotExplosion.vert" />
-    <None Include="TeapotOutline.frag" />
-    <None Include="TeapotOutline.geom" />
     <None Include="VertMath.vert" />
     <None Include="obj\Engine2_Textured.mtl" />
   </ItemGroup>

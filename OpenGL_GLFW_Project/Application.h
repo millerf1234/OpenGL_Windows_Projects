@@ -27,8 +27,8 @@
 
 #pragma once
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef APPLICATION_H_
+#define APPLICATION_H_
 
 #include <memory>   //Mostly for smart pointers
 #include <fstream>  //Gotta have that fstream
@@ -86,4 +86,4 @@ private:
 
 
 
-#endif //#define APPLICATION_H
+#endif //#define APPLICATION_H_

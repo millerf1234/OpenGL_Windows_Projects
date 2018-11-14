@@ -1,13 +1,18 @@
-
-//This file just contains a virtual abstract base class called AssetInterface that provides an 
-//interface for asset files. This may potentially lead to a more portable asset-loading capability
-//once multiple asset types are introduced. (At the time I am writing this, I haven't even completly
-//implemented Wavefront obj/mtl assets yet)
+//File:                          AssetInterface.h
+//
+//Description:
+//			   This file just contains a virtual abstract base class called AssetInterface that provides an 
+//			   interface for asset files. This may potentially lead to a more portable asset-loading capability
+//			   once multiple asset types are introduced. (At the time I am writing this, I haven't even completly
+//			   implemented Wavefront obj/mtl assets yet)
 
 //Programmer:  Forrest Miller
 //Date:        October 15, 2018
 
 #pragma once
+
+#ifndef ASSET_INTERFACE_H_
+#define ASSET_INTERFACE_H_
 
 #include "ProjectSetup.h"
 
@@ -54,3 +59,4 @@ protected:
 
 };
 
+#endif //ASSET_INTERFACE_H_

@@ -202,7 +202,7 @@ void RenderProject1::createTriangles2D() {
 
 	constexpr int NUM_VERTEX_ARRAYS = 2;
 
-	vertexAttributes = std::make_unique<GenericVertexAttributeSet>(NUM_VERTEX_ARRAYS);
+	vertexAttributes = std::make_unique<TeapotExplosionDemo_GenericVertexAttributeSet>(NUM_VERTEX_ARRAYS);
 	
 	if (!vertexAttributes)
 		return;

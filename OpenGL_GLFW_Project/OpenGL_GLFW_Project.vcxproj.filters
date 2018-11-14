@@ -16,14 +16,8 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects">
-      <UniqueIdentifier>{428dca05-119d-462b-a72e-9ca33a9e091a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ed0ef0ff-dece-473a-91eb-cf8eb2074bbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Math">
-      <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools">
       <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
@@ -60,15 +54,6 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet">
-      <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos">
-      <UniqueIdentifier>{1e441985-93c9-425d-b6ff-9217ad2c8ec2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
-      <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Engine">
       <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
@@ -148,9 +133,6 @@
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl">
       <UniqueIdentifier>{cdaf0160-e6f0-4017-abec-92a6ea34e00a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading">
-      <UniqueIdentifier>{83427107-e9aa-4c51-83bb-91ecd9565e65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
       <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
     </Filter>
@@ -177,15 +159,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects">
-      <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion">
-      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo">
-      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
       <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
@@ -220,15 +193,6 @@
     <Filter Include="Source Files\Utility\Lightsource\HalfFinished">
       <UniqueIdentifier>{243a2fb6-a4a8-40bf-b735-a594431277ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\LightsourceTestDemo">
-      <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest">
-      <UniqueIdentifier>{e504970e-8256-4a79-a5fa-631d2e3427f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest\Utility">
-      <UniqueIdentifier>{2fade684-a0bc-4b6f-b10d-2dde435a0fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\Debug">
       <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
     </Filter>
@@ -237,6 +201,42 @@
     </Filter>
     <Filter Include="Source Files\Utility\Audio">
       <UniqueIdentifier>{8509665d-7627-442d-aee1-e5c02c778924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects">
+      <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion">
+      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo">
+      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\LightsourceTestDemo">
+      <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Math">
+      <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects">
+      <UniqueIdentifier>{428dca05-119d-462b-a72e-9ca33a9e091a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos">
+      <UniqueIdentifier>{1e441985-93c9-425d-b6ff-9217ad2c8ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
+      <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading">
+      <UniqueIdentifier>{83427107-e9aa-4c51-83bb-91ecd9565e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest">
+      <UniqueIdentifier>{e504970e-8256-4a79-a5fa-631d2e3427f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest\Utility">
+      <UniqueIdentifier>{2fade684-a0bc-4b6f-b10d-2dde435a0fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest">
+      <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -278,9 +278,6 @@
     </ClCompile>
     <ClCompile Include="TesselationEvaluationShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="GenericVertexAttributeSet.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
     </ClCompile>
     <ClCompile Include="RenderDemoBase.cpp">
       <Filter>Source Files\Projects\RenderDemos</Filter>
@@ -327,14 +324,17 @@
     <ClCompile Include="Lightsource.cpp">
       <Filter>Source Files\Utility\Lightsource\HalfFinished</Filter>
     </ClCompile>
+    <ClCompile Include="OpenAL_Init.cpp">
+      <Filter>Source Files\Utility\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LightsourceTestDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\LightsourceTest</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Utility\RenderTools</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenAL_Init.cpp">
-      <Filter>Source Files\Utility\Audio</Filter>
+    <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp">
+      <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -574,9 +574,6 @@
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
-    <ClInclude Include="GenericVertexAttributeSet.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
-    </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -739,6 +736,9 @@
     <ClInclude Include="OpenAL_Init.h">
       <Filter>Source Files\Utility\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="TeapotExplosionDemo_GenericVertexAttributeSet.h">
+      <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -757,12 +757,6 @@
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="TeapotExplosion.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
-    <None Include="TeapotOutline.geom">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
-    <None Include="TeapotOutline.frag">
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">

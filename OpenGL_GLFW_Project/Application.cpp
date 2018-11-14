@@ -70,11 +70,11 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
 	//runAssetLoadingDemo();
 	
-
+	
 	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
 	runLightsourceTestDemo();
 	return;
-
+	
 	fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
 	runTeapotExplosionDemo();
 	return;
@@ -112,7 +112,7 @@ bool Application::loadGraphicsLanguageFunctions() {
 	fprintf(MSGLOG, "  Graphics Language loaded.\n");
 	fprintf(MSGLOG, "\tGraphics Language version: OpenGL %s\n", glGetString(GL_VERSION));
 	fprintf(MSGLOG, "\tGraphics Language Vendor:  %s\n", glGetString(GL_VENDOR));
-	fprintf(MSGLOG, "\tGraphics Render Device:    %s\n", glGetString(GL_RENDERER));
+	fprintf(MSGLOG, "\tGraphics Rendering Device:    %s\n", glGetString(GL_RENDERER));
 
 	return true;
 }
@@ -127,14 +127,12 @@ void Application::configureGraphicsContextDebugCallbackFunction() const {
 			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
 		}
 		else {
-			const char * warnHeader = "**********";
-				fprintf(WRNLOG, "\n\n%s%s%s%s%s%s%s%s\n"
-					"WARNING! Context Has Been Created As A Debug Context Without Synchronization Between\n"
-					"The Application And The Context!\nCallback Messages May Not Match Up With The Events That Caused Them!\n"
-				"%s%s%s%s%s%s%s%s\n\n", warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
-					warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
-					warnHeader, warnHeader, warnHeader);
-				glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			fprintf(MSGLOG, "\nWARNING! GL Context has been configured as a debug context but without\n"
+				"forced syncronization between the context and the application.\n"
+				"This means Context Callback messages may appear a long time after the\n"
+				"event that caused them!\n"
+				"[Re-enable debug output synchronization or disable debugging to remove this warning!]\n");
+			glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		}
 		glDebugMessageCallback(printGraphicsContextMessageCallback, nullptr);
 	}

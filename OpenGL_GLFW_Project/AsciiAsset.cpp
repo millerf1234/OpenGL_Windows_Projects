@@ -1,10 +1,16 @@
+// File:                       AsciiAsset.cpp
+// Programmer:                 Forrest Miller
+//
 //See header file for more detail
 //
-// Important Implementation Note: A lot of the logic in this class is dependent upon this object's member vector
+// Important Implementation Notes: A lot of the logic in this class is dependent upon this object's member vector
 //								  'mLineOffsets_' being completly accurate based on the stored filetext string. If any
 //                                modifications are to be made to stored filetext, the private member function
 //                                'parseFileText()' must be called afterwords to recreate this vector, which will ensure 
 //                                that all of the additional public functions keep working properly. 
+//
+//              Todo:         This class was written before the "FilepathWrapper" existed. This class could/should be refactored to 
+//                            use FilepathWrapper to provide filepath management. 
 
 #include "AsciiAsset.h"
 

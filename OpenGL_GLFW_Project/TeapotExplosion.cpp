@@ -1,6 +1,17 @@
 //See header file for details
 //This file will most likely closely resemble the file "RenderProject1.cpp"
 
+//  INPUT:  -Press the arrow keys to do rotations on the colors
+//          -Press '1', '2', and '3' to toggle Pipeline Input Type 
+//          -Press 'Minus' and 'Equal' keys to change the velocity factor
+//          -Press 'A' and 'S' to toggle strength of an alternate color conidition ('A' is turn on, 'S' is turn off)
+//          -Press 'R' to reset 
+//          -Press 'P' to print to the console the RGB values for the background of the current frame
+//          -Presss 'ESC' to exit
+//          -Press 'SPACE' to pause 
+//          -Press 'TAB' to reset 
+//        
+
 #include "TeapotExplosion.h"
 
 void TeapotExplosion::initialize() {
@@ -15,6 +26,7 @@ void TeapotExplosion::initialize() {
 	redRotationTheta = 0.0f;
 	greenRotationTheta = 0.0f;
 	blueRotationTheta = 0.0f;
+	velocity = 1.0f;
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
@@ -98,7 +110,7 @@ void TeapotExplosion::loadShaders() {
 	fprintf(MSGLOG, "Assembling the main shader for the scene...\n");
 	//---------------------------
 	//    (VERTEX STAGE)
-	// Attach a helper shader with just some useful functions
+	// Attach a helper shader containing some useful functions
 	fprintf(MSGLOG, "\nAttaching secondary helper vertex shader!\n");
 	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>("VertMath.vert");
 	if (!vertHelper)
@@ -112,7 +124,6 @@ void TeapotExplosion::loadShaders() {
 	if (!mainVert)
 		return;
 	sceneShader->attachVert(mainVert.get());
-
 	//---------------------------
 
 	//---------------------------
@@ -141,46 +152,6 @@ void TeapotExplosion::loadShaders() {
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
 		std::cin.get(); //Hold the window open if there was an error
 	}
-
-	/*
-	//Psych
-	//Build the sceneShaderLine as a second graphics pipeline
-	fprintf(MSGLOG, "\nCreating a second Graphics Pipeline...\n");
-	sceneShaderLine = std::make_unique<ShaderProgram>();
-	fprintf(MSGLOG, "\nReusing the same two Vertex Shaders as used in the first pipeline\n");
-	sceneShaderLine->attachSecondaryVert(vertHelper.get());
-	fprintf(MSGLOG, "\tHelper Vertex Shader Attached!\n");
-	sceneShaderLine->attachVert(mainVert.get());
-	fprintf(MSGLOG, "\tPrimary Vertex Shader Attached!\n");
-
-	
-	fprintf(MSGLOG, "\nAttaching a different Geometry Shader as from the first pipeline...\n");
-	sceneShaderLine->attachGeom("TeapotOutline.geom");
-	fprintf(MSGLOG, "\tGeometry Shader Attached!\n");
-
-	fprintf(MSGLOG, "\nAttaching a different Fragment Shader as well for this alternate pipeline...\n");
-	sceneShaderLine->attachFrag("TeapotOutline.frag");
-	fprintf(MSGLOG, "\tFragment Shader Attached!\n");
-
-	fprintf(MSGLOG, "\nTime to link the second pipeline...\n");
-	if (!sceneShaderLine->readyToLink()) {
-		fprintf(WRNLOG, "\n!!!WARNING!!! The Second Graphics Pipeline is not ready to link for some reason!\n");
-		fprintf(ERRLOG, "\t[PRESS ENTER TO CONTINUE]\n");
-		std::cin.get();
-		return;
-	}
-	else {
-		sceneShaderLine->link();
-		if (sceneShaderLine->checkIfLinked()) {
-			fprintf(MSGLOG, "Second Pipeline Program Successfully linked!\n");
-		}
-		else {
-			fprintf(ERRLOG, "Shader Program Line was not successfully linked!\n");
-			fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-			std::cin.get(); //Hold the window open if there was an error
-		}
-	}
-	*/
 }
 
 void TeapotExplosion::loadTeapot() {
@@ -195,7 +166,7 @@ void TeapotExplosion::loadTeapot() {
 
 
 	//Make a vertex attribute set to handle organizing the data for the graphics context
-	vertexAttributes = std::make_unique<GenericVertexAttributeSet>(1);
+	vertexAttributes = std::make_unique<TeapotExplosionDemo_GenericVertexAttributeSet>(1);
 
 	if (!vertexAttributes)
 		return;
@@ -231,7 +202,7 @@ void TeapotExplosion::renderLoop() {
 		modifyColorThreshhold();
 		rotateColor();
 		updateColorModificationValues();
-
+		updateVelocity();
 
 		updateFrameClearColor();
 
@@ -249,7 +220,6 @@ void TeapotExplosion::renderLoop() {
 		frameNumber++; //Increment the frame counter
 		prepareGLContextForNextFrame();
 	}
-
 }
 
 
@@ -420,9 +390,24 @@ void TeapotExplosion::updateColorModificationValues() {
 	}
 }
 
+void TeapotExplosion::updateVelocity() {
+	if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+		velocity *= 1.05f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+		velocity /= 1.05f;
+	}
+	
+	//Ensure there is a minimum velocity
+	if (velocity < 0.05f) {
+		velocity = 0.05f;
+	}
+}
+
+
 void TeapotExplosion::updateFrameClearColor() {
-	//To look into:
-	//GL_UseProgram_Stages 
+	
+
 	float * red = &(backgroundColor.x);
 	float * green = &(backgroundColor.y);
 	float * blue = &(backgroundColor.z);
@@ -431,13 +416,11 @@ void TeapotExplosion::updateFrameClearColor() {
 	*green = glm::abs(sin(glm::min(1.0f, (*red) + ((*blue) * (*blue) / (*red)))));
 	*blue = 0.5f + 0.25f*cos(counter);
 
-	//static bool sleep = false;
 	if (abs(ceilf(counter) - counter) < 0.0049f) {
 		float temp = *red;
 		*red = *green;
 		*green = *blue;
 		*blue = temp;
-		//sleep = true;
 	}
 
 	glClearColor(*red, *green, *blue, 1.0f);
@@ -450,9 +433,9 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
-	sceneShader->uniforms->updateUniform1i("level", 1);             //tweak this value as needed
+	sceneShader->uniforms->updateUniform1i("level", 1);                          //tweak this value as needed
 	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
+	sceneShader->uniforms->updateUniform1f("velocityScale", velocity);               //tweak this value as needed
 
 	xRotation += 0.0000f;
 	yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
@@ -469,6 +452,7 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("greenRotationTheta", greenRotationTheta);
 	sceneShader->uniforms->updateUniform1f("blueRotationTheta", blueRotationTheta);
 
+	/* 
 	sceneShader->uniforms->updateUniform1f("colorModificationValue0", colorModificationValues[0]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue1", colorModificationValues[1]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue2", colorModificationValues[2]);
@@ -476,31 +460,7 @@ void TeapotExplosion::updateUniforms() {
 	sceneShader->uniforms->updateUniform1f("colorModificationValue4", colorModificationValues[4]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
 	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
-
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-
-	/*
-	sceneShaderLine->use();
-	//Update uniform locations
-	sceneShaderLine->uniforms->updateUniform1f("zoom", 1.75f);
-	sceneShaderLine->uniforms->updateUniform1f("time", 0.725f*counter);
-
-	//Uniforms for the geometry shader effect
-	sceneShaderLine->uniforms->updateUniform1i("level", 1);             //tweak this value as needed
-	sceneShaderLine->uniforms->updateUniform1f("gravity", -29.81f);       //tweak this value as needed
-	sceneShaderLine->uniforms->updateUniform1f("velocityScale", 1.0f);  //tweak this value as needed
-
-	xRotation += 0.0f;
-	yRotation += 0.0045f;
-	zRotation += 0.00035f;
-
-	//fprintf(MSGLOG, "xRot is %f, yRot is %s, zRot is %f\n", xRotation, yRotation, zRotation);
-	sceneShaderLine->uniforms->updateUniform1f("xRotation", xRotation + counter);
-	sceneShaderLine->uniforms->updateUniform1f("yRotation", 2.75f * yRotation);
-	sceneShaderLine->uniforms->updateUniform1f("zRotation", 2.75f*zRotation);
 	*/
-
 }
 
 void TeapotExplosion::drawVerts() {
@@ -510,7 +470,7 @@ void TeapotExplosion::drawVerts() {
 		vertexAttributes->use();
 
 	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) 
-		glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3);
+		glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3); 
 	
 	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP) 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
@@ -518,11 +478,6 @@ void TeapotExplosion::drawVerts() {
 	if (currentTriangleInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN)
 		glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
 
-	/*
-	if (sceneShaderLine)
-		sceneShaderLine->use();
-	glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3);
-	*/
 }
 
 

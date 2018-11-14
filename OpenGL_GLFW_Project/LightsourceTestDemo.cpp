@@ -414,11 +414,12 @@ void LightsourceTestDemo::togglePolygonSmooth() {
 	}
 }
 
-void LightsourceTestDemo::toggleColorshift() {
-	if ((noiseFunctionToUse != 5) && (noiseFunctionToUse != 6)) {
-		return;
-	}
-	else if ((frameColorshiftLastToggled + 8ull) >= frameNumber) {
+void LightsourceTestDemo::toggleColorshift() { 
+	//Frag shader has been updated so now all effects have a colorshift
+	//if ((noiseFunctionToUse != 5) && (noiseFunctionToUse != 6) && (noiseFunctionToUse != 7) ) {
+	//	return;
+	//}
+	if ((frameColorshiftLastToggled + 12ull) >= frameNumber) {
 		return;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
