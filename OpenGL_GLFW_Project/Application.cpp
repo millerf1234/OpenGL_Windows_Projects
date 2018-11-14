@@ -1,3 +1,9 @@
+//File:                 Application.cpp
+//Description:          Implementation for the Application class. See header file for more detail
+//
+//Programmer:           Forrest Miller
+//Date:                 July - November(and beyond) 2018
+
 #include "Application.h"
 
 void Application::initialize() {
@@ -8,21 +14,20 @@ void Application::initialize() {
 	fprintf(MSGLOG, "Application is loading...\n");
 	if ( !setupGLFW() ) {
 		fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
+		return;
 	}
-	else {
-		if ( !loadGraphicsLanguageFunctions() ) {
-			fprintf(ERRLOG, "\nThe application encountered an error while loading the grpahics language!\n");
-		}
-		else {
-			configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
-			setInitialGLState();
+	if ( !loadGraphicsLanguageFunctions() ) {
+		fprintf(ERRLOG, "\nThe application encountered an error while loading the grpahics language!\n");
+		return;
+	}
 
-			//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
-			//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
-			//checkMSAA(); //See if MSAA is being used as expected
-		}
-	}
-	
+	configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
+	setInitialGLState();
+
+	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
+	//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
+	//checkMSAA(); //See if MSAA is being used as expected
+		
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -123,15 +128,15 @@ void Application::configureGraphicsContextDebugCallbackFunction() const {
 		}
 		else {
 			const char * warnHeader = "**********";
-				fprintf(WRNLOG, "\n%s%s%s%s%s%s%s%s\n"
+				fprintf(WRNLOG, "\n\n%s%s%s%s%s%s%s%s\n"
 					"WARNING! Context Has Been Created As A Debug Context Without Synchronization Between\n"
-					"The Application And The Context! Callback Messages May Not Match Up With The Events That Caused Them!\n"
-				"%s%s%s%s%s%s%s%s\n", warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
+					"The Application And The Context!\nCallback Messages May Not Match Up With The Events That Caused Them!\n"
+				"%s%s%s%s%s%s%s%s\n\n", warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
 					warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader, warnHeader,
 					warnHeader, warnHeader, warnHeader);
 				glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		}
-		glDebugMessageCallback(printGraphicsContextMessageCallback, 0);
+		glDebugMessageCallback(printGraphicsContextMessageCallback, nullptr);
 	}
 	else {
 		fprintf(MSGLOG, "Disabled\n\n");
@@ -149,15 +154,15 @@ void Application::setInitialGLState() {
 	glEnable(GL_DEPTH_TEST); //Depth Test will be used for every draw call, so it is activated globally
 }
 
-void Application::checkMSAA() const { //hmm
+void Application::checkMSAA() const { 
 	if (mApplicationValid) {
 		//glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
 		GLint bufs = -1;
 		GLint samples = -1;
 
-		glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
-		glad_glGetIntegerv(GL_SAMPLES, &samples);
-		fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+		//glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+		//glad_glGetIntegerv(GL_SAMPLES, &samples);
+		//fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 
 		glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
 		glGetIntegerv(GL_SAMPLES, &samples);
@@ -169,6 +174,8 @@ void Application::checkMSAA() const { //hmm
 void Application::playIntroMovie() {
 	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
 }
+
+
 
 void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name) {
 	bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));

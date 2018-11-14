@@ -63,21 +63,24 @@ void main() {
 		break;
 	case(5):
 		//color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))), pNoise(vec2(abs(5.5*gl_FragCoord.y-cos(lightPosition.x-time)), 5.0*gl_FragCoord.x-abs(sin(time))), abs(int(floor(500*cos(0.25*time))))), lightColor.b, 1.0 - abs(0.5*sin(time)*fbm(lightPosition)));
-		color = vec4(length(inversesqrt(fbm(lightColor * 1.0 / time))),
+		color = vec4(length(inversesqrt(fbm(lightColor * 1.5 / (time + timeShift)))),
 			snoise(
 				vec2(
 					snoise(
 						vec2(
-							abs(((1.0 / time)*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time)))),
-							(1.0 / time) * gl_FragCoord.x - abs(sinh(cos(0.0*time)))
-						)),
-					inversesqrt(pow((abs(gl_FragCoord.x) + abs(gl_FragCoord.y)), abs((gl_FragCoord.y + gl_FragCoord.x)))))),
+							abs(((1.0 / (time + timeShift))*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos((time + timeShift))))),
+							(1.0 / (time + timeShift)) * gl_FragCoord.x
+						)
+					),
+					inversesqrt(pow((abs(gl_FragCoord.x) + abs(gl_FragCoord.y)), abs((gl_FragCoord.y + gl_FragCoord.x))))
+				)
+			),
 			snoise(
 				vec2(
 					snoise(
 						vec2(
-							abs(((1.0 / time)*gl_FragCoord.x + cosh(lightPosition.y - 0.25*cos(time+gl_FragCoord.y)))),
-							(1.0 / time) * gl_FragCoord.x * abs(sinh(gl_FragCoord.y))
+							abs(((1.0 / (time + timeShift))*gl_FragCoord.x + cosh(lightPosition.y - 0.25*cos((time + timeShift) + gl_FragCoord.y)))),
+							(1.0 / (time + timeShift)) * gl_FragCoord.x * abs(sinh(gl_FragCoord.y))
 						)),
 					inversesqrt(gl_FragCoord.y))),
 			1.0);
@@ -94,11 +97,37 @@ void main() {
 						vec2(
 							abs(((1.0 / (time + timeShift))*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time + timeShift)))),
 							(1.0 / (time + timeShift)) * gl_FragCoord.x
-						)),
-					inversesqrt(gl_FragCoord.x/gl_FragCoord.y))), 0.0, 1.0);
-		color.r *= 0.15 + (0.075 + (0.075 * -1.0 * float(sign(colorShift)))) ;
+						)
+					),
+					inversesqrt(gl_FragCoord.x/gl_FragCoord.y)
+				)
+			),
+			0.0,
+			1.0 );
+		color.r *= 0.15 + (0.035 + (0.035 * -1.0 * float(sign(colorShift))));
+		color.g = color.g - (0.25 * sin(floor(150.0*(sin((gl_FragCoord.x - sin(exp(log2(time))))) * gl_FragCoord.y)))  + (0.25 * -1.0 * float(sign(colorShift))));
 		color.b = color.r / color.g;
 		break;
+	case(7):
+		color = vec4(length(inversesqrt(3.0*fbm(lightColor * 1.0 / (time + timeShift)))),
+			snoise(
+				vec2(
+					snoise(
+						vec2(
+							abs(((1.0 / (time + timeShift))*gl_FragCoord.y - cosh(lightPosition.x - 0.25*cos(time + timeShift)))),
+							(1.0 / (time + timeShift)) * gl_FragCoord.x
+						)
+					),
+					inversesqrt(gl_FragCoord.x / gl_FragCoord.y)
+				)
+			),
+			0.0,
+			1.0);
+		color.r += 0.15 + (0.035 + (0.035 * -1.0 * float(sign(colorShift))));
+		color.r *= 0.15;
+		color.b = color.r / color.g;
+		break;
+
 	default:
 		color = vec4(fbm(vec2(lightPosition.x, lightPosition.y)), fbm(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
 		break;

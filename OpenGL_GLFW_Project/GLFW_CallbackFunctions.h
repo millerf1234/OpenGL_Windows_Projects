@@ -20,7 +20,7 @@
 //---------------------------------------------------------------------------------
 inline void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected window size update! New screen coordinates are %dx%d\n", width, height);
-	//OpenGL operates using pixels instead of screen coordinates, which means there is nothing else to do here
+	//OpenGL operates using pixels instead of screen coordinates, which means there is nothing else to do here. GL_Viewport will be updated with framebufferSizeCallback()
 }
 
 //---------------------------------------------------------------------------------

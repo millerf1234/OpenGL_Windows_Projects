@@ -1,16 +1,26 @@
-//File:  Application.h
+//File:                       Application.h
+//Class:                      Application
 //
-// Details:
+//Description:                The class 'Application' exists at the very top of the program and is responsible
+//                            for first performing high-level initialization and then providing an environment for 
+//                            individual 'RenderDemos' to operate in. More specifically, this class operates in
+//                            two phases. The first phase occurs when the constructor for 'Application' is called. In
+//                            this phase, the following tasks are performed (in order):
+//                                [Initialization Phase]
+//                                  - initialize a window and graphics context through the GLFW 3.x library
+//                                  - load the graphics language functions using GLAD 
+//                                  - configure graphics context by setting callbacks and global state
+//                            
+//                            Once these initialization tasks are accomplished, the second phase is commenced by calling
+//                            the member funcion launch(). The way launch() operates is to first verify that all 
+//                            initialization has occured without issue, followed by presenting the program user with a             *(to be implemented still...)
+//                            menu selection* of the various 'RenderDemos' available.     
+//                            Once a 'RenderDemo' is selected, the application uses the polymorphic behavior of the 
+//                            'RemderDemoBase' class and the member function runRenderDemo() to run the various 'RenderDemos'
+//                            available.
 //
-// Header file for class that defines the application. The application's job is
-// essentially to get everything initialized properly and then call member functions
-// in classes it holds. Most of the interesting stuff happens below the application 
-// level. 
-//Created by Forrest Miller on July 16, 2018
-//This file underwent continuous modifications up through November 2, 2018. 
-//On November 2, 2018, the programmer (me) decided to clean up both this file
-//and the '.cpp' implementation file to remove old/broken code. I'm on a bit 
-//of a limited time frame to do so, so I probably won't finish today. 
+//Programmer:                 Forrest Miller
+//Dates:                      July - November 2018   
 
 
 //RANDOM NOTE: To see vcpkg commands, go to the link: https://docs.microsoft.com/en-us/cpp/vcpkg#command-line-reference
@@ -30,7 +40,6 @@
 //#include "AssetLoadingDemo.h"
 #include "LightsourceTestDemo.h"
 #include "TeapotExplosion.h"
-
 
 
 class Application final {
@@ -64,8 +73,11 @@ private:
 	void runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name = "\0");
 
 
+
+
 	//The following functions are for setting up and running different demo programs. These functions rely on
 	//the runRenderDemo() function above for polymorphically calling their overriden virtual functions. 
+	
 	//void runAssetLoadingDemo();
 	void runLightsourceTestDemo();
 	void runTeapotExplosionDemo();

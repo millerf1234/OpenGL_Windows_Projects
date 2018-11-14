@@ -34,9 +34,6 @@
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\Debug">
-      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\Parameters">
       <UniqueIdentifier>{bfee94b6-d826-4f00-b9f3-bc011d33faf1}</UniqueIdentifier>
     </Filter>
@@ -72,15 +69,6 @@
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
       <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo">
-      <UniqueIdentifier>{5a97e638-bcd6-40df-a1e4-9636c9d32898}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1">
-      <UniqueIdentifier>{4fd5d6c1-2b5e-4614-b25f-ab22207fa500}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion">
-      <UniqueIdentifier>{1a9df0bf-849b-412a-8614-e06363187986}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Engine">
       <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
@@ -129,24 +117,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy">
-      <UniqueIdentifier>{4c8bc92e-9b24-4d15-a98b-c274c4527f7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\RenderProject1">
-      <UniqueIdentifier>{f1a860d9-95d3-440c-a898-21ce732341cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderTest">
-      <UniqueIdentifier>{8074e451-630a-4f67-81a7-7db7baaa6174}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\GeometryShaderExplosion">
-      <UniqueIdentifier>{76e52312-243d-4b1b-bea3-f0e1c689a7f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\Generic">
-      <UniqueIdentifier>{870bf8c1-2652-4f77-b56d-533ecf9717ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\Generic\Old">
-      <UniqueIdentifier>{ccf46893-4f91-4c40-904c-a3ed9bbc130e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
       <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
@@ -229,27 +199,6 @@
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal">
-      <UniqueIdentifier>{06e595cb-0f79-4ed5-95a0-80d9e64c6c51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders">
-      <UniqueIdentifier>{e0ea8d2b-7720-40ee-b31d-b515781321c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders">
-      <UniqueIdentifier>{9bc8fbdb-688a-4ae5-abb5-224d7f73d9bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal">
-      <UniqueIdentifier>{3055026b-c17b-4189-a28d-33bbdcde18e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused">
-      <UniqueIdentifier>{5b8aebd4-630a-449f-b492-bec86a3867a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position">
-      <UniqueIdentifier>{42e335dd-0b7b-4078-b53d-81efa7ac7129}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex">
-      <UniqueIdentifier>{944036bc-67a6-4987-a72b-b91a90d99060}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Lightsource">
       <UniqueIdentifier>{a1e22b88-f253-4548-a540-ce8379c30e04}</UniqueIdentifier>
     </Filter>
@@ -274,14 +223,20 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\LightsourceTestDemo">
       <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\LightsourceTestDemo\GeometryShaderFail">
-      <UniqueIdentifier>{a3852df0-e4f3-4e7c-8439-ecbc9aa11c86}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest">
       <UniqueIdentifier>{e504970e-8256-4a79-a5fa-631d2e3427f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest\Utility">
       <UniqueIdentifier>{2fade684-a0bc-4b6f-b10d-2dde435a0fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Debug">
+      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\OpenAL">
+      <UniqueIdentifier>{8c70782d-c522-4932-968f-333dafd7b7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Audio">
+      <UniqueIdentifier>{8509665d-7627-442d-aee1-e5c02c778924}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,12 +245,6 @@
     </ClCompile>
     <ClCompile Include="GLFW_Init.cpp">
       <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderProject1.cpp">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
     </ClCompile>
     <ClCompile Include="UniformLocationTracker.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
@@ -332,9 +281,6 @@
     </ClCompile>
     <ClCompile Include="GenericVertexAttributeSet.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryShaderExplosion.cpp">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion</Filter>
     </ClCompile>
     <ClCompile Include="RenderDemoBase.cpp">
       <Filter>Source Files\Projects\RenderDemos</Filter>
@@ -384,6 +330,12 @@
     <ClCompile Include="LightsourceTestDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\LightsourceTest</Filter>
     </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files\Utility\RenderTools</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL_Init.cpp">
+      <Filter>Source Files\Utility\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib">
@@ -391,6 +343,9 @@
     </Library>
     <Library Include="glfw3dll.lib">
       <Filter>Third Party\GLFW</Filter>
+    </Library>
+    <Library Include="OpenAL\OpenAL32.lib">
+      <Filter>Third Party\OpenAL</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
@@ -411,9 +366,6 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderProject1.h">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\RenderProject1</Filter>
     </ClInclude>
     <ClInclude Include="ft2build.h">
       <Filter>Third Party\FreeType</Filter>
@@ -613,9 +565,6 @@
     <ClInclude Include="LoggingMessageTargets.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectSetup.h">
-      <Filter>SetupAndConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
       <Filter>SetupAndConfiguration\Debug</Filter>
     </ClInclude>
@@ -627,9 +576,6 @@
     </ClInclude>
     <ClInclude Include="GenericVertexAttributeSet.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\VertexAttributeSet</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryShaderExplosion.h">
-      <Filter>Source Files\Projects\LegacyProjects_PreRenderDemo\GeometryShaderExplosion</Filter>
     </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
@@ -766,6 +712,33 @@
     <ClInclude Include="LightsourceTest.h">
       <Filter>Source Files\Projects\RenderDemos\LightsourceTest\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="ProjectSetup.h">
+      <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\al.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\alc.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\alext.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\efx.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\efx-creative.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\efx-presets.h">
+      <Filter>Third Party\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL_Init.h">
+      <Filter>Source Files\Utility\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -776,42 +749,6 @@
     </None>
     <None Include="glfw3dll.exp">
       <Filter>Third Party\GLFW</Filter>
-    </None>
-    <None Include="constantcolor.frag">
-      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
-    </None>
-    <None Include="passthrough2D.vert">
-      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
-    </None>
-    <None Include="passthrough3D.vert">
-      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
-    </None>
-    <None Include="TestGeom.geom">
-      <Filter>Resource Files\Shaders\Legacy\Generic\Old</Filter>
-    </None>
-    <None Include="RenderProject1.vert">
-      <Filter>Resource Files\Shaders\Legacy\RenderProject1</Filter>
-    </None>
-    <None Include="RenderProject1.frag">
-      <Filter>Resource Files\Shaders\Legacy\RenderProject1</Filter>
-    </None>
-    <None Include="gst.vert">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
-    </None>
-    <None Include="gst.geom">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
-    </None>
-    <None Include="gst.frag">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderTest</Filter>
-    </None>
-    <None Include="GeometryShaderExplosion.vert">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
-    </None>
-    <None Include="GeometryShaderExplosion.geom">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
-    </None>
-    <None Include="GeometryShaderExplosion.frag">
-      <Filter>Resource Files\Shaders\Legacy\GeometryShaderExplosion</Filter>
     </None>
     <None Include="TeapotExplosion.vert">
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
@@ -915,39 +852,6 @@
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
     </None>
-    <None Include="AssetLoadingDemo_OldAndJustStraightBad.frag">
-      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_OldAndUgly.vert">
-      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
-    </None>
-    <None Include="PerspectiveProjection_ExceptItIsNot.vert">
-      <Filter>Resource Files\Shaders\Legacy\OldeAssetLoadingDemoShaders\Olde versions of shaders</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithNormalWithTex.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithNormalWithTex.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PostionTexNormal</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithNormalWithoutTex.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithNormalWithoutTex.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\PositionNormal</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithoutNormalWithoutTex.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\Position</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithoutNormalWithTex.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
-    </None>
-    <None Include="AssetLoadingDemo_WithoutNormalWithTex.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\MaybeUnused\PositionTex</Filter>
-    </None>
     <None Include="obj\Pokemon.obj">
       <Filter>Resource Files\Models\OBJ\Sample\Pokemon</Filter>
     </None>
@@ -960,8 +864,14 @@
     <None Include="LightsourceTestDemo.frag">
       <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
     </None>
-    <None Include="Lightsource_OldAndIncorrect.geom">
-      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo\GeometryShaderFail</Filter>
+    <None Include="OpenAL\OpenAL32.dll">
+      <Filter>Third Party\OpenAL</Filter>
+    </None>
+    <None Include="OpenAL\OpenAL32.pdb">
+      <Filter>Third Party\OpenAL</Filter>
+    </None>
+    <None Include="OpenAL\copyright">
+      <Filter>Third Party\OpenAL</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1052,5 +962,10 @@
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
       <Filter>NotesAndReferences</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OpenGL_GLFW_Project.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

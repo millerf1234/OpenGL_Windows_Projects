@@ -1,12 +1,13 @@
-//main.h
+//File:                main.cpp
 //
-//Create the application and launch it
+//Description:         Create the application and launch it
 //
-// Forrest Miller           July 2018
+//Programmer:          Forrest Miller 
+//Date:                July 2018
 
 #include "Application.h"
 
-int main() {
+int main(int argc, char ** argv) {
 	std::unique_ptr<Application> app = std::make_unique<Application>(); 
 	app->launch();
 }
