@@ -14,18 +14,17 @@
 //
 // Programmer:          Forrest Miller
 // Dates:               July 2018       First Implemented a Callback Function
-//                      November 2018   Rewrote Callback Function to be much more detailed
+//                      November 13, 2018   Rewrote Callback Function to be much more detailed
 //                      
+// Changes:             November 14, 2018
+//                        This function used to use 'fprintf' for every single print statement. However,
+//						  if synchronization between the context and the application is not enabled, this 
+//                        could lead to garbled output from both attempting to write to fprintf  
+//                        asynchronously. To remedy this oversight, I have gone in and replaced all of 
+//                        the fprintf calls with snprintf, which prints into a buffer. Then at the end,
+//                        the buffer is printed all at once with a single call to fprintf. The code is 
+//                        somewhat uglier, but should behave better for asynchronus callbacks.
 //
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// UPDATE/HACK: I realized after writing this that if synchronization is not forced between 
-//              the GL Context and the Application, then it would be possible to get asynchronus
-//              calls to fprintf occuring from both the application and this callback function. Thus to fix it
-//              I have a hack to divert this functions print calls to a buffer which can then be printed at the 
-//              very end.
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
@@ -36,26 +35,6 @@
 #include "ProjectSetup.h"
 #include "LoggingMessageTargets.h"
 
-//-------------------------------------------------------------------------------------
-//   ALERT!!!   HACK IN PROGRESS
-//   This hack will divert the outputs of the print statements to a temporary buffer as the 
-//   function executes, after which it will actually print the message out in one call to fprintf.
-//   I undo this hack at the bottom of this file.
-//
-//  (Why this works?   See: https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html      (hopefully this is portable)
-//
-// First define the following 2 macros 
-#define DEBUG_CALLBACK_BUFFER_NAME msgBuffer
-#define DEBUG_CALLBACK_BUFFER_SIZE 2048       
-
-//  Redefine the following
-#define fprintf(x, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
-//#define fprintf(MSGLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
-//#define fprintf(WRNLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
-//#define fprintf(ERRLOG, ...) snprintf(DEBUG_CALLBACK_BUFFER_NAME, DEBUG_CALLBACK_BUFFER_SIZE,  __VA_ARGS__)
-//-------------------------------------------------------------------------------------
-
-
 
 //The detail provided in this message could use a more detailed implementation
 static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
@@ -65,116 +44,131 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	GLsizei length,
 	const GLchar* message,
 	const void* userParam) {
+
+	// In case synchronization is disabled between the application and the graphics context,
+	//the debug message output will use snprintf to fill a buffer until the very end
+	static constexpr const size_t BUFFER_SIZE_TOTAL = 4096u; //This should be big enough to cover all cases [hopefully]
+#define BUFFER_SIZE (BUFFER_SIZE_TOTAL-bufferIter)
+	size_t bufferIter = 0u;
+	char msgBuff[BUFFER_SIZE_TOTAL];
+
+
+	if (static_cast<size_t>(length) > (BUFFER_SIZE - 320u)) {
+		fprintf(ERRLOG, "\nGL Callback Error But The Message is too long for formatting!\nMsg: %s", message);
+		return;
+	}
+
 	//Print a message based off severity 
 	if ((severity == GL_DEBUG_SEVERITY_HIGH) || (severity == GL_DEBUG_SEVERITY_MEDIUM)) {
 
-		//////////////////////////////////////////////////////////////////////////////
-		// As part of the hack, we need a buffer 
-		char DEBUG_CALLBACK_BUFFER_NAME[DEBUG_CALLBACK_BUFFER_SIZE];
-		//////////////////////////////////////////////////////////////////////////////
-		
-
-
 
 		//Message Format depends on the message's source
-
+		
 		//-------------------------------------------------------------
 		// Third-Party       Medium-High Priority      Call Back Message
 		//-------------------------------------------------------------
 		if (source == GL_DEBUG_SOURCE_THIRD_PARTY) {
-			fprintf(ERRLOG, "\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
-			fprintf(ERRLOG, "Third Party CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
+			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"Third Party CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				fprintf(ERRLOG, "HIGH! ) "); //total strlen now is 52
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
 			}
 			else {
-				fprintf(ERRLOG, "MEDIUM )"); //total strlen now is 52
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
 			}
 			switch (type) {   //The intention here is to have 'type' be right justified on same line
 			case (GL_DEBUG_TYPE_ERROR):
-				fprintf(ERRLOG, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				fprintf(ERRLOG, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				fprintf(ERRLOG, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				fprintf(ERRLOG, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				fprintf(ERRLOG, "%28s", "[type = UNKNOWN]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
 				break;
 			default:
-				fprintf(ERRLOG, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
-			fprintf(ERRLOG, "%s", message);
-			fprintf(ERRLOG, "\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
-		}
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
+			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
+		
+		} //The fprintf call is made at the end of all the MEDIUM/HIGH priority source cases
 
 		//-------------------------------------------------------------
 		// Application       Medium-High Priority      Call Back Message
 		//-------------------------------------------------------------
 
 		else if (source == GL_DEBUG_SOURCE_APPLICATION) {
-			fprintf(ERRLOG, "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-			fprintf(ERRLOG, "Application CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
+			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"Application CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				fprintf(ERRLOG, "HIGH! ) "); //total strlen now is 52
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
 			}
 			else {
-				fprintf(ERRLOG, "MEDIUM )"); //total strlen now is 52
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
 			}
 			switch (type) {   //The intention here is to have 'type' be right justified on same line 
 			case (GL_DEBUG_TYPE_ERROR):
-				fprintf(ERRLOG, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				fprintf(ERRLOG, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				fprintf(ERRLOG, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				fprintf(ERRLOG, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				fprintf(ERRLOG, "%28s", "[type = UNKNOWN]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
 				break;
 			default:
-				fprintf(ERRLOG, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
-			fprintf(ERRLOG, "%s", message);
-			fprintf(ERRLOG, "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
+			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
+
 		}
 
 
@@ -184,65 +178,70 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		//-------------------------------------------------------------
 
 		else if (source != GL_DEBUG_SOURCE_OTHER) {
-			fprintf(ERRLOG, "\n*******************************************************************************\n"); //80 characters
-			fprintf(ERRLOG, "GL Context CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 43
+			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+				"\n*******************************************************************************\n"); //80 characters
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"GL Context CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 43
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				fprintf(ERRLOG, "HIGH! )  "); //total strlen now is 52  (extra spaces at end of string are intentional)
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+					"HIGH! )  "); //total strlen now is 52  (extra spaces at end of string are intentional)
 			}
 			else {
-				fprintf(ERRLOG, "MEDIUM ) "); //total strlen now is 52
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+					"MEDIUM ) "); //total strlen now is 52
 			}
 
 			switch (type) {   //The intention here is to have 'type' be right justified on same line 
 			case (GL_DEBUG_TYPE_ERROR):
-				fprintf(ERRLOG, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				fprintf(ERRLOG, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				fprintf(ERRLOG, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				fprintf(ERRLOG, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				fprintf(ERRLOG, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				fprintf(ERRLOG, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				fprintf(ERRLOG, "%28s", "[type = OTHER]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = OTHER]\n");
 				break;
 			default:
-				fprintf(ERRLOG, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
 			switch (source) {
 			case (GL_DEBUG_SOURCE_API):
-				fprintf(ERRLOG, "[Source: GL API]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: GL API]\n");
 				break;
 			case (GL_DEBUG_SOURCE_WINDOW_SYSTEM):
-				fprintf(ERRLOG, "[Source: WINDOW SYSTEM]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: WINDOW SYSTEM]\n");
 				break;
 			case (GL_DEBUG_SOURCE_SHADER_COMPILER):
-				fprintf(ERRLOG, "[Source: SHADER COMPILER]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: SHADER COMPILER]\n");
 				break;
 			default:
-				fprintf(ERRLOG, "[Source: UNKNOWN ENUM]\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: UNKNOWN ENUM]\n");
 				break;
 			}
 
-			fprintf(ERRLOG, "%s", message);
-			fprintf(ERRLOG, "\n*******************************************************************************\n"); //80 characters
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
+			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				"\n*******************************************************************************\n"); //80 characters
 		}
 
 		//-------------------------------------------------------------
@@ -250,18 +249,24 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		//-------------------------------------------------------------
 
 		else {
-			fprintf(ERRLOG, "\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-			fprintf(ERRLOG, "UNKNOWN SOURCE CALLBACK!!! PRIORITY IS ");
+			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+				"\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNKNOWN SOURCE CALLBACK!!! PRIORITY IS ");
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				fprintf(ERRLOG, "HIGH!\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH!\n");
 			}
 			else {
-				fprintf(ERRLOG, "MEDIUM\n");
+				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM\n");
 			}
-			fprintf(ERRLOG, "\nMessage is: %s\n", message);
-			fprintf(ERRLOG, "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\nMessage is: %s\n", message);
+			snprintf(msgBuff + bufferIter, BUFFER_SIZE, 
+				"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		}
 
+		//Now print the buffer with a single call to fprintf
+		fprintf(ERRLOG, "%s", msgBuff);
+		return;
 	}
 
 	//-------------------------------------------------------------
@@ -271,70 +276,73 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	else if (severity == GL_DEBUG_SEVERITY_LOW) {
 
 
-		fprintf(MSGLOG, "\n-------------------------------------------------------------------------------\n");
-		fprintf(MSGLOG, "\n[LOW PRIORITY] GL CALLBACK (Source = ");
+		bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+			"\n-------------------------------------------------------------------------------\n");
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			"\n[LOW PRIORITY] GL CALLBACK (Source = ");
 
 		switch (source) {
 		case GL_DEBUG_SOURCE_API:   //The source is from direct usage of OpenGL API
-			fprintf(MSGLOG, "OpenGL API, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OpenGL API, ");
 			break;
 		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-			fprintf(MSGLOG, "Window System, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Window System, ");
 			break;
 		case GL_DEBUG_SOURCE_SHADER_COMPILER:
-			fprintf(MSGLOG, "Shader Compiler, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Shader Compiler, ");
 			break;
 		case GL_DEBUG_SOURCE_THIRD_PARTY:
-			fprintf(MSGLOG, "Third Party, ");    //Message originated from a third-party source 
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Third Party, ");    //Message originated from a third-party source 
 			break;
 		case GL_DEBUG_SOURCE_APPLICATION:
-			fprintf(MSGLOG, "Application, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Application, ");
 			break;
 		case GL_DEBUG_SOURCE_OTHER:
-			fprintf(MSGLOG, "OTHER, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OTHER, ");
 			break;
 		default:
-			fprintf(MSGLOG, "UNKNOWN, ");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNKNOWN, ");
 			break;
 		}
 
-		fprintf(MSGLOG, "ID = 0x%05X, Type = ", id);
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "ID = 0x%05X, Type = ", id);
 
 
 		switch (type) {   //The intention here is to have 'type' be right justified on same line 
 		case (GL_DEBUG_TYPE_ERROR):
-			fprintf(MSGLOG, "%s", "ERROR)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "ERROR)\n");
 			break;
 		case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-			fprintf(MSGLOG, "%s", "DEPRECATED BEHAVIOR)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "DEPRECATED BEHAVIOR)\n");
 			break;
 		case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-			fprintf(MSGLOG, "%s", "UNDEFINED BEHAVIOR)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "UNDEFINED BEHAVIOR)\n");
 			break;
 		case (GL_DEBUG_TYPE_PERFORMANCE):
-			fprintf(MSGLOG, "%s", "PERFORMANCE)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PERFORMANCE)\n");
 			break;
 		case (GL_DEBUG_TYPE_PORTABILITY):
-			fprintf(MSGLOG, "%s", "PORTABILITY)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PORTABILITY)\n");
 			break;
 		case (GL_DEBUG_TYPE_MARKER):
-			fprintf(MSGLOG, "%s", "MARKER)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "MARKER)\n");
 			break;
 		case (GL_DEBUG_TYPE_PUSH_GROUP):
-			fprintf(MSGLOG, "%s", "PUSH GROUP)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PUSH GROUP)\n");
 			break;
 		case (GL_DEBUG_TYPE_POP_GROUP):
-			fprintf(MSGLOG, "%s", "POP GROUP)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "POP GROUP)\n");
 			break;
 		case (GL_DEBUG_TYPE_OTHER):
-			fprintf(MSGLOG, "%s", "OTHER)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "OTHER)\n");
 			break;
 		default:
-			fprintf(MSGLOG, "%s", "INVALID_ENUM)\n");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "INVALID_ENUM)\n");
 			break;
 		}
-		fprintf(MSGLOG, "%s", message);
-		fprintf(MSGLOG, "\n-------------------------------------------------------------------------------\n");
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
+		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			"\n-------------------------------------------------------------------------------\n");
 	}
 
 
@@ -345,47 +353,51 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 
 	else {
-		fprintf(MSGLOG, "\n*******************   GL Context Notification    *******************\n");
-		fprintf(MSGLOG, "[ID = 0x%05X, Type = ", id);
+		bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+			"\n*******************   GL Context Notification    *******************\n");
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[ID = 0x%05X, Type = ", id);
 		switch (type) {
 		case (GL_DEBUG_TYPE_ERROR):
-			fprintf(MSGLOG, "ERROR]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "ERROR]");
 			break;
 		case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-			fprintf(MSGLOG, "DEPRECATED_BEHAVIOR]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "DEPRECATED_BEHAVIOR]");
 			break;
 		case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-			fprintf(MSGLOG, "UNDEFINED_BEHAVIOR]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNDEFINED_BEHAVIOR]");
 			break;
 		case (GL_DEBUG_TYPE_PERFORMANCE):
-			fprintf(MSGLOG, "PERFORMANCE]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PERFORMANCE]");
 			break;
 		case (GL_DEBUG_TYPE_PORTABILITY):
-			fprintf(MSGLOG, "PORTABILITY]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PORTABILITY]");
 			break;
 		case (GL_DEBUG_TYPE_MARKER):
-			fprintf(MSGLOG, "MARKER]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MARKER]");
 			break;
 		case (GL_DEBUG_TYPE_PUSH_GROUP):
-			fprintf(MSGLOG, "PUSH_GROUP]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PUSH_GROUP]");
 			break;
 		case (GL_DEBUG_TYPE_POP_GROUP):
-			fprintf(MSGLOG, "POP_GROUP]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "POP_GROUP]");
 			break;
 		case (GL_DEBUG_TYPE_OTHER):
-			fprintf(MSGLOG, "OTHER]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OTHER]");
 			break;
 		default:
-			fprintf(MSGLOG, "INVALID TYPE ENUM!!!]");
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "INVALID TYPE ENUM!!!]");
 			break;
 		}
 
-		fprintf(MSGLOG, " MSG: %s\n", message);
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\n%s\n", message);
+		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			"\n********************************************************************\n");
 	}
 
-
+	fprintf(MSGLOG, "%s\n", msgBuff);
 }
 
+//Extra formatting for just in case:
 			//switch (type) {
 			//case (GL_DEBUG_TYPE_ERROR):
 	        //
