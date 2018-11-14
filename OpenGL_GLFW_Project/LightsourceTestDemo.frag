@@ -27,6 +27,7 @@ uniform int colorShift; //Will just use sign of colorShift to do the colorShift
 float noise(vec2 p);           //   Generic 2d noise       
 float pNoise(vec2 p, int res); //2d Perlin
 float snoise(vec2 v);          //2d simplex noise
+float cnoise(vec4 P);          //4d Periodic Classic Perlin Noise
 float fbm(float x);            //1d Fractal Brownian Motion
 float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
@@ -45,7 +46,10 @@ void main() {
 		//if (dot(tempColor, vec3(0.0, 0.0, 0.0)) >= abs(0.25 * sin(time))) {
 		//	discard;
 		//}
-		color = vec4(tempColor, -abs(sin(time)) + (length(tempColor) / fbm(tempColor)));
+		color = vec4(tempColor, -abs(sin(time)) + (length(tempColor) / (3.0*fbm(tempColor))));
+		if (int(sign(colorShift)) < 0) {
+			color = vec4(cnoise(floor(500.0*sin(0.1*time + sqrt(pow(gl_FragCoord.x, 2.0) + pow(gl_FragCoord.y, 2.0))))*color), 355.0*cnoise(floor(5.0*cos(0.0001*time))*color), 0.75 + 0.25 * sin(cnoise(color) + 0.001*time), color.a);
+		}
 		break;
 	case(1):
 		color = vec4(fbm(vec2(250.5101*0.0555*time*lightColor.gb)), fbm(lightPosition + gl_FragCoord.xyx), snoise(vec2(fbm(lightPosition.xy), fbm(lightPosition.yx))), 1.0);

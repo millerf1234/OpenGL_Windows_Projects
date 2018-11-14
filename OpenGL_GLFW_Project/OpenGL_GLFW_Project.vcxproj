@@ -157,7 +157,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MissingAsset.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
@@ -170,6 +169,7 @@
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WavefrontMtl.cpp" />
     <ClCompile Include="WavefrontObj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +278,6 @@
     <ClInclude Include="LightsourceTestDemo.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MissingAsset.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="OpenAL\al.h" />
@@ -307,6 +306,7 @@
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WavefrontMtl.h" />
     <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>

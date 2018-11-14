@@ -40,6 +40,9 @@ public:
 	//Does nothing if the asset has already been loaded.
 	virtual bool load() = 0; /* { return false; } */
 
+	//Loads the contained data straight into a buffer with enough space to hold the data.
+	//virtual bool loadInto(void * buffer) = 0;
+
 
 	////////////////////////////////////////
 	//  Non-Virtual Interface Functions  ///

@@ -157,7 +157,7 @@ void LightsourceTestDemo::loadModels() {
 	std::array<float, 3> col = { 0.9955f, 0.9975f, 1.0f };
 
 	size_t lightPolygonSides = 13u;
-	size_t lightPolygonLayers = 96u;
+	size_t lightPolygonLayers = 81u;
 	float lightPolygonBaseRadius = 0.0015f; //0.65f
 	float lightPolygonLayerGrowth = 1.09f; //1.05f
 
@@ -326,6 +326,9 @@ void LightsourceTestDemo::changeNoiseType() {
 		noiseFunctionToUse = 0;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		if (noiseFunctionToUse != 1) { //Always start option 1 off without a color shift
+			colorShift = 1; 
+		}
 		noiseFunctionToUse = 1;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
@@ -443,16 +446,6 @@ void LightsourceTestDemo::updateFrameClearColor() {
 void LightsourceTestDemo::updateUniforms() {
 
 	lightSourceShader->use();
-
-	
-	//lightSourceShader->uniforms->updateUniform1f("distanceToCamera", 0.5f + 0.45f*sin(counter));
-	
-
-	//glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-	//lightSourceShader->uniforms->updateUniformMat4x4("projection", &proj);
-
 										
 	lightSourceShader->uniforms->updateUniform1f("time", 2.0f*counter);
 	lightSourceShader->uniforms->updateUniform1f("zoom", zoom);

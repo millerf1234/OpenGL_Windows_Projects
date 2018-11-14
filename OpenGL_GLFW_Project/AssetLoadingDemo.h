@@ -26,7 +26,7 @@
 #include "ProjectSetup.h"
 #include "ProjectResourceFilepaths.h"
 #include "ShaderProgram.h"
-#include "GenericVertexAttributeSet.h"
+
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
 #include "LightSource.h"

@@ -1,8 +1,8 @@
-//This started as the AssetLoadingDemo, but it morphed into now a noise-test demo
-//thing with light halo bleeding, before I added alpha really...
-
-//See header file for details
-//This file will most likely closely resemble the file "RenderProject1.cpp"
+//File:        AssetLoadingDemo.cpp
+//
+//
+//Programmer:  Forrest Miller
+//Date:        November 14, 2018
 
 
 

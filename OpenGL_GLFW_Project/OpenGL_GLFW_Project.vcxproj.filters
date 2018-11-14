@@ -315,9 +315,6 @@
     <ClCompile Include="AssetLoadingDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClCompile>
-    <ClCompile Include="MissingAsset.cpp">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
-    </ClCompile>
     <ClCompile Include="WavefrontObj.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClCompile>
@@ -335,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
+    </ClCompile>
+    <ClCompile Include="WavefrontMtl.cpp">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -610,9 +610,6 @@
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
-    <ClInclude Include="MissingAsset.h">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
-    </ClInclude>
     <ClInclude Include="GLFW_CallbackFunctions.h">
       <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
     </ClInclude>
@@ -738,6 +735,9 @@
     </ClInclude>
     <ClInclude Include="TeapotExplosionDemo_GenericVertexAttributeSet.h">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
+    </ClInclude>
+    <ClInclude Include="WavefrontMtl.h">
+      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

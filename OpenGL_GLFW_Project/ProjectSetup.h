@@ -64,7 +64,7 @@
 #include "ft2build.h"
 
 
-#include "AL/al.h"
+//#include "AL/al.h"
 
 
 //Move this to .cpp file?
