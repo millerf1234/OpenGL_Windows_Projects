@@ -172,9 +172,6 @@
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Lightsource">
-      <UniqueIdentifier>{a1e22b88-f253-4548-a540-ce8379c30e04}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\Common\Lightsource">
       <UniqueIdentifier>{f2596a4f-036e-477a-ad7f-32283bd83f0b}</UniqueIdentifier>
     </Filter>
@@ -189,9 +186,6 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
       <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Lightsource\HalfFinished">
-      <UniqueIdentifier>{243a2fb6-a4a8-40bf-b735-a594431277ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="SetupAndConfiguration\Debug">
       <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
@@ -217,6 +211,15 @@
     <Filter Include="Source Files\Utility\Math">
       <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DefaultAssets">
+      <UniqueIdentifier>{e31caeaf-6812-450e-a871-2c2ee1851b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotesAndReferences\mtl file Documentation">
+      <UniqueIdentifier>{28ec1685-e140-48bc-9c86-d371962effc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EntityComponents\Phong Shading Parameters">
+      <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Projects">
       <UniqueIdentifier>{428dca05-119d-462b-a72e-9ca33a9e091a}</UniqueIdentifier>
     </Filter>
@@ -225,6 +228,9 @@
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion">
       <UniqueIdentifier>{7d5d9106-18cd-47b2-90ee-d12747d28935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest">
+      <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\AssetLoading">
       <UniqueIdentifier>{83427107-e9aa-4c51-83bb-91ecd9565e65}</UniqueIdentifier>
@@ -235,14 +241,17 @@
     <Filter Include="Source Files\Projects\RenderDemos\LightsourceTest\Utility">
       <UniqueIdentifier>{2fade684-a0bc-4b6f-b10d-2dde435a0fc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest">
-      <UniqueIdentifier>{ce7e1745-9000-4832-922e-b094f020020d}</UniqueIdentifier>
+    <Filter Include="Source Files\Utility\Lightsource">
+      <UniqueIdentifier>{a1e22b88-f253-4548-a540-ce8379c30e04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\EntityComponents\PhongIllumination">
-      <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
+    <Filter Include="Source Files\Utility\Lightsource\HalfFinished">
+      <UniqueIdentifier>{243a2fb6-a4a8-40bf-b735-a594431277ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DefaultAssets">
-      <UniqueIdentifier>{e31caeaf-6812-450e-a871-2c2ee1851b5b}</UniqueIdentifier>
+    <Filter Include="Resource Files\Settings">
+      <UniqueIdentifier>{c34989ef-eb53-4289-a864-8cbdccf57ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\Parameters\ini_file_loading">
+      <UniqueIdentifier>{69d170b6-f9d0-4fab-ba3e-1ad85162bd93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +350,12 @@
     </ClCompile>
     <ClCompile Include="WavefrontMtl.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongShadingParameterSet.cpp">
+      <Filter>Source Files\EntityComponents\Phong Shading Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="ParameterInitializer.cpp">
+      <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -574,9 +589,6 @@
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
       <Filter>SetupAndConfiguration\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectResourceFilepaths.h">
-      <Filter>SetupAndConfiguration\Filepaths</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
@@ -745,11 +757,17 @@
     <ClInclude Include="WavefrontMtl.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
     </ClInclude>
-    <ClInclude Include="PhongIllumination.h">
-      <Filter>Source Files\EntityComponents\PhongIllumination</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultPhongIllumination.h">
       <Filter>Source Files\DefaultAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="PhongShadingParameterSet.h">
+      <Filter>Source Files\EntityComponents\Phong Shading Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="RelativeFilepathsToResources.h">
+      <Filter>SetupAndConfiguration\Filepaths</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterInitializer.h">
+      <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -761,15 +779,6 @@
     </None>
     <None Include="glfw3dll.exp">
       <Filter>Third Party\GLFW</Filter>
-    </None>
-    <None Include="TeapotExplosion.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
-    <None Include="TeapotExplosion.geom">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
-    <None Include="TeapotExplosion.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
       <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
@@ -785,9 +794,6 @@
     </None>
     <None Include="obj\SubdivisionCube.obj">
       <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
-    </None>
-    <None Include="ColorTransforms.frag">
-      <Filter>Resource Files\Shaders\Common\FragmentUtility</Filter>
     </None>
     <None Include="obj\Splines.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
@@ -846,9 +852,6 @@
     <None Include="obj\BlockShipSample_01.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
     </None>
-    <None Include="VertMath.vert">
-      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
-    </None>
     <None Include="obj\Spaceship.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
     </None>
@@ -861,15 +864,6 @@
     <None Include="obj\Pokemon.obj">
       <Filter>Resource Files\Models\OBJ\Sample\Pokemon</Filter>
     </None>
-    <None Include="ShaderNoiseFunctions.frag">
-      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
-    </None>
-    <None Include="LightsourceTestDemo.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
-    </None>
-    <None Include="LightsourceTestDemo.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
-    </None>
     <None Include="OpenAL\OpenAL32.dll">
       <Filter>Third Party\OpenAL</Filter>
     </None>
@@ -879,8 +873,35 @@
     <None Include="OpenAL\copyright">
       <Filter>Third Party\OpenAL</Filter>
     </None>
+    <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf">
+      <Filter>NotesAndReferences\mtl file Documentation</Filter>
+    </None>
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf">
-      <Filter>NotesAndReferences</Filter>
+      <Filter>NotesAndReferences\mtl file Documentation</Filter>
+    </None>
+    <None Include="Shaders\ColorTransforms.frag">
+      <Filter>Resource Files\Shaders\Common\FragmentUtility</Filter>
+    </None>
+    <None Include="Shaders\ShaderNoiseFunctions.frag">
+      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+    </None>
+    <None Include="Shaders\VertMath.vert">
+      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
+    </None>
+    <None Include="Shaders\LightsourceTestDemo.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
+    </None>
+    <None Include="Shaders\LightsourceTestDemo.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
+    </None>
+    <None Include="Shaders\TeapotExplosion.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+    </None>
+    <None Include="Shaders\TeapotExplosion.geom">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+    </None>
+    <None Include="Shaders\TeapotExplosion.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

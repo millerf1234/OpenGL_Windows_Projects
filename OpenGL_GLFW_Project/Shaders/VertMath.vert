@@ -6,6 +6,9 @@
 
 //NOTE: Read the GLSL rules! https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
 
+//Also useful for setting up transforms on Application side to
+//be passed in as uniforms: https://glm.g-truc.net/0.9.2/api/a00003.html
+
 #version 450 core
 
 

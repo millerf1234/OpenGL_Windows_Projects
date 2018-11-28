@@ -23,11 +23,15 @@ QuickObj::~QuickObj() {
 
 //This is a very quick and dirty implementation. Not clean
 void QuickObj::parseFile() {
+	//In case a line starting with vp is read (representing freeform geometry),
+	//we only need to print out a warning one time
+	bool printedFreeformWarning = false; 
 	size_t fileSize = mFile_->getNumberOfLines();
 	for (size_t i = 0; i < fileSize; i++) {
 		std::string line = mFile_->getLine(i);
 		const char * lineIter = line.c_str();
 
+		//Skip object tags, group tags and smooth group tags (because this is just the SimpleObj loader after all)
 		if ((*lineIter == 'o') || (*lineIter == 'g') || (*lineIter == 's')) {
 			continue;
 		}
@@ -51,6 +55,16 @@ void QuickObj::parseFile() {
 				eatWhitespace(lineIter);
 				loadLineIntoVertex(lineIter, mNormals_);
 			}
+			else if (*lineIter == 'p') {
+				if (!printedFreeformWarning) {
+					fprintf(MSGLOG, "\n\nWhoah! Freeform geometry data encountered! This is quite unexpected!\n"
+						"It looks like you are trying to load an Advanced OBJ file.\n"
+						"Unfortunately freeform geometry is not supported at this time...\n"
+						"\t  [All freeform geometry in this file will be skipped]\n");
+					printedFreeformWarning = true;
+				}
+				continue;
+			}
 			else {
 				fprintf(ERRLOG, "\nERROR parsing line %s\n", line.c_str());
 			}
@@ -67,7 +81,12 @@ void QuickObj::parseFile() {
 			mLines_.emplace_back(AssetLoadingInternal::Line(lineIter, true));
 		}
 		else if (*lineIter == 'm') {
-			//No material loading for now...
+			if (*(lineIter + 1u) == 'g') {
+				//It's a merging group, which we will skip
+			}
+			else {
+				//No material loading (for now)...
+			}
 			continue;
 		}
 		else if (*lineIter == 'u') { //Line probably is a "usemtl ____"  instruction

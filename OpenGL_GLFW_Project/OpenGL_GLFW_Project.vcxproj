@@ -158,6 +158,8 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
+    <ClCompile Include="ParameterInitializer.cpp" />
+    <ClCompile Include="PhongShadingParameterSet.cpp" />
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -288,10 +290,11 @@
     <ClInclude Include="OpenAL\efx-presets.h" />
     <ClInclude Include="OpenAL\efx.h" />
     <ClInclude Include="OpenAL_Init.h" />
-    <ClInclude Include="PhongIllumination.h" />
+    <ClInclude Include="ParameterInitializer.h" />
+    <ClInclude Include="PhongShadingParameterSet.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />
-    <ClInclude Include="ProjectResourceFilepaths.h" />
+    <ClInclude Include="RelativeFilepathsToResources.h" />
     <ClInclude Include="ProjectSetup.h" />
     <ClInclude Include="QuickObj.h" />
     <ClInclude Include="RenderDemoBase.h" />
@@ -312,20 +315,20 @@
     <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ColorTransforms.frag" />
     <None Include="freetype.dll" />
     <None Include="glfw3.dll" />
     <None Include="glfw3dll.exp" />
-    <None Include="LightsourceTestDemo.frag" />
-    <None Include="LightsourceTestDemo.vert" />
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
+    <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockShipSample_01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
     <None Include="obj\BlockThing_Triangulated.mtl" />
     <None Include="obj\ExperimentalEngine.mtl" />
-    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl" />
+    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
     <None Include="obj\Splines.mtl" />
@@ -334,11 +337,14 @@
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
-    <None Include="ShaderNoiseFunctions.frag" />
-    <None Include="TeapotExplosion.frag" />
-    <None Include="TeapotExplosion.geom" />
-    <None Include="TeapotExplosion.vert" />
-    <None Include="VertMath.vert" />
+    <None Include="Shaders\ColorTransforms.frag" />
+    <None Include="Shaders\LightsourceTestDemo.frag" />
+    <None Include="Shaders\LightsourceTestDemo.vert" />
+    <None Include="Shaders\ShaderNoiseFunctions.frag" />
+    <None Include="Shaders\TeapotExplosion.frag" />
+    <None Include="Shaders\TeapotExplosion.geom" />
+    <None Include="Shaders\TeapotExplosion.vert" />
+    <None Include="Shaders\VertMath.vert" />
     <None Include="obj\Engine2_Textured.mtl" />
   </ItemGroup>
   <ItemGroup>

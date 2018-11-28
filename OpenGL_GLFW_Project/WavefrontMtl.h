@@ -3,21 +3,16 @@
 //Description:                    Wrapper class for a '.mtl' file. More detailed description will be written 
 //                                once I have completed this class and have more time...
 //
-//Reference:                      (See the pdf under 'notes' for this project for the one on MTL files) 
-//                                https://www.ks.uiuc.edu/Research/vmd/vmd-1.8.7/ug/node86.html
+//Reference:                      http://paulbourke.net/dataformats/mtl/
 //
 // 
 //Programmer:                     Forrest Miller
 //Date:                           November 14, 2018
 //
-//Notes:               -Based off an entire minute of in-depth internet research, it appears as though the
-//                        default value various Phong implementations assign to Shiny is 30. to 40. 
-//                        Shiny Represents the size of the specular reflection, with smaller numbers 
-//                        representing a larger specular angle (diameter?)
 //                        
 
 
-//Here are some sample material files:
+//Here are some sample materials that could exist in a file:
 /*
 newmtl flatwhite
 Ka  0.5000  0.5000  0.5000
@@ -45,32 +40,56 @@ Tr 0.4300
 #define WAVEFRONT_MTL_H_
 
 //#include "LoggingMessageTargets.h"
-#include "AssetInterface.h"   //Abstract base class for loadable assets
-#include "AsciiAsset.h"       //For loading the asset
+#include "AssetInterface.h"                  //Abstract base class for loadable assets
+#include "AsciiAsset.h"                      //For loading the asset
+#include "PhongShadingParameterSet.h"               
+#include "DefaultPhongIllumination.h"
 
 #include <array>
 #include <optional>           //Used to represent optional types, requires C++17 
 
-enum class MTL_ILLUM_MODEL { };
+//                           //These illumination models were gather from: https://en.wikipedia.org/wiki/Wavefront_.obj_file#Basic_materials
+enum class MTL_ILLUM_MODEL { COLOR_ON_AND_AMBIENT_OFF,                                                 //illum 0
+							 COLOR_ON_AND_AMBIENT_ON,                                                  //illum 1
+	                         HIGHLIGHT_ON,                                                             //illum 2
+	                         REFLECTION_ON_AND_RAYTRACE_ON,                                            //illum 3
+	                         GLASS_TRANSPARENCY_ON_AND_RAYTRACE_REFLECTION_ON,                         //illum 4
+	                         FRESNEL_REFLECTION_ON_AND_RAYTRACE_ON,                                    //illum 5
+	                         REFRACTION_TRANSPARENCY_ON_AND_FRESNEL_REFLECTION_OFF_AND_RAYTRACE_ON,    //illum 6
+	                         REFRACTION_TRANSPARENCY_ON_AND_FRESNEL_REFLECTION_ON_AND_RAYTRACE_ON,     //illum 7
+	                         REFLECTION_ON_AND_RAYTRACE_OFF,                                           //illum 8
+	                         GLASS_TRANSPARENCY_ON_AND_RAYTRACE_REFLECTION_OFF,                        //illum 9
+	                         CASTS_SHADOWS_ONTO_INVISIBLE_SURFACES,                                    //illum 10
+	                         UNRECOGNIZED_ILLUM_MODEL                                                  //illum 11+
 
-class WavefrontMtl final : public AssetInterface {
+};
+
+
+//Use an array as a quick lookup table for when parsing illumination models.
+//This way illum 0 is at index 0, illum 1 is at index 1, and so on... 
+static const std::array<MTL_ILLUM_MODEL, 12> ILLUM_MODEL = { MTL_ILLUM_MODEL::COLOR_ON_AND_AMBIENT_OFF,
+															 MTL_ILLUM_MODEL::COLOR_ON_AND_AMBIENT_ON,
+															 MTL_ILLUM_MODEL::HIGHLIGHT_ON,
+															 MTL_ILLUM_MODEL::REFLECTION_ON_AND_RAYTRACE_ON,
+															 MTL_ILLUM_MODEL::GLASS_TRANSPARENCY_ON_AND_RAYTRACE_REFLECTION_ON,
+															 MTL_ILLUM_MODEL::FRESNEL_REFLECTION_ON_AND_RAYTRACE_ON,
+															 MTL_ILLUM_MODEL::REFRACTION_TRANSPARENCY_ON_AND_FRESNEL_REFLECTION_OFF_AND_RAYTRACE_ON,
+															 MTL_ILLUM_MODEL::REFRACTION_TRANSPARENCY_ON_AND_FRESNEL_REFLECTION_ON_AND_RAYTRACE_ON,
+															 MTL_ILLUM_MODEL::REFLECTION_ON_AND_RAYTRACE_OFF,
+															 MTL_ILLUM_MODEL::GLASS_TRANSPARENCY_ON_AND_RAYTRACE_REFLECTION_OFF,
+															 MTL_ILLUM_MODEL::CASTS_SHADOWS_ONTO_INVISIBLE_SURFACES,
+															 MTL_ILLUM_MODEL::UNRECOGNIZED_ILLUM_MODEL };
+                                                             
+
+
+class WavefrontMtlLoader final : public AssetInterface {
 public:
-	//Constructs a default material object. This object will get it's characteristics set to  
-	//default material values, which will be very basic but will be complete enough
-	//to allow objects with this material to still be rendered well enough. The default material
-	//has no specular component, only ambient and diffuse. 
-	WavefrontMtl();
-	//Constructs a basic material with a color scheme matching the specified colors (or something close enough).
-	//Will have ambient, diffuse and specular components. Red, Green and Blue values will be clamped to be in the 
-	//range [0.0, 1.0].
-	WavefrontMtl(float red, float green, float blue, float shiny = 40.0f);
-	//Constructs a basic material with only an ambient component matching this constructors parameters. This means
-	//diffuse and specular will both be set to all zeros. 
-	WavefrontMtl(std::array<float, 3> kAmbient);
-	WavefrontMtl(std::array<float, 3> kAmbient, std::array<float, 3> kDiffuse);
-	WavefrontMtl(std::array<float, 3> kAmbient, std::array<float, 3> kDiffuse, std::array<float, 3> kSpecular);
-	WavefrontMtl(const char * mtlFile);
-	virtual ~WavefrontMtl() override;
+	//Constructs a WavefrontMtl object. The object will be valid and will have its 
+	//data set to match the default phong illumination preset. 
+	//WavefrontMtlLoader();
+	
+	//WavefrontMtlLoader(const char * mtlFile);
+	//virtual ~WavefrontMtlLoader() override;
 
 	//Returns the name of the material. This name is either:
 	//	(i) a statically assigned name given by the application for self-generated materials
@@ -88,8 +107,9 @@ private:
 	std::unique_ptr<AssetLoadingInternal::AsciiAsset> mMtlFile_;
 
 	
+	
 
-	//std::unique_ptr<PhongIllum> 
+	
 
 };
 

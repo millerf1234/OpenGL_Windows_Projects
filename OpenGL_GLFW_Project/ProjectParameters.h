@@ -41,4 +41,4 @@ static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 
 
-#endif //defizne PROJECT_PARAMETERS_H_
+#endif //PROJECT_PARAMETERS_H_

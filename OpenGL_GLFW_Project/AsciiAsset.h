@@ -71,8 +71,8 @@ namespace AssetLoadingInternal {
 		//-------------------------------------------------------
 
 		//Creates an empty AsciiAsset object. The created object will be treated as
-		//an asset which was constructed with an invalid filepath and this objects
-		//stored string copy of the filetext will be empty. 
+		//an asset which was constructed with an invalid filepath and this object's
+		//stored string copy of the filetext will be an empty string. 
 		AsciiAsset();
 
 		//Creates an AsciiAsset object based off the provided filepath. On

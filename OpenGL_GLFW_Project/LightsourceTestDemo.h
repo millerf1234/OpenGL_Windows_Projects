@@ -33,7 +33,7 @@
 #include "MathFunctions.h"
 //#include "GLFW_Init.h"
 #include "ProjectSetup.h"
-#include "ProjectResourceFilepaths.h"
+#include "RelativeFilepathsToResources.h" //Contains asset filepath locations
 #include "ShaderProgram.h"
 #include "RenderDemoBase.h"
 #include "LightsourceTest.h"

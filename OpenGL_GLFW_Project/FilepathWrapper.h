@@ -21,16 +21,11 @@
 #include <sstream>
 #include <algorithm>
 
-//This statement will never come into play on my computer, but
-//will hopefully increase portability if project is moved to a
-//pre-C++17 project
-#if !(defined __has_include)
+//For pre-CPP17 compilers, give the macro __has_include a definition if none currently exists
+#ifndef __has_include
 #define __has_include(x) false
 #endif
 
-#if FALSE
-test
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //A new addition to C++17 is the Pre-Processor extension '__has_include()'
@@ -86,8 +81,8 @@ public:
 private:
 	std::string mPath_;
 	bool mFileExists_;
-	std::string mExtension_;
-	bool mExtensionExists_;
+	std::string mExtension_; //The ".xxxx" at the end of a filepath (does not necessarily exist for all filepaths)
+	bool mExtensionExists_;  
 
 
 	/////////////////////////////////

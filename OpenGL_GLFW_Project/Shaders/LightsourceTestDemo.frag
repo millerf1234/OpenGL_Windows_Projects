@@ -142,7 +142,15 @@ void main() {
 		color.r *= 0.15;
 		color.b = color.r / color.g;
 		break;
-
+	case(8):
+		vec4 color1 = vec4(max(vec3(length(lightPosition)*vec3(1.0)), vec3(length(lightColor)*vec3(1.0))), 1.0);
+		color = vec4(50.0*cnoise(color1), 20.0*(cnoise(color1)+0.85+0.5*cos(time)), 3.0*cos(time)*cnoise(color1), 2.0*length(lightPosition)*cos(time));
+		if (int(sign(colorShift)) < 0) {
+			color = vec4(vec3(2.0) - 2.0*color.rgb, 0.75 + 0.25*sin(time / 3.0));
+			color.g = 3.0*dFdx(3.0*color.g - 5.0*color.r);
+			color.r = noise(vec2((1.0/30.0) * abs((floor(30.0*cos(time) + color.r/color.b-dFdx(color.g)))), color.r));
+		}
+		break;
 	default:
 		color = vec4(fbm(vec2(lightPosition.x, lightPosition.y)), fbm(vec2(lightColor.x, lightColor.y)), lightColor.z, 1.0);
 		break;

@@ -111,17 +111,19 @@ void LightsourceTestDemo::loadAssets() {
 void LightsourceTestDemo::loadShaders() {
 	fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
+	std::string shadersRFP = FILEPATH_TO_SHADERS;   //shaders Relative Filepath
+
 	lightSourceShader = std::make_unique<ShaderProgram>();
 
-	lightSourceShader->attachVert("LightsourceTestDemo.vert");
+	lightSourceShader->attachVert((shadersRFP + std::string("LightsourceTestDemo.vert")).c_str());
 
 
-	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>("ShaderNoiseFunctions.frag");
+	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( (shadersRFP + std::string("ShaderNoiseFunctions.frag") ).c_str() );
 	noiseShader->makeSecondary();
 
 	lightSourceShader->attachSecondaryFrag(noiseShader.get());
 
-	lightSourceShader->attachFrag("LightsourceTestDemo.frag");
+	lightSourceShader->attachFrag((shadersRFP + std::string("LightsourceTestDemo.frag")).c_str());
 
 	lightSourceShader->link();
 	if (lightSourceShader->checkIfLinked()) {
@@ -190,7 +192,7 @@ void LightsourceTestDemo::loadModels() {
 
 	glEnableVertexArrayAttrib(vao, 0); //Requires OpenGl 4.5 or newer, allows VAO to be specified as param
 	//								   //glEnableVertexAttribArray(0);  //Since OpenGl 2.0, will use whatever VAO is bound globally to context
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6u) * sizeof(GLfloat), (GLvoid*)0u);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6u) * sizeof(GLfloat), static_cast<GLvoid*>(0u));
 
 
 	glEnableVertexArrayAttrib(vao, 1);
@@ -352,7 +354,9 @@ void LightsourceTestDemo::changeNoiseType() {
 	else if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
 		noiseFunctionToUse = 8;
 	}
-
+	else if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+		noiseFunctionToUse = 9;
+	}
 }
 
 void LightsourceTestDemo::togglePipelineEffects() {

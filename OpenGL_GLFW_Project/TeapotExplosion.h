@@ -19,7 +19,7 @@
 #include "GLFW_Init.h"
 #include "ProjectSetup.h"
 
-#include "ProjectResourceFilepaths.h"
+#include "RelativeFilepathsToResources.h" //Contains asset filepath locations
 
 #include "ShaderProgram.h"
 #include "TeapotExplosionDemo_GenericVertexAttributeSet.h"

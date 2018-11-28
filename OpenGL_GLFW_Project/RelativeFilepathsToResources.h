@@ -11,15 +11,24 @@
 
 #pragma once
 
-#ifndef PROJECT_RESOURCE_FILEPATHS_H_
-#define PROJECT_RESOURCE_FILEPATHS_H_
+#ifndef RELATIVE_FILEPATHS_TO_RESOURCES_H_
+#define RELATIVE_FILEPATHS_TO_RESOURCES_H_
 
 
 #include "ProjectSetup.h" //To get access to GL types
 
 ///////////////////////////////
+//  Settings                      [i.e. Parameters For Initialization] 
+///////////////////////////////
+static const char * FILEPATH_TO_SETTINGS = R"(Settings\)";  //Raw String
+
+
+
+
+///////////////////////////////
 //  MODELS 
 ///////////////////////////////
+static const char * FILEPATH_TO_MODELS = R"(obj\)";  //Raw String
 
 
 
@@ -27,8 +36,8 @@
 ///////////////////////////////
 //  FONTS
 ///////////////////////////////
+static const char * FILEPATH_TO_FONTS = R"(Fonts\)";  //Raw String
 
-static const char * font_path = "Fonts\\Roboto-Black.ttf";
 
 
 
@@ -36,13 +45,21 @@ static const char * font_path = "Fonts\\Roboto-Black.ttf";
 ///////////////////////////////
 /////  Shaders
 ///////////////////////////////
-
-static const GLchar * VERT_PASSTHROUGH2D = "passthrough2D.vert";
-static const GLchar * VERT_PASSTHROUGH3D = "passthrough3D.vert";
-static const GLchar * FRAG_CONSTANTCOLOR = "constantcolor.frag";
+static const char * FILEPATH_TO_SHADERS = R"(Shaders\)";  //Raw String
 
 
 
 
 
-#endif //PROJECT_RESOURCE_FILEPATHS_H_
+///////////////////////////////
+/////  Images
+///////////////////////////////
+
+
+
+
+
+
+
+
+#endif //RELATIVE_FILEPATHS_TO_RESOURCES_H_

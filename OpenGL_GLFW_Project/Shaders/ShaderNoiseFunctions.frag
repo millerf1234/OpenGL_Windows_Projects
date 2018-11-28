@@ -685,7 +685,7 @@ float snoise(vec2 v) {
 
 
 #ifndef NUM_OCTAVES
-#define NUM_OCTAVES 5
+#define NUM_OCTAVES 10
 #endif 
 
 	float fbm(float x) {

@@ -66,6 +66,8 @@ private:
 	std::vector<Vertex> mPositions_;
 	std::vector<Vertex> mTexCoords_;
 	std::vector<Vertex> mNormals_;
+	//This fourth type is probably very rare and won't ever be encountered...
+	//std::vector<Vertex> mFreeformGeometryCoords_; //If line is of format "vp u v w\n", then it is freeform geometry.
 
 	void parseFile();
 	//void preparseFile();

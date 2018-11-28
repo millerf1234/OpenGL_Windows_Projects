@@ -10,11 +10,11 @@
 
 
 
-WavefrontMtl::WavefrontMtl() : AssetInterface() {
+//WavefrontMtl::WavefrontMtl() : AssetInterface() {
 
-}
+//}
 
 
-WavefrontMtl::~WavefrontMtl() {
+//WavefrontMtl::~WavefrontMtl() {
 
-}
+//}

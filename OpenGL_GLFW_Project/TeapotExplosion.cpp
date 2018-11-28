@@ -103,16 +103,21 @@ void TeapotExplosion::loadAssets() {
 
 
 void TeapotExplosion::loadShaders() {
+	
 	fprintf(MSGLOG, "\nInitializing Shaders!\n");
+	std::string shadersRFP = FILEPATH_TO_SHADERS;  //shadersRelativeFilePath
+
 	sceneShader = std::make_unique<ShaderProgram>();
 
 	//There is just 1 pipeline here to build. Here is the pipeline
 	fprintf(MSGLOG, "Assembling the main shader for the scene...\n");
+
+
 	//---------------------------
 	//    (VERTEX STAGE)
 	// Attach a helper shader containing some useful functions
 	fprintf(MSGLOG, "\nAttaching secondary helper vertex shader!\n");
-	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>("VertMath.vert");
+	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>( (shadersRFP + std::string("VertMath.vert") ).c_str());
 	if (!vertHelper)
 		return;
 	vertHelper->makeSecondary();
@@ -120,7 +125,7 @@ void TeapotExplosion::loadShaders() {
 	//Attach the primary vertex shader
 	fprintf(MSGLOG, "\nAttaching main vertex shader!\n");
 	//sceneShader->attachVert("TeapotExplosion.vert");
-	std::unique_ptr<ShaderInterface::VertexShader> mainVert = std::make_unique<ShaderInterface::VertexShader>("TeapotExplosion.vert");
+	std::unique_ptr<ShaderInterface::VertexShader> mainVert = std::make_unique<ShaderInterface::VertexShader>( (shadersRFP + std::string("TeapotExplosion.vert")).c_str() );
 	if (!mainVert)
 		return;
 	sceneShader->attachVert(mainVert.get());
@@ -130,7 +135,7 @@ void TeapotExplosion::loadShaders() {
 	//     (Geometry Stage) 
 	// Attach the primary geometry shader to the pipeline. (This is where the explosion happens)
 	fprintf(MSGLOG, "\nAttaching geometry shader!\n");
-	sceneShader->attachGeom("TeapotExplosion.geom");
+	sceneShader->attachGeom( (shadersRFP + std::string("TeapotExplosion.geom")).c_str() );
 	//--------------------------
 
 
@@ -138,7 +143,7 @@ void TeapotExplosion::loadShaders() {
 	//     (Fragment Stage)
 	// Attach the primary Fragment Shader to the pipeline
 	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
-	sceneShader->attachFrag("TeapotExplosion.frag");
+	sceneShader->attachFrag( (shadersRFP + std::string("TeapotExplosion.frag")).c_str() );
 	fprintf(MSGLOG, "\nAttempting to link program!\n");
 	//---------------------------
 
@@ -153,6 +158,9 @@ void TeapotExplosion::loadShaders() {
 		std::cin.get(); //Hold the window open if there was an error
 	}
 }
+
+
+
 
 void TeapotExplosion::loadTeapot() {
 

@@ -5,7 +5,7 @@
 //
 //Description:                Defines a default Phong Illumination object.
 //
-//
+//Date:                       November 14, 2018
 
 
 #pragma once
@@ -14,7 +14,7 @@
 #ifndef DEFAULT_PHONG_ILLUMINATION_H_
 #define DEFAULT_PHONG_ILLUMINATION_H_
 
-#include "PhongIllumination.h"
+#include "PhongShadingParameterSet.h"
 
 
 inline static constexpr const float PHONG_DEFAULT_AMBIENT_R = 0.25f;
@@ -39,7 +39,7 @@ inline static constexpr const std::array<float, 3> PHONG_DEFAULT_SPECULAR = { PH
 
 
 
-static const PhongIlluminationWeights DEFAULT_PHONG_WEIGHTS(PHONG_DEFAULT_AMBIENT, PHONG_DEFAULT_DIFFUSE, PHONG_DEFAULT_SPECULAR, PHONG_DEFAULT_SHINY);
+static const PhongShadingParameterSet DEFAULT_PHONG_ILLUMINATION(PHONG_DEFAULT_AMBIENT, PHONG_DEFAULT_DIFFUSE, PHONG_DEFAULT_SPECULAR, PHONG_DEFAULT_SHINY);
 
 
 #endif //DEFAULT_PHONG_ILLUMINATION_H_
