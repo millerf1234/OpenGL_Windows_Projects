@@ -20,13 +20,39 @@ void AssetLoadingDemo::initialize() {
 	//Set the starting input primitive type
 	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
+
+	//Set values for screen projection 
+	fov = 56.0f;
+	screenHeight = 2160.0f;
+	screenWidth = 3840.0f;
+	zNear = 0.5f;
+	zFar = 100.0f;
+	//Compute the screen -projection matrix
+	//perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
+	//see: https://gamedev.stackexchange.com/questions/98226/how-can-i-set-up-an-intuitive-perspective-projection-view-matrix-combination-in
+	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
+
+	//Set values for view matrix
+	cameraPos = glm::vec3(0.0f, 0.0f, 5.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
+	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+	//Compute view matrix
+	view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
+
+	//Set values for Rotation Uniforms
 	head = 0.0f;
 	pitch = 0.0f;
 	roll = 0.0f;
-	//xRotation = 180.0f;
-	//yRotation = 0.0f;
-	//zRotation = 0.0f;
-	zoom = 2.0f; //Higher number means farther away
+	//Calculate rotation matrix
+	rotation = glm::mat4(1.0f);    //Set rotation matrix to 4x4 identity matrix
+
+	//Keep an extra zoom parameter
+	zoom = 1.0f; //Higher number means farther away
+
+	
+	
+
+
 
 	//Set initial background color
 	backgroundColor = glm::vec3(0.25f, 0.5f, 0.75f);
@@ -108,10 +134,16 @@ void AssetLoadingDemo::loadShaders() {
 	sceneShader->attachVert(shadersRFP + std::string("AssetLoadingDemo.vert")); //Attach Vertex shader to scene
 	sceneShader->attachFrag(shadersRFP + std::string("AssetLoadingDemo.frag")); //Attach Fragment shader to scene
 
-	//Create and attach a secondary fragment shader containing implementations for some noise functions
-	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.frag"));
-	noiseShader->makeSecondary();
-	sceneShader->attachSecondaryFrag(noiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
+	// [Each shader stage requires its own set of functions]
+	//Create and attach a secondary vertex shader containing implementations for some noise functions
+	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader = std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+	vertexNoiseShader->makeSecondary();
+	sceneShader->attachSecondaryVert(vertexNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
+
+	//Create and attach a secondary fragment shader containing implementations for some noise functions 
+	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader = std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+	fragmentNoiseShader->makeSecondary();
+	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
 
 
 	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
@@ -140,20 +172,20 @@ void AssetLoadingDemo::loadModels() {
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to location of Model Files
 
 	//Initial Scale values for the objects
-	float blockThing_QuadsScale = 6.2f;
+	float blockThing_QuadsScale = 4.2f;
 	float beveledCubeScale = 5.0f;
 	float blockShipScale = 4.5f;
 	float subdivisionCubeScale = 4.9f;
 	float abstractShapeScale = 2.0f;
 
 	//Load some models
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", beveledCubeScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "MultiPrimitiveTest.obj", 1.2f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
 	fprintf(MSGLOG, "\n%u models have been loaded.\n", sceneObjects.size());
 
@@ -373,7 +405,7 @@ void AssetLoadingDemo::updateUniforms() {
 	if (!sceneShader)
 		return;
 
-	sceneShader->use();
+	sceneShader->use(); 
 
 	//glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
@@ -384,46 +416,16 @@ void AssetLoadingDemo::updateUniforms() {
 	rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
 	sceneShader->uniforms->updateUniformMat4x4("rotation", &rotation);
 
-
-	//lightSourceShader->use();
-
-	//Vertex Shader Uniforms:
-	//lightSourceShader->uniforms->updateUniform1f("distanceToCamera", 0.5f + 0.45f*sin(counter));
-	//glm::mat4 identity(1.0);
-	//counter *= 25.0f;
-	//glm::mat4 transform(cos(counter), sin(counter), 0.0f, 0.0f, -sin(counter), cos(counter), 0.0f, 0.0f*sin(counter), 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0f, 0.0f, 1.0f);
-	
-	
-	//counter = counter / 24.0f;
-
+	glm::mat4 MVP;
+	//if (frameNumber % 120ull < 60ull) {
+		MVP = perspective * (view * (rotation));
+	//}
+	//else {
+	//	MVP = rotation;
+	//}
+	sceneShader->uniforms->updateUniformMat4x4("MVP", &MVP);
 	
 
-	//Geometry Shader Uniforms:
-	//lightSourceShader->uniforms->updateUniform1f("time", 3.0f*counter);
-	//lightSourceShader->uniforms->updateUniform1f("zoom", 1.0f);
-	//lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", 0);
-	//lightSourceShader->uniforms->updateUniform1i("noiseResolution", 500);
-	//lightSourceShader->uniforms->updateUniform1f("instabilityFactor", 2.0f);
-
-	//Fragment Shader Uniforms:
-	//lightSourceShader->uniforms->updateUniform1i("", );
-	//lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", noiseFunctionToUse);
-	//lightSourceShader->uniforms->updateUniform1i("noiseResolution", noiseResolution);
-
-
-	//sceneShader->use();
-	//Update uniform locations
-	//sceneShader->uniforms->updateUniform1f("zoom", zoom);//1.7f + counter);
-	//sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
-
-	////Uniforms for the geometry shader effect
-	//sceneShader->uniforms->updateUniform1i("level", 1);                    //tweak this value as needed
-	//sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);  //tweak this value as needed
-	//sceneShader->uniforms->updateUniform1f("velocityScale", 1.0f);        //tweak this value as needed
-
-	//sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
-	//sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
-	//sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
 }
 
 void AssetLoadingDemo::drawVerts() {
@@ -622,7 +624,7 @@ void AssetLoadingDemo::addObjectWithMissingNormals(std::vector<std::unique_ptr<Q
 		v1 = glm::vec3(*(triangleStart +  6u), *(triangleStart +  7u), *(triangleStart +  8u));
 		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u));
 
-		computedNormal = MeshFunc::computeVertexNormalsForTriangle(v0, v1, v2);
+		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
 
 		for (int i = 0; i < 3; i++) {
@@ -667,7 +669,7 @@ void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::
 		v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart +  6u));
 		v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u));
 
-		computedNormal = MeshFunc::computeVertexNormalsForTriangle(v0, v1, v2);
+		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
 		for (int i = 0; i < 3; i++) {
 			sceneBuffer.push_back(objPos.x + *(triangleStart + (i)));       //x

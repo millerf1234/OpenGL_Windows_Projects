@@ -15,12 +15,13 @@
 #include <functional> //For std::bind
 #include <random>
 
+#include "FloatingPointTolerance.h"  //for constant FP_TOLERANCE for use with floating point calculations
 #include "ProjectSetup.h" //for glm
 
 namespace MathFunc {
 
 	//Computes a 3x3 rotation matrix from 3 floating-point parameters. This matrix is vulnerable to 
-	//Gimble-Lock
+	//Gimble-Lock. 
 	static inline glm::mat3x3 computeRotationMatrix3x3(float head, float pitch, float roll) {
 		return glm::mat3x3( 
 			cos(roll)*cos(head)-sin(roll)*sin(pitch)*sin(head),

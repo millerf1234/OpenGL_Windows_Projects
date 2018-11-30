@@ -16,18 +16,23 @@ out vec3 normal;
 uniform float zoom;
 uniform float time;
 uniform mat4 rotation;
-//uniform mat4 transform;
 
+uniform mat4 MVP;
 
 void main() {
 
 	//Keep things very simple for now...
 	position = ModelPosition + vec4(0.0, 0.0, 0.0, zoom);
+	position.y *= 1.5;
 
 	texCoord = ModelTexCoord;
 
-	normal = ModelNormal;
+	//Normally a seperate matrix is needed for transforming the normal vectors. However since here all that is being done is a rotation,
+	//which is an orthoganol transform, it is fine to just use it for the normals
+	normal = mat3(rotation) * ModelNormal;
 
 
-	gl_Position = rotation * position;
+	gl_Position = MVP * position;
+	//gl_Position = rotation * position;
+	
 }

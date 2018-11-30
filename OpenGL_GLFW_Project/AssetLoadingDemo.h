@@ -69,10 +69,16 @@ private:
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
 	std::vector<GLfloat> sceneBuffer;
 
-	//Asset Transformation information
-	//float xRotation, yRotation, zRotation;
+	//View parameters
+	glm::vec3 cameraPos;
+	glm::vec3 lookAtOrgin;
+	glm::vec3 upDirection;
+	//Projection parameters
+	float fov, screenHeight, screenWidth, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
+	//Shader Uniforms
 	glm::mat4 rotation;
-	glm::mat4 proj;
+	glm::mat4 view;
+	glm::mat4 perspective; //Computes from Projection parameters
 	float head, pitch, roll;
 	float zoom;
 	

@@ -118,7 +118,7 @@ void LightsourceTestDemo::loadShaders() {
 	lightSourceShader->attachVert(shadersRFP + std::string("LightsourceTestDemo.vert"));
 
 
-	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( shadersRFP + std::string("ShaderNoiseFunctions.frag") );
+	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( shadersRFP + std::string("ShaderNoiseFunctions.glsl") );
 	noiseShader->makeSecondary();
 
 	lightSourceShader->attachSecondaryFrag(noiseShader.get());

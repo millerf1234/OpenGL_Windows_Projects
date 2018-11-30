@@ -29,6 +29,11 @@
 //           be stored within a vertex of its respective type will set all of 
 //           its extra components to 0.0f
 //
+//        - This class has the option to have its floating point tolerance 
+//           tweaked to be a value seperate from the global constant FP_TOLERANCE. 
+//           This value is a static value shared across all instances of this class,
+//           so be aware of potential side-effects when modifying the 
+//
 // October 13-21, 2018
 // Forrest Miller
 
@@ -37,16 +42,18 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
-static constexpr float INITAL_FLOATING_POINT_TOLERANCE = 0.0000001f;
+#include <array>
+#include <cmath>
+
+#include "FloatingPointTolerance.h"
+
 static constexpr size_t VERTEX_SIZE = 4u; 
 static constexpr size_t PTN_VERTEX_SIZE = 3u + 2u + 3u;
 static constexpr size_t FULL_VERTEX_SIZE = 3u*VERTEX_SIZE;
 static constexpr size_t EXTENDED_VERTEX_SIZE = 6u*VERTEX_SIZE; 
 
-#include <array>
-#include <cmath>
 
-static float fpTolerance = INITAL_FLOATING_POINT_TOLERANCE; //Floating point tolerance (used in comparing equality)
+static float fpTolerance = FP_TOLERANCE; //Floating point tolerance (used in comparing equality)
 
 //To simplify logic and reduce unnecessary copying, the following three classes are 
 //forward declared so that they can be made friends of the Vertex class.

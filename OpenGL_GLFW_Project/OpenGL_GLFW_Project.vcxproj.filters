@@ -151,9 +151,6 @@
     <Filter Include="Resource Files\Shaders\Common">
       <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Common\FragmentUtility">
-      <UniqueIdentifier>{68849a5e-e5a2-496c-ac9e-5d69b7427bfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\Common\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
     </Filter>
@@ -258,6 +255,9 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShape">
       <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
+      <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -781,6 +781,9 @@
     <ClInclude Include="MeshFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
     </ClInclude>
+    <ClInclude Include="FloatingPointTolerance.h">
+      <Filter>Source Files\Utility\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -885,12 +888,6 @@
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf">
       <Filter>NotesAndReferences\mtl file Documentation</Filter>
     </None>
-    <None Include="Shaders\ColorTransforms.frag">
-      <Filter>Resource Files\Shaders\Common\FragmentUtility</Filter>
-    </None>
-    <None Include="Shaders\ShaderNoiseFunctions.frag">
-      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
-    </None>
     <None Include="Shaders\VertMath.vert">
       <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
     </None>
@@ -923,6 +920,12 @@
     </None>
     <None Include="obj\AbstractShape.obj">
       <Filter>Resource Files\Models\OBJ\Sample\AbstractShape</Filter>
+    </None>
+    <None Include="Shaders\ColorTransforms.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility</Filter>
+    </None>
+    <None Include="Shaders\ShaderNoiseFunctions.glsl">
+      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

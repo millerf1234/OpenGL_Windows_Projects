@@ -190,6 +190,7 @@
     <ClInclude Include="DefaultPhongIllumination.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="FilepathWrapper.h" />
+    <ClInclude Include="FloatingPointTolerance.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="freetype\config\ftconfig.h" />
     <ClInclude Include="freetype\config\ftheader.h" />
@@ -344,7 +345,7 @@
     <None Include="Shaders\ColorTransforms.frag" />
     <None Include="Shaders\LightsourceTestDemo.frag" />
     <None Include="Shaders\LightsourceTestDemo.vert" />
-    <None Include="Shaders\ShaderNoiseFunctions.frag" />
+    <None Include="Shaders\ShaderNoiseFunctions.glsl" />
     <None Include="Shaders\TeapotExplosion.frag" />
     <None Include="Shaders\TeapotExplosion.geom" />
     <None Include="Shaders\TeapotExplosion.vert" />
