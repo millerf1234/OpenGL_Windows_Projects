@@ -29,7 +29,7 @@
 //  Programmer:       Forrest Miller
 //  Date(s):      
 //       Created:     October 15, 2018
-//   Version 1.0:     October 23, 2018
+//   Version 0.1:     October 23, 2018
 
 #pragma once
 

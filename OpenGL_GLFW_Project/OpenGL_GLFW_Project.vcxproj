@@ -157,6 +157,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="ParameterInitializer.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
+    <ClInclude Include="MeshFunctions.h" />
     <ClInclude Include="OpenAL\al.h" />
     <ClInclude Include="OpenAL\alc.h" />
     <ClInclude Include="OpenAL\alext.h" />
@@ -322,7 +324,7 @@
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\BeveledCube.mtl" />
-    <None Include="obj\BlockShipSample_01.mtl" />
+    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
     <None Include="obj\BlockThing_Triangulated.mtl" />
     <None Include="obj\ExperimentalEngine.mtl" />
@@ -337,6 +339,8 @@
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
+    <None Include="Shaders\AssetLoadingDemo.frag" />
+    <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
     <None Include="Shaders\LightsourceTestDemo.frag" />
     <None Include="Shaders\LightsourceTestDemo.vert" />
@@ -391,9 +395,11 @@
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
     </None>
-    <None Include="obj\BlockShipSample_01.obj">
+    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.obj">
       <FileType>Document</FileType>
-      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\AbstractShape.obj">
+      <FileType>Document</FileType>
     </None>
     <Object Include="obj\Engine2_Textured.obj">
       <SubType>Designer</SubType>
@@ -441,6 +447,16 @@
   <ItemGroup>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="obj\BeveledCube.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_emissive.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_glossiness.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_normal_map.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_roughness.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_Specular.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_SpecularTint.png" />
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png" />
     <Image Include="obj\RocketEngine_UV.png" />
   </ItemGroup>
   <ItemGroup>

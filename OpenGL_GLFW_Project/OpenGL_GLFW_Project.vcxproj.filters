@@ -145,9 +145,6 @@
     <Filter Include="Resource Files\Models\OBJ\Spaceships\Test">
       <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShip01">
-      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Spaceships\StarSuzerian">
       <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
     </Filter>
@@ -253,6 +250,15 @@
     <Filter Include="SetupAndConfiguration\Parameters\ini_file_loading">
       <UniqueIdentifier>{69d170b6-f9d0-4fab-ba3e-1ad85162bd93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader">
+      <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
+      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShape">
+      <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -324,9 +330,6 @@
     <ClCompile Include="Line.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
     </ClCompile>
-    <ClCompile Include="QuickObj.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClCompile>
     <ClCompile Include="AssetLoadingDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClCompile>
@@ -356,6 +359,12 @@
     </ClCompile>
     <ClCompile Include="ParameterInitializer.cpp">
       <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickObj.cpp">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFunctions.cpp">
+      <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -622,9 +631,6 @@
     <ClInclude Include="Line.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
     </ClInclude>
-    <ClInclude Include="QuickObj.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClInclude>
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
@@ -769,6 +775,12 @@
     <ClInclude Include="ParameterInitializer.h">
       <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
     </ClInclude>
+    <ClInclude Include="QuickObj.h">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFunctions.h">
+      <Filter>Source Files\Utility\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -846,12 +858,6 @@
     <None Include="obj\BlockThing_Triangulated01.obj">
       <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
     </None>
-    <None Include="obj\BlockShipSample_01.mtl">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
-    </None>
-    <None Include="obj\BlockShipSample_01.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShip01</Filter>
-    </None>
     <None Include="obj\Spaceship.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
     </None>
@@ -902,6 +908,21 @@
     </None>
     <None Include="Shaders\TeapotExplosion.vert">
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+    </None>
+    <None Include="Shaders\AssetLoadingDemo.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+    </None>
+    <None Include="Shaders\AssetLoadingDemo.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+    </None>
+    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </None>
+    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </None>
+    <None Include="obj\AbstractShape.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\AbstractShape</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -991,6 +1012,36 @@
     </Image>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
       <Filter>NotesAndReferences</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_emissive.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_glossiness.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_normal_map.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_roughness.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_Specular.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_SpecularTint.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

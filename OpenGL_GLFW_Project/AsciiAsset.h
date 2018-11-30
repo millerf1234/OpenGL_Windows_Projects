@@ -200,7 +200,7 @@ namespace AssetLoadingInternal {
 		//Changes the filepath to the new filepath. This will erase all of the current state
 		//of the object. Use the bool parameter to dictate whether or not to load an object-local
 		//copy of the filetext.
-		void changeFilepath(const std::string& newFP, bool storeLocalCopyOfNewFile = true) {
+		inline void changeFilepath(const std::string& newFP, bool storeLocalCopyOfNewFile = true) {
 			(*this) = std::move(AsciiAsset(newFP, storeLocalCopyOfNewFile)); //Basically just reconstruct the object with new filepath
 		}
 

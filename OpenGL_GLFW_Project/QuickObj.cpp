@@ -83,9 +83,11 @@ void QuickObj::parseFile() {
 		else if (*lineIter == 'm') {
 			if (*(lineIter + 1u) == 'g') {
 				//It's a merging group, which we will skip
+				fprintf(MSGLOG, "Skipping Merging Group: %s", line.c_str());
 			}
 			else {
 				//No material loading (for now)...
+				fprintf(MSGLOG, "Skipping Material: %s", line.c_str());
 			}
 			continue;
 		}
@@ -174,15 +176,16 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(mScale_);    //zoom / w component of position
 
 				//Triangle 2
-				mVertices_.push_back(qc1_pos[0]);
-				mVertices_.push_back(qc1_pos[1]);
-				mVertices_.push_back(qc1_pos[2]);
-				mVertices_.push_back(mScale_);
-
 				mVertices_.push_back(qc2_pos[0]); //corner2 x
 				mVertices_.push_back(qc2_pos[1]); //corner2 y
 				mVertices_.push_back(qc2_pos[2]); //corner2 z
 				mVertices_.push_back(mScale_);    //zoom / w component of position
+
+
+				mVertices_.push_back(qc1_pos[0]); //corner1 x
+				mVertices_.push_back(qc1_pos[1]); //corner1 y
+				mVertices_.push_back(qc1_pos[2]); //corner1 z
+				mVertices_.push_back(mScale_);    //zoom 
 
 				auto qc3_pos = mPositions_[quadCorner3[POSITION_INDEX]]; //quad corner 3 _ positions
 				mVertices_.push_back(qc3_pos[0]); //corner3 x
@@ -230,14 +233,6 @@ void QuickObj::constructVerticesFromParsedData() {
 
 
 					//Triangle 2
-					mVertices_.push_back(qc1_pos[0]);
-					mVertices_.push_back(qc1_pos[1]);
-					mVertices_.push_back(qc1_pos[2]);
-					mVertices_.push_back(mScale_);
-					mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
-					mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
-
-
 					mVertices_.push_back(qc2_pos[0]); //corner2 x
 					mVertices_.push_back(qc2_pos[1]); //corner2 y
 					mVertices_.push_back(qc2_pos[2]); //corner2 z
@@ -245,6 +240,12 @@ void QuickObj::constructVerticesFromParsedData() {
 					mVertices_.push_back(qc2_tex[0]); //Corner 2 tex coord s
 					mVertices_.push_back(qc2_tex[1]); //Corner 2 tex coord t
 
+					mVertices_.push_back(qc1_pos[0]);
+					mVertices_.push_back(qc1_pos[1]);
+					mVertices_.push_back(qc1_pos[2]);
+					mVertices_.push_back(mScale_);
+					mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
+					mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
 
 					auto qc3_pos = mPositions_[quadCorner3[POSITION_INDEX]]; //quad corner 3 _ positions
 					mVertices_.push_back(qc3_pos[0]); //corner3 x
@@ -302,18 +303,7 @@ void QuickObj::constructVerticesFromParsedData() {
 					mVertices_.push_back(qc2_nrml[2]); //Corner 2 normal z
 
 
-													  //Triangle 2
-					mVertices_.push_back(qc1_pos[0]);
-					mVertices_.push_back(qc1_pos[1]);
-					mVertices_.push_back(qc1_pos[2]);
-					mVertices_.push_back(mScale_);
-					mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
-					mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
-					mVertices_.push_back(qc1_nrml[0]); //Corner 1 normal x
-					mVertices_.push_back(qc1_nrml[1]); //Corner 1 normal y
-					mVertices_.push_back(qc1_nrml[2]); //Corner 1 normal z
-
-
+						//Triangle 2
 					mVertices_.push_back(qc2_pos[0]); //corner2 x
 					mVertices_.push_back(qc2_pos[1]); //corner2 y
 					mVertices_.push_back(qc2_pos[2]); //corner2 z
@@ -324,6 +314,15 @@ void QuickObj::constructVerticesFromParsedData() {
 					mVertices_.push_back(qc2_nrml[1]); //Corner 2 normal y
 					mVertices_.push_back(qc2_nrml[2]); //Corner 2 normal z
 
+					mVertices_.push_back(qc1_pos[0]); //corner1 x
+					mVertices_.push_back(qc1_pos[1]); //corner1 y
+					mVertices_.push_back(qc1_pos[2]); //corner1 z
+					mVertices_.push_back(mScale_);   //zoom
+					mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
+					mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
+					mVertices_.push_back(qc1_nrml[0]); //Corner 1 normal x
+					mVertices_.push_back(qc1_nrml[1]); //Corner 1 normal y
+					mVertices_.push_back(qc1_nrml[2]); //Corner 1 normal z
 
 					auto qc3_pos = mPositions_[quadCorner3[POSITION_INDEX]]; //quad corner 3 _ positions
 					mVertices_.push_back(qc3_pos[0]); //corner3 x
@@ -384,17 +383,6 @@ void QuickObj::constructVerticesFromParsedData() {
 
 
 				//Triangle 2
-				mVertices_.push_back(qc1_pos[0]);
-				mVertices_.push_back(qc1_pos[1]);
-				mVertices_.push_back(qc1_pos[2]);
-				mVertices_.push_back(mScale_);
-				//mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
-				//mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
-				mVertices_.push_back(qc1_nrml[0]); //Corner 1 normal x
-				mVertices_.push_back(qc1_nrml[1]); //Corner 1 normal y
-				mVertices_.push_back(qc1_nrml[2]); //Corner 1 normal z
-
-
 				mVertices_.push_back(qc2_pos[0]); //corner2 x
 				mVertices_.push_back(qc2_pos[1]); //corner2 y
 				mVertices_.push_back(qc2_pos[2]); //corner2 z
@@ -404,6 +392,17 @@ void QuickObj::constructVerticesFromParsedData() {
 				mVertices_.push_back(qc2_nrml[0]); //Corner 2 normal x
 				mVertices_.push_back(qc2_nrml[1]); //Corner 2 normal y
 				mVertices_.push_back(qc2_nrml[2]); //Corner 2 normal z
+
+
+				mVertices_.push_back(qc1_pos[0]); //corner1 x
+				mVertices_.push_back(qc1_pos[1]); //corner1 y
+				mVertices_.push_back(qc1_pos[2]); //corner1 z
+				mVertices_.push_back(mScale_);
+				//mVertices_.push_back(qc1_tex[0]); //Corner 1 tex coord s
+				//mVertices_.push_back(qc1_tex[1]); //Corner 1 tex coord t
+				mVertices_.push_back(qc1_nrml[0]); //Corner 1 normal x
+				mVertices_.push_back(qc1_nrml[1]); //Corner 1 normal y
+				mVertices_.push_back(qc1_nrml[2]); //Corner 1 normal z
 
 
 				auto qc3_pos = mPositions_[quadCorner3[POSITION_INDEX]]; //quad corner 3 _ positions

@@ -67,9 +67,9 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 
-	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	//runAssetLoadingDemo();
-	
+	fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	runAssetLoadingDemo();
+	return;
 	
 	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
 	runLightsourceTestDemo();
@@ -208,11 +208,11 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 	}
 }
 
-//This is commented out until the AssetLoadingDemo is fixed
-//void Application::runAssetLoadingDemo() {
-//	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
-//	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
-//}
+
+void Application::runAssetLoadingDemo() {
+	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
+	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
+}
 
 void Application::runLightsourceTestDemo() {
 	std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(displayInfo);

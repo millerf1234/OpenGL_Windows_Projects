@@ -16,6 +16,10 @@
 //
 //            -A tesselation control shader must be paired with a tesselation
 //				evaluation shader
+//
+//           - The constructor that takes a std::string only to pass it on to 
+//             the constructor that takes the traditional c_string is only legal 
+//             in C++11. 
 
 
 #pragma once
@@ -30,11 +34,12 @@ namespace ShaderInterface {
 	class TesselationControlShader final : public CompiledShader {
 	public:
 		TesselationControlShader(const char * filePath);
+		TesselationControlShader(std::string filePath) : TesselationControlShader(filePath.c_str()) { ; } //Requires C++11
 		TesselationControlShader(const TesselationControlShader&) = delete; //No Copying
 		TesselationControlShader(TesselationControlShader&&); //Moving is okay though
-		TesselationControlShader(const CompiledShader&) = delete; //This delete the move constructor as well
-		TesselationControlShader(CompiledShader&&) = delete;
-		virtual ~TesselationControlShader();
+		TesselationControlShader(const CompiledShader&) = delete; //Contruction is not allowed from CompiledShaders not of type TessControl 
+		TesselationControlShader(CompiledShader&&) = delete; //This explicitly deletes the move constructor as well for other CompiledShader types
+		virtual ~TesselationControlShader() override;
 
 		//Restores this shader if it was decomissioned 
 		virtual void reinstate() override;

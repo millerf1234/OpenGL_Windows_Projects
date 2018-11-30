@@ -30,7 +30,7 @@
 
 #include <array>
 #include "ProjectSetup.h"           //For glm
-#include "CachedUniformLocation.h"  //For Quickly loading data to GLSL
+//#include "CachedUniformLocation.h"  //For Quickly loading data to GLSL
 
 class PhongShadingParameterSet {
 public:

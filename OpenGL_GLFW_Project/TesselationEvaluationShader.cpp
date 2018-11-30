@@ -6,9 +6,10 @@
 //This is the implementation file for Tesselation Evaluation Shader. This type derives from CompiledShader.
 //See the header file for more details. 
 //
-// Implementation notes: Copying is not allowed but moving is allowed. Luckily most of 
-//						 the implementation details is shared amongst shaders and is located 
-//						 in the CompiledShader implementation file. 
+// ImplementationNotes:   - Copying is not allowed but moving is allowed. Luckily most of 
+//						    the implementation details is shared amongst shaders and is located 
+//						    in the CompiledShader implementation file. 
+
 
 #include "TesselationEvaluationShader.h"
 

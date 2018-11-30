@@ -115,15 +115,15 @@ void LightsourceTestDemo::loadShaders() {
 
 	lightSourceShader = std::make_unique<ShaderProgram>();
 
-	lightSourceShader->attachVert((shadersRFP + std::string("LightsourceTestDemo.vert")).c_str());
+	lightSourceShader->attachVert(shadersRFP + std::string("LightsourceTestDemo.vert"));
 
 
-	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( (shadersRFP + std::string("ShaderNoiseFunctions.frag") ).c_str() );
+	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( shadersRFP + std::string("ShaderNoiseFunctions.frag") );
 	noiseShader->makeSecondary();
 
 	lightSourceShader->attachSecondaryFrag(noiseShader.get());
 
-	lightSourceShader->attachFrag((shadersRFP + std::string("LightsourceTestDemo.frag")).c_str());
+	lightSourceShader->attachFrag(shadersRFP + std::string("LightsourceTestDemo.frag"));
 
 	lightSourceShader->link();
 	if (lightSourceShader->checkIfLinked()) {
@@ -185,8 +185,8 @@ void LightsourceTestDemo::loadModels() {
 	glCreateBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	fprintf(MSGLOG, "\nReality Check: sizeof(sceneObjects.data() is: %u\n", sizeof(sceneObjects.data()));
-	fprintf(MSGLOG, "ANd sceneObjects.size() * sizeof(sceneObjects.data()) is: %u\n", sceneObjects.size() * sizeof(sceneObjects.data()));
+	//fprintf(MSGLOG, "\nReality Check: sizeof(sceneObjects.data() is: %u\n", sizeof(sceneObjects.data()));
+	//fprintf(MSGLOG, "And sceneObjects.size() * sizeof(sceneObjects.data()) is: %u\n", sceneObjects.size() * sizeof(sceneObjects.data()));
 
 	glBufferData(GL_ARRAY_BUFFER, sceneObjects.size() * sizeof(sceneObjects.data()), sceneObjects.data(), GL_STATIC_DRAW);
 

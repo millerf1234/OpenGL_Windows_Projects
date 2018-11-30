@@ -1,39 +1,48 @@
-//This file contains sample code that I wrote for testing 
-//the asset loading implementation code. It isn't finished 
-//yet as I write this comment, but expect the code to have
-//something to do with loading and rendering assets from
-//'.obj' and '.mtl' files.
+//File:             AssetLoadingDemo.h
 //
-// Programmer:   Forrest Miller
-// Date:         10/23/2018
+//Description:      This header file contains the definition for a class which inherits from
+//                  RenderDemoBase, thus making this class represent a RenderDemo. 
+//                  The point of this RenderDemo is to demonstrate basic object parsing/loading
+//                  from '.obj' 3D model files. In order to ensure model loading is done properly,
+//                  this renderdemo uses its own utility class classed QuickObject. Note that 
+//                  the 'Quick' in QuickObject is refering to the amount of time I spent implementing
+//                  the parser/loader rather than the speed at which it parses. Since the parsing is 
+//                  simpler though there is a good chance it runs faster than a more robust parser. 
+//
+// Programmer:      Forrest Miller
+// Dates:           10/23/2018      -- Got a rough version together
+//                  11/28/2018      -- Performed heavy revision to get this RenderDemo up to snuff with the others.
+//                                     Also rewrote all of this RenderDemo's shaders.
+
 
 #pragma once
 
-#define ASSET_DEMO_NEEDS_FIXING_AND_REFACTORING
-
-#ifndef ASSET_DEMO_NEEDS_FIXING_AND_REFACTORING
 
 #ifndef	ASSET_LOADING_DEMO_H_
 #define ASSET_LOADING_DEMO_H_
 
 #include <thread>
 #include <math.h>
+#include <functional>   //std::function
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
 #include "MathFunctions.h"
+#include "MeshFunctions.h"
 #include "GLFW_Init.h"
 #include "ProjectSetup.h"
-#include "ProjectResourceFilepaths.h"
+#include "RelativeFilepathsToResources.h"
 #include "ShaderProgram.h"
 
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
-#include "LightSource.h"
-#include "LightsourceTest.h"
 
 
-using ShaderInterface::GenericVertexAttributeSet; 
+
+//The following variable dictates whether assets missing texture coordinates should have random coordinates assigned.
+//Setting this variable to false will cause all generated texture coordinates to be the same point 
+static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
+
 
 
 class AssetLoadingDemo : public RenderDemoBase { 
@@ -48,52 +57,50 @@ public:
 private:
 	bool error;
 	float counter;
-	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording, frameLineTypeLastSwitched;
+	unsigned long long frameNumber, frameUnpaused, frameLineTypeLastSwitched;
 
 	glm::vec3 backgroundColor;
 
-	GLuint vao, vbo, ebo;
-	size_t eboSize;
+	GLuint vao, vbo; 
 
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
-	std::unique_ptr<ShaderProgram> sceneShaderWithoutTexture;
-	std::unique_ptr<ShaderProgram> sceneShaderWithTexture;
 
-	std::unique_ptr<ShaderProgram> lightSourceShader;
-
-	//std::vector<std::unique_ptr<QuickObj>> sceneObjectPtrs;
-	
-	glm::vec3 cameraPosition;
-	
-
-	int noiseFunctionToUse, noiseResolution;
+	std::unique_ptr<ShaderProgram> sceneShader;
+	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
+	std::vector<GLfloat> sceneBuffer;
 
 	//Asset Transformation information
-	float xRotation, yRotation, zRotation;
-	float zoom;
-	float scalingAppliedToAsset; //Needed for keeping normal vectors the right length after Model-View transforming
-	bool mvpMatrixNeedsUpdating;
-	glm::mat4 model;
-	glm::mat4 view;
+	//float xRotation, yRotation, zRotation;
+	glm::mat4 rotation;
 	glm::mat4 proj;
-	glm::mat4 mvp;
-	glm::mat3 normalModelView;
-
+	float head, pitch, roll;
+	float zoom;
 	
 	
+	///////////////////////////////////////////////////////
+	/////////////      Setup Functions      ///////////////
+	///////////////////////////////////////////////////////
+	
+	void initialize(); //Called by constructor(s)
+	
 
-	//   Helper Functions
-	void initialize(); 
+	//This function expects each vertex in sceneBuffer to be exactly 9 components
+	GLsizei computeNumberOfVerticesInSceneBuffer() const;
+
+
+	void loadShaders(); //Sets up the sceneShader
+	void loadModels(); //Loads 3D model data from asset files
+	
+
+	//This function is meant to be called after the sceneShader is linked and 
+	//all models for the scene have finished loading
+	void prepareScene();
 
 	
 
-	//This function will only be correct if this objects sceneObjectPtrs all have the exact same type of components.
-	GLsizei computeSceneObjectPtrsTotalIndices() const;
 
-	void loadModels();
-	void loadShaders();
 
-	
+
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////
 	///////////////////////////////////////////////////////
@@ -109,7 +116,6 @@ private:
 	
 	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
 	bool checkIfShouldPause() const; //Probably 'space'
-	bool checkIfShouldRecordColor() const; //records the current frames background clear color, probably tied to input 'p' or 'P'
 	
 	bool checkIfShouldReset() const;
 
@@ -119,11 +125,9 @@ private:
 							   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
 
 	void pause();
-	void recordColorToLog();
 	void reset();
 
 
-	void changeNoiseType();
 	void changePrimitiveType(); 
 	void rotate();
 
@@ -166,7 +170,7 @@ private:
 
 
 	/////////////////////////////////
-	///  (4d)  Make Draw Calls    ///                          (This step could also do a multi-draw indirect)
+	///  (4d)  Make Draw Calls    ///                          
 	/////////////////////////////////
 	void drawVerts();
 
@@ -178,12 +182,49 @@ private:
 							+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			   			     */
 	
 	void prepareGLContextForNextFrame();
+
+
+
+
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	////  The following are utility functions called by the setup and renderloop functions   ////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
+	//as needed to give every vertex in the sceneBuffer the same format. 
+	void buildSceneBufferFromLoadedSceneObjects();
+
+	//The following 4 functions are intended for use within the function
+	//buildSceneBufferFromLoadedSceneObjects() to handle 
+	//data into the sceneBuffer
+	void addObject(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+		const glm::vec3& objPos);
+	void addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+		const glm::vec3& objPos);
+	void addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+		const glm::vec3& objPos);
+	void addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+		const glm::vec3& objPos);
+
+	//Helper function for generating random texture coordinates
+	static inline glm::vec2 generateRandomTexCoords() {
+		return glm::vec2(MathFunc::getRandomInRangef(0.0f, 1.0f), MathFunc::getRandomInRangef(0.0f, 1.0f));
+	}
+	//Helper function for generating constant texture coords
+	static inline glm::vec2 generateConstantTexCoords() {
+		return glm::vec2(0.5f, 0.5f);
+	}
+	
+
+	//Does exactly what you think [creates buffers within the GL Context, uploads vertices to buffer]
+	void uploadSceneBufferToGPU();
+	//Sets up the VAO [which describes how the vertex data is arranged in the VertexArrayBuffer]
+	void configureVertexArrayAttributes(); 
+
 };
 
 
-
-
-
 #endif //ASSET_LOADING_DEMO_H_
-
-#endif //ASSET_LOADING_DEMO_NEEDS_FIXING_AND_REFACTORING

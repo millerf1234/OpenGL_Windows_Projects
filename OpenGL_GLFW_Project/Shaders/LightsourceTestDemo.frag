@@ -3,7 +3,7 @@
 #version 450 core
 
 in vec3 lightPosition;
-in  vec3 lightColor;
+in vec3 lightColor;
 
 
 //in vec3 vertexPosition;

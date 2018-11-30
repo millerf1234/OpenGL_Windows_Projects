@@ -13,6 +13,10 @@
 //				(which is expected behavior and means that extra calls to
 //				glDeleteShader(shaderID) are not accidentally made during object
 //				destruction).
+//
+//            -The constructor that takes a std::string only to pass it on to 
+//             the constructor that takes the traditional c_string is only legal 
+//             in C++11. 
 
 
 #pragma once
@@ -27,11 +31,12 @@ namespace ShaderInterface {
 	class VertexShader final : public CompiledShader {
 	public:
 		VertexShader(const char * filePath);
+		VertexShader(std::string filePath) : VertexShader(filePath.c_str()) { ; }  //Requires C++11 
 		VertexShader(const VertexShader&) = delete; //No Copying
 		VertexShader(VertexShader&&); //Moving is okay though
 		VertexShader(const CompiledShader&) = delete; //This delete the move constructor as well
 		VertexShader(CompiledShader&&) = delete;
-		virtual ~VertexShader();
+		virtual ~VertexShader() override;
 
 		//Restores this shader if it was decomissioned 
 		virtual void reinstate() override;

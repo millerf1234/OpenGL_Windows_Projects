@@ -76,13 +76,13 @@ private:
 
 	//Helper functions (borrowed from subclasses 'Face' and 'Line'):
 	//Checks to see if a string character is between '0' (i.e. 48u in ASCII) and '9' (i.e. 57u in ASCII) (i.e. if it's a number)
-	bool isNumber(const char * c) const { return ((*c >= static_cast<char>(48u)) && (*c <= static_cast<char>(57u))); }
+	inline bool isNumber(const char * c) const { return ((*c >= static_cast<char>(48u)) && (*c <= static_cast<char>(57u))); }
 	//Checks to see if a chracter is the number '0'  (to make sure a face that might look like "10/0/3" is marked invalid)
-	bool isZero(const char * c) const { return (*c == static_cast<char>(48u)); }
+	inline bool isZero(const char * c) const { return (*c == static_cast<char>(48u)); }
 
 	inline void eatWhitespace(const char * c) {
 		while (*c == ' ') {
-			c++;
+			c++; 
 		}
 	}
 

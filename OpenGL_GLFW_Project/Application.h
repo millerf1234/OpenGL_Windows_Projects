@@ -37,7 +37,7 @@
 #include "ProjectParameters.h"
 #include "GLFW_Init.h"
 
-//#include "AssetLoadingDemo.h"
+#include "AssetLoadingDemo.h"
 #include "LightsourceTestDemo.h"
 #include "TeapotExplosion.h"
 
@@ -78,7 +78,7 @@ private:
 	//The following functions are for setting up and running different demo programs. These functions rely on
 	//the runRenderDemo() function above for polymorphically calling their overriden virtual functions. 
 	
-	//void runAssetLoadingDemo();
+	void runAssetLoadingDemo();
 	void runLightsourceTestDemo();
 	void runTeapotExplosionDemo();
 

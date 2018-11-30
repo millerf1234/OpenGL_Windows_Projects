@@ -117,15 +117,14 @@ void TeapotExplosion::loadShaders() {
 	//    (VERTEX STAGE)
 	// Attach a helper shader containing some useful functions
 	fprintf(MSGLOG, "\nAttaching secondary helper vertex shader!\n");
-	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>( (shadersRFP + std::string("VertMath.vert") ).c_str());
+	std::unique_ptr<ShaderInterface::VertexShader> vertHelper = std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("VertMath.vert"));
 	if (!vertHelper)
 		return;
 	vertHelper->makeSecondary();
 	sceneShader->attachSecondaryVert(vertHelper.get());
 	//Attach the primary vertex shader
 	fprintf(MSGLOG, "\nAttaching main vertex shader!\n");
-	//sceneShader->attachVert("TeapotExplosion.vert");
-	std::unique_ptr<ShaderInterface::VertexShader> mainVert = std::make_unique<ShaderInterface::VertexShader>( (shadersRFP + std::string("TeapotExplosion.vert")).c_str() );
+	std::unique_ptr<ShaderInterface::VertexShader> mainVert = std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("TeapotExplosion.vert"));
 	if (!mainVert)
 		return;
 	sceneShader->attachVert(mainVert.get());
@@ -135,7 +134,7 @@ void TeapotExplosion::loadShaders() {
 	//     (Geometry Stage) 
 	// Attach the primary geometry shader to the pipeline. (This is where the explosion happens)
 	fprintf(MSGLOG, "\nAttaching geometry shader!\n");
-	sceneShader->attachGeom( (shadersRFP + std::string("TeapotExplosion.geom")).c_str() );
+	sceneShader->attachGeom(shadersRFP + std::string("TeapotExplosion.geom"));
 	//--------------------------
 
 
@@ -143,7 +142,7 @@ void TeapotExplosion::loadShaders() {
 	//     (Fragment Stage)
 	// Attach the primary Fragment Shader to the pipeline
 	fprintf(MSGLOG, "\nAttaching fragment shader!\n");
-	sceneShader->attachFrag( (shadersRFP + std::string("TeapotExplosion.frag")).c_str() );
+	sceneShader->attachFrag(shadersRFP + std::string("TeapotExplosion.frag"));
 	fprintf(MSGLOG, "\nAttempting to link program!\n");
 	//---------------------------
 
@@ -342,6 +341,7 @@ void TeapotExplosion::rotateColor() {
 }
 
 void TeapotExplosion::updateColorModificationValues() {
+	
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		colorModificationValues[0] += 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
 	}

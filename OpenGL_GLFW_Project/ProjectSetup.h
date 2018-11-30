@@ -1,6 +1,6 @@
 //This file contains headers that are meant to be included globally only once. 
 //There is also some functions which are just Pre-Processor checking
-//This is also where some 
+//
 
 //Created by Forrest Miller on July 16, 2018
 // Reorganized document on November 8, 2018. It is still pretty disorganized...

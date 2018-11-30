@@ -13,6 +13,10 @@
 //				(which is expected behavior and means that extra calls to
 //				glDeleteShader(shaderID) are not accidentally made during object
 //				destruction).
+//
+//           - The constructor that takes a std::string only to pass it on to 
+//             the constructor that takes the traditional c_string is only legal 
+//             in C++11 [Known as a Delegating Constructor]. 
 
 
 #pragma once
@@ -27,11 +31,12 @@ namespace ShaderInterface {
 	class FragmentShader final : public CompiledShader {
 	public:
 		FragmentShader(const char * filePath);
+		FragmentShader(std::string filePath) : FragmentShader(filePath.c_str()) { ; } //Requires C++11
 		FragmentShader(const FragmentShader&) = delete; //No Copying
 		FragmentShader(FragmentShader&&); //Moving is okay though
-		FragmentShader(const CompiledShader&) = delete; //This delete the move constructor as well
-		FragmentShader(CompiledShader&&) = delete;
-		virtual ~FragmentShader();
+		FragmentShader(const CompiledShader&) = delete; //Contruction is not allowed from CompiledShaders not of type Fragment
+		FragmentShader(CompiledShader&&) = delete; //This line explicitly deletes the move constructor as well for other Non-Fragment CompiledShader types
+		virtual ~FragmentShader() override;
 
 		//Restores this shader if it was decomissioned 
 		virtual void reinstate() override;

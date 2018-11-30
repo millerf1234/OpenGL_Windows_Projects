@@ -1,4 +1,4 @@
-//Class:      CompiledShader
+//Class:      CompiledShader    [Abstract Base Class]
 //Namespace:  ShaderInterface
 //Programmer: Forrest Miller
 //Date(s):    7/24/2018 - 7/31/2018  

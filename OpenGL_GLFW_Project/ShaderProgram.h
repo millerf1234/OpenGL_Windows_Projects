@@ -31,6 +31,11 @@
 //							  both types of tesselation if one is present).
 //
 //
+//  Justification for using c_strings over C++'s std::strings:
+//                      - OpenGL is a C api and as such, each string filepath used by this object will need to be 
+//                        cast to a c_string to be sent to the Graphics Context. As such, it made sense to include 
+//                        functions that operate with c_strings. 
+//
 // UPDATES/Changes:
 //			 September 14-15, 2018  --  Added support for attaching secondary shaders (i.e. shaders without a 'main()' function)
 //										to programs so that multiple shaders of the same type can be used.
@@ -93,7 +98,8 @@
 			//-------------------------------
 			// Public Interface Functions
 			//-------------------------------
-			
+			//Creates an object-local Vertex shader and attaches it to this program.
+			inline bool attachVert(std::string vert) {   return (attachVert(vert.c_str()));   }
 			//Creates an object-local Vertex shader and attaches it to this program.
 			bool attachVert(const char * vert);
 			//Uses an already-created vertex shader and attachs it to this program. Does not assume control of the vertex shader.
@@ -105,6 +111,9 @@
 			//error to attach the same secondary twice. 
 			void attachSecondaryVert(const ShaderInterface::VertexShader * vert);
 
+
+			//Creates an object-local Geometry shader and attaches it to this program.
+			inline bool attachGeom(std::string geom) {   return (attachGeom(geom.c_str()));   }
 			//Creates an object-local Geometry shader and attaches it to this program
 			bool attachGeom(const char * geom);
 			//Uses an already-created geometry shader and attachs it to this program. Does not assume control of the vertex shader.
@@ -116,13 +125,19 @@
 			//error to attach the same secondary twice. 
 			void attachSecondaryGeom(const ShaderInterface::GeometryShader * geom);
 
+
+			//Creates object-local Tesselation Compute and Evaluation shaders and attachs them to the program
+			inline bool attachTess(std::string tesse, std::string tessc) { return ((attachTesse(tesse.c_str())) && (attachTessc(tessc.c_str())));   }
 			//Creates object-local Tesselation Compute and Evaluation shaders and attachs them to the program
 			bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
 			//Uses already created Tesselation Control and Evaluation shaders and attachs them to this program. 
-			//This object does not assume control of the shaders (thus leaving this objects mTesselationControlShader and
-			//mTesselationEvaluationShader as nullptr)
+			//This object does not assume control of the shaders (thus leaving this objects' member variables
+			//mTesselationControlShader and mTesselationEvaluationShader as nullptr)
 			void attachTess(const ShaderInterface::TesselationControlShader* tessc, const ShaderInterface::TesselationEvaluationShader* tesse);
 			
+
+			//Creates an object-local Tesselation Evaluation shader and attaches it to this program
+			inline bool attachTesse(std::string tesse) {   return (attachTesse(tesse.c_str()));   }
 			//Creates an object-local Tesselation Evaluation shader and attaches it to this program
 			bool attachTesse(const char * tesse);
 			//Uses an already-created Tesselation Evaluation shader and attachs it to this program. Does not
@@ -135,6 +150,9 @@
 			//error to attach the same secondary twice. 
 			void attachSecondaryTesse(const ShaderInterface::TesselationEvaluationShader * tesse);
 			
+
+			//Creates an object-local Tesselation Control shader and attaches it to this program
+			inline bool attachTessc(std::string tessc) {   return (attachTessc(tessc.c_str()));   }
 			//Creates an object-local Tesselation Control shader and attaches it to this program
 			bool attachTessc(const char * tessc);
 			//Uses an already-created Tesselation Control shader and attachs it to this program. Does not
@@ -147,6 +165,9 @@
 			//error to try to attach the same secondary shader multiple times to one program. 
 			void attachSecondaryTessc(const ShaderInterface::TesselationControlShader * tessc);
 			
+
+			//Creates an object-local Fragment shader and attaches it to this program.
+			inline bool attachFrag(std::string frag) {   return (attachFrag(frag.c_str()));   }
 			//Creates an object-local Fragment shader and attaches it to this program
 			bool attachFrag(const char * frag);
 			//Uses an already-created Fragment shader and attachs it to this program. Does not assume control
@@ -158,6 +179,11 @@
 			//error to try to attach the same secondary shader multiple times to one program. 
 			void attachSecondaryFrag(const ShaderInterface::FragmentShader * frag);
 			
+
+			//Creates an object-local Compute shader and attaches it to this program. This function should
+			//only be called in no other Shaders have been attached to this object, and after calling
+			//this function no additional shaders may be attached.
+			inline bool attachCompute(std::string compute) {   return (attachCompute(compute.c_str()));   }
 			//Creates an object-local Compute shader and attaches it to this program. This function should
 			//only be called in no other Shaders have been attached to this object, and after calling
 			//this function no additional shaders may be attached.
