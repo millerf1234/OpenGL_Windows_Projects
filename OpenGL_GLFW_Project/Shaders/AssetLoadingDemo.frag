@@ -16,14 +16,21 @@ uniform float time;
 
 
 void main() {
-	vec3 lightPos = vec3(-3.0 + 5.0 * sin(time), 0.0, 3.0);
-	vec3 lightCol = vec3(0.75, 0.25, 0.85);
+	//vec3 lightPos = normalize(vec3(-3.0 + 5.0 * sin(time), 0.0, 1.0));
+	vec3 redLightPos = vec3(-4.0 + 15.0 * sin(0.5*time), 2.0, 3.0);
+	vec3 redLightCol = vec3(0.95, 0.15 + length(texCoord), 0.045);
 
-	vec3 amb = vec3(0.15);
+	vec3 blueLightPos = -redLightPos;
+	vec3 blueLightCol = vec3(-0.1, 0.1, 1.0);
+
+	vec3 amb = vec3(0.015);
 	
-	vec3 diffuse = lightCol * (abs(dot(lightPos, normal)));
+	vec3 redDiffuse = redLightCol * clamp((dot((position.xyz - redLightPos), normal)), 0.0, 1.0);
+	vec3 blueDiffuse = blueLightCol * clamp((dot((position.xyz - blueLightPos), normal)), 0.0, 1.0);
 
-	color = vec4(vec3(amb + 0.45*diffuse), 1.0);
+	vec3 diffuse = mix(redDiffuse, blueDiffuse, 0.5);
+
+	color = vec4(vec3(amb + diffuse), 1.0);
 }
 
 //void main() {
