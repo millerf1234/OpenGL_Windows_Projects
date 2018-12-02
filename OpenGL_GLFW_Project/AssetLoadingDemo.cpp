@@ -14,12 +14,17 @@ void AssetLoadingDemo::initialize() {
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameLineTypeLastSwitched = 0ull;
+	frameInstancedDrawingBehaviorLastToggled = 0ull;
+	frameInstancedDrawingCountLastModified = 0ull;
 	counter = 0.0f;
 	vao = vbo = 0u;
 
 	//Set the starting input primitive type
 	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
+	//Set the variables regarding instanced drawing
+	drawMultipleInstances = false;
+	instanceCount = STARTING_INSTANCE_COUNT;
 
 	//Set values for screen projection 
 	fov = 56.0f;
@@ -224,6 +229,7 @@ void AssetLoadingDemo::renderLoop() {
 		}
 
 		changePrimitiveType();
+		changeInstancedDrawingBehavior();
 		rotate();
 		
 		updateFrameClearColor();
@@ -305,7 +311,44 @@ void AssetLoadingDemo::reset() {
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameLineTypeLastSwitched = 0ull;
+	frameInstancedDrawingBehaviorLastToggled = 0ull;
+	frameInstancedDrawingCountLastModified = 0ull;
 	zoom = 1.0f;
+	if (drawMultipleInstances) {
+		instanceCount = STARTING_INSTANCE_COUNT;
+	}
+}
+
+
+
+void AssetLoadingDemo::changeInstancedDrawingBehavior() {
+	//Only allow toggling to happen every 11 frames
+	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > 11ull) {
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+			frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
+			drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
+			fprintf(MSGLOG, "Instanced Rendering set to: %s",
+				(drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
+		}
+	}
+
+	//Only allow the instance count to be modified every 6 frames (1/10th second)
+	if ((frameNumber - frameInstancedDrawingCountLastModified) > 6ull) {
+		if (drawMultipleInstances) {
+			if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
+				instanceCount++;
+				fprintf(MSGLOG, "Rendered Instances increased to: %u\n", instanceCount);
+			}
+			else if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
+					frameInstancedDrawingBehaviorLastToggled = frameNumber;
+					instanceCount--;
+					fprintf(MSGLOG, "Rendered Instances decreased to: %u\n", instanceCount);
+				}
+			}
+		}
+	}
 }
 
 
@@ -444,25 +487,46 @@ void AssetLoadingDemo::drawVerts() {
 
 
 	if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
-		//fprintf(MSGLOG, "\nTotalIndices are: %u\n", computeNumberOfVerticesInSceneBuffer());
-		glDrawArrays(GL_TRIANGLES, 0, computeNumberOfVerticesInSceneBuffer());
+		if (drawMultipleInstances) {
+			glDrawArraysInstanced(GL_TRIANGLES, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
+		}
+		else {
+			glDrawArrays(GL_TRIANGLES, 0, computeNumberOfVerticesInSceneBuffer());
+		}
 	}
 
 	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP) {
-		//glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
+		if (drawMultipleInstances) {
+			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
+		}
+		else {
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
+		}
 	}
 	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN) {
-		//glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, computeNumberOfVerticesInSceneBuffer());
+		if (drawMultipleInstances) {
+			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
+		}
+		else {
+			glDrawArrays(GL_TRIANGLE_FAN, 0, computeNumberOfVerticesInSceneBuffer());
+		}
 	}
 	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
-		glDrawArrays(GL_LINES, 0, computeNumberOfVerticesInSceneBuffer());
+		if (drawMultipleInstances) {
+			glDrawArraysInstanced(GL_LINES, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
+		}
+		else {
+			glDrawArrays(GL_LINES, 0, computeNumberOfVerticesInSceneBuffer());
+		}
 	}
 	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP) {
-		glDrawArrays(GL_LINE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
+		if (drawMultipleInstances) {
+			glDrawArraysInstanced(GL_LINE_STRIP, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
+		}
+		else {
+			glDrawArrays(GL_LINE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
+		}
 	}
-	
 }
 
 

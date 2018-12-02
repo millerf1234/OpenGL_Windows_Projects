@@ -43,6 +43,7 @@
 //Setting this variable to false will cause all generated texture coordinates to be the same point 
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
+static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5u;
 
 
 class AssetLoadingDemo : public RenderDemoBase { 
@@ -57,13 +58,17 @@ public:
 private:
 	bool error;
 	float counter;
-	unsigned long long frameNumber, frameUnpaused, frameLineTypeLastSwitched;
+	unsigned long long frameNumber;
+	unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled, 
+		frameInstancedDrawingCountLastModified;
 
 	glm::vec3 backgroundColor;
 
 	GLuint vao, vbo; 
 
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
+	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
+	GLsizei instanceCount;
 
 	std::unique_ptr<ShaderProgram> sceneShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
@@ -122,7 +127,6 @@ private:
 	
 	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
 	bool checkIfShouldPause() const; //Probably 'space'
-	
 	bool checkIfShouldReset() const;
 
 
@@ -133,7 +137,7 @@ private:
 	void pause();
 	void reset();
 
-
+	void changeInstancedDrawingBehavior();
 	void changePrimitiveType(); 
 	void rotate();
 

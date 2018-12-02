@@ -33,6 +33,7 @@ void main() {
 
 
 	gl_Position = MVP * position;
+	gl_Position.x += float(gl_InstanceID) / 0.20;
 	//gl_Position = rotation * position;
 	
 }
