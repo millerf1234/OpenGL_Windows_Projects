@@ -324,6 +324,7 @@
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
+    <None Include="obj\2DTexturedQuadPlane.mtl" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
@@ -403,6 +404,9 @@
     <None Include="obj\AbstractShape.obj">
       <FileType>Document</FileType>
     </None>
+    <None Include="obj\2DTexturedQuadPlane.obj">
+      <FileType>Document</FileType>
+    </None>
     <Object Include="obj\Engine2_Textured.obj">
       <SubType>Designer</SubType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -448,6 +452,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
+    <Image Include="obj\2DTexturedQuadPlaneTexture.png" />
     <Image Include="obj\BeveledCube.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png" />

@@ -28,6 +28,16 @@
 |                             Noise Control Parameters                           |
 \*------------------------------------------------------------------------------*/
 
+#define SCALE		   1.0		// 3.0
+#define BIAS   		   +0.013370
+#define POWER			1.570		
+#define OCTAVES   		5		// 7
+#define SWITCH_TIME 	0.0001		// seconds
+#define WARP_INTENSITY	0.03001	// 0.06
+#define WARP_FREQUENCY	1.0
+
+
+/*
 #define SCALE		   1110.0		// 3.0
 #define BIAS   		   +0.0
 #define POWER			111.0		
@@ -35,7 +45,7 @@
 #define SWITCH_TIME 	5.0		// seconds
 #define WARP_INTENSITY	10.00	// 0.06
 #define WARP_FREQUENCY	16.0
-
+*/
 
 
 
@@ -45,7 +55,7 @@
 //I need to include the following in order to properly emulate ShaderToy...
 uniform float time; 
 #ifndef iTime
-#define iTime (time * 10000.)
+#define iTime (time * 100.)
 #endif 
 
 #ifndef iResolution

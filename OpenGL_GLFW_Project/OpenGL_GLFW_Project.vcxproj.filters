@@ -265,6 +265,9 @@
     <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial">
       <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane">
+      <UniqueIdentifier>{3d4f588e-0b60-4a26-b419-af25b7237116}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -936,6 +939,12 @@
     <None Include="Shaders\VoronoiNoise.glsl">
       <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
     </None>
+    <None Include="obj\2DTexturedQuadPlane.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+    </None>
+    <None Include="obj\2DTexturedQuadPlane.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1054,6 +1063,9 @@
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png">
       <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+    </Image>
+    <Image Include="obj\2DTexturedQuadPlaneTexture.png">
+      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

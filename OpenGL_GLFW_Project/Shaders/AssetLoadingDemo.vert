@@ -24,7 +24,7 @@ uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the 
 
 
 
-#define TRANSLATE_INSTANCES_BEFORE_MVP_TRANSFORM  //Comment/Uncomment to toggle when the translation between each instance is applied 
+//#define TRANSLATE_INSTANCES_BEFORE_MVP_TRANSFORM  //Comment/Uncomment to toggle when the translation between each instance is applied 
 
 
 float noise(in vec2 p);
@@ -52,10 +52,19 @@ void main() {
 	float radius = float(gl_InstanceID) / 0.10;
 	//position.x += radius * sin(atan((noise(115.*position.yx)-float(gl_InstanceID) * noise(vec2(instanceSpiralPatternPeriod_x, sqrt(instanceSpiralPatternPeriod_x))))));
 	//position.y += radius * acos(sin(float(gl_InstanceID) + instanceSpiralPatternPeriod_y));
-	position.z += smoothstep(-abs(sin(0.3*time+2.*noise(position.xy))), abs(sin(time + 2.*noise(position.xy))), position.z);
+	position.z += smoothstep(-abs(sin(0.3*time+2.*noise(position.xy))), abs(sin(time + 2.*noise(position.xy))), position.z * abs(0.27125*sin(time)));
 	position.x += 1.2*noise(3.*(0.75 + 0.35*sin(time))*(position.yz + position.xy));
-	position.y += 1.3 * noise(position.zx);
-	gl_Position = MVP * position;
+	position.y += 1.399 * noise(position.zx);
+	gl_Position = (MVP * position); /* +
+		vec4((radius * (cos(sin(tan(0.3 + cos(float(gl_InstanceID) * instanceSpiralPatternPeriod_x))))) * sin(float(gl_InstanceID) * 3.141 / 1.29) + sin(float(gl_InstanceID) * instanceSpiralPatternPeriod_x + instanceSpiralPatternPeriod_y * 3.14)),
+			radius * cos(instanceSpiralPatternPeriod_y),
+			0.2*cos(time + float(gl_InstanceID) * 3.141 / 27.9),
+			0.0) +
+		vec4(2.10 / (0.95 + float(gl_InstanceID) * step(float(gl_InstanceID), 4.0) * cos(gl_InstanceID * 3.14159 * instanceSpiralPatternPeriod_x / 77.81)),
+			2.0 / (0.95 + float(gl_InstanceID) * step(float(gl_InstanceID), 3.0) * cos(gl_InstanceID * 3.94159 * instanceSpiralPatternPeriod_y / 37.45)),
+			2.0 * cos(float(gl_InstanceID) + 3.14/22.0),
+			0.0);
+			*/
 
 #else 
 	gl_Position = MVP * position;

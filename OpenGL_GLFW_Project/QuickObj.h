@@ -35,6 +35,16 @@ static constexpr const size_t POSITION_INDEX = 0;
 static constexpr const size_t TEXTURE_COORD_INDEX = 1;
 static constexpr const size_t NORMAL_INDEX = 2;
 
+//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
+//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
+//parsing logic
+static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u; 
+static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
+static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
+static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+
+
+
 class QuickObj {
 public:
 	QuickObj() = delete;

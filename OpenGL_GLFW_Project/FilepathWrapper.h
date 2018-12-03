@@ -20,25 +20,33 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <chrono>     //for tracking  'last_write_time'
+#include <filesystem> 
 
+
+/*  //Uncomment this if C++17 not avialable
 //For pre-CPP17 compilers, give the macro __has_include a definition if none currently exists
 #ifndef __has_include
 #define __has_include(x) false
 #endif
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //A new addition to C++17 is the Pre-Processor extension '__has_include()'
 //for checking if a header file is available. see:
 //           https://stackoverflow.com/questions/142877/can-the-c-preprocessor-be-used-to-tell-if-a-file-exists
 //Since this code is in a project that is targeting C++17, it will use this function.
-#if __has_include(<experimental/filesystem>)
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
 #define CHECK_USING_EXPERIMENTAL_FILESYSTEM_FUNCTION
 #include <experimental/filesystem> 
 #else 
 #define CHECK_USING_OS_DEPENDENT_IMPLEMENTATION
 #endif //__has_include(<experimental/filesystem>)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+
 
 static inline constexpr int NOT_FOUND = -1;
 
@@ -83,6 +91,7 @@ private:
 	bool mFileExists_;
 	std::string mExtension_; //The ".xxxx" at the end of a filepath (does not necessarily exist for all filepaths)
 	bool mExtensionExists_;  
+
 
 
 	/////////////////////////////////

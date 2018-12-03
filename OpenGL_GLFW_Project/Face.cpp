@@ -125,7 +125,7 @@ namespace AssetLoadingInternal {
 				faceData[0] = { mPositions_[0], mTexCoords_[0], mNormals_[0] };
 				faceData[1] = { mPositions_[1], mTexCoords_[1], mNormals_[1] };
 				faceData[2] = { mPositions_[2], mTexCoords_[2], mNormals_[2] };
-				faceData[2] = { mPositions_[3], mTexCoords_[3], mNormals_[3] };
+				faceData[3] = { mPositions_[3], mTexCoords_[3], mNormals_[3] };
 			}
 		}
 		return faceData;

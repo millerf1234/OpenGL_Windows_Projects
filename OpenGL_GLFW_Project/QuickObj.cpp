@@ -154,11 +154,11 @@ void QuickObj::constructVerticesFromParsedData() {
 	//Construct each face from the parsed data into the mVertices_ vector, with positions/textureCoords/Normals interlaced
 	for (auto faceIter = mFaces_.begin(); faceIter != mFaces_.end(); faceIter++) {
 		if (faceIter->isQuad()) { //Quads will be triangulated here:
-			auto offsets = faceIter->getQuadFace(); //Get the quad face (note 'offsets' is an array of arrays)
-			auto quadCorner0 = offsets[0]; //Get the quad's 4 corners
-			auto quadCorner1 = offsets[1];
-			auto quadCorner2 = offsets[2];
-			auto quadCorner3 = offsets[3];
+			auto offsets = faceIter->getQuadFace(); //Get the quad face (note variable 'offsets' is an array of arrays)
+			auto quadCorner0 = offsets[QUAD_CORNER_0_OFFSETS]; //Get the quad's 4 corners
+			auto quadCorner1 = offsets[QUAD_CORNER_1_OFFSETS];
+			auto quadCorner2 = offsets[QUAD_CORNER_3_OFFSETS];
+			auto quadCorner3 = offsets[QUAD_CORNER_2_OFFSETS];
 
 			//If we just have to worry about position data since there was no texture or normal data:
 			if (!(faceIter->hasTexCoord() || faceIter->hasNormals())) {
