@@ -28,13 +28,13 @@
 |                             Noise Control Parameters                           |
 \*------------------------------------------------------------------------------*/
 
-#define SCALE		   10.0		// 3.0
+#define SCALE		   1110.0		// 3.0
 #define BIAS   		   +0.0
-#define POWER			11.0		
-#define OCTAVES   		2		// 7
+#define POWER			111.0		
+#define OCTAVES   		26		// 7
 #define SWITCH_TIME 	5.0		// seconds
 #define WARP_INTENSITY	10.00	// 0.06
-#define WARP_FREQUENCY	116.0
+#define WARP_FREQUENCY	16.0
 
 
 
