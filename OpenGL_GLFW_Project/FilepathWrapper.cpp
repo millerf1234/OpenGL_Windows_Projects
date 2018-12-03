@@ -3,11 +3,11 @@
 // depends on some preprocessor statements in the header file.
 //
 // 
-// The class currently targets C++17, but if/when C++20 comes out and
-// std::filesystem becomes standardized, this code can/should be updated 
-// to use 'std::filesystem' instead of 'experimental::filesystem'.
+// Requires C++17 for std::filesystem functionality
 //
 //Date:       October 11, 2018
+//            December 3, 2018   --  Added std::filesystem::last_write_time() checking 
+//                                   allow app to see if new version of a file is available
 //Programmer: Forrest Miller
 
 #include "FilepathWrapper.h"
@@ -17,6 +17,8 @@ void Filepath::initialize() {
 	mFileExists_ = false;
 	mExtension_ = ""; //= "UNKNOWN";
 	mExtensionExists_ = false;
+	
+	mHasLastWriteTimeAvailableForComparison_ = false;
 }
 
 Filepath::Filepath(const char * fp) {
@@ -25,8 +27,10 @@ Filepath::Filepath(const char * fp) {
 	//Check if file exists
 	mFileExists_ = file_exists(mPath_.c_str());
 	//Find and (if found) record file extension
-	if ( mFileExists_ ) 
+	if (mFileExists_) {
 		findAndExtractFileExtension(mPath_);
+		
+	}
 }
 
 Filepath::Filepath(std::string fp) {
