@@ -112,8 +112,8 @@ private:
 	//all models for the scene have finished loading
 	void prepareScene();
 
-	
-	bool TESTcheckForNewVersionTEST();
+	std::unique_ptr<FilepathWrapper> testFP;
+	void TESTcheckForNewVersionTEST();
 
 
 
