@@ -112,10 +112,6 @@ private:
 	//all models for the scene have finished loading
 	void prepareScene();
 
-	std::unique_ptr<FilepathWrapper> testFP;
-	void TESTcheckForNewVersionTEST();
-
-
 
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////

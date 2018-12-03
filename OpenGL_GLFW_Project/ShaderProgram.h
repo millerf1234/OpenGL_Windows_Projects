@@ -40,6 +40,13 @@
 //			 September 14-15, 2018  --  Added support for attaching secondary shaders (i.e. shaders without a 'main()' function)
 //										to programs so that multiple shaders of the same type can be used.
 //
+//           December 3-5 (or so)  2018  -- Added support for having each shader program's shaders querry the operating system [using C++17/C++20's  
+//                                          std::filesystem::last_write_time()] to determine if the files containing their source code
+//                                          has been modified from the version they were built with, and then having them rebuild themselves from
+//                                          the updated source. Note that this functionality will be disabled for both unlinked/incomplete shader programs
+//                                          and for shader programs that have been released from the context (by having their member function 'released()' 
+//                                          called). 
+//
 //Notes:   
 //
 //
@@ -65,6 +72,8 @@
 #ifndef SHADER_PROGRAM_H_
 #define SHADER_PROGRAM_H_
 
+#include <unordered_map>  //Used to track already-attached (secondary) shaders  
+
 #include "UniformLocationTracker.h"
 
 #include "ComputeShader.h"
@@ -73,8 +82,9 @@
 #include "TesselationControlShader.h"
 #include "TesselationEvaluationShader.h"
 #include "FragmentShader.h"
+#include "FilepathWrapper.h" //Provides useful static functions for allowing dynamic rebuilding of shaders
 
-#include <unordered_map>  //Used to track already-attached (secondary) shaders  
+
 
 //namespace ShaderInterface { 
 
@@ -278,7 +288,6 @@
 			//Gets the number of attached secondary compute shaders to this ShaderProgram
 			int getAttachedSecondaryComputeCount() const { return mState.mAttachedSecondaryComputeCount; }
 
-
 			//Public variable(s):
 			std::unique_ptr<ShaderInterface::UniformLocationTracker> uniforms; //Make this public? Or make private and write a whole new set of functions to interface with it 
 
@@ -295,32 +304,13 @@
 				bool mError;
 				bool mReadyToLink;
 				bool mReleased;
-
 				//Constructor
-				ProgramState() {
-					mValid = false;
-					mLinked = false;
-					mHasVert = false;
-					mHasGeom = false;
-					mHasTesse = false;
-					mHasTessc = false;
-					mHasFrag = false;
-					mHasCompute = false;
-					mAttachedSecondaryVertCount = 0;
-					mAttachedSecondaryGeomCount = 0;
-					mAttachedSecondaryTesseCount = 0;
-					mAttachedSecondaryTesscCount = 0;
-					mAttachedSecondaryFragCount = 0;
-					mAttachedSecondaryComputeCount = 0;
-					
-					mError = false;
-					mReadyToLink = false;
-					mReleased = false;
-				}
+				ProgramState();
 			};
 
 			ProgramState mState;
 			
+			//Primary shaders (can only have 1 of each at a time)
 			std::unique_ptr<ShaderInterface::VertexShader> mVertexShader;
 			std::unique_ptr<ShaderInterface::GeometryShader> mGeometryShader;
 			std::unique_ptr<ShaderInterface::TesselationControlShader> mTesselationControlShader;
@@ -328,7 +318,7 @@
 			std::unique_ptr<ShaderInterface::FragmentShader> mFragmentShader;
 			std::unique_ptr<ShaderInterface::ComputeShader> mComputeShader;
 
-			
+		
 
 			//Private helped functions
 			void initialize();

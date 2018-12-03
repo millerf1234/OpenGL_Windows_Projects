@@ -174,7 +174,7 @@ namespace ShaderInterface {
 		//-------------------------------
 
 		//Returns the filepath of this shader's source file.
-		const char * getFilepath() const { return mFilepath; }
+		std::string getFilepath() const { return mFilepath; }
 		//Returns true if this shader has been decomissioned
 		bool seeIfIsDecomissioned() const { return mIsDecomissioned; }
 		//Returns true if this shader is ready to be attached to a ShaderProgram
