@@ -351,6 +351,7 @@
     <None Include="Shaders\TeapotExplosion.vert" />
     <None Include="Shaders\VertMath.vert" />
     <None Include="obj\Engine2_Textured.mtl" />
+    <None Include="Shaders\VoronoiNoise.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf" />

@@ -259,6 +259,12 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
       <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise">
+      <UniqueIdentifier>{536b2386-9d8a-4848-906d-41e81e76fad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial">
+      <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -926,6 +932,9 @@
     </None>
     <None Include="Shaders\ShaderNoiseFunctions.glsl">
       <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+    </None>
+    <None Include="Shaders\VoronoiNoise.glsl">
+      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

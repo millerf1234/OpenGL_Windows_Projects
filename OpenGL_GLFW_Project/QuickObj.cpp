@@ -23,21 +23,34 @@ QuickObj::~QuickObj() {
 
 //This is a very quick and dirty implementation. Not clean
 void QuickObj::parseFile() {
-	//In case a line starting with vp is read (representing freeform geometry),
-	//we only need to print out a warning one time
-	bool printedFreeformWarning = false; 
+
+	//In case a line starting with "vp" is parsed (representing freeform geometry data),
+	//we only need to print out a warning about parser not supporting freeform geometry 
+	//one time. 
+	bool freeformGeometryWarningMessageFlag = false; 
+
 	size_t fileSize = mFile_->getNumberOfLines();
 	for (size_t i = 0; i < fileSize; i++) {
 		std::string line = mFile_->getLine(i);
 		const char * lineIter = line.c_str();
 
-		//Skip object tags, group tags and smooth group tags (because this is just the SimpleObj loader after all)
-		if ((*lineIter == 'o') || (*lineIter == 'g') || (*lineIter == 's')) {
+		switch (*lineIter) {
+		case '\n':
+			continue; //If it's an empty line, skip it
+		case 'o':
+			continue; //Skip object tags
+		case 'g':
+			continue; //Skip group tags
+		case 's': 
+			continue; //Skip smoothing group tags
+		case '#':
+			//Skip comments for now...
 			continue;
-		}
-
-		else if (*lineIter == 'v') {
-			//bool isNegative = false; //used to detect negative numbers //UNUSED
+		case 'u':
+			//Line probably is a "usemtl ____"  instruction
+			//No material using for now
+			break;
+		case 'v':
 			lineIter++;
 			if (*lineIter == ' ') {
 				eatWhitespace(lineIter);
@@ -56,47 +69,38 @@ void QuickObj::parseFile() {
 				loadLineIntoVertex(lineIter, mNormals_);
 			}
 			else if (*lineIter == 'p') {
-				if (!printedFreeformWarning) {
+				if (!freeformGeometryWarningMessageFlag) {
 					fprintf(MSGLOG, "\n\nWhoah! Freeform geometry data encountered! This is quite unexpected!\n"
 						"It looks like you are trying to load an Advanced OBJ file.\n"
 						"Unfortunately freeform geometry is not supported at this time...\n"
 						"\t  [All freeform geometry in this file will be skipped]\n");
-					printedFreeformWarning = true;
+					freeformGeometryWarningMessageFlag = true;
 				}
 				continue;
 			}
 			else {
 				fprintf(ERRLOG, "\nERROR parsing line %s\n", line.c_str());
 			}
-		}
-		else if (*lineIter == '#') {
-			//Skip comments for now...
-			continue;
-		}
-
-		else if (*lineIter == 'f') {
+			break;
+		case 'f':
 			mFaces_.emplace_back(AssetLoadingInternal::Face(lineIter, true));
-		}
-		else if (*lineIter == 'l') {
+			break;
+		case 'l':
 			mLines_.emplace_back(AssetLoadingInternal::Line(lineIter, true));
-		}
-		else if (*lineIter == 'm') {
-			if (*(lineIter + 1u) == 'g') {
+			break;
+		case 'm':
+			if (*(lineIter + 1u) == 'g') { //If line starts with "mg", then
 				//It's a merging group, which we will skip
 				fprintf(MSGLOG, "Skipping Merging Group: %s", line.c_str());
 			}
 			else {
-				//No material loading (for now)...
+				//It's the name of a material, which currently are not implemented
 				fprintf(MSGLOG, "Skipping Material: %s", line.c_str());
 			}
-			continue;
-		}
-		else if (*lineIter == 'u') { //Line probably is a "usemtl ____"  instruction
-			//No material using for now
-			continue;
-		}
-		else {
-			fprintf(ERRLOG, "Ignoring line: %s\n", line.c_str());
+			break;
+		
+		default:
+			fprintf(MSGLOG, "\nUnable to parse line %s\n", line.c_str());
 		}
 	}
 
@@ -137,8 +141,11 @@ void QuickObj::constructVerticesFromParsedData() {
 			triangleFaces++;
 		}
 	}
-	fprintf(MSGLOG, "\nParsed  Lines: %d\tTriangleFaces: %d\tQuadFaces: %d\n", lines, triangleFaces, quadFaces);
-	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(), mTexCoords_.size(), mNormals_.size());
+
+	fprintf(MSGLOG, "\n*** Model Statistics ***\nPrimitive Counts:  Lines: %d\tTriangles: %d\tQuads: %d\n",
+		lines, triangleFaces, quadFaces);
+	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(),
+		mTexCoords_.size(), mNormals_.size());
 
 	if (lines > 0) {
 		fprintf(MSGLOG, "\n  [TODO: Implement the converting of parsed 'line' primitive data to GPU-ready data...]\n");
@@ -574,6 +581,8 @@ void QuickObj::constructVerticesFromParsedData() {
 	}
 }
 
+//This function handles parsing vertex data by inserting the numerical values it reads into a 'Vertex' object 
+//and then adding that object to the end of 
 void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts) {
 	float values[3];
 	int vertComponent = 0;
@@ -601,22 +610,25 @@ void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts)
 
 	switch (vertComponent) {
 	case 0:
-		[[__fallthrough]]
-	default:
-		fprintf(ERRLOG, "\nERROR! No (or too much) data was loaded for line %s\n", line);
+		fprintf(ERRLOG, "\nERROR! No data was loaded for the line %s", line);
+		fprintf(ERRLOG, "\nTo keep the vertex ordering intact, a dummy vertex will be substituted!\n");
+		verts.emplace_back(Vertex(0.0f));
 		break;
 	case 1:
-		fprintf(WRNLOG, "\nWarning! Only 1 data value was read from line %sVerify this is correct plz!\n", line);
-		verts.push_back(Vertex(values[0]));
+		fprintf(WRNLOG, "\nWarning! Only 1 data value was read from line %s", line);
+		verts.emplace_back(Vertex(values[0])); //emplace_back might be faster than push_back
 		break;
 	case 2:
-		verts.push_back(Vertex(values[0], values[1]));
+		//verts.push_back(Vertex(values[0], values[1]));
+		verts.emplace_back(Vertex(values[0], values[1]));
 		break;
 	case 3:
-		verts.push_back(Vertex(values[0], values[1], values[2]));
+		//verts.push_back(Vertex(values[0], values[1], values[2]));
+		verts.emplace_back(Vertex(values[0], values[1], values[2]));
 		break;
-	case 4:
-		fprintf(ERRLOG, "\nERROR! TOO many data values were read for line %s\n", line);
+	default:
+		fprintf(ERRLOG, "\nERROR! Too many data values were read for a vertex. Only the first 3 values will be used!\n");
+		verts.emplace_back(Vertex(values[0], values[1], values[2]));
 		break;
 	}
 }

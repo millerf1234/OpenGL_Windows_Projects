@@ -23,8 +23,10 @@ void AssetLoadingDemo::initialize() {
 	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	//Set the variables regarding instanced drawing
-	drawMultipleInstances = false;
+	drawMultipleInstances = true;
 	instanceCount = STARTING_INSTANCE_COUNT;
+	instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
+	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 
 	//Set values for screen projection 
 	fov = 56.0f;
@@ -53,10 +55,6 @@ void AssetLoadingDemo::initialize() {
 
 	//Keep an extra zoom parameter
 	zoom = 1.0f; //Higher number means farther away
-
-	
-	
-
 
 
 	//Set initial background color
@@ -139,14 +137,18 @@ void AssetLoadingDemo::loadShaders() {
 	sceneShader->attachVert(shadersRFP + std::string("AssetLoadingDemo.vert")); //Attach Vertex shader to scene
 	sceneShader->attachFrag(shadersRFP + std::string("AssetLoadingDemo.frag")); //Attach Fragment shader to scene
 
-	// [Each shader stage requires its own set of functions]
+
+	// [Each shader stage requires its own set of secondary functions]
 	//Create and attach a secondary vertex shader containing implementations for some noise functions
-	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader = std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
+		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("VoronoiNoise.glsl"));
 	vertexNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryVert(vertexNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
 
+
 	//Create and attach a secondary fragment shader containing implementations for some noise functions 
-	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader = std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
+		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("VoronoiNoise.glsl"));
 	fragmentNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
 
@@ -185,10 +187,10 @@ void AssetLoadingDemo::loadModels() {
 
 	//Load some models
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
@@ -210,16 +212,15 @@ void AssetLoadingDemo::prepareScene() {
 
 void AssetLoadingDemo::renderLoop() {
 	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
+		//Check Input
 		if (checkToSeeIfShouldCloseWindow()) {
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			continue; //Skip the rest of this loop iteration to close window quickly
 		}
-
 		if (checkIfShouldPause()) {
 			pause();
 			continue;
 		}
-
 		if (checkIfShouldReset()) {
 			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 				pause();
@@ -227,24 +228,29 @@ void AssetLoadingDemo::renderLoop() {
 			}
 			reset();
 		}
-
+		//More Input Checking
 		changePrimitiveType();
 		changeInstancedDrawingBehavior();
 		rotate();
-		
-		updateFrameClearColor();
+		if (drawMultipleInstances) {
+			modifyInstancedDrawingSpiralPattern();
+		}
 
-		updateUniforms();
+		//Set up to draw frame
+		updateFrameClearColor(); //background color
+		updateUniforms(); 
 
+		//Draw frame
 		drawVerts();
 
-		counter += 0.0125f;
+		counter += 0.0125f; //Increment time 
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window); //Swap the buffer to present image to monitor
 
 		glfwPollEvents();
+
 		frameNumber++; //Increment the frame counter
-		prepareGLContextForNextFrame();
+		prepareGLContextForNextFrame(); 
 	}
 
 }
@@ -316,6 +322,8 @@ void AssetLoadingDemo::reset() {
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
+		instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
+		instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 	}
 }
 
@@ -332,8 +340,8 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 		}
 	}
 
-	//Only allow the instance count to be modified every 6 frames (1/10th second)
-	if ((frameNumber - frameInstancedDrawingCountLastModified) > 6ull) {
+	//Only allow the instance count to be modified every 12 frames (1/5th second)
+	if ((frameNumber - frameInstancedDrawingCountLastModified) > 12ull) {
 		if (drawMultipleInstances) {
 			if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
@@ -351,7 +359,61 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 	}
 }
 
+void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
+	GLfloat xChangeRate = 0.045f;
+	GLfloat yChangeRate = 0.045f;
+	GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
+	GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
 
+	//Check for updates to X period
+	if (glfwGetKey(window, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_x -= xChangeRate * rightShiftFactor;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_x -= xChangeRate * leftShiftFactor;
+		}
+		else {
+			instanceSpiralPatternPeriod_x -= xChangeRate;
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_x += xChangeRate * rightShiftFactor;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_x += xChangeRate * leftShiftFactor;
+		}
+		else {
+			instanceSpiralPatternPeriod_x += xChangeRate;
+		}
+	}
+
+
+	//Check for updates to Y period
+	if (glfwGetKey(window, GLFW_KEY_SEMICOLON) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_y -= yChangeRate * rightShiftFactor;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_y -= yChangeRate * leftShiftFactor;
+		}
+		else {
+			instanceSpiralPatternPeriod_y -= yChangeRate;
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_y += yChangeRate * rightShiftFactor;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			instanceSpiralPatternPeriod_y += yChangeRate * leftShiftFactor;
+		}
+		else {
+			instanceSpiralPatternPeriod_y += yChangeRate;
+		}
+	}
+}
 
 void AssetLoadingDemo::changePrimitiveType() {
 	
@@ -469,6 +531,11 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniformMat4x4("MVP", &MVP);
 	
 
+	if (drawMultipleInstances) {
+		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);
+		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_y", instanceSpiralPatternPeriod_y);
+	}
+
 }
 
 void AssetLoadingDemo::drawVerts() {
@@ -539,10 +606,6 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() {
 
 
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////    The remaining functions are utility functions that are called by the setup functions   ////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -550,7 +613,7 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() {
 
 void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 
-	const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.2f, -0.2f, -0.0f);
+	const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.0f, -0.0f, -0.0f);
 	const glm::vec3 CHANGE_BETWEEN_OBJECTS(0.5f, 0.5f, 0.00f);
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
@@ -691,18 +754,17 @@ void AssetLoadingDemo::addObjectWithMissingNormals(std::vector<std::unique_ptr<Q
 		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
 
-		for (int i = 0; i < 3; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i)));       //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + (i + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + (i + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + (i + 3u)));             //w
-			sceneBuffer.push_back(*(triangleStart + (i + 4u)));             //s
-			sceneBuffer.push_back(*(triangleStart + (i + 5u)));             //t
+		for (size_t i = 0u; i < 3u; i++) {
+			sceneBuffer.push_back(objPos.x + *(triangleStart + (i*6u)));         //x
+			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i*6u) + 1u)));  //y
+			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i*6u) + 2u)));  //z
+			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 3u)));             //w
+			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 4u)));             //s
+			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 5u)));             //t
 			sceneBuffer.push_back(computedNormal.x);
 			sceneBuffer.push_back(computedNormal.y);
 			sceneBuffer.push_back(computedNormal.z);
 		}
-
 	}
 }
 
@@ -727,7 +789,7 @@ void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::
 
 	//Loop through the object's data triangle by triangle
 	for (size_t i = 0u; i < numberOfTriangles; i++) {
-		auto triangleStart = ((*object)->mVertices_.begin() + (i * 12u));
+		auto triangleStart = ((*object)->mVertices_.begin() + (i * 12u)); //triangleStart is type iterator for vector<float>
 
 		v0 = glm::vec3(*(triangleStart     ), *(triangleStart + 1u), *(triangleStart +  2u));
 		v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart +  6u));
@@ -735,11 +797,11 @@ void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::
 
 		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
-		for (int i = 0; i < 3; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i)));       //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + (i + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + (i + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + (i + 3u)));             //w
+		for (size_t i = 0u; i < 3u; i++) {
+			sceneBuffer.push_back(objPos.x + *(triangleStart + (i*4u)));        //x
+			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i*4u) + 1u)));  //y
+			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i*4u) + 2u)));  //z
+			sceneBuffer.push_back(*(triangleStart + ((i*4u) + 3u)));             //w
 			uvCoord = genTexCoord();  //Generate the uv Coords on the fly
 			sceneBuffer.push_back(uvCoord.s);                               //s
 			sceneBuffer.push_back(uvCoord.t);                               //t
@@ -760,7 +822,6 @@ void AssetLoadingDemo::uploadSceneBufferToGPU() {
 	glCreateBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	
 	fprintf(MSGLOG, "\nGPU Buffer Created with ID %u. Uploading data to GPU Buffer!\n", vbo);
 	fprintf(MSGLOG, "There are %u vertices total in the scene, or %u floating-point values\n", vertexCount, vertexCount * 9u);
 

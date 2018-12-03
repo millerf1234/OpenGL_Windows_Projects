@@ -1,5 +1,15 @@
 //File:   ShaderNoiseFunctions.glsl
-//Shader Type:  No requirement    (I think I can do this without a special type of shader being required?)
+//
+//Quick Description:    This file contains the definitions/implementations for several different varieties of
+//                      shader-ready noise functions; see the chart below for a quick look at the available 
+//                      functions. Chances are high that eventually this file will be superseded by either a 
+//                      newer collection of noise functions or perhaps a series of noise functions, each in
+//                      their own file. 
+//
+//
+//                     
+//Shader Type:  No requirement  [However, any pipeline stage that uses these functions needs to have this file 
+//                               attached to the ShaderProgram as a secondary shader as part of that stage]
 //
 //   Cool Shader Ideas Which Use Noise: 
 //         https://developer.arm.com/docs/100587/latest/geometry-shaders/an-example-use-for-geometry-shaders/the-effect-of-adding-noise-to-geometry-shader-isosurfaces
@@ -24,7 +34,8 @@
 //        of the form:
 //					float rand(someVector) 
 //        To allow these various types of noise to co-exist within this same file, I have taken a few liberties with
-//         slightly modifying some function names. I will make an effort to consistently mark every place I have done so.
+//         slightly modifying some function names. I will make an effort to consistently mark every place I have done so
+//         by commenting out the original name and writing my new name directly below the original. 
 //
 //
 //
@@ -67,10 +78,6 @@
 //		  In fact, to avoid acidentally defining the same macro twice, it is reccomended to surround it with an #ifndef macro 
 //
 //
-
-
-
-
 
 
 #version 450 core
@@ -685,7 +692,7 @@ float snoise(vec2 v) {
 
 
 #ifndef NUM_OCTAVES
-#define NUM_OCTAVES 10
+#define NUM_OCTAVES 6
 #endif 
 
 	float fbm(float x) {

@@ -43,7 +43,9 @@
 //Setting this variable to false will cause all generated texture coordinates to be the same point 
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
-static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5u;
+static constexpr const GLsizei STARTING_INSTANCE_COUNT = 50u;
+static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X = 3.0f;
+static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
 
 
 class AssetLoadingDemo : public RenderDemoBase { 
@@ -66,10 +68,13 @@ private:
 
 	GLuint vao, vbo; 
 
+	//Variables that are modifiable by the user
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
+	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
 
+	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
 	std::vector<GLfloat> sceneBuffer;
@@ -138,6 +143,7 @@ private:
 	void reset();
 
 	void changeInstancedDrawingBehavior();
+	void modifyInstancedDrawingSpiralPattern();
 	void changePrimitiveType(); 
 	void rotate();
 

@@ -210,7 +210,7 @@ namespace AssetLoadingInternal {
 			//Do a simplified parse loop to extract position data only
 			mHasTexCoords_ = false;
 			mHasNormals_ = false;
-			parseError = parseLineWithNoForwardSlashes(stringIter, positions, readPositions); //readPositions is passed by reference
+			parseError = !(parseLineWithNoForwardSlashes(stringIter, positions, readPositions)); //readPositions is passed by reference
 			if (readPositions == QUAD_VERTICE_COUNT) {
 				mIsQuad_ = true;
 			}

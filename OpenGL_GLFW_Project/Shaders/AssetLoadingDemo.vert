@@ -19,21 +19,48 @@ uniform mat4 rotation;
 
 uniform mat4 MVP;
 
+uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
+uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the pattern used when drawing instances
+
+
+
+#define TRANSLATE_INSTANCES_BEFORE_MVP_TRANSFORM  //Comment/Uncomment to toggle when the translation between each instance is applied 
+
+
+float noise(in vec2 p);
+float voronoi(in vec2 x);
+
+vec3 combinedVoronoi(in vec3 c) {
+	return vec3(noise(c.xy), noise(c.yz), noise(c.xz));
+}
+
+
 void main() {
 
 	//Keep things very simple for now...
 	position = ModelPosition + vec4(0.0, 0.0, 0.0, zoom);
-	position.y *= 1.5;
+	//position.y *= 1.5;
 
 	texCoord = ModelTexCoord;
 
-	//Normally a seperate matrix is needed for transforming the normal vectors. However since here all that is being done is a rotation,
-	//which is an orthoganol transform, it is fine to just use it for the normals
+	//Normally a seperate matrix is needed for transforming the normal vectors.
+	// However this has not yet been implemented...
 	normal = mat3(rotation) * ModelNormal;
 
 
+#ifdef TRANSLATE_INSTANCES_BEFORE_MVP_TRANSFORM
+	float radius = float(gl_InstanceID) / 3.0;
+	position.x += radius * cos(float(gl_InstanceID) + instanceSpiralPatternPeriod_x);
+	position.y += radius * sin(float(gl_InstanceID) + instanceSpiralPatternPeriod_y);
+	position.z += sin(time+2.*noise(position.xy));
 	gl_Position = MVP * position;
-	gl_Position.x += float(gl_InstanceID) / 0.20;
-	//gl_Position = rotation * position;
+
+#else 
+	gl_Position = MVP * position;
+	float radius = float(gl_InstanceID) / 2.0;
+	gl_Position.x += radius * cos(float(gl_InstanceID) * instanceSpiralPatternPeriod_x);
+	gl_Position.y += radius * sin(float(gl_InstanceID) * instanceSpiralPatternPeriod_y);
+#endif 
+	
 	
 }
