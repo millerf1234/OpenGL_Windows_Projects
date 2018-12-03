@@ -39,8 +39,8 @@
 // Note from Programmer:   This class has undergone some modifications since I first wrote it 
 //                         and as such it could benefit from some refactoring to make parts of
 //                         its implementation more coherent and make more sense. For example, 
-//                         this class manages its filepath itself instead of relying on the Filepath
-//                         object type, but still uses the static functionality of the Filepath 
+//                         this class manages its filepath itself instead of relying on the FilepathWrapper
+//                         object type, but still uses the static functionality of the FilepathWrapper 
 //                         class to verify a files existance. 
 //                         Basically this class is functional as is but it's implementation could 
 //                         desperatly use an overhaul and some refactoring. 

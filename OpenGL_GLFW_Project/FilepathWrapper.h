@@ -29,15 +29,16 @@
 //                    struct timespec instances which can represent nanos (though at least the seconds
 //                    part of the timespec can be used as a time_t discarding some information)."
 //
-//                  Moral of the story:  Until C++20, it is not possible (or advisable) to convert between
-//                             std::filesystem::file_time_type and time_t. 
+//                    Moral of the story:  Until C++20, it is not possible (or advisable) to convert between
+//                                         std::filesystem::file_time_type and time_t. 
+//                    See also: https://en.cppreference.com/w/cpp/filesystem/file_time_type
 //
 
 
 #pragma once
 
-#ifndef FILEPATH_H_
-#define FILEPATH_H_
+#ifndef FILEPATH_WRAPPER_H_
+#define FILEPATH_WRAPPER_H_
 
 #include <fstream>
 #include <sstream>
@@ -47,44 +48,21 @@
 #include <optional>  //To pretect against uninitialized FileWriteTime
 
 
-/*  //Uncomment this if C++17 not avialable
-//For pre-CPP17 compilers, give the macro __has_include a definition if none currently exists
-#ifndef __has_include
-#define __has_include(x) false
-#endif
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//A new addition to C++17 is the Pre-Processor extension '__has_include()'
-//for checking if a header file is available. see:
-//           https://stackoverflow.com/questions/142877/can-the-c-preprocessor-be-used-to-tell-if-a-file-exists
-//Since this code is in a project that is targeting C++17, it will use this function.
-#if __has_include(<filesystem>)
-#include <filesystem>
-#elif __has_include(<experimental/filesystem>)
-#define CHECK_USING_EXPERIMENTAL_FILESYSTEM_FUNCTION
-#include <experimental/filesystem> 
-#else 
-#define CHECK_USING_OS_DEPENDENT_IMPLEMENTATION
-#endif //__has_include(<experimental/filesystem>)
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-*/
-
-
 
 static inline constexpr int NOT_FOUND = -1;
 
-class Filepath {
+class FilepathWrapper {
 public:
-	Filepath() = delete;
-	Filepath(const char * fp);
-	Filepath(std::string fp);
+	FilepathWrapper() = delete;
+	FilepathWrapper(const char * fp);
+	FilepathWrapper(const std::string& fp);
 
-	Filepath(const Filepath&);
-	Filepath(Filepath&&);
-	~Filepath();
+	FilepathWrapper(const FilepathWrapper&);
+	FilepathWrapper(FilepathWrapper&&);
+	~FilepathWrapper();
 
-	Filepath& operator=(const Filepath&);
-	Filepath& operator=(Filepath&&);
+	FilepathWrapper& operator=(const FilepathWrapper&);
+	FilepathWrapper& operator=(FilepathWrapper&&);
 
 	//Checks to see if the file at the filepath exists
 	bool exists() const { return mFileExists_; }
@@ -98,6 +76,19 @@ public:
 	//an empty string will be returned
 	std::string extension() const;
 
+	//Querries this object to determine if it was able to record the time of last modification
+	//to its wrapped file. This is necessary because it is not guarenteed that all operating systems
+	//will play nicely with having the age of all of their files querried and may fail to return a valid
+	//value. The function hasUpdatedFileAvailable() will always return false if this function returns false.
+	inline bool isAbleToDiscoverUpdatesToFile() const { return bool(mLastWriteTime_); } //Explicitly call operator bool on std::optional mLastWriteTime_
+
+	//Attempts to querry the file located at this object's stored filepath to see if there 
+	//is an updated version of the file available. Will only return true if a newer version
+	//of the file is detected, otherwise will always return false. This function will update 
+	//this object's local copy of the file's most recent time of modification, so calling this
+	//function more than once will result in it returning false for all calls past the first call
+	//until the file gets modified again.
+	bool hasUpdatedFileAvailable() noexcept;
 
 	/////////////////////////////////
 	//   Static Utility Functions  //
@@ -106,19 +97,14 @@ public:
 	//Returns empty string if no file extension is found
 	static std::string findAndExtractFileExtension(const std::string& fp);
 
-	//Checks with the operating system to determine the system time when file was most 
+	//Checks with the operating system to determine the system time when a file was most 
 	//recently updated. Will print out an error message if the OS encounters a problem 
 	//querring the file and return false, in which case DO NOT USE THE file_time_type variable!
-	static bool aquireFilesMostRecentTimeUpdated(const std::string& fp, std::filesystem::file_time_type& lastUpdateTime)
+	static bool getTimeOfFilesMostRecentUpdate(const std::string& fp, std::filesystem::file_time_type& lastUpdateTime);
 
 	//Checks to see if the file string corresponds to an actual file on the system
 	static bool file_exists(const char * fp);
 	
-	//Attempts to querry the file located at this object's stored filepath to see if there 
-	//is an updated version of the file available. Will only return true if a newer version
-	//of the file is detected, otherwise will always return false.
-	bool hasUpdatedFileAvailable() const noexcept;
-
 	
 
 private:
@@ -144,7 +130,6 @@ private:
 };
 
 
-#endif //FILEPATH_H_
+#endif //FILEPATH_WRAPPER_H_
 
 
-//#endif //defined IS_FINISHED

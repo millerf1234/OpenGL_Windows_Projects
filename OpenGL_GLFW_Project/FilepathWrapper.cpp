@@ -12,132 +12,175 @@
 
 #include "FilepathWrapper.h"
 
-void Filepath::initialize() {
+void FilepathWrapper::initialize() {
 	mPath_ = "";
 	mFileExists_ = false;
 	mExtension_ = ""; //= "UNKNOWN";
 	mExtensionExists_ = false;
-	
-	mHasLastWriteTimeAvailableForComparison_ = false;
+	mLastWriteTime_ = std::nullopt;
 }
 
-Filepath::Filepath(const char * fp) {
+FilepathWrapper::FilepathWrapper(const char * fp) {
 	//Record filepath
 	mPath_ = fp;
 	//Check if file exists
 	mFileExists_ = file_exists(mPath_.c_str());
 	//Find and (if found) record file extension
 	if (mFileExists_) {
-		findAndExtractFileExtension(mPath_);
-		
+		mExtension_ = findAndExtractFileExtension(mPath_);
+		if (mExtension_.length() == 0u) {
+			mExtensionExists_ = false;
+		}
+		//Attempt to record the time that the file was most recently updated
+		std::filesystem::file_time_type timeOfMostRecentModification;
+		if (getTimeOfFilesMostRecentUpdate(mPath_, timeOfMostRecentModification)) {
+			mLastWriteTime_ = std::make_optional<std::filesystem::file_time_type>(timeOfMostRecentModification);
+		}
+		else {
+			mLastWriteTime_ = std::nullopt;
+		}
+	}
+	else {
+		mExtensionExists_ = false;
+		mExtension_ = "";
+		mLastWriteTime_ = std::nullopt;
 	}
 }
 
-Filepath::Filepath(std::string fp) {
+FilepathWrapper::FilepathWrapper(const std::string& fp) {
 	//Record filepath
 	mPath_ = fp;
 	//Check if file exists
 	mFileExists_ = file_exists(mPath_.c_str());
 	//Find and (if found) record file extension
-	if ( mFileExists_ ) 
-		findAndExtractFileExtension(mPath_);
+	if (mFileExists_) {
+		mExtension_ = findAndExtractFileExtension(mPath_);
+		if (mExtension_.length() == 0u) {
+			mExtensionExists_ = false;
+		}
+		//Attempt to record the time that the file was most recently updated
+		std::filesystem::file_time_type timeOfMostRecentModification;
+		if (getTimeOfFilesMostRecentUpdate(mPath_, timeOfMostRecentModification)) {
+			mLastWriteTime_ = std::make_optional<std::filesystem::file_time_type>(timeOfMostRecentModification);
+		}
+		else {
+			mLastWriteTime_ = std::nullopt;
+		}
+	}
+	else {
+		mExtensionExists_ = false;
+		mExtension_ = "";
+		mLastWriteTime_ = std::nullopt;
+	}
 }
 
-Filepath::Filepath(const Filepath& that) {
+FilepathWrapper::FilepathWrapper(const FilepathWrapper& that) {
 	this->mPath_ = that.mPath_;
 	this->mFileExists_ = that.mFileExists_;
 	this->mExtension_ = that.mExtension_;
 	this->mExtensionExists_ = that.mExtensionExists_;
+	this->mLastWriteTime_ = that.mLastWriteTime_;
 }
 
-Filepath::Filepath(Filepath&& that) {
+FilepathWrapper::FilepathWrapper(FilepathWrapper&& that) {
 	this->mPath_ = std::move(that.mPath_); 
 	this->mFileExists_ = that.mFileExists_;
 	this->mExtension_ = std::move(that.mExtension_);
 	this->mExtensionExists_ = that.mExtensionExists_;
+	this->mLastWriteTime_ = that.mLastWriteTime_;
 }
 
-Filepath::~Filepath() {
+FilepathWrapper::~FilepathWrapper() {
 
 }
 
-Filepath& Filepath::operator=(const Filepath& that) {
+FilepathWrapper& FilepathWrapper::operator=(const FilepathWrapper& that) {
 	if (this != &that) {
 		this->mPath_ = that.mPath_;
 		this->mFileExists_ = that.mFileExists_;
 		this->mExtension_ = that.mExtension_;
 		this->mExtensionExists_ = that.mExtensionExists_;
+		this->mLastWriteTime_ = that.mLastWriteTime_;
 	}
 	return *this;
 }
 
-Filepath& Filepath::operator=(Filepath&& that) {
+FilepathWrapper& FilepathWrapper::operator=(FilepathWrapper&& that) {
 	if (this != &that) {
 		this->mPath_ = std::move(that.mPath_);
 		this->mFileExists_ = that.mFileExists_;
 		this->mExtension_ = std::move(that.mExtension_);
 		this->mExtensionExists_ = that.mExtensionExists_;
+		this->mLastWriteTime_ = that.mLastWriteTime_;
 	}
 	return *this;
 }
 
-
-std::string Filepath::extension() const {
+std::string FilepathWrapper::extension() const {
 	return mExtension_;
 }
 
-std::string Filepath::findAndExtractFileExtension(const std::string& fp) {
-	if (fp.length() < 2) {
-		return "";
+bool FilepathWrapper::hasUpdatedFileAvailable() noexcept {
+	//If the file exists and a last-modified time for the file has been previously stored by this object
+	if ( (!mFileExists_) || (!mLastWriteTime_) ) { 
+		return false;
 	}
-	
+	std::filesystem::file_time_type timeOfMostRecentModification;
+	if (!getTimeOfFilesMostRecentUpdate(mPath_, timeOfMostRecentModification)) {
+		return false;
+	}
+	else { //File exists and a valid most-recent-modification-time was able to be aquired through the OS
+		if (timeOfMostRecentModification > mLastWriteTime_) { //See if retrieved time is newer than this object's stored time
+			mLastWriteTime_ = std::make_optional<std::filesystem::file_time_type>(timeOfMostRecentModification);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+}
+
+
+std::string FilepathWrapper::findAndExtractFileExtension(const std::string& fp) {
 	int lastPeriodIndex = getIndexOfLastPeriodInString(fp);
 	if (lastPeriodIndex == NOT_FOUND) {
 		return "";
 	}
 	else {
 		std::string debug = fp.substr(lastPeriodIndex);
-		fprintf(stdout, "\n\nExtension is: %s\n\n", debug.c_str());
 		return fp.substr(lastPeriodIndex); 
 	}
 }
 
-//The implementation of this function depends of if 'filesystem' is available. 
-//See header file for details. 'filesystem' is expected to become standard in C++20. 
-//'filesystem' has been part of std::experimental since C++14.
-//
-// Implementation Note: My implementation for both of these functions was directly inspired (copied)
-// from the answers on this stack exchange thread: https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-bool Filepath::file_exists(const char * fp) {
-#ifdef CHECK_USING_EXPERIMENTAL_FILESYSTEM_FUNCTION
-	//As of C++14:
-	return std::experimental::filesystem::exists(fp);
-#elif defined CHECK_USING_OS_DEPENDENT_IMPLEMENTATION
-#ifdef _WIN32
-#include <io.h> 
-#define access    _access_s
-#else
-#include <unistd.h>
-#endif //_WIN32	
-	return ( access(fp.c_str(), 0) == 0 );
-#ifdef _WIN32
-#undef access
-#endif //_WIN32
-#endif //CHECK_USING_EXPERIMENTAL_FILESYSTEM_FUNCTION
+bool FilepathWrapper::getTimeOfFilesMostRecentUpdate(const std::string& fp, std::filesystem::file_time_type& lastUpdateTime) {
+	if (!file_exists(fp.c_str())) {
+		return false;
+	}
+	std::error_code errorCodeFromOS;
+	lastUpdateTime = std::filesystem::last_write_time(fp, errorCodeFromOS);
+	if (!errorCodeFromOS) { //SUCCESS!
+		return true;
+	}
+	else {  //The OS reported an error when trying to retrieve the time of this files' most recent modification
+		fprintf(stderr, "\nERROR!\nAn Error occured in the OS while trying to retrieve the most\n"
+			"recent time the file %s\n"
+			"was updated!\nError Message: %s\n", fp.c_str(), errorCodeFromOS.message().c_str());
+		return false;
+	}
 }
 
-int Filepath::getIndexOfLastPeriodInString(const std::string& fp) {
+bool FilepathWrapper::file_exists(const char * fp) {
+	return std::filesystem::exists(fp);
+}
+
+
+int FilepathWrapper::getIndexOfLastPeriodInString(const std::string& fp) {
 	std::string::const_iterator lastPeriod;
 	lastPeriod = std::find(fp.begin(), fp.end(), '.');
 	if (lastPeriod == fp.end()) {
 		return NOT_FOUND;
 	}
-	else { //else we have determined the string contains at least one period
-		int periodIndex; 
-		do { 
-			periodIndex = std::distance(fp.begin(), lastPeriod);
-			lastPeriod = std::find(++lastPeriod, fp.end(), '.');
-		} while ( lastPeriod != fp.end() );
-		return periodIndex;
+	else { //else we have found the period
+		return std::distance(fp.begin(), lastPeriod);
 	}
 }

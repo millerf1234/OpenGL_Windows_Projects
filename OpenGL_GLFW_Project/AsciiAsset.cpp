@@ -32,7 +32,7 @@ namespace AssetLoadingInternal {
 	AsciiAsset::AsciiAsset(const char * fp, bool storeLocalCopy) {
 		initialize();
 		mFilepath_ = fp;
-		mValidFilepath_ = Filepath::file_exists(mFilepath_.c_str()); 
+		mValidFilepath_ = FilepathWrapper::file_exists(mFilepath_.c_str()); 
 		if (mValidFilepath_ && storeLocalCopy) {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
@@ -44,7 +44,7 @@ namespace AssetLoadingInternal {
 	AsciiAsset::AsciiAsset(const std::string& fp, bool storeLocalCopy) {
 		initialize();
 		mFilepath_ = fp;
-		mValidFilepath_ = Filepath::file_exists(mFilepath_.c_str());
+		mValidFilepath_ = FilepathWrapper::file_exists(mFilepath_.c_str());
 		if (mValidFilepath_ && storeLocalCopy) {
 			mHasLocalCopyOfFileText_ = true;
 			loadFile();
