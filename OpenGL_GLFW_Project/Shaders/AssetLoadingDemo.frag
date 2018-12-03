@@ -36,7 +36,7 @@ void main() {
 	vec3 redDiffuse = redLightCol * clamp((dot(normalize((position.xyz - redLightPos)), normal)), 0.0, 1.0);
 	vec3 blueDiffuse = blueLightCol * clamp((dot(normalize((position.xyz - blueLightPos)), normal)), 0.0, 1.0);
 
-	vec3 diffuse = mix(redDiffuse, blueDiffuse, 0.3);
+	vec3 diffuse = mix(redDiffuse, blueDiffuse, 0.75 + 0.35*sin(time));
 
 	vec3 computedColor = vec3(amb + diffuse);
 

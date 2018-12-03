@@ -49,10 +49,10 @@ void main() {
 
 
 #ifdef TRANSLATE_INSTANCES_BEFORE_MVP_TRANSFORM
-	float radius = float(gl_InstanceID) / 3.0;
-	position.x += radius * cos(float(gl_InstanceID) + instanceSpiralPatternPeriod_x);
+	float radius = float(gl_InstanceID) / 0.10;
+	position.x += radius * sin(atan((noise(5.*position.yx)-float(gl_InstanceID) * noise(vec2(instanceSpiralPatternPeriod_x, sqrt(instanceSpiralPatternPeriod_x))))));
 	position.y += radius * sin(float(gl_InstanceID) + instanceSpiralPatternPeriod_y);
-	position.z += sin(time+2.*noise(position.xy));
+	position.z += smoothstep(-abs(sin(time+2.*noise(position.xy))), abs(sin(time + 2.*noise(position.xy))), position.z);
 	gl_Position = MVP * position;
 
 #else 

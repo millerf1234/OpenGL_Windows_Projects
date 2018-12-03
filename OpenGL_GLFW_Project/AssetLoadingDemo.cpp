@@ -23,7 +23,7 @@ void AssetLoadingDemo::initialize() {
 	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	//Set the variables regarding instanced drawing
-	drawMultipleInstances = true;
+	drawMultipleInstances = false;
 	instanceCount = STARTING_INSTANCE_COUNT;
 	instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
 	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
@@ -360,8 +360,8 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 }
 
 void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
-	GLfloat xChangeRate = 0.045f;
-	GLfloat yChangeRate = 0.045f;
+	GLfloat xChangeRate = 0.0015f;
+	GLfloat yChangeRate = 0.0015f;
 	GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
 	GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
 
@@ -531,10 +531,10 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms->updateUniformMat4x4("MVP", &MVP);
 	
 
-	if (drawMultipleInstances) {
+	//if (drawMultipleInstances) {
 		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);
 		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_y", instanceSpiralPatternPeriod_y);
-	}
+	//}
 
 }
 

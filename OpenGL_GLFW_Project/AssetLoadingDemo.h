@@ -43,7 +43,7 @@
 //Setting this variable to false will cause all generated texture coordinates to be the same point 
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
-static constexpr const GLsizei STARTING_INSTANCE_COUNT = 50u;
+static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5u;
 static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X = 3.0f;
 static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
 
