@@ -23,6 +23,8 @@
 using namespace ShaderInterface;  //Hopefully this doesn't get imported into the global namespace
 
 
+
+
 //Constructor for internal struct that tracks the shader programs state
 ShaderProgram::ProgramState::ProgramState() {
 	mValid = false;
@@ -970,6 +972,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) {
 
 	void ShaderProgram::initializeUniformLocationTracker() {
 		uniforms = std::make_unique<UniformLocationTracker>(mProgramID);
+		moreUniforms = UniformLocationTracker(mProgramID);
 	}
 
 	bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingVert() const {

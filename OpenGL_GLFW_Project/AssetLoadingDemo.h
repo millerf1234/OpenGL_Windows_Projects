@@ -48,6 +48,9 @@ static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X = 3.0f;
 static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
 
 
+static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ull;
+
+
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
 	AssetLoadingDemo() = delete;
@@ -68,7 +71,7 @@ private:
 
 	GLuint vao, vbo; 
 
-	//Variables that are modifiable by the user
+	//Variables that are modifiable by input from the user
 	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
@@ -78,6 +81,18 @@ private:
 	std::unique_ptr<ShaderProgram> sceneShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
 	std::vector<GLfloat> sceneBuffer;
+
+	//For dynamic shader recompilation
+	struct DynamicShaderSet {
+		FilepathWrapper file;
+		bool primary;
+		ShaderInterface::ShaderType type;
+		DynamicShaderSet() = delete;
+		DynamicShaderSet(std::string s, bool isPrimary, ShaderInterface::ShaderType type) : file(s), primary(isPrimary), type(type) { ; }
+	};
+	std::vector<DynamicShaderSet> shaderSources; //Vector of filepaths to shaders for checking for updates
+	std::unique_ptr<ShaderProgram> backupSceneShader; //Used for building a new sceneShader once files are updated
+	
 
 	//View parameters
 	glm::vec3 cameraPos;
@@ -144,12 +159,12 @@ private:
 	void rotate();
 
 
-
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							    |	 (3)   Handle Events	 |
 							    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			    			                 */
 	
-
+	bool checkForUpdatedShaders();
+	void buildNewShader();
 
 
 

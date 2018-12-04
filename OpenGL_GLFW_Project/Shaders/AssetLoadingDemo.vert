@@ -69,7 +69,7 @@ void main() {
 #else 
 	gl_Position = MVP * position;
 	float radius = float(gl_InstanceID) / 2.0;
-	gl_Position.x += radius * cos(float(gl_InstanceID) * instanceSpiralPatternPeriod_x);
+	gl_Position.x += radius + cos(float(gl_InstanceID) * instanceSpiralPatternPeriod_x);
 	gl_Position.y += radius * sin(float(gl_InstanceID) * instanceSpiralPatternPeriod_y);
 #endif 
 	

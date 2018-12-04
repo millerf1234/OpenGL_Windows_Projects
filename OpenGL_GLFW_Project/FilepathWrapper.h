@@ -64,6 +64,9 @@ public:
 	FilepathWrapper& operator=(const FilepathWrapper&);
 	FilepathWrapper& operator=(FilepathWrapper&&);
 
+	//Returns the filepath as a std::string
+	std::string filepath() const { return mPath_; }
+
 	//Checks to see if the file at the filepath exists
 	bool exists() const { return mFileExists_; }
 

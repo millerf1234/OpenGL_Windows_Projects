@@ -134,24 +134,25 @@ void AssetLoadingDemo::loadShaders() {
 	sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
 	//Attach the main shader stages to the sceneShader
-	sceneShader->attachVert(shadersRFP + std::string("AssetLoadingDemo.vert")); //Attach Vertex shader to scene
-	sceneShader->attachFrag(shadersRFP + std::string("AssetLoadingDemo.frag")); //Attach Fragment shader to scene
-
+	sceneShader->attachVert(shadersRFP + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
+	shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.vert", true, ShaderInterface::ShaderType::VERTEX);
+	sceneShader->attachFrag(shadersRFP + "AssetLoadingDemo.frag"); //Attach Fragment shader to scene
+	shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.frag", true, ShaderInterface::ShaderType::FRAGMENT);
 
 	// [Each shader stage requires its own set of secondary functions]
 	//Create and attach a secondary vertex shader containing implementations for some noise functions
 	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("VoronoiNoise.glsl"));
+		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "VoronoiNoise.glsl");
 	vertexNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryVert(vertexNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-
+	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
 	//Create and attach a secondary fragment shader containing implementations for some noise functions 
 	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
 		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("VoronoiNoise.glsl"));
 	fragmentNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-
+	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
 	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
 	sceneShader->link();
@@ -185,10 +186,10 @@ void AssetLoadingDemo::loadModels() {
 
 	//Load some models
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
@@ -235,6 +236,15 @@ void AssetLoadingDemo::renderLoop() {
 		if (drawMultipleInstances) {
 			modifyInstancedDrawingSpiralPattern();
 		}
+
+		//Perform logic 
+		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
+			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) {
+			if (checkForUpdatedShaders()) {
+				buildNewShader();
+			}
+		}
+
 
 		//Set up to draw frame
 		updateFrameClearColor(); //background color
@@ -495,6 +505,81 @@ void AssetLoadingDemo::rotate() {
 	}
 }
 
+bool AssetLoadingDemo::checkForUpdatedShaders() {
+	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
+		if (iter->file.hasUpdatedFileAvailable()) {
+			fprintf(MSGLOG, "\nDetected that shader %s has been updated. Rebuilding Shaders...\n", iter->file.filepath().c_str());
+			return true;
+		}
+	}
+	return false;
+}
+
+void AssetLoadingDemo::buildNewShader() {
+	std::string shadersRFP = FILEPATH_TO_SHADERS;
+	backupSceneShader = nullptr;
+	backupSceneShader = std::make_unique<ShaderProgram>();
+	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
+		switch (iter->type) {
+
+		case (ShaderInterface::ShaderType::VERTEX):
+			if (iter->primary)
+				backupSceneShader->attachVert(iter->file.filepath().c_str());
+			else {
+				std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
+					std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "VoronoiNoise.glsl");
+				vertexNoiseShader->makeSecondary();
+				backupSceneShader->attachSecondaryVert(vertexNoiseShader.get());
+			}
+			break;
+
+		case (ShaderInterface::ShaderType::GEOMETRY):
+
+			break;
+
+		case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
+
+			break;
+
+		case (ShaderInterface::ShaderType::TESSELATION_CONTROL):
+
+			break;
+
+		case (ShaderInterface::ShaderType::FRAGMENT):
+			if (iter->primary)
+				backupSceneShader->attachFrag(iter->file.filepath().c_str());
+			else {
+				std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
+					std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + "VoronoiNoise.glsl");
+				fragmentNoiseShader->makeSecondary();
+				backupSceneShader->attachSecondaryFrag(fragmentNoiseShader.get());
+			}
+			break;
+
+		case (ShaderInterface::ShaderType::COMPUTE):
+
+			break;
+
+		default:
+			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!\n");
+			return;
+		}
+	}
+		//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
+		backupSceneShader->link();
+		if (backupSceneShader->checkIfLinked()) {
+			fprintf(MSGLOG, "New Program Successfully linked!\n");
+			sceneShader.release();
+			sceneShader = std::move(backupSceneShader);
+		}
+		else {
+			fprintf(ERRLOG, "New Shader Program was not successfully linked!\n");
+			//fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+			//std::cin.get(); //Hold the window open if there was an error
+		}
+	
+}
+
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
@@ -505,6 +590,9 @@ void AssetLoadingDemo::updateFrameClearColor() {
 
 	backgroundColor /= backgroundColor.length(); //normalize backgroundColor
 }
+
+
+
 
 void AssetLoadingDemo::updateUniforms() {
 	if (!sceneShader)
@@ -537,6 +625,9 @@ void AssetLoadingDemo::updateUniforms() {
 	//}
 
 }
+
+
+
 
 void AssetLoadingDemo::drawVerts() {
 

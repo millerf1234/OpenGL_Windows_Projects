@@ -40,7 +40,7 @@
 //			 September 14-15, 2018  --  Added support for attaching secondary shaders (i.e. shaders without a 'main()' function)
 //										to programs so that multiple shaders of the same type can be used.
 //
-//           December 3-5 (or so)  2018  -- Added support for having each shader program's shaders querry the operating system [using C++17/C++20's  
+//           December 3-5 (or so)  2018  -- (MAYBE) Add support for having each shader program's shaders querry the operating system [using C++17/C++20's  
 //                                          std::filesystem::last_write_time()] to determine if the files containing their source code
 //                                          has been modified from the version they were built with, and then having them rebuild themselves from
 //                                          the updated source. Note that this functionality will be disabled for both unlinked/incomplete shader programs
@@ -108,31 +108,31 @@
 			//-------------------------------
 			// Public Interface Functions
 			//-------------------------------
-			//Creates an object-local Vertex shader and attaches it to this program.
+			//Creates an object-local Vertex shader and attaches it to this program
 			inline bool attachVert(std::string vert) {   return (attachVert(vert.c_str()));   }
-			//Creates an object-local Vertex shader and attaches it to this program.
+			//Creates an object-local Vertex shader and attaches it to this program
 			bool attachVert(const char * vert);
-			//Uses an already-created vertex shader and attachs it to this program. Does not assume control of the vertex shader.
-			//(i.e. this object's mVertexShader remains nullptr)
+			//Uses an already-created Vertex shader and attachs it to this program. This object does
+			//not assume control/ownership of the vertex shader
 			void attachVert(const ShaderInterface::VertexShader * vert);
 			//Uses an already created vertex shader that does not contain a 'main' function and has 
 			//been marked as secondary using the 'makeSecondary()' function and attaches it to this
 			//shader. It is possible to attach as many secondarys as are available, though it is an
-			//error to attach the same secondary twice. 
+			//error to attach the same secondary twice 
 			void attachSecondaryVert(const ShaderInterface::VertexShader * vert);
 
 
-			//Creates an object-local Geometry shader and attaches it to this program.
+			//Creates an object-local Geometry shader and attaches it to this program
 			inline bool attachGeom(std::string geom) {   return (attachGeom(geom.c_str()));   }
 			//Creates an object-local Geometry shader and attaches it to this program
 			bool attachGeom(const char * geom);
-			//Uses an already-created geometry shader and attachs it to this program. Does not assume control of the vertex shader.
-			//(i.e. this object's mGeometryShader remains nullptr)
+			//Uses an already-created geometry shader and attachs it to this program. This object does
+			//not assume control of the vertex shader
 			void attachGeom(const ShaderInterface::GeometryShader * geom);
 			//Uses an already created Geometry shader that does not contain a 'main' function and has
 			//been marked as secondary using the 'makeSecondary()' function and attaches it to this
 			//shader program. It is possible to attach as many secondarys as are available, though it is an
-			//error to attach the same secondary twice. 
+			//error to attach the same secondary twice 
 			void attachSecondaryGeom(const ShaderInterface::GeometryShader * geom);
 
 
@@ -141,8 +141,7 @@
 			//Creates object-local Tesselation Compute and Evaluation shaders and attachs them to the program
 			bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
 			//Uses already created Tesselation Control and Evaluation shaders and attachs them to this program. 
-			//This object does not assume control of the shaders (thus leaving this objects' member variables
-			//mTesselationControlShader and mTesselationEvaluationShader as nullptr)
+			//This object does not assume control of the shaders.
 			void attachTess(const ShaderInterface::TesselationControlShader* tessc, const ShaderInterface::TesselationEvaluationShader* tesse);
 			
 
@@ -288,9 +287,12 @@
 			//Gets the number of attached secondary compute shaders to this ShaderProgram
 			int getAttachedSecondaryComputeCount() const { return mState.mAttachedSecondaryComputeCount; }
 
-			//Public variable(s):
-			std::unique_ptr<ShaderInterface::UniformLocationTracker> uniforms; //Make this public? Or make private and write a whole new set of functions to interface with it 
 
+			//Each ShaderProgram gets an attached UniformLocationTracker to handle tracking and assigning uniforms
+			//for the shader. Since UniformLocationTracker requires a ProgramID for construction, it is not able to
+			//be constructed from initializer-list, thus .
+			std::unique_ptr<ShaderInterface::UniformLocationTracker> uniforms; 
+			
 		private:
 			GLuint mProgramID; //GL ShaderProgram ID
 
@@ -319,7 +321,6 @@
 			std::unique_ptr<ShaderInterface::ComputeShader> mComputeShader;
 
 		
-
 			//Private helped functions
 			void initialize();
 			void generateGLProgramHandle();
