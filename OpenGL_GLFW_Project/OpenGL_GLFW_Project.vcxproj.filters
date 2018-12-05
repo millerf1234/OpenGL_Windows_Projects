@@ -157,9 +157,6 @@
     <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
       <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW_Initialization">
-      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\Filepaths">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
@@ -244,9 +241,6 @@
     <Filter Include="Resource Files\Settings">
       <UniqueIdentifier>{c34989ef-eb53-4289-a864-8cbdccf57ea5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\Parameters\ini_file_loading">
-      <UniqueIdentifier>{69d170b6-f9d0-4fab-ba3e-1ad85162bd93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader">
       <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
     </Filter>
@@ -271,19 +265,25 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
       <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Math\UI">
-      <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShapeDecimated">
       <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\UI">
+      <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW">
+      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\Initialization">
+      <UniqueIdentifier>{4549d577-1316-4a69-aae3-6740049d372f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\WindowCallbacks">
+      <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
       <Filter>Third Party\glad</Filter>
-    </ClCompile>
-    <ClCompile Include="GLFW_Init.cpp">
-      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
     </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
@@ -369,9 +369,6 @@
     <ClCompile Include="PhongShadingParameterSet.cpp">
       <Filter>Source Files\EntityComponents\Phong Shading Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="ParameterInitializer.cpp">
-      <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
-    </ClCompile>
     <ClCompile Include="QuickObj.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClCompile>
@@ -387,8 +384,11 @@
     <ClCompile Include="UniformLocationInterface.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClCompile>
-    <ClCompile Include="MouseInput.cpp">
-      <Filter>Source Files\Utility\Math\UI</Filter>
+    <ClCompile Include="GLFW_Init.cpp">
+      <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowEventTracker.cpp">
+      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,9 +414,6 @@
     </ClInclude>
     <ClInclude Include="glfw3.h">
       <Filter>Third Party\GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLFW_Init.h">
-      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
@@ -649,9 +646,6 @@
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
-    <ClInclude Include="GLFW_CallbackFunctions.h">
-      <Filter>SetupAndConfiguration\GLFW_Initialization</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectParameters.h">
       <Filter>SetupAndConfiguration\Parameters</Filter>
     </ClInclude>
@@ -787,9 +781,6 @@
     <ClInclude Include="RelativeFilepathsToResources.h">
       <Filter>SetupAndConfiguration\Filepaths</Filter>
     </ClInclude>
-    <ClInclude Include="ParameterInitializer.h">
-      <Filter>SetupAndConfiguration\Parameters\ini_file_loading</Filter>
-    </ClInclude>
     <ClInclude Include="QuickObj.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClInclude>
@@ -811,8 +802,14 @@
     <ClInclude Include="UniformLocationInterface.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClInclude>
-    <ClInclude Include="MouseInput.h">
-      <Filter>Source Files\Utility\Math\UI</Filter>
+    <ClInclude Include="GLFW_Init.h">
+      <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFW_CallbackFunctions.h">
+      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowEventTracker.h">
+      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

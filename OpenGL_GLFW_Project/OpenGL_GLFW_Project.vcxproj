@@ -158,9 +158,8 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
-    <ClCompile Include="MouseInput.cpp" />
+    <ClCompile Include="WindowEventTracker.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
-    <ClCompile Include="ParameterInitializer.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
@@ -288,7 +287,7 @@
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="MeshFunctions.h" />
-    <ClInclude Include="MouseInput.h" />
+    <ClInclude Include="WindowEventTracker.h" />
     <ClInclude Include="OpenAL\al.h" />
     <ClInclude Include="OpenAL\alc.h" />
     <ClInclude Include="OpenAL\alext.h" />
@@ -296,7 +295,6 @@
     <ClInclude Include="OpenAL\efx-presets.h" />
     <ClInclude Include="OpenAL\efx.h" />
     <ClInclude Include="OpenAL_Init.h" />
-    <ClInclude Include="ParameterInitializer.h" />
     <ClInclude Include="PhongShadingParameterSet.h" />
     <ClInclude Include="ProjectConstants.h" />
     <ClInclude Include="ProjectParameters.h" />

@@ -11,8 +11,9 @@
 
 //--------------------------------------------------------------------------
 //    Change the following variables to modify program behavior. Note that this will most likely
-//      necessitate a length recompilation of the entire project. Eventually there will be a way this
-//      project loads its settings from a file.
+//      necessitate a lengthy recompilation of the entire project. Eventually this file will be 
+//      replaced by a way to load settings from a file (plus generate new settings if file is 
+//      unlocateable).
 //--------------------------------------------------------------------------
 
 
@@ -21,11 +22,11 @@
 #define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_  //Defining this will force synchnization between the graphics context and the app, which will affect performance but improve debugging 
 
 
-static constexpr int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
+static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 
-static constexpr bool USE_FULLSCREEN = false;
+static constexpr const bool USE_FULLSCREEN = false;
 
-static constexpr bool USE_VSYNC = true;
+static constexpr const bool USE_VSYNC = true;
 
 static constexpr int DEFAULT_AA_SAMPLES = 8;
 
@@ -33,11 +34,6 @@ static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 //static constexpr int FONT_SIZE = 24;
 //static constexpr float MARGIN = FONT_SIZE * 0.5f;
-
-
-
-
-//Mostly constant parameters (these parameters can be tweaked but usually doing so will have a negative effect)
 
 
 

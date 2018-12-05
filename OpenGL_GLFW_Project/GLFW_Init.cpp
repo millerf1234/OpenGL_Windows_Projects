@@ -137,7 +137,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 
 	fprintf(MSGLOG, "\nDetecting monitors...\n");
-	monitors = glfwGetMonitors(&(connectedDisplayCount));//Tell GLFW to look for all monitors connected currently.
+	monitors = glfwGetMonitors(&connectedDisplayCount);//Tell GLFW to look for all monitors connected currently.
 	if ((connectedDisplayCount == 0) || (monitors == nullptr) ) {
 		fprintf(ERRLOG, "ERROR! GLFW was unable to detect any connected monitors!\n");
 		contextIsValid = false;

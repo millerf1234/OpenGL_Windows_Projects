@@ -28,6 +28,8 @@ void AssetLoadingDemo::initialize() {
 	instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
 	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 
+	mousePositionX = mousePositionY = 0.0f;
+
 	//Set values for screen projection 
 	fov = 56.0f;
 	screenHeight = 2160.0f;
@@ -43,6 +45,9 @@ void AssetLoadingDemo::initialize() {
 	cameraPos = glm::vec3(0.0f, 0.0f, 5.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
 	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
 	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	xTranslation = 0.0f;
+	yTranslation = 0.0f;
 	//Compute view matrix
 	view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
 
@@ -142,14 +147,14 @@ void AssetLoadingDemo::loadShaders() {
 	// [Each shader stage requires its own set of secondary functions]
 	//Create and attach a secondary vertex shader containing implementations for some noise functions
 	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "VoronoiNoise.glsl");
+		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
 	vertexNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryVert(vertexNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
 	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
 	//Create and attach a secondary fragment shader containing implementations for some noise functions 
 	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("VoronoiNoise.glsl"));
+		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
 	fragmentNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
 	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
@@ -231,10 +236,14 @@ void AssetLoadingDemo::renderLoop() {
 			}
 			reset();
 		}
+
+		detectMouseCoordinates();
+
 		//More Input Checking
 		changePrimitiveType();
 		changeInstancedDrawingBehavior();
 		rotate();
+		translate();
 		if (drawMultipleInstances) {
 			modifyInstancedDrawingSpiralPattern();
 		}
@@ -291,6 +300,41 @@ bool AssetLoadingDemo::checkIfShouldReset() const {
 
 }
 
+//void AssetLoadingDemo::detectMouseCoordinates() {
+//	double xPos, yPos;
+//	glfwGetCursorPos(window, &xPos, &yPos); 
+//
+//
+//	//temporary hack:
+//	MonitorData * windowData = static_cast<MonitorData *>(glfwGetWindowUserPointer(window));
+//
+//	if (windowData) {
+//		//screenHeight = windowData->height;
+//		//screenWidth = windowData->width;
+//		//fprintf(MSGLOG, "\nGLFW Has width: %d   Height: %f", screenWidth, screenHeight);
+//	}
+//	//void * usrPointer = glfwGetWindowUserPointer(window);
+//	//bool hasUserPointer = (usrPointer == NULL);
+//	//fprintf(MSGLOG, "\nGLFW Has User Pointer: %d", hasUserPointer);
+//
+//
+//	//Skip updating the mouse coordinates if the mouse is off the screen
+//	if ((xPos < 0.0) || (yPos < 0.0)) {
+//		//return;
+//	}
+//	else if ((xPos > screenWidth) || (yPos > screenHeight)) {
+//		//return;
+//	}
+//	//else if (mousePositionX > screenWidth)
+//	else {
+//		mousePositionX = static_cast<float>(xPos);
+//		mousePositionY = static_cast<float>(yPos);
+//	}
+//
+//	
+//	fprintf(MSGLOG, "\nMouse x: %f,  y: %f", mousePositionX, mousePositionY);
+//}
+
 void AssetLoadingDemo::pause() {
 	auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
 	auto end = std::chrono::high_resolution_clock::now();
@@ -325,6 +369,8 @@ void AssetLoadingDemo::reset() {
 	head = 0.0f; //Reset rotation
 	pitch = 0.0f;
 	roll = 0.0f;
+	xTranslation = 0.0f;
+	yTranslation = 0.0f;
 	backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
@@ -507,6 +553,36 @@ void AssetLoadingDemo::rotate() {
 	}
 }
 
+void AssetLoadingDemo::translate() {
+	float turbo = 1.0f;
+	float xSpeed = 0.1f;
+	float ySpeed = 0.1f;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		turbo = 5.0f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+		turbo *= 4.0f;
+	}
+
+	//UP/Down
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		yTranslation += turbo * ySpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		yTranslation -= turbo * ySpeed;
+	}
+
+
+	//Left/Right
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		xTranslation += turbo * xSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		xTranslation -= turbo * xSpeed;
+	}
+
+}
+
 bool AssetLoadingDemo::checkForUpdatedShaders() {
 	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
 		if (iter->file.hasUpdatedFileAvailable()) {
@@ -529,7 +605,7 @@ void AssetLoadingDemo::buildNewShader() {
 				backupSceneShader->attachVert(iter->file.filepath().c_str());
 			else {
 				std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-					std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "VoronoiNoise.glsl");
+					std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
 				vertexNoiseShader->makeSecondary();
 				backupSceneShader->attachSecondaryVert(vertexNoiseShader.get());
 			}
@@ -552,7 +628,7 @@ void AssetLoadingDemo::buildNewShader() {
 				backupSceneShader->attachFrag(iter->file.filepath().c_str());
 			else {
 				std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-					std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + "VoronoiNoise.glsl");
+					std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
 				fragmentNoiseShader->makeSecondary();
 				backupSceneShader->attachSecondaryFrag(fragmentNoiseShader.get());
 			}
@@ -614,12 +690,21 @@ void AssetLoadingDemo::updateUniforms() {
 	glm::mat4 MVP;
 	//if (frameNumber % 120ull < 60ull) {
 		MVP = perspective * (view * (rotation));
+		MVP += glm::mat4(0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			xTranslation, yTranslation, 0.0f, 0.0f);
 	//}
 	//else {
 	//	MVP = rotation;
 	//}
 	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
 	
+	//Change 0,0 from top left corner to middle of screen 
+	float correctedMouseX = (mousePositionX / screenWidth) + 0.5f;
+	float correctedMouseY = (mousePositionY / screenWidth) + 0.5f;
+
+	sceneShader->uniforms.updateUniform2f("mouseCoord", correctedMouseX, correctedMouseY);
 
 	//if (drawMultipleInstances) {
 		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);

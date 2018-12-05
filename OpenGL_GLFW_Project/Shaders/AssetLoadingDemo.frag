@@ -1,3 +1,4 @@
+
 //Fragment shader for the asset loading demo
 //
 // Programmer:  Forrest Miller
@@ -15,6 +16,51 @@ out vec4 color;
 uniform float zoom;
 uniform float time;
 
+uniform vec2 mouseCoord;
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// EXTERNAL FUNCTION PROTOTYPES  [for noise]
+///////////////////////////////////////////////////////////////////////////
+float noise(vec2 p);           //   Generic 2d noise       
+float pNoise(vec2 p, int res); //2d Perlin
+float snoise(vec2 v);          //2d simplex noise
+float cnoise(vec4 P);          //4d Periodic Classic Perlin Noise
+float fbm(float x);            //1d Fractal Brownian Motion
+float fbm(vec2 x);             //2d Fractal Brownian Motion
+float fbm(vec3 x);             //3d Fractal Brownian Motion
+
+
+void main() {
+	vec3 lightDir = vec3(1.5 * cos(0.2*time), 0.4, 2.0 * sin(time*1.80));
+	float intensity; 
+	intensity = dot(normalize(lightDir), 1.*normal);
+
+	//intensity += smoothstep(abs(dFdx(noise(normal.xy + normal.xz))), abs(dFdy(position.x)), intensity);
+
+	if (intensity > 0.95)
+		color = vec4(0.9, 0.73, 0.73, 1.0);
+	else if (intensity > 0.85) {
+		color = vec4(0.85, 0.73, 0.65, 1.0);
+	}
+	else if (intensity > 0.75) {
+		color = vec4(0.72, 0.6, 0.5, 1.0);
+	}
+	else if (intensity > (0.5 + 0.1*cos(time * intensity)))
+		color = vec4(0.8, 0.7, 0.65, 1.0) + smoothstep(vec4(0.11, 0.13, 0.21, 1.0), vec4(0.9, 0.9, 0.9, 1.0), vec4(intensity * 0.20 - 0.005*sin(3.*time))).gbra; //vec4(0.6, 0.3, 0.3, 1.0);
+	else if (intensity > (0.4))
+		color = vec4(0.42, 0.42, 0.34, 1.0); //smoothstep(vec4(0.1, 0.1, 0.1, 1.0), vec4(0.8, 0.5, 0.8, 1.0), vec4(intensity * 2.0 ));
+	else if (intensity > (0.3))
+		color = vec4(0.32, 0.301, 0.2501, 1.0);
+	else
+		color = vec4(0.32, 0.301, 0.2501, 1.0);
+
+}
+
+
+//Kinda a flame-like effect of sorts if mixed with a correct vert shader
+/*
 float noise(in vec2 p);
 
 void main() {
@@ -36,7 +82,7 @@ void main() {
 
 	
 }
-
+*/
 
 
 

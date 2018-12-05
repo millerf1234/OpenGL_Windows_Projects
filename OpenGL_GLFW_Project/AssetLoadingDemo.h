@@ -76,6 +76,7 @@ private:
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
 	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
+	float mousePositionX, mousePositionY;
 
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
@@ -98,6 +99,8 @@ private:
 	glm::vec3 cameraPos;
 	glm::vec3 lookAtOrgin;
 	glm::vec3 upDirection;
+	float xTranslation;
+	float yTranslation;
 	//Projection parameters
 	float fov, screenHeight, screenWidth, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
 	//Shader Uniforms
@@ -157,6 +160,7 @@ private:
 	void modifyInstancedDrawingSpiralPattern();
 	void changePrimitiveType(); 
 	void rotate();
+	void translate();
 
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
