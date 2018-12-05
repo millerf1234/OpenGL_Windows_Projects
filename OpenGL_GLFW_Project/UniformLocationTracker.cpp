@@ -417,42 +417,42 @@ namespace ShaderInterface {
 
 
 	//Cached Uniform functions
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1i(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1i(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT1);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1u(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1u(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT1);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1f(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1f(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::FLOAT1);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1iv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1iv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT1V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1uv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1uv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT1V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1fv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform1fv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -462,42 +462,42 @@ namespace ShaderInterface {
 
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2i(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2i(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT2);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2u(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2u(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT2);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2f(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2f(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::FLOAT2);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2iv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2iv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT2V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2uv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2uv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT2V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2fv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform2fv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -507,42 +507,42 @@ namespace ShaderInterface {
 
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3i(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3i(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT3);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3u(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3u(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT3);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3f(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3f(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::FLOAT3);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3iv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3iv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT3V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3uv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3uv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT3V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3fv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform3fv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -552,42 +552,42 @@ namespace ShaderInterface {
 
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4i(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4i(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT4);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4u(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4u(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT4);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4f(const GLchar * uniformName) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4f(const GLchar * uniformName) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::FLOAT4);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4iv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4iv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::INT4V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4uv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4uv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::UINT4V, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4fv(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniform4fv(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -597,28 +597,28 @@ namespace ShaderInterface {
 
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUnifromMat2(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUnifromMat2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT2X3, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -627,28 +627,28 @@ namespace ShaderInterface {
 	}
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT3X2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT3, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT3, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
@@ -657,28 +657,28 @@ namespace ShaderInterface {
 	}
 
 
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT4X2, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT4X3, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {
 			return addCachedUniformLocation(uniformName, UniformType::MAT4, count);
 		}
 	}
-	std::shared_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count) {
+	std::weak_ptr<CachedUniformLocation> UniformLocationTracker::getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count) {
 		if (seeIfUniformLocationHasAlreadyBeenCached(uniformName))
 			return mCachedUniformLocations[uniformName];
 		else {

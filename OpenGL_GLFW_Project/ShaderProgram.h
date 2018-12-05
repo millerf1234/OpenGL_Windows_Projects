@@ -74,7 +74,7 @@
 
 #include <unordered_map>  //Used to track already-attached (secondary) shaders  
 
-#include "UniformLocationTracker.h"
+#include "UniformLocationInterface.h"
 
 #include "ComputeShader.h"
 #include "VertexShader.h"
@@ -288,10 +288,8 @@
 			int getAttachedSecondaryComputeCount() const { return mState.mAttachedSecondaryComputeCount; }
 
 
-			//Each ShaderProgram gets an attached UniformLocationTracker to handle tracking and assigning uniforms
-			//for the shader. Since UniformLocationTracker requires a ProgramID for construction, it is not able to
-			//be constructed from initializer-list, thus .
-			std::unique_ptr<ShaderInterface::UniformLocationTracker> uniforms; 
+			//Uniform processing is handled through a UniformLocationInterface member object
+			UniformLocationInterface uniforms;
 			
 		private:
 			GLuint mProgramID; //GL ShaderProgram ID

@@ -6,7 +6,7 @@
 //				  the uniform in the program and with the data value. 
 //				
 //				  For (theoretically) faster uniform updates it is possible to call one of the 'getCachedUniformxx()'
-//				  functions which return a shared_ptr to a cached uniform location. This returned pointer can then be 
+//				  functions which return a weak_ptr to a cached uniform location. This returned pointer can then be 
 //				  used to update uniforms directly, skipping the lookup this object has to perform each time one of the
 //			      simpler 'updateUniformxx()' functions is called.
 //
@@ -16,6 +16,7 @@
 //Created by Forrest Miller on July 20, 2018 
 //Completed on July 24, 2018 by Forrest Miller
 
+
 #pragma once
 
 #ifndef UNIFORM_LOCATION_TRACKER
@@ -24,6 +25,7 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include "ProjectConstants.h"
 #include "UniformLocationBucket.h"
@@ -110,51 +112,49 @@ namespace ShaderInterface {
 		void updateUniformMat4x4(const GLchar *, const glm::mat4 *, GLsizei count = 1);
 		void updateUniformMat4x4(const GLchar *, const GLfloat *, GLsizei count = 1);
 
-
-
 		//Get CachedUniformLocation functions
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1i(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1u(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1f(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1iv(const GLchar *, GLsizei count = 1); //A vector is a pointer to an array of the element instead of seperate arguments
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1uv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform1fv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1i(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1u(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1f(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1iv(const GLchar *, GLsizei count = 1); //A vector is a pointer to an array of the element instead of seperate arguments
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1uv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform1fv(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2i(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2u(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2f(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2iv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2uv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform2fv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2i(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2u(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2f(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2iv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2uv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform2fv(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3i(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3u(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3f(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3iv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3uv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform3fv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3i(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3u(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3f(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3iv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3uv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform3fv(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4i(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4u(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4f(const GLchar *);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4iv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4uv(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniform4fv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4i(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4u(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4f(const GLchar *);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4iv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4uv(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniform4fv(const GLchar *, GLsizei count = 1);
 		
-		std::shared_ptr<CachedUniformLocation> getCachedUnifromMat2(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x2(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x3(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat2x4(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUnifromMat2(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x2(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x3(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x4(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x2(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x3(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat3x4(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x2(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x3(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x4(const GLchar *, GLsizei count = 1);
 
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x2(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4(const GLchar *, GLsizei count = 1);
-		std::shared_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x2(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4(const GLchar *, GLsizei count = 1);
+		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar *, GLsizei count = 1);
 
 		//Gets the number of uniform locations being tracked directly by this object. Currently it is possible for a
 		//CachedUniformLocation to be requested which bypasses this object's internal storing of UniformLocationBuckets, so this 

@@ -451,13 +451,13 @@ void LightsourceTestDemo::updateUniforms() {
 
 	lightSourceShader->use();
 										
-	lightSourceShader->uniforms->updateUniform1f("time", 2.0f*counter);
-	lightSourceShader->uniforms->updateUniform1f("zoom", zoom);
+	lightSourceShader->uniforms.updateUniform1f("time", 2.0f*counter);
+	lightSourceShader->uniforms.updateUniform1f("zoom", zoom);
 
-	lightSourceShader->uniforms->updateUniform1i("noiseFunctionToUse", noiseFunctionToUse);
-	lightSourceShader->uniforms->updateUniform1i("noiseResolution", noiseResolution);
+	lightSourceShader->uniforms.updateUniform1i("noiseFunctionToUse", noiseFunctionToUse);
+	lightSourceShader->uniforms.updateUniform1i("noiseResolution", noiseResolution);
 	
-	lightSourceShader->uniforms->updateUniform1i("colorShift", colorShift);
+	lightSourceShader->uniforms.updateUniform1i("colorShift", colorShift);
 }
 
 void LightsourceTestDemo::drawVerts() {

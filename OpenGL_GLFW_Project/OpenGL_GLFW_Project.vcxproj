@@ -169,6 +169,7 @@
     <ClCompile Include="TesselationControlShader.cpp" />
     <ClCompile Include="TesselationEvaluationShader.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
+    <ClCompile Include="UniformLocationInterface.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="TesselationEvaluationShader.h" />
     <ClInclude Include="UniformLocationBucket.h" />
     <ClInclude Include="CachedUniformLocation.h" />
+    <ClInclude Include="UniformLocationInterface.h" />
     <ClInclude Include="UniformLocationTracker.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />

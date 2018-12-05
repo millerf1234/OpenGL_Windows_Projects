@@ -603,11 +603,11 @@ void AssetLoadingDemo::updateUniforms() {
 	//glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
 
-	sceneShader->uniforms->updateUniform1f("time", counter);
-	sceneShader->uniforms->updateUniform1f("zoom", zoom);
+	sceneShader->uniforms.updateUniform1f("time", counter);
+	sceneShader->uniforms.updateUniform1f("zoom", zoom);
 
 	rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
-	sceneShader->uniforms->updateUniformMat4x4("rotation", &rotation);
+	sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
 
 	glm::mat4 MVP;
 	//if (frameNumber % 120ull < 60ull) {
@@ -616,12 +616,12 @@ void AssetLoadingDemo::updateUniforms() {
 	//else {
 	//	MVP = rotation;
 	//}
-	sceneShader->uniforms->updateUniformMat4x4("MVP", &MVP);
+	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
 	
 
 	//if (drawMultipleInstances) {
-		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);
-		sceneShader->uniforms->updateUniform1f("instanceSpiralPatternPeriod_y", instanceSpiralPatternPeriod_y);
+		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);
+		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_y", instanceSpiralPatternPeriod_y);
 	//}
 
 }

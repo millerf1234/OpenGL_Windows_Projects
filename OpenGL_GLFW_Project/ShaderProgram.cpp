@@ -23,8 +23,6 @@
 using namespace ShaderInterface;  //Hopefully this doesn't get imported into the global namespace
 
 
-
-
 //Constructor for internal struct that tracks the shader programs state
 ShaderProgram::ProgramState::ProgramState() {
 	mValid = false;
@@ -52,7 +50,6 @@ ShaderProgram::ProgramState::ProgramState() {
 void ShaderProgram::initialize() {
 	mProgramID = 0u;
 	mState = ProgramState();  //Explicity call default constructor
-	uniforms = nullptr;
 	mVertexShader = nullptr;
 	mGeometryShader = nullptr;
 	mTesselationControlShader = nullptr;
@@ -65,7 +62,7 @@ void ShaderProgram::initialize() {
 }
 
 
-ShaderProgram::ShaderProgram() {
+ShaderProgram::ShaderProgram() : uniforms() {
 	initialize(); //Gives initial values to member variables
 }
 
@@ -77,7 +74,7 @@ ShaderProgram::~ShaderProgram() {
 }
 
 //Move Constructor
-ShaderProgram::ShaderProgram(ShaderProgram&& that) {
+ShaderProgram::ShaderProgram(ShaderProgram&& that) : uniforms() {
 	this->mProgramID = that.mProgramID;
 	that.mProgramID = 0u;
 
@@ -124,49 +121,51 @@ ShaderProgram::ShaderProgram(ShaderProgram&& that) {
 
 //Move assignment operator
 ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) {
-	this->mProgramID = that.mProgramID;
-	that.mProgramID = 0u;
+	if (this != &that) {
+		this->mProgramID = that.mProgramID;
+		that.mProgramID = 0u;
 
-	this->mState.mHasVert = that.mState.mHasVert;
-	this->mState.mHasGeom = that.mState.mHasGeom;
-	this->mState.mHasTessc = that.mState.mHasTessc;
-	this->mState.mHasTesse = that.mState.mHasTesse;
-	this->mState.mHasFrag = that.mState.mHasFrag;
+		this->mState.mHasVert = that.mState.mHasVert;
+		this->mState.mHasGeom = that.mState.mHasGeom;
+		this->mState.mHasTessc = that.mState.mHasTessc;
+		this->mState.mHasTesse = that.mState.mHasTesse;
+		this->mState.mHasFrag = that.mState.mHasFrag;
 
-	this->mState.mAttachedSecondaryVertCount = that.mState.mAttachedSecondaryVertCount;
-	this->mState.mAttachedSecondaryGeomCount = that.mState.mAttachedSecondaryGeomCount;
-	this->mState.mAttachedSecondaryTesseCount = that.mState.mAttachedSecondaryTesseCount;
-	this->mState.mAttachedSecondaryTesscCount = that.mState.mAttachedSecondaryTesscCount;
-	this->mState.mAttachedSecondaryFragCount = that.mState.mAttachedSecondaryFragCount;
-	this->mState.mAttachedSecondaryComputeCount = that.mState.mAttachedSecondaryComputeCount;
+		this->mState.mAttachedSecondaryVertCount = that.mState.mAttachedSecondaryVertCount;
+		this->mState.mAttachedSecondaryGeomCount = that.mState.mAttachedSecondaryGeomCount;
+		this->mState.mAttachedSecondaryTesseCount = that.mState.mAttachedSecondaryTesseCount;
+		this->mState.mAttachedSecondaryTesscCount = that.mState.mAttachedSecondaryTesscCount;
+		this->mState.mAttachedSecondaryFragCount = that.mState.mAttachedSecondaryFragCount;
+		this->mState.mAttachedSecondaryComputeCount = that.mState.mAttachedSecondaryComputeCount;
 
-	this->mState.mAttachedSecondaries.swap(that.mState.mAttachedSecondaries);
+		this->mState.mAttachedSecondaries.swap(that.mState.mAttachedSecondaries);
 
-	this->mState.mValid = that.mState.mValid;
-	that.mState.mValid = false;
-	this->mState.mLinked = that.mState.mLinked;
-	this->mState.mError = that.mState.mError;
-	this->mState.mReadyToLink = that.mState.mReadyToLink;
+		this->mState.mValid = that.mState.mValid;
+		that.mState.mValid = false;
+		this->mState.mLinked = that.mState.mLinked;
+		this->mState.mError = that.mState.mError;
+		this->mState.mReadyToLink = that.mState.mReadyToLink;
 
-	if (that.mVertexShader) {
-		this->mVertexShader = std::move(that.mVertexShader);
+		if (that.mVertexShader) {
+			this->mVertexShader = std::move(that.mVertexShader);
+		}
+		if (that.mGeometryShader) {
+			this->mGeometryShader = std::move(that.mGeometryShader);
+		}
+		if (that.mTesselationControlShader) {
+			this->mTesselationControlShader = std::move(that.mTesselationControlShader);
+		}
+		if (that.mTesselationEvaluationShader) {
+			this->mTesselationEvaluationShader = std::move(that.mTesselationEvaluationShader);
+		}
+		if (that.mFragmentShader) {
+			this->mFragmentShader = std::move(that.mFragmentShader);
+		}
+		if (that.mComputeShader) {
+			this->mComputeShader = std::move(that.mComputeShader);
+		}
+		this->uniforms = std::move(that.uniforms);
 	}
-	if (that.mGeometryShader) {
-		this->mGeometryShader = std::move(that.mGeometryShader);
-	}
-	if (that.mTesselationControlShader) {
-		this->mTesselationControlShader = std::move(that.mTesselationControlShader);
-	}
-	if (that.mTesselationEvaluationShader) {
-		this->mTesselationEvaluationShader = std::move(that.mTesselationEvaluationShader);
-	}
-	if (that.mFragmentShader) {
-		this->mFragmentShader = std::move(that.mFragmentShader);
-	}
-	if (that.mComputeShader) {
-		this->mComputeShader = std::move(that.mComputeShader);
-	}
-	this->uniforms = std::move(that.uniforms);
 	return *this;
 }
 
@@ -971,8 +970,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) {
 	}
 
 	void ShaderProgram::initializeUniformLocationTracker() {
-		uniforms = std::make_unique<UniformLocationTracker>(mProgramID);
-		moreUniforms = UniformLocationTracker(mProgramID);
+		uniforms.activateUniformLocationTracker(mProgramID);
 	}
 
 	bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingVert() const {

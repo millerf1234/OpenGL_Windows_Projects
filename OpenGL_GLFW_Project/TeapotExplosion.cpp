@@ -437,37 +437,37 @@ void TeapotExplosion::updateFrameClearColor() {
 void TeapotExplosion::updateUniforms() {
 	sceneShader->use();
 	//Update uniform locations
-	sceneShader->uniforms->updateUniform1f("zoom", 1.7f + counter);
-	sceneShader->uniforms->updateUniform1f("time", 0.725f*counter);
+	sceneShader->uniforms.updateUniform1f("zoom", 1.7f + counter);
+	sceneShader->uniforms.updateUniform1f("time", 0.725f*counter);
 
 	//Uniforms for the geometry shader effect
-	sceneShader->uniforms->updateUniform1i("level", 1);                          //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
-	sceneShader->uniforms->updateUniform1f("velocityScale", velocity);               //tweak this value as needed
+	sceneShader->uniforms.updateUniform1i("level", 1);                          //tweak this value as needed
+	sceneShader->uniforms.updateUniform1f("gravity", -0.91f /*-29.81f*/);       //tweak this value as needed
+	sceneShader->uniforms.updateUniform1f("velocityScale", velocity);               //tweak this value as needed
 
 	xRotation += 0.0000f;
 	yRotation += 0.013575f;    //0.009625f; // 0.012375f;  //0.015125f;
 	zRotation += 0.0012375035f;
 
 	//fprintf(MSGLOG, "xRot is %f, yRot is %s, zRot is %f\n", xRotation, yRotation, zRotation);
-	sceneShader->uniforms->updateUniform1f("xRotation", xRotation);
-	sceneShader->uniforms->updateUniform1f("yRotation", yRotation);
-	sceneShader->uniforms->updateUniform1f("zRotation", zRotation);
+	sceneShader->uniforms.updateUniform1f("xRotation", xRotation);
+	sceneShader->uniforms.updateUniform1f("yRotation", yRotation);
+	sceneShader->uniforms.updateUniform1f("zRotation", zRotation);
 
-	sceneShader->uniforms->updateUniform1f("colorShiftThreshhold", colorChangeThreshold);
+	sceneShader->uniforms.updateUniform1f("colorShiftThreshhold", colorChangeThreshold);
 
-	sceneShader->uniforms->updateUniform1f("redRotationTheta", redRotationTheta);
-	sceneShader->uniforms->updateUniform1f("greenRotationTheta", greenRotationTheta);
-	sceneShader->uniforms->updateUniform1f("blueRotationTheta", blueRotationTheta);
+	sceneShader->uniforms.updateUniform1f("redRotationTheta", redRotationTheta);
+	sceneShader->uniforms.updateUniform1f("greenRotationTheta", greenRotationTheta);
+	sceneShader->uniforms.updateUniform1f("blueRotationTheta", blueRotationTheta);
 
 	/* 
-	sceneShader->uniforms->updateUniform1f("colorModificationValue0", colorModificationValues[0]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue1", colorModificationValues[1]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue2", colorModificationValues[2]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue3", colorModificationValues[3]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue4", colorModificationValues[4]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
-	sceneShader->uniforms->updateUniform1f("colorModificationValue6", colorModificationValues[6]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue0", colorModificationValues[0]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue1", colorModificationValues[1]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue2", colorModificationValues[2]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue3", colorModificationValues[3]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue4", colorModificationValues[4]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue5", 8.0f*colorModificationValues[5]);
+	sceneShader->uniforms.updateUniform1f("colorModificationValue6", colorModificationValues[6]);
 	*/
 }
 
