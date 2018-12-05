@@ -289,7 +289,7 @@
 
 
 			//Uniform processing is handled through a UniformLocationInterface member object
-			UniformLocationInterface uniforms;
+			ShaderInterface::UniformLocationInterface uniforms;
 			
 		private:
 			GLuint mProgramID; //GL ShaderProgram ID
