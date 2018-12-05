@@ -6,28 +6,35 @@
 #version 450 core
 
 //Test:
-in flat vec4 position;
+in vec4 position;
 in vec2 texCoord;
-in flat vec3 normal;
+in vec3 normal;
 
 out vec4 color;
 
 uniform float zoom;
 uniform float time;
 
-void main() {
-	vec3 lightDir = vec3(1.0 * cos(time), 1.0 * sin(time), 0.25);
-	float intensity;
-	intensity = dot(lightDir, normal);
+float noise(in vec2 p);
 
-	if (intensity > 0.95)
-		color = vec4(1.0, 0.5, 0.5, 1.0);
-	else if (intensity > 0.5)
-		color = vec4(0.6, 0.3, 0.3, 1.0);
-	else if (intensity > 0.25)
-		color = vec4(0.4, 0.2, 0.2, 1.0);
+void main() {
+	vec3 lightDir = vec3(1.52 * cos(0.27*time), 0.3925, 2.0 * sin(time*1.20)) + noise(3.0*normal.xy);
+	float intensity;
+	intensity = dot(lightDir, 1.*normal);
+
+	intensity += smoothstep(abs(dFdx(noise(normal.xy + normal.xz))), abs(dFdy(position.x)), intensity);
+
+	if (intensity > 0.82)
+		color = vec4(1.0, 0.03, 0.03, 1.0);
+	else if (intensity > 0.6)
+		color = smoothstep(vec4(0.91, 0.1, 0.1, 1.0), vec4(0.8, 0.5, 0.8, 1.0), vec4(intensity * 2.0 - 0.5*sin(30.*time))).gbra; //vec4(0.6, 0.3, 0.3, 1.0);
+		
+	else if (intensity > (0.35))
+		color = vec4(0.52, 0.32, 0.33, 1.0); //smoothstep(vec4(0.1, 0.1, 0.1, 1.0), vec4(0.8, 0.5, 0.8, 1.0), vec4(intensity * 2.0 ));
 	else
-		color = vec4(0.2, 0.1, 0.1, 1.0);
+		color = vec4(0.012, 0.001, 0.001, 1.0);
+
+	
 }
 
 

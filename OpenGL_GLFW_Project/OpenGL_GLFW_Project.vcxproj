@@ -158,6 +158,7 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
+    <ClCompile Include="MouseInput.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="ParameterInitializer.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="MeshFunctions.h" />
+    <ClInclude Include="MouseInput.h" />
     <ClInclude Include="OpenAL\al.h" />
     <ClInclude Include="OpenAL\alc.h" />
     <ClInclude Include="OpenAL\alext.h" />
@@ -327,6 +329,7 @@
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\2DTexturedQuadPlane.mtl" />
+    <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
@@ -407,6 +410,9 @@
       <FileType>Document</FileType>
     </None>
     <None Include="obj\2DTexturedQuadPlane.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\AbstractShapeDecimated.obj">
       <FileType>Document</FileType>
     </None>
     <Object Include="obj\Engine2_Textured.obj">

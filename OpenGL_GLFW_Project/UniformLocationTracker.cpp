@@ -19,7 +19,7 @@
 
 namespace ShaderInterface {
 
-	static const uint8_t NOT_IN_VECTOR = 255u;
+	static const uint_fast8_t NOT_IN_VECTOR = 255u;
 	static const GLint NOT_IN_LIST = -2;
 	static constexpr size_t CACHED_UNIFORM_LOCATION_HASH_SIZE = 107u; //Should be prime number?
 
@@ -712,7 +712,7 @@ namespace ShaderInterface {
 
 	//Note-to-self: I can probably remove the 'UniformType' enum completetly since ULBuckets will be constructed in the correct place automatically. 
 	//Updated Note-To-self: Don't remove UniformType becuase I now use it for CachedUniformLocations as well...     I can probably delete both of these messages
-	inline GLint UniformLocationTracker::lookupUniformLocation(uint8_t& listIndex, const char * name, UniformType ut) {
+	inline GLint UniformLocationTracker::lookupUniformLocation(uint_fast8_t& listIndex, const char * name, UniformType ut) {
 		if (listIndex == NOT_IN_VECTOR) { //If no uniforms of this type have been tracked yet
 			mUniformLocationLists.emplace_back(); //Emplace a new list
 			listIndex = mNextListIndex++;
@@ -731,14 +731,14 @@ namespace ShaderInterface {
 		}
 	}
 
-	GLint UniformLocationTracker::findInList(uint8_t listIndex, const char * name) { //Returns a uniform location or -2 if not found in list  (-1 already has meaning within OpenGL)
+	GLint UniformLocationTracker::findInList(uint_fast8_t listIndex, const char * name) { //Returns a uniform location or -2 if not found in list  (-1 already has meaning within OpenGL)
 		//Make sure that listIndex is valid (can remove this check once I am sure code is operating correctly
-		if (static_cast<size_t>(listIndex) > (mUniformLocationLists.size() - 1ull)) {
-			fprintf(WRNLOG, "\nWARNING! In UniformLocationTracker within the function call 'findInList',\n");
-			fprintf(WRNLOG, "         a list index of %u was requested but only %zu lists are in the vector!\n", listIndex, mUniformLocationLists.size());
-			fprintf(WRNLOG, "         Clearly this should not happen...Check Ya Code!\n");
-			throw std::out_of_range("The list to search in the function call findInList within a UniformLocationTracker object has index outside the range of tracked lists!\n");
-		}
+		//if (static_cast<size_t>(listIndex) > (mUniformLocationLists.size() - 1ull)) {
+		//	fprintf(WRNLOG, "\nWARNING! In UniformLocationTracker within the function call 'findInList',\n");
+		//	fprintf(WRNLOG, "         a list index of %u was requested but only %zu lists are in the vector!\n", listIndex, mUniformLocationLists.size());
+		//	fprintf(WRNLOG, "         Clearly this should not happen...Check Ya Code!\n");
+		//	throw std::out_of_range("The list to search in the function call findInList within a UniformLocationTracker object has index outside the range of tracked lists!\n");
+		//}
 
 		if (listIndex == NOT_IN_VECTOR) {
 			throw std::out_of_range("OOps! It looks like the list index was never set when the function findInList in the class UniformLocationTracker was called!\n");
@@ -776,7 +776,7 @@ namespace ShaderInterface {
 		std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
 		if (cachedLocation->mWasInitialized) {
 			if (cachedLocation->mUniformType == UniformType::UNSPECIFIED) {
-				throw std::logic_error("Error! For some reason a cachedUniformLocation was initialized while its type was still set to unspecified!\n");
+				throw std::logic_error("Error! For some reason a cachedUniformLocation was initialized while its type was still set to UniformType::UNSPECIFIED!\n");
 			}
 			else {
 				fprintf(WRNLOG, "\nWARNING! An initialized CachedUniformLocation for the variable %s\nhas already been initialized, but is now getting re-initialized!\n", cachedLocation->mUniformName);

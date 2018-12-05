@@ -77,6 +77,11 @@ public:
 	virtual void loadAssets() = 0;
 	virtual void run() = 0;
 
+	//------------------------------------
+	//  Useful Universal RenderDemo Functions
+	//------------------------------------
+
+
 
 	/*  This whole part is unnecessary
 	//-----------------------------------

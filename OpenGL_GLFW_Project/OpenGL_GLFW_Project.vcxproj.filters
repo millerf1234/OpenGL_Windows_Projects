@@ -271,6 +271,12 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
       <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Math\UI">
+      <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShapeDecimated">
+      <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -380,6 +386,9 @@
     </ClCompile>
     <ClCompile Include="UniformLocationInterface.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseInput.cpp">
+      <Filter>Source Files\Utility\Math\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -802,6 +811,9 @@
     <ClInclude Include="UniformLocationInterface.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClInclude>
+    <ClInclude Include="MouseInput.h">
+      <Filter>Source Files\Utility\Math\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -953,6 +965,12 @@
     </None>
     <None Include="obj\2DTexturedQuadPlane.obj">
       <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+    </None>
+    <None Include="obj\AbstractShapeDecimated.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
+    </None>
+    <None Include="obj\AbstractShapeDecimated.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

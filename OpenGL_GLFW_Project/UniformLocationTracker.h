@@ -179,19 +179,19 @@ namespace ShaderInterface {
 		std::unordered_map<std::string, std::shared_ptr<CachedUniformLocation>> mCachedUniformLocations;
 
 		//List index for each type (used with mUniformLocationLists)
-		uint8_t i1_, u1_, f1_, iv1_, uv1_, fv1_;
-		uint8_t	i2_, u2_, f2_, iv2_, uv2_, fv2_;
-		uint8_t	i3_, u3_, f3_, iv3_, uv3_, fv3_;
-		uint8_t	i4_, u4_, f4_, iv4_, uv4_, fv4_;
-		uint8_t M2x2_, M2x3_, M2x4_, M3x2_, M3x3_, M3x4_, M4x2_, M4x3_, M4x4_;
-		uint8_t mNextListIndex;
+		uint_fast8_t i1_, u1_, f1_, iv1_, uv1_, fv1_;
+		uint_fast8_t i2_, u2_, f2_, iv2_, uv2_, fv2_;
+		uint_fast8_t i3_, u3_, f3_, iv3_, uv3_, fv3_;
+		uint_fast8_t i4_, u4_, f4_, iv4_, uv4_, fv4_;
+		uint_fast8_t M2x2_, M2x3_, M2x4_, M3x2_, M3x3_, M3x4_, M4x2_, M4x3_, M4x4_;
+		uint_fast8_t mNextListIndex;
 
 		//Helper functions 
 		void initializeListLocations(); //Only call from constructor
 
 		//Helpers for updating uniform locations
-		GLint lookupUniformLocation(uint8_t& listIndex, const char *, UniformType); //listIndex may be updated during function call
-		GLint findInList(uint8_t, const char *); //Returns a uniform location or -2 if not found in list  (-1 already has meaning within OpenGL)
+		GLint lookupUniformLocation(uint_fast8_t& listIndex, const char *, UniformType); //listIndex may be updated during function call
+		GLint findInList(uint_fast8_t, const char *); //Returns a uniform location or -2 if not found in list  (-1 already has meaning within OpenGL)
 
 		//Helper functions for managing cachedUniformLocations
 		bool seeIfUniformLocationHasAlreadyBeenCached(const GLchar *);
