@@ -160,6 +160,7 @@
     <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
+    <ClCompile Include="PrimaryWindowCallbackFunctions.cpp" />
     <ClCompile Include="PrimaryWindowState.cpp" />
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
@@ -175,8 +176,6 @@
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="WavefrontMtl.cpp" />
     <ClCompile Include="WavefrontObj.cpp" />
-    <ClCompile Include="PrimaryWindowAttachment.cpp" />
-    <ClCompile Include="WindowCallbackBuffer.cpp" />
     <ClCompile Include="WindowCurserState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -321,8 +320,6 @@
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="WavefrontMtl.h" />
     <ClInclude Include="WavefrontObj.h" />
-    <ClInclude Include="PrimaryWindowAttachment.h" />
-    <ClInclude Include="WindowCallbackBuffer.h" />
     <ClInclude Include="WindowCurserState.h" />
   </ItemGroup>
   <ItemGroup>

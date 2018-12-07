@@ -286,12 +286,6 @@
     <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow">
       <UniqueIdentifier>{5ee53a2a-ac30-4ad0-ba6f-8273ca5e5c5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment">
-      <UniqueIdentifier>{71c0f748-1071-4205-b7a0-2a87a7dec9d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\WindowCallbackBuffer">
-      <UniqueIdentifier>{fa86be35-37b1-4fc1-8d39-4b7c7807695d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\GLFW\WindowCurserState">
       <UniqueIdentifier>{8725f13c-f32a-4bff-bf42-4f095fafe293}</UniqueIdentifier>
     </Filter>
@@ -405,17 +399,14 @@
     <ClCompile Include="GLFW_Init.cpp">
       <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
     </ClCompile>
-    <ClCompile Include="WindowCallbackBuffer.cpp">
-      <Filter>SetupAndConfiguration\GLFW\WindowCallbackBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="PrimaryWindowAttachment.cpp">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment</Filter>
-    </ClCompile>
     <ClCompile Include="WindowCurserState.cpp">
       <Filter>SetupAndConfiguration\GLFW\WindowCurserState</Filter>
     </ClCompile>
     <ClCompile Include="PrimaryWindowState.cpp">
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimaryWindowCallbackFunctions.cpp">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -831,12 +822,6 @@
     </ClInclude>
     <ClInclude Include="GLFW_Init.h">
       <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowCallbackBuffer.h">
-      <Filter>SetupAndConfiguration\GLFW\WindowCallbackBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="PrimaryWindowAttachment.h">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment</Filter>
     </ClInclude>
     <ClInclude Include="PrimaryWindowCallbackFunctions.h">
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
