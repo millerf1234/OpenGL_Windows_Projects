@@ -16,6 +16,7 @@ void AssetLoadingDemo::initialize() {
 	frameLineTypeLastSwitched = 0ull;
 	frameInstancedDrawingBehaviorLastToggled = 0ull;
 	frameInstancedDrawingCountLastModified = 0ull;
+	frameTimeFreezeLastToggled = 0ull;
 	counter = 0.0f;
 	vao = vbo = 0u;
 
@@ -28,8 +29,8 @@ void AssetLoadingDemo::initialize() {
 	instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
 	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 
-	mousePositionX = mousePositionY = 0.0f;
-
+	freezeTimeToggle = false;
+	
 	//Set values for screen projection 
 	fov = 56.0f;
 	screenHeight = 2160.0f;
@@ -183,7 +184,7 @@ void AssetLoadingDemo::loadModels() {
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to location of Model Files
 
 	//Initial Scale values for the objects
-	float blockThing_QuadsScale = 4.2f;
+	float blockThing_QuadsScale = 2.2f;
 	float beveledCubeScale = 5.0f;
 	float blockShipScale = 4.5f;
 	float subdivisionCubeScale = 4.9f;
@@ -193,14 +194,19 @@ void AssetLoadingDemo::loadModels() {
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 2.5f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
+
+
+	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
 	fprintf(MSGLOG, "\n%u models have been loaded.\n", sceneObjects.size());
 
@@ -237,15 +243,14 @@ void AssetLoadingDemo::renderLoop() {
 			reset();
 		}
 
-		detectMouseCoordinates();
-
 		//More Input Checking
+		toggleTimeFreeze(); 
 		changePrimitiveType();
-		changeInstancedDrawingBehavior();
+		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
 		translate();
-		if (drawMultipleInstances) {
-			modifyInstancedDrawingSpiralPattern();
+		if (drawMultipleInstances) {  //If drawing instances
+			modifyInstancedDrawingSpiralPattern();  //Change the parameters for how the instances are drawn
 		}
 
 		//Perform logic 
@@ -264,7 +269,9 @@ void AssetLoadingDemo::renderLoop() {
 		//Draw frame
 		drawVerts();
 
-		counter += 0.0125f; //Increment time 
+		if (!freezeTimeToggle) { //if time is not frozen
+			counter += 0.0125f; //Increment time 
+		}
 
 		glfwSwapBuffers(window); //Swap the buffer to present image to monitor
 
@@ -299,41 +306,6 @@ bool AssetLoadingDemo::checkIfShouldReset() const {
 	return false;
 
 }
-
-//void AssetLoadingDemo::detectMouseCoordinates() {
-//	double xPos, yPos;
-//	glfwGetCursorPos(window, &xPos, &yPos); 
-//
-//
-//	//temporary hack:
-//	MonitorData * windowData = static_cast<MonitorData *>(glfwGetWindowUserPointer(window));
-//
-//	if (windowData) {
-//		//screenHeight = windowData->height;
-//		//screenWidth = windowData->width;
-//		//fprintf(MSGLOG, "\nGLFW Has width: %d   Height: %f", screenWidth, screenHeight);
-//	}
-//	//void * usrPointer = glfwGetWindowUserPointer(window);
-//	//bool hasUserPointer = (usrPointer == NULL);
-//	//fprintf(MSGLOG, "\nGLFW Has User Pointer: %d", hasUserPointer);
-//
-//
-//	//Skip updating the mouse coordinates if the mouse is off the screen
-//	if ((xPos < 0.0) || (yPos < 0.0)) {
-//		//return;
-//	}
-//	else if ((xPos > screenWidth) || (yPos > screenHeight)) {
-//		//return;
-//	}
-//	//else if (mousePositionX > screenWidth)
-//	else {
-//		mousePositionX = static_cast<float>(xPos);
-//		mousePositionY = static_cast<float>(yPos);
-//	}
-//
-//	
-//	fprintf(MSGLOG, "\nMouse x: %f,  y: %f", mousePositionX, mousePositionY);
-//}
 
 void AssetLoadingDemo::pause() {
 	auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
@@ -377,6 +349,7 @@ void AssetLoadingDemo::reset() {
 	frameLineTypeLastSwitched = 0ull;
 	frameInstancedDrawingBehaviorLastToggled = 0ull;
 	frameInstancedDrawingCountLastModified = 0ull;
+	frameTimeFreezeLastToggled = 0ull;
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
@@ -385,7 +358,20 @@ void AssetLoadingDemo::reset() {
 	}
 }
 
-
+void AssetLoadingDemo::toggleTimeFreeze() {
+	if ((frameNumber - frameTimeFreezeLastToggled) > 15ull) {
+		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+			frameTimeFreezeLastToggled = frameNumber;
+			freezeTimeToggle = !freezeTimeToggle;
+			if (freezeTimeToggle) {
+				fprintf(MSGLOG, "Time Frozen!\n");
+			}
+			else {
+				fprintf(MSGLOG, "Time Unfrozen!\n");
+			}
+		}
+	}
+}
 
 void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 	//Only allow toggling to happen every 11 frames
@@ -498,7 +484,6 @@ void AssetLoadingDemo::changePrimitiveType() {
 			}
 		}
 	}	
-	
 }
 
 
@@ -687,24 +672,17 @@ void AssetLoadingDemo::updateUniforms() {
 	rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
 	sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
 
-	glm::mat4 MVP;
-	//if (frameNumber % 120ull < 60ull) {
-		MVP = perspective * (view * (rotation));
-		MVP += glm::mat4(0.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f,
-			xTranslation, yTranslation, 0.0f, 0.0f);
-	//}
-	//else {
-	//	MVP = rotation;
-	//}
+	glm::mat4 MVP; //Model-View-Projection matrix 
+	MVP = perspective * (view * (rotation));
+	glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+			                              0.0f, 1.0f, 0.0f, 0.0f,
+			                              0.0f, 0.0f, 1.0f, 0.0f,
+			                              xTranslation, yTranslation, 0.0f, 1.0f);
+	MVP *= userTranslation;
+
+	
 	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
 	
-	//Change 0,0 from top left corner to middle of screen 
-	float correctedMouseX = (mousePositionX / screenWidth) + 0.5f;
-	float correctedMouseY = (mousePositionY / screenWidth) + 0.5f;
-
-	sceneShader->uniforms.updateUniform2f("mouseCoord", correctedMouseX, correctedMouseY);
 
 	//if (drawMultipleInstances) {
 		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);

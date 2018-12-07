@@ -57,7 +57,7 @@ private:
 	bool openFullScreen; 
 	int defaultMonitor;
 	int width, height, refreshRate; 
-	int pixelWidth, pixelHeight;
+	//int pixelWidth, pixelHeight;
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
 

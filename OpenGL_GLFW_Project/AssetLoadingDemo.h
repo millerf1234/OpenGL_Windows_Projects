@@ -65,7 +65,7 @@ private:
 	float counter;
 	unsigned long long frameNumber;
 	unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled, 
-		frameInstancedDrawingCountLastModified;
+		frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled;
 
 	glm::vec3 backgroundColor;
 
@@ -76,7 +76,9 @@ private:
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
 	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
-	float mousePositionX, mousePositionY;
+
+	bool freezeTimeToggle; 
+	
 
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
@@ -155,10 +157,10 @@ private:
 
 	void pause();
 	void reset();
-
+	void toggleTimeFreeze();
+	void changePrimitiveType();
 	void changeInstancedDrawingBehavior();
 	void modifyInstancedDrawingSpiralPattern();
-	void changePrimitiveType(); 
 	void rotate();
 	void translate();
 

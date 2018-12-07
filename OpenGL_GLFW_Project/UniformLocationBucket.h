@@ -41,80 +41,86 @@ namespace ShaderInterface {
 		UNSPECIFIED
 	};
 
-	typedef struct UniformLocationBucket {
+	class UniformLocationBucket {
+	public:
 		//Constructor
 		UniformLocationBucket() = delete;
 		UniformLocationBucket(GLuint programID, const char * str, UniformType type = UniformType::UNSPECIFIED) {
-			mType = type;
-			name = std::move(std::string(str)); //The odd syntax here just ensures an unnecessary copy is not made 
-			location = glGetUniformLocation(programID, str);  //Crashes here if programID is invalid...
-			if (location == -1) {
+			mType_ = type;
+			mName_ = std::move(std::string(str)); //The odd syntax here just ensures an unnecessary copy is not made 
+			mLocation_ = glGetUniformLocation(programID, str);  //Crashes here if programID is invalid...
+			if (mLocation_ == -1) {
 				fprintf(WRNLOG, "\nWarning! Unable to get uniform location for uniform: %s\n", str);
 				fprintf(WRNLOG, "This is expected behavior if uniform is unused within the shader\n");
-				mError = true;
+				mError_ = true;
 			}
 			else {
-				mError = false;
+				mError_ = false;
 			}
 		}
+		//Destructor
+		~UniformLocationBucket() { ; }
+		//Copy/Move fully enabled
 		UniformLocationBucket(const UniformLocationBucket& that) {
-			this->location = that.location;
-			this->name = that.name;
-			this->mError = that.mError;
-			this->mType = that.mType;
+			this->mLocation_ = that.mLocation_;
+			this->mName_ = that.mName_;
+			this->mError_ = that.mError_;
+			this->mType_ = that.mType_;
 		}
 		UniformLocationBucket(UniformLocationBucket&& that) {
-			this->location = that.location;
-			this->name = that.name;
-			this->mError = that.mError;
-			this->mType = that.mType;
+			this->mLocation_ = that.mLocation_;
+			this->mName_ = that.mName_;
+			this->mError_ = that.mError_;
+			this->mType_ = that.mType_;
 		}
 
 		UniformLocationBucket& operator=(const UniformLocationBucket& that) {
 			if (this != &that) {
-				this->location = that.location;
-				this->name = that.name;
-				this->mError = that.mError;
-				this->mType = that.mType;
+				this->mLocation_ = that.mLocation_;
+				this->mName_ = that.mName_;
+				this->mError_ = that.mError_;
+				this->mType_ = that.mType_;
 			}
 			return *this;
 		}
 
 		UniformLocationBucket& operator=(UniformLocationBucket&& that) {
-			this->location = that.location;
-			this->name = that.name;
-			this->mError = that.mError;
-			this->mType = that.mType;
+			if (this != &that) {
+				this->mLocation_ = that.mLocation_;
+				this->mName_ = that.mName_;
+				this->mError_ = that.mError_;
+				this->mType_ = that.mType_;
+			}
 			return *this;
 		}
 
 		void setType(UniformType type) {
-			if (mType != UniformType::UNSPECIFIED) { //If a type has already been set for this uniform location
-				fprintf(WRNLOG, "WARNING! Unable to set type for uniform %s.\nReason: This uniform already has a type!\n\n", name.c_str());
+			if (mType_ != UniformType::UNSPECIFIED) { //If a type has already been set for this uniform location
+				fprintf(WRNLOG, "WARNING! Unable to set type for uniform %s.\nReason: This uniform already has a type!\n\n", mName_.c_str());
 			}
 			else {
-				mType = type;
+				mType_ = type;
 			}
 		}
 
-		bool error() const { return mError; }
-		GLint getLocation() const { return location; }
-		const char * getName() const { return name.c_str(); }
-		UniformType getType() const { return mType; }
+		bool error() const { return mError_; }
+		GLint getLocation() const { return mLocation_; }
+		const char * getName() const { return mName_.c_str(); }
+		UniformType getType() const { return mType_; }
 
 		bool checkForMatch(const char * uniformName) const {
-			if (name.compare(uniformName) == 0) {
+			if (mName_.compare(uniformName) == 0) {
 				return true;
 			}
 			return false;
 		}
 
 	private:
-		std::string name;
-		GLint location;
-		bool mError;
-		UniformType mType;
-	} UniformLocationBucket;
+		std::string mName_;
+		GLint mLocation_;
+		bool mError_;
+		UniformType mType_;
+	};
 
 } //namespace ShaderInterface
 

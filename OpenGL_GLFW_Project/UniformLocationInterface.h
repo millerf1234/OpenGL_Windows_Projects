@@ -61,7 +61,6 @@ namespace ShaderInterface {
 		//see: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUniform.xhtml
 
 		void updateUniform1i(const GLchar * uniformName, const GLint x) { fptr_UpdateUniform1i_(uniformName, x); }
-		/*void updateUniform1i(const GLchar * uniformName, const GLint x) { fptr_UpdateUniform1i_(uniformName, x, mUniformLocationTracker_.get()); }*/
 		void updateUniform1u(const GLchar * uniformName, const GLuint x) { fptr_UpdateUniform1u_(uniformName, x); }
 		void updateUniform1f(const GLchar * uniformName, const GLfloat x) { fptr_UpdateUniform1f_(uniformName, x); }
 		void updateUniform1iv(const GLchar * uniformName, const GLint * ivec, GLsizei count = 1) { fptr_UpdateUniform1iv_(uniformName, ivec, count); }

@@ -280,6 +280,9 @@
     <Filter Include="SetupAndConfiguration\GLFW\WindowCallbacks">
       <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
+      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -968,6 +971,12 @@
     </None>
     <None Include="obj\AbstractShapeDecimated.obj">
       <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
+    </None>
+    <None Include="obj\CrazyJetEngine.mtl">
+      <Filter>Resource Files\Models\OBJ\Engine\CrazyEngine</Filter>
+    </None>
+    <None Include="obj\CrazyJetEngine.obj">
+      <Filter>Resource Files\Models\OBJ\Engine\CrazyEngine</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

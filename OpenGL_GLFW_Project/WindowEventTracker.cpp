@@ -1,12 +1,11 @@
-#include "MouseInput.h"
+#include "WindowEventTracker.h"
 
 
+WindowEventTracker::WindowEventTracker() {
 
-MouseInput::MouseInput()
-{
 }
 
 
-MouseInput::~MouseInput()
-{
+WindowEventTracker::~WindowEventTracker() {
+
 }

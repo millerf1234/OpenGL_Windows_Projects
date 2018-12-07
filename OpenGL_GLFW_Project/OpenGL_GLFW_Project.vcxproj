@@ -332,6 +332,7 @@
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
     <None Include="obj\BlockThing_Triangulated.mtl" />
+    <None Include="obj\CrazyJetEngine.mtl" />
     <None Include="obj\ExperimentalEngine.mtl" />
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
       <SubType>Designer</SubType>
@@ -411,6 +412,9 @@
       <FileType>Document</FileType>
     </None>
     <None Include="obj\AbstractShapeDecimated.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\CrazyJetEngine.obj">
       <FileType>Document</FileType>
     </None>
     <Object Include="obj\Engine2_Textured.obj">

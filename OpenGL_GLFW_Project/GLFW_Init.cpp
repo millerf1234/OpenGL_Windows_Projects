@@ -18,7 +18,7 @@
 
 GLFW_Init::GLFW_Init() {
 	width = height = refreshRate = 0;
-	pixelWidth = pixelHeight = 0; //Since GLFW3, screen coordinates and viewport pixels are seperate concepts
+	//pixelWidth = pixelHeight = 0; //Since GLFW3, screen coordinates and viewport pixels are seperate concepts
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
@@ -32,8 +32,8 @@ GLFW_Init::GLFW_Init() {
 	else {
 		vSyncInterval = 0;
 	}
-	openFullScreen = USE_FULLSCREEN;
-	defaultMonitor = 0;
+	openFullScreen = USE_FULLSCREEN; 
+	defaultMonitor = MONITOR_TO_USE;
 	contextIsValid = false;
 }
 
@@ -122,16 +122,13 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	
 	if (vSyncInterval == 0) {
 		fprintf(MSGLOG, "\t  VSYNC: OFF\n");
-		glfwSwapInterval(0); //Not sure if this line is needed because swap interval should be 0 by default (or at least so I believe)
+		glfwSwapInterval(0);
 	}
 	else {
 		fprintf(MSGLOG, "\t  VSYNC: ON\n");
-		glfwSwapInterval(vSyncInterval);
+		glfwSwapInterval(1);
 	}
-	if ( (vSyncInterval != 0) && (vSyncInterval != 1) ) { 
-		fprintf(WRNLOG, "WARNING! VSYNC INTERVAL IS SET TO A NON-STANDARD VALUE AND MAY RESULT IN UNDEFINED BEHAVIOR\n");
-		fprintf(WRNLOG, "VSYNC interval set to %d while the value must be only either 0 or 1!\n", vSyncInterval);
-	}
+	
 
 	fprintf(MSGLOG, "OpenGL context configured!\n");
 
@@ -148,7 +145,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 	//First try to make the window open on the specified display
 	if (openFullScreen) {
-		if (connectedDisplayCount >= (defaultMonitor + 1)) { //If the desired default display is connected
+		if (connectedDisplayCount >= (defaultMonitor + 1)) { //Check to make sure there is at least enough connected displays for defaultMonitor to exist
 			detectDisplayResolution(defaultMonitor, width, height, refreshRate);
 			if (!contextIsValid) {
 				fprintf(ERRLOG, "\nError detecting display resolution!\n");
@@ -240,6 +237,11 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 	if (mWindow) {
 		glfwSetWindowSizeCallback(mWindow, windowSizeCallback);
 		glfwSetFramebufferSizeCallback(mWindow, framebufferSizeCallback);
+
+		glfwSetMouseButtonCallback(mWindow, mouseButtonCallback);
+		glfwSetScrollCallback(mWindow, mouseScrollCallback);
+		glfwSetCursorEnterCallback(mWindow, curserEnterCallback);
+		glfwSetCursorPosCallback(mWindow, curserPositionCallback);
 	}
 }
 
