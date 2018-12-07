@@ -1,4 +1,4 @@
-//File:  GLFW_CallbackFunctions.h
+//File:  PrimaryWindowCallbackFunctions.h
 //
 // Description:   Defines callback functions that are provided to GLFW to process events
 //
@@ -10,8 +10,8 @@
 
 #pragma once
 
-#ifndef GLFW_CALLBACK_FUNCTIONS_H_
-#define GLFW_CALLBACK_FUNCTIONS_H_
+#ifndef PRIMARY_WINDOW_CALLBACK_FUNCTIONS_H_
+#define PRIMARY_WINDOW_CALLBACK_FUNCTIONS_H_
 
 #include <atomic>
 
@@ -185,4 +185,4 @@ inline void filedropCallbackFunction(GLFWwindow* window, int count, const char *
 
 
 
-#endif //GLFW_CALLBACK_FUNCTIONS_H_
+#endif //PRIMARY_WINDOW_CALLBACK_FUNCTIONS_H_

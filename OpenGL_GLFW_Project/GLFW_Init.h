@@ -16,7 +16,7 @@
 
 #include "ProjectParameters.h"
 #include "ProjectConstants.h"
-#include "GLFW_CallbackFunctions.h"
+#include "PrimaryWindowCallbackFunctions.h"
 
 
 typedef struct MonitorData {

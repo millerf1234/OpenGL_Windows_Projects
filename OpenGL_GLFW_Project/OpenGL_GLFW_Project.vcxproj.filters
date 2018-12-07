@@ -277,14 +277,26 @@
     <Filter Include="SetupAndConfiguration\GLFW\Initialization">
       <UniqueIdentifier>{4549d577-1316-4a69-aae3-6740049d372f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\WindowCallbacks">
-      <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
       <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
       <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow">
+      <UniqueIdentifier>{5ee53a2a-ac30-4ad0-ba6f-8273ca5e5c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment">
+      <UniqueIdentifier>{71c0f748-1071-4205-b7a0-2a87a7dec9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\WindowCallbackBuffer">
+      <UniqueIdentifier>{fa86be35-37b1-4fc1-8d39-4b7c7807695d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\WindowCurserState">
+      <UniqueIdentifier>{8725f13c-f32a-4bff-bf42-4f095fafe293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
+      <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -393,8 +405,17 @@
     <ClCompile Include="GLFW_Init.cpp">
       <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
     </ClCompile>
-    <ClCompile Include="WindowEventTracker.cpp">
-      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
+    <ClCompile Include="WindowCallbackBuffer.cpp">
+      <Filter>SetupAndConfiguration\GLFW\WindowCallbackBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimaryWindowAttachment.cpp">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowCurserState.cpp">
+      <Filter>SetupAndConfiguration\GLFW\WindowCurserState</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimaryWindowState.cpp">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -811,11 +832,20 @@
     <ClInclude Include="GLFW_Init.h">
       <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
     </ClInclude>
-    <ClInclude Include="GLFW_CallbackFunctions.h">
-      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
+    <ClInclude Include="WindowCallbackBuffer.h">
+      <Filter>SetupAndConfiguration\GLFW\WindowCallbackBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="WindowEventTracker.h">
-      <Filter>SetupAndConfiguration\GLFW\WindowCallbacks</Filter>
+    <ClInclude Include="PrimaryWindowAttachment.h">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowAttachment</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimaryWindowCallbackFunctions.h">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowCurserState.h">
+      <Filter>SetupAndConfiguration\GLFW\WindowCurserState</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimaryWindowState.h">
+      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
