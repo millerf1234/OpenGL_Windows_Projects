@@ -173,6 +173,14 @@ inline void curserPositionCallback(GLFWwindow* window, double x, double y) {
 }
 
 
+//Callback function for when files are dragged and dropped onto the window. Note that 
+//memory for filepaths is allocated by GLFW and is only guarenteed to exist for the 
+//duration of this function, so a deep copy should be performed. Filepaths are UTF-8 encoded
+inline void filedropCallbackFunction(GLFWwindow* window, int count, const char ** filePaths) {
+
+}
+
+
 
 
 

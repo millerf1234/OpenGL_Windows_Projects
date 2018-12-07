@@ -320,6 +320,8 @@
     <ClInclude Include="WavefrontObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AssetLoadingDemo_CoolEffect.frag" />
+    <None Include="AssetLoadingDemo_CoolEffect.vert" />
     <None Include="freetype.dll" />
     <None Include="glfw3.dll" />
     <None Include="glfw3dll.exp" />

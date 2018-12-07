@@ -42,7 +42,7 @@ void main() {
 
 	//intensity += smoothstep(abs(dFdx(noise(normal.xy + normal.xz))), abs(dFdy(position.x)), intensity);
 
-	if (intensity > 0.995) {
+	if (intensity > 0.905) {
 		color = vec4(0.99, 0.93, 0.78, 1.0);
 	}
 	//else if (intensity > 0.85) {

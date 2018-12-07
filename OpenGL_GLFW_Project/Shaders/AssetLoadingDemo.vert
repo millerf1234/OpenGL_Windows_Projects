@@ -44,16 +44,17 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 void main() {
 
 	//Keep things very simple for now...
-	float radius = 10.0;
-	float posFac = sqrt((pos.x + pos.y + pos.z) / 3.0);
-	vec3 ns = vec3(1.0*pNoise(vec2(time, 0.0 - 0.0), 3), sin(posFac + time), cos(posFac + time));
+	//float radius = 10.0;
+	//float posFac = sqrt((pos.x + pos.y + pos.z) / 3.0);
+	//vec3 ns = vec3(10.0*pNoise(vec2(time, 0.0 - 0.0), 3), sin(posFac + time), cos(posFac + time));
 
-	float cool = (sin(2.14*(time - (0.001*vert))));
-	cool *= step(0.01, abs(cool));
-	position = ModelPosition + vec4(cos(inst-cool), 1.0 / cool, inst / sin(cool), zoom);
+	float cool = (sin(2.14*(time - (0.009*vert))));
+	float stepFactor = step(abs(35.0 * sin(1.0*time + vert)), inst) * 0.37;
+	cool *= step(0.57 + stepFactor, abs(cool));
+	position = ModelPosition + vec4(3.0*cos(inst+cool), (1.0 - inst ) / cool, (0.0*inst) / cool, zoom);
 	
 
-	texCoord = ModelTexCoord;
+	texCoord = ModelTexCoord; 
 
 	//Normally a seperate matrix is needed for transforming the normal vectors.
 	// However this has not yet been implemented...
@@ -61,7 +62,7 @@ void main() {
 
 	//position.x += 
 
-	gl_Position = MVP * position;
+	gl_Position = (MVP * position) + vec4(-2.0, -2.0, 0.0, 0.0);
 	
 
 
