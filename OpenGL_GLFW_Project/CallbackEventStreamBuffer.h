@@ -24,10 +24,14 @@
 
 namespace WindowCallbackInternal {
 
-	typedef std::pair<std::vector<WindowStateChangeCallbackEvent>, std::vector<WindowInputCallbackEvent>>  CallbackEventBufferPair;
+	typedef std::vector<WindowStateChangeCallbackEvent> WindowStateChangeBuffer;
+	typedef std::vector<WindowInputCallbackEvent> WindowInputEventBuffer;
+	//typedef std::pair<std::vector<WindowStateChangeCallbackEvent>, std::vector<WindowInputCallbackEvent>>  CallbackEventBufferPair;
+	typedef std::pair<WindowStateChangeBuffer, WindowInputEventBuffer> CallbackEventBufferPair;
 
-	static constexpr const size_t BUFFER_PAIRS = 3u;
-	static constexpr const size_t BUFFER_SPACE_TO_RESERVE = 100u;
+	static constexpr const size_t NUM_BUFFER_PAIRS = 3u;
+	static constexpr const size_t INITIAL_STATE_CHANGE_BUFFER_SIZE = 128u;  //This is just initial sizes for the buffers, each can
+	static constexpr const size_t INITIAL_WINDOW_INPUT_BUFFER_SIZE = 1024u; //  be expanded if need be
 
 	bool operator<(const WindowStateChangeCallbackEvent& event1, const WindowStateChangeCallbackEvent& event2);
 	bool operator<(const WindowStateChangeCallbackEvent& event1, const WindowInputCallbackEvent& event2);
@@ -44,12 +48,12 @@ namespace WindowCallbackInternal {
 		//Adds a completed WindowStateChangeCallbackEvent to the end of the current WindowStateChangeCallbackEventBuffer.
 		//It is up to code calling this function to ensure that the provided struct is complete. Passing this function
 		//an incomplete struct could cause catastrophic problems down the road (i.e. crash). 
-		void addWindowStateChangeEvent(WindowStateChangeCallbackEvent && event);
+		//void addWindowStateChangeEvent(WindowStateChangeCallbackEvent && event);
 
 		//Adds a completed WindowStateChangeCallbackEvent to the end of the current WindowStateChangeCallbackEventBuffer.
 		//It is up to code calling this function to ensure that the provided struct is complete. Passing this function
 		//an incomplete struct could cause catastrophic problems down the road (i.e. crash). 
-		void addWindowInputCallbackEvent(WindowInputCallbackEvent && event);
+		//void addWindowInputCallbackEvent(WindowInputCallbackEvent && event);
 	
 		//To be called by the main application thread, this returns a CallbackEventBufferPair containing all recorded
 		//Callback Events since the previous time this function was called. Calling this function causes any subsequent
@@ -61,22 +65,23 @@ namespace WindowCallbackInternal {
 		//since the previous time this function was called. Calling this function causes any subsequent
 		//events to begin recording into a new buffer. (This function is identical to the one returning a CallbackEventBufferPair 
 		//except it uses the std::vector member function 'swap()' to reduce copying)
-		void getCallbackEvents(CallbackEventBufferPair& eventPair);
+		//void getCallbackEvents(CallbackEventBufferPair& eventPair);
 
 		//Returns the number of stored events currently in the buffer. Loads the atomically stored value, so this number
 		//could include events that are still in the process of adding themselves to the buffer
-		size_t getStoredBufferEventsSinceLastFlush() const { return mStoredBufferEventsSinceLastCheck_.load(); } 
+		size_t getNumberEventsSinceLastFlush() const { return mStoredBufferEventsSinceLastCheck_.load(); } 
 
 	private:
 		std::atomic_size_t mActiveBufferPair_;
-		std::array<CallbackEventBufferPair, BUFFER_PAIRS> mBufferPairs_;
+		std::array<CallbackEventBufferPair, NUM_BUFFER_PAIRS> mBufferPairs_;
 
 		std::atomic_size_t mStoredBufferEventsSinceLastCheck_;
-		std::atomic_size_t mCurrentlyWritingEvents_;
+		std::array<std::atomic_size_t, NUM_BUFFER_PAIRS> mCurrentlyWritingEvents_; 
 
 		
 		//Helper functions
 		void initialize();
+		void initializeBufferPairs();
 	};
 
 } //namespace WindowCallbackInternal
