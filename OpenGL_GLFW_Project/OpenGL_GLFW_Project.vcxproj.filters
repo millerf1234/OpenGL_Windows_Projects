@@ -292,6 +292,9 @@
     <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
       <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\CallbackStreamBuffer">
+      <UniqueIdentifier>{b7c57aec-f24b-4cfa-9866-57f10dffbd7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -407,6 +410,9 @@
     </ClCompile>
     <ClCompile Include="PrimaryWindowCallbackFunctions.cpp">
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="CallbackEventStreamBuffer.cpp">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -831,6 +837,15 @@
     </ClInclude>
     <ClInclude Include="PrimaryWindowState.h">
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowStateChangeCallbackEvent.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInputCallbackEvent.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackEventStreamBuffer.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

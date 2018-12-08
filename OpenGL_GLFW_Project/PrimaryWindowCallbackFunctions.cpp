@@ -66,10 +66,17 @@ inline void determineMods(int mods) {
 	}
 }
 
+void joystickConnectionCallback(GLFWwindow * window, int joyID, int connected) {
+
+}
 
 //---------------------------------------------------------------------------------
 //     User-Input-Triggered Callbacks
 //---------------------------------------------------------------------------------
+
+void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+
+}
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 	fprintf(MSGLOG, "MouseButton Callback Function called with the following parameters:\n");

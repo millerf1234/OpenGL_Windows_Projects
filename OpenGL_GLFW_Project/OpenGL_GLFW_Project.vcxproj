@@ -143,6 +143,7 @@
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetInterface.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
+    <ClCompile Include="CallbackEventStreamBuffer.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="Face.cpp" />
@@ -188,6 +189,9 @@
     <ClInclude Include="AsciiAsset.h" />
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
+    <ClInclude Include="CallbackEventStreamBuffer.h" />
+    <ClInclude Include="WindowInputCallbackEvent.h" />
+    <ClInclude Include="WindowStateChangeCallbackEvent.h" />
     <ClInclude Include="CompiledShader.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="DefaultPhongIllumination.h" />
