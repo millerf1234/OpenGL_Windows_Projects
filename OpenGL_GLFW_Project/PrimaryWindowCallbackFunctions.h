@@ -22,6 +22,8 @@
 
 namespace WindowCallbackInternal {
 
+	
+
 	//There is a global variable here for dropped filepaths. It is unfortunate that this is global, but
 	//it seems a less-worse than any other alternatives (such as performing a memory allocation to store
 	//the filepaths without knowning when/where the deallocation will occur)

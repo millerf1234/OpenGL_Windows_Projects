@@ -24,7 +24,7 @@ namespace WindowCallbackInternal {
 	//-------------------------------------------------------
 
 	enum class WindowInputCallbackType { KEYBOARD_PRESS, KEYBOARD_RELEASE, KEYBOARD_REPEAT, MOUSE_BUTTON,
-		MOUSE_SCROLL, CURSER_ENTER, CURSER_POSITION, FILE_DROP, NO_EVENT };
+		MOUSE_SCROLL, CURSER_ENTER, CURSER_POSITION, FILE_DROP, NULL_INPUT_EVENT };
 
 	struct KeyboardPress {
 		int key;
@@ -68,7 +68,7 @@ namespace WindowCallbackInternal {
 		int count;
 	};
 
-	struct NoEvent {
+	struct NullInputEvent { //Can be used to signify the end of a buffer of input events
 
 	};
 
@@ -85,7 +85,7 @@ namespace WindowCallbackInternal {
 			CurserEnter cEnter;
 			CurserPosition cPos;
 			Filedrop fd;
-			NoEvent noEvent;
+			NullInputEvent noEvent;
 		};
 	};
 

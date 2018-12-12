@@ -18,6 +18,8 @@
 #include "ProjectConstants.h"
 #include "PrimaryWindowCallbackFunctions.h"
 
+#include "CallbackEventStreamBuffer.h"
+
 
 typedef struct MonitorData {
 	int numDetected, activeMonitorNum, width, height, refreshRate;
@@ -58,6 +60,9 @@ private:
 	int defaultMonitor;
 	int width, height, refreshRate; 
 	//int pixelWidth, pixelHeight;
+
+	//Window attachment is created and has its allocation owned by this class
+	std::unique_ptr<WindowCallbackInternal::CallbackStreamBuffer> windowAttachment;
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
 

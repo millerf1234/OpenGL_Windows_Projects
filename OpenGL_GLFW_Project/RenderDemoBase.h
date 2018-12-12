@@ -81,6 +81,18 @@ public:
 	//  Useful Universal RenderDemo Functions
 	//------------------------------------
 
+	//(Based off advice in OpenGL Super Bible 7e Chapter 15: Debugging and Stability) [Pages 737-740]
+	//Current GPUs and grpahics drivers are not yet at the level of robustness comapred with
+	//modern CPUs and operating systems when it comes to dealing with rouge/misbehaving processes.
+	//In the event that an errant task begins hogging all of the GPUs resources, about the best that
+	//can be done is to kick everything off the GPU and reset everything. Since the GPU is a shared-resource,
+	//this means that other processes can cause the GPU to hang, requiring a context reset. Since a context
+	//reset erases all state from the GPU, it is up to all applications that were using the GPU to recreate all
+	//of their lost data. 
+	//In the event a context reset occurs, all rendering will cease and all assets that were stored within the 
+	//GPU's memory are lost. None of the OpenGL functions will work properly except for the functions
+	//  http://discourse.glfw.org/t/glfw-context-robustness-window-attribute/643
+	bool checkForContextReset() { return false; }
 
 
 	/*  This whole part is unnecessary

@@ -16,6 +16,7 @@
 
 namespace WindowCallbackInternal {
 
+
 	//-------------------------------------------------------
 	//     Window State Change Callback Events
 	//-------------------------------------------------------
@@ -52,7 +53,7 @@ namespace WindowCallbackInternal {
 		int connected;  //either GLFW_CONNECTED or GLFW_DISCONNECTED
 	};
 
-	struct NoEvent {
+	struct NullEvent { //Can be used to signify the end of a buffer of events
 
 	};
 
@@ -66,7 +67,7 @@ namespace WindowCallbackInternal {
 			FramebufferResize fbRes;
 			WindowFocus winFoc;
 			JoystickConnection joyCon;
-			NoEvent noEvent;
+			NullEvent noEvent;
 		};
 	};
 

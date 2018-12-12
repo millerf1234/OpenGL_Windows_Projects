@@ -16,7 +16,6 @@ out vec3 normal;
 uniform float zoom;
 uniform float time;
 uniform mat4 rotation;
-
 uniform mat4 MVP;
 
 uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
@@ -43,15 +42,9 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 void main() {
 
-	//Keep things very simple for now...
-	//float radius = 10.0;
-	//float posFac = sqrt((pos.x + pos.y + pos.z) / 3.0);
-	//vec3 ns = vec3(10.0*pNoise(vec2(time, 0.0 - 0.0), 3), sin(posFac + time), cos(posFac + time));
-
-	float cool = (sin(2.14*(time - (0.009*vert))));
-	float stepFactor = step(abs(35.0 * sin(1.0*time + vert)), inst) * 0.37;
-	cool *= step(0.57 + stepFactor, abs(cool));
-	position = ModelPosition + vec4(3.0*cos(inst+cool), (1.0 - inst ) / cool, (0.0*inst) / cool, zoom);
+	float cool = (sin(1.74*(time - (0.009*vert))));
+	cool *= step(0.257, abs(cool));
+	position = ModelPosition +vec4(3.0*cos(inst + cool), (1.0 - inst) / cool, (0.0*inst) / cool, zoom);
 	
 
 	texCoord = ModelTexCoord; 
@@ -60,19 +53,7 @@ void main() {
 	// However this has not yet been implemented...
 	normal = mat3(rotation) * ModelNormal; 
 
-	//position.x += 
 
+	//gl_Position = (MVP * position) + vec4(-2.0, -2.0, 0.0, 0.0) + (0.001 + 0.002*sin(time))*vec4(mat3(rotation)*vec3(cnoise(position)+vert), 0.0);
 	gl_Position = (MVP * position) + vec4(-2.0, -2.0, 0.0, 0.0);
-	
-
-
-	//float noiz = 12.95*abs(1.0*pNoise(vec2(length(position) * 50.0 * sin(0.001*time), length(position) + sin(0.001*time) + 50.8*float(gl_InstanceID)), 3));
-	//gl_Position.z += fbm(vec3(3.0*noiz, -30.0*noiz, noiz*sin(time*noiz)));
-	//gl_Position.x += 3.0*cnoise(vec4(noiz, 1.0 + noiz, noiz * cos(3.0+noiz), 1.0));
-
-
-	//vec4 startingOffset = zoom * vec4(-20.0, -20.0, -20.0, 0.0);
-	//float instanceDisplacement = (1. + pow(1.05, 2.0*float(gl_InstanceID + 1))) / 3.0*float(gl_InstanceID);
-	//gl_Position += vec4(0.9*instanceDisplacement, 1.0 * instanceDisplacement, 0.5, 2.5 * (pow( (0.8 + 0.75*abs(cos(time))) , float(gl_InstanceID)))) + startingOffset;
-	
 }

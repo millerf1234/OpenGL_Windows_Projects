@@ -43,7 +43,7 @@ void AssetLoadingDemo::initialize() {
 	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
 
 	//Set values for view matrix
-	cameraPos = glm::vec3(0.0f, 0.0f, 5.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+	cameraPos = glm::vec3(0.0f, 0.0f, 15.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
 	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
 	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -181,7 +181,8 @@ GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer() const {
 
 void AssetLoadingDemo::loadModels() {
 
-	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to location of Model Files
+	//[RFP == Relative File Path]
+	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
 	//Initial Scale values for the objects
 	float blockThing_QuadsScale = 2.2f;
@@ -191,11 +192,11 @@ void AssetLoadingDemo::loadModels() {
 	float abstractShapeScale = 2.0f;
 
 	//Load some models
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
@@ -304,7 +305,6 @@ bool AssetLoadingDemo::checkIfShouldReset() const {
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		return true;
 	return false;
-
 }
 
 void AssetLoadingDemo::pause() {
@@ -770,7 +770,7 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() {
 void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 
 	const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.0f, -0.0f, -0.0f);
-	const glm::vec3 CHANGE_BETWEEN_OBJECTS(1.5f, 1.5f, 0.00f);
+	const glm::vec3 CHANGE_BETWEEN_OBJECTS(5.0f, 5.0f, 0.00f);
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
 

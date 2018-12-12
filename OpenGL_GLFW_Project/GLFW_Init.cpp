@@ -22,6 +22,7 @@ GLFW_Init::GLFW_Init() {
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
+	windowAttachment = nullptr;
 	decoratedBorder = resizeable = forwardCompatible =  true;
 	contextVersionMajor = DEFAULT_OPENGL_VERSION_MAJOR;
 	contextVersionMinor = DEFAULT_OPENGL_VERSION_MINOR; 
@@ -235,13 +236,16 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 void GLFW_Init::specifyWindowCallbackFunctions() {
 	if (mWindow) {
-		glfwSetWindowSizeCallback(mWindow, windowSizeCallback);
-		glfwSetFramebufferSizeCallback(mWindow, framebufferSizeCallback);
+		windowAttachment = std::make_unique<WindowCallbackInternal::CallbackStreamBuffer>();
+		setWindowUserPointer(static_cast<void *>(windowAttachment.get()));
 
-		glfwSetMouseButtonCallback(mWindow, mouseButtonCallback);
-		glfwSetScrollCallback(mWindow, mouseScrollCallback);
-		glfwSetCursorEnterCallback(mWindow, curserEnterCallback);
-		glfwSetCursorPosCallback(mWindow, curserPositionCallback);
+		glfwSetWindowSizeCallback(mWindow, WindowCallbackInternal::windowSizeCallback);
+		glfwSetFramebufferSizeCallback(mWindow, WindowCallbackInternal::framebufferSizeCallback);
+		glfwSetWindowPosCallback(mWindow, WindowCallbackInternal::windowPositionCallback);
+		//glfwSetMouseButtonCallback(mWindow, mouseButtonCallback);
+		//glfwSetScrollCallback(mWindow, mouseScrollCallback);
+		//glfwSetCursorEnterCallback(mWindow, curserEnterCallback);
+		//glfwSetCursorPosCallback(mWindow, curserPositionCallback);
 	}
 }
 
