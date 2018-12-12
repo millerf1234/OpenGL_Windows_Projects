@@ -107,10 +107,6 @@ public:
 	//pieces it needs to have its 'run()' member function called.
 	inline bool checkIfRenderDemoLoaded() const { return mRenderDemoLoaded; }
 
-	//Returns true iff the RenderDemo is loaded with no errors. Will return
-	//false if the demo is not loaded, or if an error has occured.
-	explicit operator bool() const { return (mRenderDemoLoaded && !mRenderDemoError); }
-	*/
 protected:
 
 	//std::vector<MissingAsset> missingAssets;

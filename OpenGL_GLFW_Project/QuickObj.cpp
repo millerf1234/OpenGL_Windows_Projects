@@ -1,6 +1,56 @@
+//File:               QuickObj.cpp
+//
+//  See Header file for more details
+//
+// Programmer:          Forrest Miller
+// Date:                November 2018
+
+
 #include "QuickObj.h"
 
+static constexpr const size_t POSITION_INDEX = 0u;
+static constexpr const size_t TEXTURE_COORD_INDEX = 1u;
+static constexpr const size_t NORMAL_INDEX = 2u;
+
+static constexpr const size_t POSITION_COMPONENTS = 4u;
+static constexpr const size_t TEXTURE_COORDINATE_COMPONENTS = 2u;
+static constexpr const size_t NORMAL_COMPONENTS = 3u;
+
+//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
+//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
+//parsing logic
+static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u;
+static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
+static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
+static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+
+
+
+
 QuickObj::QuickObj(std::string filepath, float scale) {
+	mError_ = false;
+	mScale_ = scale;
+	mHasTexCoords_ = false;
+	mHasNormals_ = false;
+	mFile_ = std::make_unique<AssetLoadingInternal::AsciiAsset>(filepath);
+
+	if (mFile_->getStoredTextLength() > 0u) {
+		//preparseFile(); //This is unnecessary 
+		parseFile();
+	}
+	else {
+		fprintf(ERRLOG, "\nERROR aquiring file: %s!\n", filepath.c_str());
+		mError_ = true;
+		return;
+	}
+}
+
+
+//The current implementation here is not the most efficient, since essentially it follows the exact same steps as 
+//the non-texCoord-Normal-generating constructor before filling in the missing data. A better impleplementation would
+//fill in the missing data as it goes.
+QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords, float s, float t) {
+	mError_ = false;
 	mScale_ = scale;
 	mHasTexCoords_ = false;
 	mHasNormals_ = false;
@@ -12,13 +62,24 @@ QuickObj::QuickObj(std::string filepath, float scale) {
 	}
 	else {
 		fprintf(ERRLOG, "\nERROR aquiring file!\n");
+		mError_ = true;
+		return;
 	}
+	if (generateMissingComponents) {
+		if (mVertices_.size() > 0u) { //Only generate components if some data has been loaded
+			addMissingComponents(randomizeTextureCoords, s, t);
+		}
+	}
+	
 }
 
 
 QuickObj::~QuickObj() {
 
 }
+
+
+
 
 
 //This is a very quick and dirty implementation. Not clean
@@ -631,4 +692,173 @@ void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts)
 		verts.emplace_back(Vertex(values[0], values[1], values[2]));
 		break;
 	}
+}
+
+//This function expects that it has been confirmed that at least one of Normals or TextureCoords are missing from the loaded
+//data. Calling this function on an instance of this object that doesn't have any missing data could cause odd behavior.
+void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float t) {
+	
+	size_t loadedDataSize = mVertices_.size(); //Used to validate loaded data to prevent issues when generating new data
+	
+	if (mHasTexCoords_) {
+		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS)) {
+			mError_ = true;
+			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+				"The number of values (%u) loaded from the file does not match the expected\n"
+				"vertex size (6-components per vertex [4 position + 2 tex])!\n", mFile_, loadedDataSize);
+			return;
+		}
+		generateMissingTextureCoords(randomizeTextureCoords, s, t);
+	}
+	else if (mHasNormals_) {
+		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS + NORMAL_COMPONENTS)) {
+			mError_ = true;
+			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+				"The number of values (%u) loaded from the file does not match the expected\n"
+				"vertex size (7-components expected per vertex [4 position + 3 normal])!\n", mFile_, loadedDataSize);
+			return;
+		}
+		generateMissingNormals();
+	}
+	else { //File was missing both normals and texture components
+		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS)) {
+			mError_ = true;
+			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+				"The number of values (%u) loaded from the file does not match the expected\n"
+				"vertex size (4-components expected per vertex [4 position])!\n", mFile_, loadedDataSize);
+			return;
+		}
+		generateMissingTextureCoordsAndNormals(randomizeTextureCoords, s, t);
+	}
+
+	fprintf(MSGLOG, "Missing data was generated for the model loaded from file: %s\n", mFile_);
+	fprintf(MSGLOG, "   [%u values were loaded from file, %u values were generated, brining total size to %u]\n",
+		loadedDataSize, mVertices_.size() - loadedDataSize, mVertices_.size());
+}
+
+
+//The idea behind this function is to iterate through the loaded data and fill in the missing components
+void QuickObj::generateMissingTextureCoords(bool randomizeTextureCoords, float s, float t) {
+
+	int currentVertexComponent = -1; //Will be incremented to 0 in first iteration
+	std::vector<float> verticesWithTexCoords; //Data is to be filled into this vector which will then swap with mVertices_
+	verticesWithTexCoords.reserve((mVertices_.size() / 7u) * 9u); //Reserve the required space 
+
+	auto vertsEnd = mVertices_.end(); //Iterator to end of vertices
+	auto vertsBegin = mVertices_.begin(); //Iterator to start of vertices
+	
+	if (!randomizeTextureCoords) {
+		for (auto componentIter = vertsBegin; componentIter != vertsEnd; componentIter++) {
+			currentVertexComponent = ((currentVertexComponent + 1u) % 7u);
+			if (currentVertexComponent == 3) {
+				//Add the fourth position component (scale) to vector
+				verticesWithTexCoords.push_back(*componentIter);
+				//Add the s texture coord to the vector
+				verticesWithTexCoords.push_back(s);
+				//Add the t texture coord to the vector
+				verticesWithTexCoords.push_back(t);
+			}
+			else {
+				verticesWithTexCoords.push_back(*componentIter);
+			}
+		}
+	}
+	else {
+		for (auto componentIter = vertsBegin; componentIter != vertsEnd; componentIter++) {
+			currentVertexComponent = ((currentVertexComponent + 1u) % 7u);
+			if (currentVertexComponent == 3) {
+				//Add the fourth position component (scale) to vector
+				verticesWithTexCoords.push_back(*componentIter);
+				//Add the random s texture coord to the vector
+				verticesWithTexCoords.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));
+				//Add the random t texture coord to the vector
+				verticesWithTexCoords.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));
+			}
+			else {
+				verticesWithTexCoords.push_back(*componentIter);
+			}
+		}
+	}
+	verticesWithTexCoords.swap(mVertices_);
+}
+
+
+void QuickObj::generateMissingNormals() {
+	fprintf(WRNLOG, "\nWarning! Generation of missing normal components from this QuickObj is not yet implemented!\n");
+	/* //The logic is here, but the implementation needs to be refactored.
+	glm::vec3 v0, v1, v2, computedNormal;
+
+	//Count the number of triangles for the object
+	size_t numberOfTriangles = ((*object)->mVertices_.size() / 18u);
+
+	//Loop through the object's data triangle by triangle
+	for (size_t i = 0u; i < numberOfTriangles; i++) {
+		auto triangleStart = ((*object)->mVertices_.begin() + (i * 18u));
+
+		v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));
+		v1 = glm::vec3(*(triangleStart + 6u), *(triangleStart + 7u), *(triangleStart + 8u));
+		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u));
+
+		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
+
+
+		for (size_t i = 0u; i < 3u; i++) {
+			sceneBuffer.push_back(objPos.x + *(triangleStart + (i * 6u)));         //x
+			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i * 6u) + 1u)));  //y
+			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i * 6u) + 2u)));  //z
+			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 3u)));             //w
+			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 4u)));             //s
+			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 5u)));             //t
+			sceneBuffer.push_back(computedNormal.x);
+			sceneBuffer.push_back(computedNormal.y);
+			sceneBuffer.push_back(computedNormal.z);
+		}
+	}
+	*/
+}
+
+
+
+void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t) {
+	fprintf(WRNLOG, "\nWarning! Generation of missing texture and normal components from this QuickObj is not yet implemented!\n");
+	/*
+	//Setup the function to generate the texture coordinates	
+	std::function<glm::vec2(void)> genTexCoord;
+	if (ASSIGN_TEXTURE_COORDS_RANDOMLY) {
+		genTexCoord = AssetLoadingDemo::generateRandomTexCoords;
+	}
+	else {
+		genTexCoord = AssetLoadingDemo::generateConstantTexCoords;
+	}
+
+	glm::vec2 uvCoord;
+	glm::vec3 v0, v1, v2, computedNormal;
+
+	//Count the number of triangles for the object
+	size_t numberOfTriangles = ((*object)->mVertices_.size() / 12u);
+
+	//Loop through the object's data triangle by triangle
+	for (size_t i = 0u; i < numberOfTriangles; i++) {
+		auto triangleStart = ((*object)->mVertices_.begin() + (i * 12u)); //triangleStart is type iterator for vector<float>
+
+		v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));
+		v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart + 6u));
+		v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u));
+
+		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
+
+		for (size_t i = 0u; i < 3u; i++) {
+			sceneBuffer.push_back(objPos.x + *(triangleStart + (i * 4u)));        //x
+			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i * 4u) + 1u)));  //y
+			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i * 4u) + 2u)));  //z
+			sceneBuffer.push_back(*(triangleStart + ((i * 4u) + 3u)));             //w
+			uvCoord = genTexCoord();  //Generate the uv Coords on the fly
+			sceneBuffer.push_back(uvCoord.s);                               //s
+			sceneBuffer.push_back(uvCoord.t);                               //t
+			sceneBuffer.push_back(computedNormal.x);
+			sceneBuffer.push_back(computedNormal.y);
+			sceneBuffer.push_back(computedNormal.z);
+		}
+	}
+	*/
 }

@@ -192,7 +192,7 @@ void AssetLoadingDemo::loadModels() {
 	float abstractShapeScale = 2.0f;
 
 	//Load some models
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads1.obj", blockThing_QuadsScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords

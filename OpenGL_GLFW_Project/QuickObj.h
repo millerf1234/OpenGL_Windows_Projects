@@ -18,7 +18,10 @@
 //just to get something working. No objects or groups will be marked, and only data 
 //already found in the file will be generated. No fancy functionality, just construct 
 //with a filepath and get the loaded mesh data from the object.
-//No material support either
+//No material support either (as of for now)
+//
+//This class is not safe! It can easily be put into an invalid state through improper use. 
+
 
 #pragma once
 
@@ -30,26 +33,32 @@
 #include "AsciiAsset.h"     //Used internally by class
 #include "Vertex.h"         //Used to store data
 
-
-static constexpr const size_t POSITION_INDEX = 0;
-static constexpr const size_t TEXTURE_COORD_INDEX = 1;
-static constexpr const size_t NORMAL_INDEX = 2;
-
-//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
-//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
-//parsing logic
-static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u; 
-static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
-static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
-static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+#include "MathFunctions.h"  //For random number generation
 
 
-
-class QuickObj {
+class QuickObj final{
 public:
+	//////////////////////////
+	////   Constructors   ////
+	//////////////////////////
+	//A filepath to an '.obj' file is required for object construction
 	QuickObj() = delete;
-	//Construction is loading of file
+	//Tries to parse and load the '.obj' resource file into this object's memory. Object data is loaded
+	//as-is, with scale being placed as the 'w' component to each loaded position. Use member functions 
+	//hasTexCoords() and hasNormals() to determine what was loaded from the file. Each loaded vertex will
+	//consist of 4 position components plus 2 texture components (if texture coordinates were part of the loaded 
+	//data) and 3 normal components (if normals were loaded). These values are all interlaced. 
 	QuickObj(std::string filepath, float scale = 1.0f);
+	//Tries to parse and load the '.obj' resource file into this object's memory. If the object is missing either normal and/or 
+	//texture-coordinate data, appropriate data will be loaded in their place. Normal's are computed on a triangle-by-triangle basis. 
+	//Texture coordinates can either be randomly assigned from within the closed interval [0.0, 1.0] or all assigned the same value as 
+	//determined by the parameters s and t. 
+	QuickObj(std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords = true, float s = 0.5f, float t = 0.5f);
+
+
+	//////////////////////////
+	////    Destructor    ////
+	//////////////////////////
 	~QuickObj();
 
 	QuickObj(const QuickObj&) = delete;
@@ -61,11 +70,20 @@ public:
 	bool hasTexCoords() const { return mHasTexCoords_; }
 	bool hasNormals() const { return mHasNormals_; }
 
-	//The vertices will be public information for fast/easy access. Quick and dirty
-	std::vector<float> mVertices_; //No draw elements or anything for now, only draw arrays
+	bool error() const { return mError_; }
+
+	//Returns the scale [the 'w' component of each vertice's position] of the model.
+	float getScale() const { return mScale_; }
+
+	//The vertices will be public information for fast/easy access. Quick and dirty.
+	//Note that vertices should not be modified by external code (unless you really know 
+	//what you are doing). The reason these are not encapsulated within the class is to 
+	//provide a quick way to access the data with a pointer for OpenGL's C API. 
+	std::vector<float> mVertices_; 
 	std::vector<float> mLineEndpoints_; 
 
 private:
+	bool mError_;
 	float mScale_; 
 	bool mHasTexCoords_, mHasNormals_;
 
@@ -96,9 +114,35 @@ private:
 		}
 	}
 
+	//Checks to make sure the number of data points in the vector of vertex data is divisible by
+	//the expected vertex size
+	inline bool verifyVertexComponents(size_t verticesSize, size_t expectedComponents) const {
+		return ((verticesSize % expectedComponents) == 0u);
+	}
+
+	/////////////////////////////////////////////////////////////////////
+	// Functions for missing component (normal/textCoord) generation 
+	/////////////////////////////////////////////////////////////////////
 	
+	//Call this function only after determining that either Normals and/or TexCoords are missing
+	void addMissingComponents(bool randomizeTextureCoords, float s, float t);
+	
+	//Helper function for generating random texture coordinates
+	static inline float generateRandomTexCoord() {
+		return (MathFunc::getRandomInRangef(0.0f, 1.0f));
+	}
+	
+	//Call this function only once it has been verified that 4-positions and 3-normals
+	//exist for each vertex in mVertices_.
+	void generateMissingTextureCoords(bool randomizeTextureCoords, float s, float t);
 
+	//Call this function only once it has been verified that 4-positions and 2-textureCoordinates
+	//exist for each vertex in mVertices_.
+	void generateMissingNormals();
 
+	//Call this function only once it has been verified that only 4-positions
+	//exist for each vertex in mVertices_.
+	void generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t);
 };
 
 #endif //QUICK_OBJ_H_
