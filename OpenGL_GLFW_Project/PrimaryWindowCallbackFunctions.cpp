@@ -8,14 +8,10 @@
 
 #include "CallbackEventStreamBuffer.h"
 
-#include <iostream>
-#include <string>
-
 namespace WindowCallbackInternal {
 
-	static std::string artificalDataRace = "String before any callback has modified it!\n";
-
 	void windowPositionCallback(GLFWwindow* window, int xPos, int yPos) {
+
 		fprintf(MSGLOG, "\nDetected that window position has changed!\n");
 		
 		//CallbackStreamBuffer * callbackBuffer = static_cast<CallbackStreamBuffer *>(glfwGetWindowUserPointer(window));
@@ -29,17 +25,7 @@ namespace WindowCallbackInternal {
 	}
 
 	void windowSizeCallback(GLFWwindow* window, int width, int height) {
-
-		std::cout << "\nWindow Size Callback function called with size parameters " << width << " x " << height << std::endl;
-		std::cout << artificalDataRace;
-		std::cout << "\nCallback function will now modify the string over 25 loop iterations...\n";
-		for (short i = 0; i < (short)25; i++) {
-			artificalDataRace = "window size callback function wuz here   " + std::to_string(i);
-			std::cout << artificalDataRace << std::endl;
-		}
-
-
-		//fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected window size update! New screen coordinates are %dx%d\n", width, height);
+		fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected window size update! New screen coordinates are %dx%d\n", width, height);
 		//OpenGL operates using pixels instead of screen coordinates, which means there is nothing else to do here. GL_Viewport will be updated with framebufferSizeCallback()
 
 
@@ -53,16 +39,7 @@ namespace WindowCallbackInternal {
 
 	void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
-		std::cout << "\nFramebuffer Size Callback function called with size parameters " << width << " x " << height << std::endl;
-		std::cout << artificalDataRace;
-		std::cout << "\nCallback function will now modify the string over 25 loop iterations...\n";
-		for (short i = 0; i < (short)25; i++) {
-			artificalDataRace = "Frame buffa size callback function wuz here   " + std::to_string(i);
-			std::cout << artificalDataRace << std::endl;
-		}
-
-
-		//fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected framebuffer size update! New fb is %dx%d pixels\n", width, height);
+		fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected framebuffer size update! New fb is %dx%d pixels\n", width, height);
 		glViewport(0, 0, width, height);
 
 		//CallbackStreamBuffer * callbackBuffer = static_cast<CallbackStreamBuffer *>(glfwGetWindowUserPointer(window));
