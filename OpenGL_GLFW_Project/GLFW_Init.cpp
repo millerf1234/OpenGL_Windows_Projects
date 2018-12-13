@@ -82,6 +82,10 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
 	}
 	
+	fprintf(MSGLOG, "\t  Setting Context Robustness / Reset Strategy:  "); 
+	glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, GLFW_LOSE_CONTEXT_ON_RESET); //Can be set to either GLFW_NO_RESET_NOTIFICATION or GLFW_LOSE_CONTEXT_ON_RESET
+	fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
+
 
 	fprintf(MSGLOG, "\t  FORWARD COMPATIBILITY: ");
 	if (forwardCompatible) {
@@ -103,7 +107,6 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 		fprintf(MSGLOG, "FALSE\n");
 	}
-	
 
 	fprintf(MSGLOG, "\t  WINDOW RESIZEABLE: ");
 	if (this->resizeable) {

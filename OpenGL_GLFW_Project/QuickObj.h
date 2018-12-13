@@ -1,3 +1,11 @@
+//  DISCLAIMER:    This class exists a few steps below the usual quality and thought I usually expect from my code. 
+//                 There are quite a few poor design choices I made in the name of getting this up and running quickly [hence the name].
+//                 There are parts of this class that are not fully implemented. Also, the algorithm it uses is slow and performs multiple 
+//                 unnecessary copies. A better model-loading class system is in the pipeline once some more urgent pieces are put into place.
+//                 Ideally one day there will be a class that loads models, which is run through a class that can load multiple models into the same
+//                 buffer, that is then sent to the GPU using a better method than the current old-school glBuuferData()  [Preferably something
+//                 involving mapping a buffer]
+//
 //Update: So it turns out that (as of early November 2018) the class WavefrontObj in
 //        the file "WavefrontObj.h" is only partially implemented and isn't yet 
 //        in a usable state. This file sets up a simpler ObjLoader, that doesn't
@@ -34,6 +42,7 @@
 #include "Vertex.h"         //Used to store data
 
 #include "MathFunctions.h"  //For random number generation
+#include "MeshFunctions.h"  //For generating normals 
 
 
 class QuickObj final{
@@ -126,11 +135,6 @@ private:
 	
 	//Call this function only after determining that either Normals and/or TexCoords are missing
 	void addMissingComponents(bool randomizeTextureCoords, float s, float t);
-	
-	//Helper function for generating random texture coordinates
-	static inline float generateRandomTexCoord() {
-		return (MathFunc::getRandomInRangef(0.0f, 1.0f));
-	}
 	
 	//Call this function only once it has been verified that 4-positions and 3-normals
 	//exist for each vertex in mVertices_.

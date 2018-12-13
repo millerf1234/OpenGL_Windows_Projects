@@ -186,14 +186,14 @@ void AssetLoadingDemo::loadModels() {
 
 	//Initial Scale values for the objects
 	float blockThing_QuadsScale = 2.2f;
-	float beveledCubeScale = 5.0f;
+	float beveledCubeScale = 0.36f;
 	float blockShipScale = 4.5f;
 	float subdivisionCubeScale = 4.9f;
 	float abstractShapeScale = 2.0f;
 
 	//Load some models
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads1.obj", blockThing_QuadsScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
@@ -277,6 +277,15 @@ void AssetLoadingDemo::renderLoop() {
 		glfwSwapBuffers(window); //Swap the buffer to present image to monitor
 
 		glfwPollEvents();
+
+		 //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
+		if (checkForContextReset()) {
+			fprintf(MSGLOG, "\nContext Reset Required!\n");
+			fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
+			std::cin.get();
+			glfwSetWindowShouldClose(window, GLFW_TRUE); //For now just close the window
+		}
+		
 
 		frameNumber++; //Increment the frame counter
 		prepareGLContextForNextFrame(); 
@@ -493,10 +502,10 @@ void AssetLoadingDemo::rotate() {
 		(glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
 
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-			pitch += 0.1f;
+			pitch += 0.05f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			pitch -= 0.1f;
+			pitch -= 0.05f;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
@@ -506,25 +515,25 @@ void AssetLoadingDemo::rotate() {
 			zoom -= 0.095f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			roll += 0.51f;
+			roll += 0.3f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			roll -= 0.51f;
+			roll -= 0.3f;
 		}
 	}
 	else {
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-			head += 0.1f;
+			head += 0.05f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			head -= 0.1f;
+			head -= 0.05f;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			roll += 0.1f;
+			roll += 0.05f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			roll -= 0.1f;
+			roll -= 0.05f;
 		}
 
 

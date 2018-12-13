@@ -8,22 +8,28 @@
 
 #include "QuickObj.h"
 
-static constexpr const size_t POSITION_INDEX = 0u;
-static constexpr const size_t TEXTURE_COORD_INDEX = 1u;
-static constexpr const size_t NORMAL_INDEX = 2u;
+namespace { //An anonymous namespace is used to prevent these constants from polluting the global namespace
+	static constexpr const size_t POSITION_INDEX = 0u;
+	static constexpr const size_t TEXTURE_COORD_INDEX = 1u;
+	static constexpr const size_t NORMAL_INDEX = 2u;
 
-static constexpr const size_t POSITION_COMPONENTS = 4u;
-static constexpr const size_t TEXTURE_COORDINATE_COMPONENTS = 2u;
-static constexpr const size_t NORMAL_COMPONENTS = 3u;
+	static constexpr const size_t POSITION_COMPONENTS = 4u;
+	static constexpr const size_t TEXTURE_COORDINATE_COMPONENTS = 2u;
+	static constexpr const size_t NORMAL_COMPONENTS = 3u;
+	static constexpr const size_t POSITION_TEXCOORD_VERTEX_SIZE = POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS;
+	static constexpr const size_t POSITION_NORMAL_VERTEX_SIZE = POSITION_COMPONENTS + NORMAL_COMPONENTS;
+	static constexpr const size_t POSITION_TEXCOORD_NORMAL_VERTEX_SIZE = POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS + NORMAL_COMPONENTS;
 
-//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
-//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
-//parsing logic
-static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u;
-static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
-static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
-static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+	static constexpr const size_t VERTICES_IN_A_TRIANGLE = 3u; 
 
+	//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
+	//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
+	//parsing logic
+	static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u;
+	static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
+	static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
+	static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+}
 
 
 
@@ -645,7 +651,7 @@ void QuickObj::constructVerticesFromParsedData() {
 //This function handles parsing vertex data by inserting the numerical values it reads into a 'Vertex' object 
 //and then adding that object to the end of 
 void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts) {
-	float values[3];
+	float values[3u];
 	int vertComponent = 0;
 	const char * strIter = line;
 
@@ -705,7 +711,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 			mError_ = true;
 			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
-				"vertex size (6-components per vertex [4 position + 2 tex])!\n", mFile_, loadedDataSize);
+				"vertex size (6-components per vertex [4 position + 2 tex])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
 		}
 		generateMissingTextureCoords(randomizeTextureCoords, s, t);
@@ -715,7 +721,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 			mError_ = true;
 			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
-				"vertex size (7-components expected per vertex [4 position + 3 normal])!\n", mFile_, loadedDataSize);
+				"vertex size (7-components expected per vertex [4 position + 3 normal])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
 		}
 		generateMissingNormals();
@@ -725,13 +731,13 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 			mError_ = true;
 			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
-				"vertex size (4-components expected per vertex [4 position])!\n", mFile_, loadedDataSize);
+				"vertex size (4-components expected per vertex [4 position])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
 		}
 		generateMissingTextureCoordsAndNormals(randomizeTextureCoords, s, t);
 	}
 
-	fprintf(MSGLOG, "Missing data was generated for the model loaded from file: %s\n", mFile_);
+	fprintf(MSGLOG, "Missing data was generated for the model loaded from file: %s\n", mFile_->getFilepath().c_str());
 	fprintf(MSGLOG, "   [%u values were loaded from file, %u values were generated, brining total size to %u]\n",
 		loadedDataSize, mVertices_.size() - loadedDataSize, mVertices_.size());
 }
@@ -742,14 +748,14 @@ void QuickObj::generateMissingTextureCoords(bool randomizeTextureCoords, float s
 
 	int currentVertexComponent = -1; //Will be incremented to 0 in first iteration
 	std::vector<float> verticesWithTexCoords; //Data is to be filled into this vector which will then swap with mVertices_
-	verticesWithTexCoords.reserve((mVertices_.size() / 7u) * 9u); //Reserve the required space 
+	verticesWithTexCoords.reserve( (mVertices_.size()/POSITION_TEXCOORD_VERTEX_SIZE) * POSITION_TEXCOORD_NORMAL_VERTEX_SIZE); //Reserve the required space 
 
 	auto vertsEnd = mVertices_.end(); //Iterator to end of vertices
 	auto vertsBegin = mVertices_.begin(); //Iterator to start of vertices
 	
 	if (!randomizeTextureCoords) {
 		for (auto componentIter = vertsBegin; componentIter != vertsEnd; componentIter++) {
-			currentVertexComponent = ((currentVertexComponent + 1u) % 7u);
+			currentVertexComponent = ((currentVertexComponent + 1u) % POSITION_NORMAL_VERTEX_SIZE);
 			if (currentVertexComponent == 3) {
 				//Add the fourth position component (scale) to vector
 				verticesWithTexCoords.push_back(*componentIter);
@@ -765,7 +771,7 @@ void QuickObj::generateMissingTextureCoords(bool randomizeTextureCoords, float s
 	}
 	else {
 		for (auto componentIter = vertsBegin; componentIter != vertsEnd; componentIter++) {
-			currentVertexComponent = ((currentVertexComponent + 1u) % 7u);
+			currentVertexComponent = ((currentVertexComponent + 1u) % POSITION_NORMAL_VERTEX_SIZE);
 			if (currentVertexComponent == 3) {
 				//Add the fourth position component (scale) to vector
 				verticesWithTexCoords.push_back(*componentIter);
@@ -780,85 +786,134 @@ void QuickObj::generateMissingTextureCoords(bool randomizeTextureCoords, float s
 		}
 	}
 	verticesWithTexCoords.swap(mVertices_);
+	mHasTexCoords_ = true;
 }
 
 
 void QuickObj::generateMissingNormals() {
-	fprintf(WRNLOG, "\nWarning! Generation of missing normal components from this QuickObj is not yet implemented!\n");
-	/* //The logic is here, but the implementation needs to be refactored.
+	if (!verifyVertexComponents(mVertices_.size(), POSITION_TEXCOORD_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE)) {
+		fprintf(ERRLOG, "\nError! Unable to generate triangle normal's for model from file: \"%s\"!\n"
+			"The data was loaded fine (positions and textures) but the number of values loaded does not match\n"
+			"the number needed for a whole number of triangles (%u values were loaded,\n"
+			"this number must be divisible by 18 for proper normal generation!)\n\n", mFile_->getFilepath().c_str(), mVertices_.size());
+		mError_ = true;
+		return;
+	}
+
 	glm::vec3 v0, v1, v2, computedNormal;
 
+	std::vector<float> verticesWithNormals;
+	verticesWithNormals.reserve((mVertices_.size() / POSITION_TEXCOORD_VERTEX_SIZE) * POSITION_TEXCOORD_NORMAL_VERTEX_SIZE); //Reserve the required space 
+
+
 	//Count the number of triangles for the object
-	size_t numberOfTriangles = ((*object)->mVertices_.size() / 18u);
+	size_t numberOfTriangles = (mVertices_.size() / (POSITION_TEXCOORD_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE));
 
 	//Loop through the object's data triangle by triangle
 	for (size_t i = 0u; i < numberOfTriangles; i++) {
-		auto triangleStart = ((*object)->mVertices_.begin() + (i * 18u));
+		auto triangleStart = (mVertices_.begin() + (i * (POSITION_TEXCOORD_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE)));
 
-		v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));
-		v1 = glm::vec3(*(triangleStart + 6u), *(triangleStart + 7u), *(triangleStart + 8u));
-		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u));
+		v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));  //skip w, s, t (located at indices 3-5)
+		v1 = glm::vec3(*(triangleStart + 6u), *(triangleStart + 7u), *(triangleStart + 8u)); //skip w, s, t (located at indices 9-11)
+		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u)); //skip w, s, t (located at indices 15-17)
 
 		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
-
-		for (size_t i = 0u; i < 3u; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i * 6u)));         //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i * 6u) + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i * 6u) + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 3u)));             //w
-			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 4u)));             //s
-			sceneBuffer.push_back(*(triangleStart + ((i * 6u) + 5u)));             //t
-			sceneBuffer.push_back(computedNormal.x);
-			sceneBuffer.push_back(computedNormal.y);
-			sceneBuffer.push_back(computedNormal.z);
+		for (size_t i = 0u; i < VERTICES_IN_A_TRIANGLE; i++) { //For each of the 3 vertices of the triangle
+			//Copy over the existing Position and TexCoord data  
+			verticesWithNormals.push_back(*(triangleStart + (i *  POSITION_TEXCOORD_VERTEX_SIZE)));            //x
+			verticesWithNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 1u)));     //y
+			verticesWithNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 2u)));     //z
+			verticesWithNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
+			verticesWithNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 4u)));     //s
+			verticesWithNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 5u)));     //t
+			//Add the 3 components of the computed normal		
+			verticesWithNormals.push_back(computedNormal.x);       
+			verticesWithNormals.push_back(computedNormal.y);
+			verticesWithNormals.push_back(computedNormal.z);
 		}
 	}
-	*/
+
+	verticesWithNormals.swap(mVertices_); 
+	mHasNormals_ = true;
 }
 
 
-
 void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t) {
-	fprintf(WRNLOG, "\nWarning! Generation of missing texture and normal components from this QuickObj is not yet implemented!\n");
-	/*
-	//Setup the function to generate the texture coordinates	
-	std::function<glm::vec2(void)> genTexCoord;
-	if (ASSIGN_TEXTURE_COORDS_RANDOMLY) {
-		genTexCoord = AssetLoadingDemo::generateRandomTexCoords;
-	}
-	else {
-		genTexCoord = AssetLoadingDemo::generateConstantTexCoords;
+	if (!verifyVertexComponents(mVertices_.size(), POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)) {
+		fprintf(ERRLOG, "\nError! Unable to generate triangle normal's for model from file: \"%s\"!\n"
+			"The data was loaded fine (positions and textures) but the number of values loaded does not match\n"
+			"the number needed for a whole number of triangles (%u values were loaded,\n"
+			"this number must be divisible by 18 for proper normal generation!)\n\n", mFile_->getFilepath().c_str(), mVertices_.size());
+		mError_ = true;
+		return;
 	}
 
-	glm::vec2 uvCoord;
+
 	glm::vec3 v0, v1, v2, computedNormal;
 
-	//Count the number of triangles for the object
-	size_t numberOfTriangles = ((*object)->mVertices_.size() / 12u);
+	std::vector<float> verticesWithTexCoordAndNormals;
+	verticesWithTexCoordAndNormals.reserve((mVertices_.size() / POSITION_COMPONENTS) * VERTICES_IN_A_TRIANGLE); //Reserve the required space 
 
-	//Loop through the object's data triangle by triangle
-	for (size_t i = 0u; i < numberOfTriangles; i++) {
-		auto triangleStart = ((*object)->mVertices_.begin() + (i * 12u)); //triangleStart is type iterator for vector<float>
 
-		v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));
-		v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart + 6u));
-		v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u));
+    //Count the number of triangles for the object              //4 position-components per vertex * 3 Vertices per triangle => 12 position-components per triangle
+	size_t numberOfTriangles = (mVertices_.size() / (POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)); 
 
-		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
+	if (!randomizeTextureCoords) {
+		//Loop through the object's data triangle by triangle
+		for (size_t i = 0u; i < numberOfTriangles; i++) {
+			auto triangleStart = (mVertices_.begin() + (i * (POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)));
 
-		for (size_t i = 0u; i < 3u; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i * 4u)));        //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i * 4u) + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i * 4u) + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + ((i * 4u) + 3u)));             //w
-			uvCoord = genTexCoord();  //Generate the uv Coords on the fly
-			sceneBuffer.push_back(uvCoord.s);                               //s
-			sceneBuffer.push_back(uvCoord.t);                               //t
-			sceneBuffer.push_back(computedNormal.x);
-			sceneBuffer.push_back(computedNormal.y);
-			sceneBuffer.push_back(computedNormal.z);
+			v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));  //skip w (located at index 3)
+			v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart + 6u)); //skip w (located at index 7)
+			v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u)); //skip w (located at index 11)
+
+			computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
+			for (size_t i = 0u; i < VERTICES_IN_A_TRIANGLE; i++) { //For each of the 3 vertices of the triangle
+				//Copy over the existing Position data 
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (i *  POSITION_TEXCOORD_VERTEX_SIZE)));            //x
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 1u)));     //y
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 2u)));     //z
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
+				//Add the 2 texture coordinates
+				verticesWithTexCoordAndNormals.push_back(s);                                                                  //s
+				verticesWithTexCoordAndNormals.push_back(t);                                                                  //t
+				//Add the 3-components of the computed normal
+				verticesWithTexCoordAndNormals.push_back(computedNormal.x);                                                   //normal.x
+				verticesWithTexCoordAndNormals.push_back(computedNormal.y);                                                   //normal.y
+				verticesWithTexCoordAndNormals.push_back(computedNormal.z);                                                   //normal.z
+			}
+		}
+	} 
+
+	else {  //Do the same as above, except instead generate random texture coordinates
+		//Loop through the object's data triangle by triangle
+		for (size_t i = 0u; i < numberOfTriangles; i++) {
+			auto triangleStart = (mVertices_.begin() + (i * (POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)));
+
+			v0 = glm::vec3(*(triangleStart), *(triangleStart + 1u), *(triangleStart + 2u));  //skip w (located at index 3)
+			v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart + 6u)); //skip w (located at index 7)
+			v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u)); //skip w (located at index 11)
+
+			computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
+			for (size_t i = 0u; i < VERTICES_IN_A_TRIANGLE; i++) { //For each of the 3 vertices of the triangle
+			    //Copy over the existing Position data 
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (i *  POSITION_TEXCOORD_VERTEX_SIZE)));            //x
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 1u)));     //y
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 2u)));     //z
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
+				//Generate random values for then add the 2 texture coordinates
+				verticesWithTexCoordAndNormals.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));                            //Randomized s
+				verticesWithTexCoordAndNormals.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));                            //Randomized t
+				//Add the 3-components of the computed normal
+				verticesWithTexCoordAndNormals.push_back(computedNormal.x);                                                   //normal.x
+				verticesWithTexCoordAndNormals.push_back(computedNormal.y);                                                   //normal.y
+				verticesWithTexCoordAndNormals.push_back(computedNormal.z);                                                   //normal.z
+			}
 		}
 	}
-	*/
+
+	verticesWithTexCoordAndNormals.swap(mVertices_);
+	mHasNormals_ = true;
+	mHasTexCoords_ = true;
 }

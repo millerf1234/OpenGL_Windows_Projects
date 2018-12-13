@@ -182,6 +182,7 @@
   <ItemGroup>
     <Library Include="freetype.lib" />
     <Library Include="glfw3dll.lib" />
+    <Library Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.lib" />
     <Library Include="OpenAL\OpenAL32.lib" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +191,9 @@
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="CallbackEventStreamBuffer.h" />
+    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\defines.h" />
+    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\GFSDK_Aftermath.h" />
+    <ClInclude Include="WindowCallbackEvent.h" />
     <ClInclude Include="WindowInputCallbackEvent.h" />
     <ClInclude Include="WindowStateChangeCallbackEvent.h" />
     <ClInclude Include="CompiledShader.h" />
@@ -335,6 +339,7 @@
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
+    <None Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.dll" />
     <None Include="obj\2DTexturedQuadPlane.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\BeveledCube.mtl" />

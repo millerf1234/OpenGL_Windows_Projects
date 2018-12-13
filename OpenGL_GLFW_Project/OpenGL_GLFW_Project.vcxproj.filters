@@ -295,6 +295,12 @@
     <Filter Include="SetupAndConfiguration\GLFW\CallbackStreamBuffer">
       <UniqueIdentifier>{b7c57aec-f24b-4cfa-9866-57f10dffbd7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party\Nvidia_Aftermath_GPU_DEBUGGER">
+      <UniqueIdentifier>{e908ff7c-5a1f-4e79-8615-a7c575b6055b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt">
+      <UniqueIdentifier>{8b64c6bb-e291-4832-8099-5b14b08c1363}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -412,7 +418,7 @@
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
     </ClCompile>
     <ClCompile Include="CallbackEventStreamBuffer.cpp">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +430,9 @@
     </Library>
     <Library Include="OpenAL\OpenAL32.lib">
       <Filter>Third Party\OpenAL</Filter>
+    </Library>
+    <Library Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.lib">
+      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
@@ -838,13 +847,22 @@
     <ClInclude Include="PrimaryWindowState.h">
       <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
     </ClInclude>
-    <ClInclude Include="WindowStateChangeCallbackEvent.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\defines.h">
+      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </ClInclude>
-    <ClInclude Include="WindowInputCallbackEvent.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\GFSDK_Aftermath.h">
+      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </ClInclude>
     <ClInclude Include="CallbackEventStreamBuffer.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInputCallbackEvent.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowStateChangeCallbackEvent.h">
+      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowCallbackEvent.h">
       <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1016,6 +1034,9 @@
     </None>
     <None Include="AssetLoadingDemo_CoolEffect.frag">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
+    </None>
+    <None Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.dll">
+      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

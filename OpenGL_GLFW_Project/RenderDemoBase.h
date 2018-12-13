@@ -53,7 +53,7 @@
 #include "LoggingMessageTargets.h"  //provides MSGLOG, WRNLOG and ERRLOG targets for fprintf
 #include "ProjectSetup.h"           //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
-//#include "MissingAsset.h"           //For assets that are missing
+//#include "MissingAsset.h"         //For assets that are missing
 
 enum class PIPELINE_PRIMATIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, LINE_STRIP };  //Technically LINE and LINE_STRIP are not triangles
 
@@ -90,9 +90,11 @@ public:
 	//reset erases all state from the GPU, it is up to all applications that were using the GPU to recreate all
 	//of their lost data. 
 	//In the event a context reset occurs, all rendering will cease and all assets that were stored within the 
-	//GPU's memory are lost. None of the OpenGL functions will work properly except for the functions
+	//GPU's memory are lost. None of the OpenGL functions will work properly except for the functions ... (to be further researched...)
 	//  http://discourse.glfw.org/t/glfw-context-robustness-window-attribute/643
-	bool checkForContextReset() { return false; }
+	//
+	//This function should be called around once a frame.
+	bool checkForContextReset();
 
 
 	/*  This whole part is unnecessary
