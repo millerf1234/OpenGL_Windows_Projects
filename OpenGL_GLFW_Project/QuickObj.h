@@ -133,7 +133,7 @@ private:
 	// Functions for missing component (normal/textCoord) generation 
 	/////////////////////////////////////////////////////////////////////
 	
-	//Call this function only after determining that either Normals and/or TexCoords are missing
+	//Will determine which components are missing and generate them
 	void addMissingComponents(bool randomizeTextureCoords, float s, float t);
 	
 	//Call this function only once it has been verified that 4-positions and 3-normals

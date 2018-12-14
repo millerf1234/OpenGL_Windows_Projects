@@ -14,17 +14,6 @@
 //									    (ii)  Loading of Assets (including shader compilation)
 //										(iii) Run Demo  
 //					
-//
-// UPDATES/Changes:    December 3, 2018  -- I have noticed that there exist several functions which are 
-//                                          identical that I have been having the derived RenderDemo 
-//                                          classes implement themselves, but I am now thinking I can
-//                                          just move those definitions to this class to be shared by 
-//                                          all. These functions will be made virtual, which allows for
-//                                          them to be overriden by derived classes still if needed. A
-//                                          side effect of this is that... Hmm Actually ignore/delete this
-//                                          update because I still have not made up my mind...
-//                                         
-//					
 //			
 //Notes:			-All Render Projects inheriting from this class must implement the two required
 //					 functions. It is meant to be assumed that the calling application will construct 

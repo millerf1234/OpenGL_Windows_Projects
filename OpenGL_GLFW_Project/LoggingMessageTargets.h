@@ -10,6 +10,8 @@
 #ifndef LOGGING_MESSAGE_TARGET_CONFIGURATION_H_
 #define LOGGING_MESSAGE_TARGET_CONFIGURATION_H_
 
+#include <cstdio>  //Needed for fprintf
+
 //The Message log is the target for Application messages which occur
 //over the course of normal/expected program execution. 
 #ifndef MSGLOG

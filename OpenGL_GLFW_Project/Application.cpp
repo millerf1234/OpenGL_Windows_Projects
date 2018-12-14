@@ -17,11 +17,11 @@ void Application::initialize() {
 		return;
 	}
 	if ( !loadGraphicsLanguageFunctions() ) {
-		fprintf(ERRLOG, "\nThe application encountered an error while loading the grpahics language!\n");
+		fprintf(ERRLOG, "\nThe application encountered an error while loading the graphics language!\n");
 		return;
 	}
 
-	configureGraphicsContextDebugCallbackFunction(); //The behavior of context debugging is set in "ProjectParameters.h"
+	configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in "ProjectParameters.h"
 	setInitialGLState();
 
 	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
@@ -117,7 +117,7 @@ bool Application::loadGraphicsLanguageFunctions() {
 	return true;
 }
 
-void Application::configureGraphicsContextDebugCallbackFunction() const {
+void Application::configureGraphicsContextDebugCallbackFunctions() const {
 	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
 	if (USE_DEBUG) {   //set in ProjectParameters.h
 		fprintf(MSGLOG, "Enabled\n");

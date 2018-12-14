@@ -700,10 +700,13 @@ void QuickObj::loadLineIntoVertex(const char * line, std::vector<Vertex>& verts)
 	}
 }
 
-//This function expects that it has been confirmed that at least one of Normals or TextureCoords are missing from the loaded
-//data. Calling this function on an instance of this object that doesn't have any missing data could cause odd behavior.
+
 void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float t) {
 	
+	if (mHasTexCoords_ && mHasNormals_) {
+		return; //There is nothing missing, so return
+	}
+
 	size_t loadedDataSize = mVertices_.size(); //Used to validate loaded data to prevent issues when generating new data
 	
 	if (mHasTexCoords_) {
@@ -714,7 +717,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 				"vertex size (6-components per vertex [4 position + 2 tex])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
 		}
-		generateMissingTextureCoords(randomizeTextureCoords, s, t);
+		generateMissingNormals();
 	}
 	else if (mHasNormals_) {
 		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS + NORMAL_COMPONENTS)) {
@@ -724,7 +727,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 				"vertex size (7-components expected per vertex [4 position + 3 normal])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
 		}
-		generateMissingNormals();
+		generateMissingTextureCoords(randomizeTextureCoords, s, t);
 	}
 	else { //File was missing both normals and texture components
 		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS)) {

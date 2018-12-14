@@ -7,6 +7,7 @@
 
 #include "MeshFunctions.h"
 
+#include "LoggingMessageTargets.h"
 #include "FloatingPointTolerance.h"
 
 namespace MeshFunc {

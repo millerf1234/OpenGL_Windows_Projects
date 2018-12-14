@@ -18,17 +18,7 @@
 
 
 
-#define USE_DEBUG_ 
-#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_  //Defining this will force synchnization between the graphics context and the app, which will affect performance but improve debugging 
 
-
-static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
-
-static constexpr const bool USE_FULLSCREEN = false;
-
-static constexpr const bool USE_VSYNC = true;
-
-static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 
 

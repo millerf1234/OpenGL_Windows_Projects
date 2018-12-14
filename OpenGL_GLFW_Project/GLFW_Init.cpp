@@ -22,7 +22,6 @@ GLFW_Init::GLFW_Init() {
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
-	windowAttachment = nullptr;
 	decoratedBorder = resizeable = forwardCompatible =  true;
 	contextVersionMajor = DEFAULT_OPENGL_VERSION_MAJOR;
 	contextVersionMinor = DEFAULT_OPENGL_VERSION_MINOR; 
@@ -164,7 +163,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 			fprintf(MSGLOG, "%s\nOpening Window...\n", displayInfoString.str().c_str());
 
-			mWindow = glfwCreateWindow(width, height, NAME_OF_GAME, monitors[defaultMonitor], nullptr);
+			mWindow = glfwCreateWindow(width, height, NAME_OF_APPLICATION, monitors[defaultMonitor], nullptr);
 
 			if (mWindow) {
 				fprintf(MSGLOG, "Window Successfully Created!\n\n");
@@ -187,7 +186,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 		//	std::cout << "Window Context is ready to open on this Display" << std::endl;
 
-		//	this->mWindow = glfwCreateWindow(this->width, this->height, NAME_OF_GAME,
+		//	this->mWindow = glfwCreateWindow(this->width, this->height, NAME_OF_APPLICATION,
 		//		monitors[1], nullptr);
 		//}
 		////If all that fails, open on the primary display
@@ -201,16 +200,16 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 		//	std::cout << "Window Context is ready to open on this Display" << std::endl;
 
-		//	this->mWindow = glfwCreateWindow(this->width, this->height, NAME_OF_GAME,
+		//	this->mWindow = glfwCreateWindow(this->width, this->height, NAME_OF_APPLICATION,
 		//		glfwGetPrimaryMonitor(), nullptr);
 		//}
 	}
 	else { //Open windowed
 		fprintf(MSGLOG, "\nWindow Context set to open in windowed mode...\n\nOpening Window\n");
 		//(If not on a 4k monitor, then this resolution works fine. However with 4k, this is tiny.
-		//mWindow = glfwCreateWindow(1670, 960, NAME_OF_GAME, nullptr, nullptr); //Open as window
+		//mWindow = glfwCreateWindow(1670, 960, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
 		//So if using a 4k monitor, then do something more like:
-		mWindow = glfwCreateWindow(3600, 1800, NAME_OF_GAME, nullptr, nullptr); //Open as window
+		mWindow = glfwCreateWindow(3600, 1800, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
 		defaultMonitor = 0;
 		if (mWindow) {
 			glfwSetWindowMonitor(mWindow, NULL, 30, 50, 3600, 1800, GLFW_DONT_CARE);
@@ -239,8 +238,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 
 void GLFW_Init::specifyWindowCallbackFunctions() {
 	if (mWindow) {
-		windowAttachment = std::make_unique<WindowCallbackInternal::CallbackStreamBuffer>();
-		setWindowUserPointer(static_cast<void *>(windowAttachment.get()));
+		
 
 		glfwSetWindowSizeCallback(mWindow, WindowCallbackInternal::windowSizeCallback);
 		glfwSetFramebufferSizeCallback(mWindow, WindowCallbackInternal::framebufferSizeCallback);

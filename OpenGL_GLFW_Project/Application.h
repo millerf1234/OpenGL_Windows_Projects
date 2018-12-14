@@ -1,7 +1,8 @@
 //File:                       Application.h
 //Class:                      Application
 //
-//Description:                The class 'Application' exists at the very top of the program and is responsible
+//Description (out-of-date):
+//                           The class 'Application' exists at the very top of the program and is responsible
 //                            for first performing high-level initialization and then providing an environment for 
 //                            individual 'RenderDemos' to operate in. More specifically, this class operates in
 //                            two phases. The first phase occurs when the constructor for 'Application' is called. In
@@ -34,12 +35,22 @@
 #include <fstream>  //Gotta have that fstream
 
 #include "ProjectConstants.h"
-#include "ProjectParameters.h"
+#include "ApplicationConstantSettings.h"
 #include "GLFW_Init.h"
 
 #include "AssetLoadingDemo.h"
 #include "LightsourceTestDemo.h"
 #include "TeapotExplosion.h"
+
+
+//static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
+//
+//static constexpr const bool USE_FULLSCREEN = false;
+//
+//static constexpr const bool USE_VSYNC = true;
+//
+//static constexpr int DEFAULT_AA_SAMPLES = 8;
+
 
 
 class Application final {
@@ -58,7 +69,7 @@ private:
 
 	bool setupGLFW(); //Loads the GLFW library
 	bool loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
-	void configureGraphicsContextDebugCallbackFunction() const; //The callback function is provided by Application and is found in its own header file 
+	void configureGraphicsContextDebugCallbackFunctions() const; //The callback function is provided by Application and is found in its own header file 
 	void setInitialGLState();
 
 	void checkMSAA() const; //Prints MSAA config to MSGLOG

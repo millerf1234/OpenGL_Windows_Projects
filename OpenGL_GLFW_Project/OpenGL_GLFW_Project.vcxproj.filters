@@ -28,9 +28,6 @@
     <Filter Include="SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\Parameters">
-      <UniqueIdentifier>{bfee94b6-d826-4f00-b9f3-bc011d33faf1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
@@ -157,9 +154,6 @@
     <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
       <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\Filepaths">
-      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
     </Filter>
@@ -271,35 +265,65 @@
     <Filter Include="Source Files\Utility\UI">
       <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW">
-      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\Initialization">
-      <UniqueIdentifier>{4549d577-1316-4a69-aae3-6740049d372f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
       <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
       <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow">
-      <UniqueIdentifier>{5ee53a2a-ac30-4ad0-ba6f-8273ca5e5c5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\WindowCurserState">
-      <UniqueIdentifier>{8725f13c-f32a-4bff-bf42-4f095fafe293}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
-      <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\CallbackStreamBuffer">
-      <UniqueIdentifier>{b7c57aec-f24b-4cfa-9866-57f10dffbd7b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party\Nvidia_Aftermath_GPU_DEBUGGER">
       <UniqueIdentifier>{e908ff7c-5a1f-4e79-8615-a7c575b6055b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt">
-      <UniqueIdentifier>{8b64c6bb-e291-4832-8099-5b14b08c1363}</UniqueIdentifier>
+    <Filter Include="SetupAndConfiguration\ApplicationConstantSettings">
+      <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SetupAndConfiguration\FilepathsToAssetDirectories">
+      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework">
+      <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1">
+      <UniqueIdentifier>{7c7e5221-ea34-4c73-9b59-b6ed1af3fdf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1\Initialization">
+      <UniqueIdentifier>{4549d577-1316-4a69-aae3-6740049d372f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1\WindowSetup">
+      <UniqueIdentifier>{6af02a73-df9d-42ab-a9d0-719fe7920fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1\WindowCurserState">
+      <UniqueIdentifier>{8725f13c-f32a-4bff-bf42-4f095fafe293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow">
+      <UniqueIdentifier>{5ee53a2a-ac30-4ad0-ba6f-8273ca5e5c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
+      <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2">
+      <UniqueIdentifier>{2b4199fa-3c19-4a70-bd7f-e97d113425a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions">
+      <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorFunction">
+      <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents">
+      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor">
+      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window">
+      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context">
+      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode">
+      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -406,19 +430,34 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClCompile>
     <ClCompile Include="GLFW_Init.cpp">
-      <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
     </ClCompile>
     <ClCompile Include="WindowCurserState.cpp">
-      <Filter>SetupAndConfiguration\GLFW\WindowCurserState</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowCurserState</Filter>
     </ClCompile>
     <ClCompile Include="PrimaryWindowState.cpp">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow</Filter>
     </ClCompile>
     <ClCompile Include="PrimaryWindowCallbackFunctions.cpp">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
     </ClCompile>
-    <ClCompile Include="CallbackEventStreamBuffer.cpp">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    <ClCompile Include="PrimaryRenderWindow.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLanguageFrameworkWrapper.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLanguageFrameworkContext.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLanguageFrameworkMonitor.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoMode.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,9 +718,6 @@
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectParameters.h">
-      <Filter>SetupAndConfiguration\Parameters</Filter>
-    </ClInclude>
     <ClInclude Include="WavefrontObj.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
     </ClInclude>
@@ -812,7 +848,7 @@
       <Filter>Source Files\EntityComponents\Phong Shading Parameters</Filter>
     </ClInclude>
     <ClInclude Include="RelativeFilepathsToResources.h">
-      <Filter>SetupAndConfiguration\Filepaths</Filter>
+      <Filter>SetupAndConfiguration\FilepathsToAssetDirectories</Filter>
     </ClInclude>
     <ClInclude Include="QuickObj.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
@@ -836,16 +872,16 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_Init.h">
-      <Filter>SetupAndConfiguration\GLFW\Initialization</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
     </ClInclude>
     <ClInclude Include="PrimaryWindowCallbackFunctions.h">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions</Filter>
     </ClInclude>
     <ClInclude Include="WindowCurserState.h">
-      <Filter>SetupAndConfiguration\GLFW\WindowCurserState</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowCurserState</Filter>
     </ClInclude>
     <ClInclude Include="PrimaryWindowState.h">
-      <Filter>SetupAndConfiguration\GLFW\PrimaryGLFWWindow</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow</Filter>
     </ClInclude>
     <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\defines.h">
       <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
@@ -853,17 +889,35 @@
     <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\GFSDK_Aftermath.h">
       <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </ClInclude>
-    <ClInclude Include="CallbackEventStreamBuffer.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    <ClInclude Include="PrimaryRenderWindow.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClInclude>
-    <ClInclude Include="WindowInputCallbackEvent.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowStateChangeCallbackEvent.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer\RoughDraftAttempt</Filter>
+    <ClInclude Include="ApplicationConstantSettings.h">
+      <Filter>SetupAndConfiguration\ApplicationConstantSettings</Filter>
     </ClInclude>
     <ClInclude Include="WindowCallbackEvent.h">
-      <Filter>SetupAndConfiguration\GLFW\CallbackStreamBuffer</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkWrapper.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFrameworkErrorCallback.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkContext.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkMonitor.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkWindow.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="CurrentlyConnectedMonitors.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoMode.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -944,9 +998,6 @@
     </None>
     <None Include="obj\Spaceship.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
-    </None>
-    <None Include="obj\NewTieFighter.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
@@ -1037,6 +1088,9 @@
     </None>
     <None Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.dll">
       <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
+    </None>
+    <None Include="obj\NewOrderTie_Triangulated.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

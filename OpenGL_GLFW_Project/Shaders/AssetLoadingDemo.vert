@@ -18,13 +18,13 @@ uniform float time;
 uniform mat4 rotation;
 uniform mat4 MVP;
 
-uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
-uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the pattern used when drawing instances
+//uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
+//uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the pattern used when drawing instances
 
 
 #define pos position
 #define vert float(gl_VertexID)
-#define inst float(gl_InstanceID)
+#define inst float(gl_InstanceID * 5)
 
 ///////////////////////////////////////////////////////////////////////////
 // EXTERNAL FUNCTION PROTOTYPES  [for noise]
@@ -43,14 +43,26 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 #if defined BASIC_VERT
 
+mat4 transl = mat4(0.0, 0.0, 0.0, 0.0,
+	0.0, 0.0, 0.0, 0.0,
+	0.0, 0.0, 0.0, 0.0,
+	1.25, 0.25, 0.025, 0.0);
+
 void main() {
-	position = ModelPosition + vec4(0.0, 0.0, 0.0, zoom);
+	position = ModelPosition + vec4((16.0 + 4.0*cos(time - inst)) * sin(3.14*inst/60.0), 16.0*sin(3.14*inst/70.0 + 1.71 ), floor(0.05*inst) , zoom);
 
 	texCoord = ModelTexCoord;
 
-	normal = mat3(rotation) * ModelNormal;
+	mat4 repeatedRotation = mat4(1.0);
 
-	gl_Position = (MVP * rotation) * position;
+	for (int i = 0; i < gl_InstanceID; i++) {
+		repeatedRotation *= rotation;
+		repeatedRotation += transl;
+	}
+
+	normal = mat3(repeatedRotation * rotation) * ModelNormal;
+
+	gl_Position = (MVP * repeatedRotation) * position;
 }
 
 

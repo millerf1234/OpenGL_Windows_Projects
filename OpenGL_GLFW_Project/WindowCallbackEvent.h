@@ -22,6 +22,7 @@
 //
 // Reference:                   (GLFW Input Guide) https://www.glfw.org/docs/latest/input_guide.html
 //                              (GLFW Window Guide) https://www.glfw.org/docs/latest/window_guide.html
+//                              (GLFW Monitor Guide) https://www.glfw.org/docs/latest/monitor_guide.html
 //                              (Text input will be UTF32 little-endian)  https://en.wikipedia.org/wiki/UTF-32
 //                              (For working with UTF in C-based languages)  https://unicodebook.readthedocs.io/unicode_encodings.html
 //
@@ -37,14 +38,21 @@
 
 namespace WindowCallbackInternal {
 
-	// The follow enum corrosponds to one of every available type of GLFW callback (aside from the special cases of NO_EVENT, which represents the lack 
-	//    of a callback event, and the three Keyboard_**** events, which all are created from the same callback):
+	// The follow enum corrosponds to one of every available types of GLFW callback 
+	//        ( aside from the special cases of:
+	//                i)  NO_EVENT, which represents the lack of a callback event;
+	//               ii)  the three KEYBOARD_PRESS/RELEASE/REPEAT and two MOUSE_PRESS/RELEASE events,
+	//                      each set of which is created from the same callback function; and
+	//              iii)  GLFW_ERROR, which is set once per application (instead of per-window/per-context)
+	//                      and is implemented differently [notice it doesn't take a GLFWwindow* parameter] )
 	//
 	// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
 	// |            CallbackEventType          |       glfwSet______Callback()         |                    callback function signature             | \\
 	// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
 	// |                                       |                                       |                                                            | \\ 
 	// |              NO_EVENT                 |                   N/A                 |                                N/A                         | \\
+	// |                                       |                                       |                                                            | \\
+	// |             GLFW_ERROR                |         glfwSetErrorCallback()        |     error_callback(int error, const char * description)    | \\  //NOTE: Seperate From all of the other Callback types, 
     // |                                       |                                       |                                                            | \\ 
 	// |           KEYBOARD_PRESS              |                                       |                                                            | \\
 	// |           KEYBOARD_RELEASE            |          glfwSetKeyCallback()         | key_callback(GLFWwindow* window, int key, int scancode,    | \\
@@ -81,6 +89,7 @@ namespace WindowCallbackInternal {
 	// |                                       |                                       |                                   unsigned int codepoint)  | \\ //Should treat 'codepoint' as little-endian UTF32  (see references at top)
 	// |      GET_UTF32_MODS_CHARACTER         |       glfwSetCharModsCallback()       |  charmods_callback(GLFWwindow* window,                     | \\
 	// |                                       |                                       |                         unsigned int codepoint, int mods)  | \\
+	// |      MONITOR_CONNECTION_EVENT         |        glfwSetMonitorCallback()       |   
 	// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
 
 	enum class CallbackEventType { NO_EVENT, KEYBOARD_PRESS, KEYBOARD_RELEASE, KEYBOARD_REPEAT, MOUSE_BUTTON_PRESS,

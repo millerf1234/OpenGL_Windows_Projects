@@ -18,7 +18,17 @@
 #include "ProjectConstants.h"
 #include "PrimaryWindowCallbackFunctions.h"
 
-#include "CallbackEventStreamBuffer.h"
+
+#include "ApplicationConstantSettings.h"
+
+static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
+
+static constexpr const bool USE_FULLSCREEN = false;
+
+static constexpr const bool USE_VSYNC = true;
+
+static constexpr int DEFAULT_AA_SAMPLES = 8;
+
 
 
 typedef struct MonitorData {
@@ -30,9 +40,6 @@ typedef struct MonitorData {
 
 class GLFW_Init {
 public:
-
-	//void glfwGetFramebufferSize(GLFWwindow* window, int* width, int* height);
-
 	GLFW_Init(); 
 	~GLFW_Init();
 
@@ -62,7 +69,7 @@ private:
 	//int pixelWidth, pixelHeight;
 
 	//Window attachment is created and has its allocation owned by this class
-	std::unique_ptr<WindowCallbackInternal::CallbackStreamBuffer> windowAttachment;
+	//std::unique_ptr<WindowCallbackInternal::CallbackStreamBuffer> windowAttachment;
 
 	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
 
