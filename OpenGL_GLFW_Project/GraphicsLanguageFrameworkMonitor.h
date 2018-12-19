@@ -101,17 +101,19 @@ namespace GLFrameworkInternal {
 		bool wasMoved() const { return mWasMoved_; }
 
 		//Compares GLFWmonitor* handles for equality. Note that if both monitors have nullptr as a handle, they will
-		//compare as equal.
+		//compare as equal. However, if there are monitors with null handles, then something wrong already has happened.
 		bool operator==(const GraphicsLanguageFrameworkMonitor& that) const { return (mHandle_ == that.mHandle_); }
 		//Compares GLFWmonitor* handles for inequality. Note that if both monitors have nullptr as a handle, they will
-		//compare as equal.
+		//compare as equal. However, if there are monitors with null handles, then something wrong already has happened.
 		bool operator!=(const GraphicsLanguageFrameworkMonitor& that) const { return (mHandle_ != that.mHandle_); }
 
 		//Compares this object's monitor handle with the provided monitor handle for equality. If this object's 
 		//handle is nullptr and second parameter is nullptr, then equality comparison will return true.
+		//However, if there are monitors with null handles, then something wrong already has happened.
 		bool operator==(const GLFWmonitor* that) const { return (mHandle_ == that); }
 		//Compares this object's monitor handle with the provided monitor handle for equality. If this object's 
 		//handle is nullptr and second parameter is nullptr, then inequality comparison will return false.
+		//However, if there are monitors with NULL handles, then something wrong already has happened.
 		bool operator!=(const GLFWmonitor* that) const { return (mHandle_ != that); }
 
 		//Returns the gamma ramp for this monitor. 
@@ -138,7 +140,7 @@ namespace GLFrameworkInternal {
 		//Monitor-specific data/specifications
 		size_t mAvailableVideoModes_;
 		std::vector<VideoMode> mVideoModes_;
-		std::unique_ptr<VideoMode> mCurrentVideoMode_;
+		std::unique_ptr<VideoMode> mPrimaryVideoMode_;
 
 		//The virtual desktop position (measured in screen coordinates) is unique for each monitor.
 		int mVirtualXPos_, mVirtualYPos_;
@@ -155,10 +157,10 @@ namespace GLFrameworkInternal {
 		//Private helper functions:
 		void initialize(); //Gives initial values to this object's member fields
 		bool checkIfIsPrimaryMonitor(); //Compares monitor handle to handle returned by glfwGetPrimaryMonitor()
-		void getMonitorProperties(); //Gets monitor properties from GLFW
+		void aquireMonitorDetails(); //Gets monitor properties from GLFW
 		
 
-		//The following functions are called within getMonitorProperties() 
+		//The following functions are called within aquireMonitorDetails() 
 		void getMonitorName();
 		void getVideoModes();
 		void getMonitorPhysicalSize(int& w, int& h);

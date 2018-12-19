@@ -200,12 +200,13 @@ void AssetLoadingDemo::loadModels() {
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 4.5f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 3.5f));
+	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
@@ -595,12 +596,12 @@ void AssetLoadingDemo::buildNewShader() {
 	std::string shadersRFP = FILEPATH_TO_SHADERS;
 	backupSceneShader = nullptr;
 	backupSceneShader = std::make_unique<ShaderProgram>();
-	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
-		switch (iter->type) {
+	for (auto shaderIterator = shaderSources.begin(); shaderIterator != shaderSources.end(); shaderIterator++) {
+		switch (shaderIterator->type) {
 
 		case (ShaderInterface::ShaderType::VERTEX):
-			if (iter->primary)
-				backupSceneShader->attachVert(iter->file.filepath().c_str());
+			if (shaderIterator->primary)
+				backupSceneShader->attachVert(shaderIterator->file.filepath().c_str());
 			else {
 				std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
 					std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
@@ -610,20 +611,23 @@ void AssetLoadingDemo::buildNewShader() {
 			break;
 
 		case (ShaderInterface::ShaderType::GEOMETRY):
-
-			break;
-
-		case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
-
+			fprintf(MSGLOG, "\nDetected that a geometry shader was updated!\n"
+				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		case (ShaderInterface::ShaderType::TESSELATION_CONTROL):
+			fprintf(MSGLOG, "\nDetected that a Tesselation Control shader was updated!\n"
+				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
+			break;
 
+		case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
+			fprintf(MSGLOG, "\nDetected that a Tesselation Evaluation shader was updated!\n"
+				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		case (ShaderInterface::ShaderType::FRAGMENT):
-			if (iter->primary)
-				backupSceneShader->attachFrag(iter->file.filepath().c_str());
+			if (shaderIterator->primary)
+				backupSceneShader->attachFrag(shaderIterator->file.filepath().c_str());
 			else {
 				std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
 					std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
@@ -633,11 +637,12 @@ void AssetLoadingDemo::buildNewShader() {
 			break;
 
 		case (ShaderInterface::ShaderType::COMPUTE):
-
+			fprintf(MSGLOG, "\nDetected that a Compute shader was updated!\n"
+				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		default:
-			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!\n");
+			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!  What the heck type of shader are you updating?!?!\n");
 			return;
 		}
 	}
@@ -650,7 +655,7 @@ void AssetLoadingDemo::buildNewShader() {
 		}
 		else {
 			fprintf(ERRLOG, "New Shader Program was not successfully linked!\n");
-			//fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+			//fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n"); //
 			//std::cin.get(); //Hold the window open if there was an error
 		}
 	

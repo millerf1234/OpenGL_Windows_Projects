@@ -10,7 +10,7 @@ namespace GLFrameworkInternal {
 		mIsConnected_ = true;
 		mIsPrimary_ = false;
 		mAvailableVideoModes_ = 0u;
-		mCurrentVideoMode_ = nullptr;
+		mPrimaryVideoMode_ = nullptr;
 		mVirtualXPos_ = 0;
 		mVirtualYPos_ = 0;
 		mContentScaleX_ = 1.0f;
@@ -19,7 +19,7 @@ namespace GLFrameworkInternal {
 	}
 
 	//Since a monitor requires a unique GLFWmonitor* to serve as its identifier (essentially it acts as a Primary Key),
-	//it doiesn't make sense to have a default constructor. Thus the default constructor is disabled.
+	//it doesn't make sense to have a default constructor. Thus the default constructor is disabled (deleted).
 	//GraphicsLanguageFrameworkMonitor::GraphicsLanguageFrameworkMonitor() {
 	//	initialize();
 	//}
@@ -36,7 +36,7 @@ namespace GLFrameworkInternal {
 		if (checkIfIsPrimaryMonitor()) {
 			mIsPrimary_ = true;
 		}
-		getMonitorProperties();
+		aquireMonitorDetails();
 	}
 
 
@@ -51,9 +51,18 @@ namespace GLFrameworkInternal {
 		mIsPrimary_ = that.mIsPrimary_;
 		mAvailableVideoModes_ = that.mAvailableVideoModes_;
 		mVideoModes_.swap(that.mVideoModes_);
+		mPrimaryVideoMode_ = std::move(that.mPrimaryVideoMode_);
+		that.mPrimaryVideoMode_ = nullptr; //This is probably unnecessary...
+		
+		mVirtualXPos_ = that.mVirtualXPos_;
+		mVirtualYPos_ = that.mVirtualYPos_;
 
-		//To finish...
+		mContentScaleX_ = that.mContentScaleX_;
+		mContentScaleY_ = that.mContentScaleY_;
 
+		mGammaRamp_ = that.mGammaRamp_;
+
+		mName_ = that.mName_;
 		mWasMoved_ = false;
 		that.mWasMoved_ = true;
 	}
@@ -61,10 +70,25 @@ namespace GLFrameworkInternal {
 	GraphicsLanguageFrameworkMonitor& GraphicsLanguageFrameworkMonitor::operator=(GraphicsLanguageFrameworkMonitor&& that) {
 		if (this != &that) {
 			mHandle_ = that.mHandle_;
+			mIsConnected_ = that.mIsConnected_;
+			mIsPrimary_ = that.mIsPrimary_;
+			mAvailableVideoModes_ = that.mAvailableVideoModes_;
+			mVideoModes_.swap(that.mVideoModes_);
+			mPrimaryVideoMode_ = std::move(that.mPrimaryVideoMode_);
+			that.mPrimaryVideoMode_ = nullptr; //This is probably unnecessary...
+
+			mVirtualXPos_ = that.mVirtualXPos_;
+			mVirtualYPos_ = that.mVirtualYPos_;
+
+			mContentScaleX_ = that.mContentScaleX_;
+			mContentScaleY_ = that.mContentScaleY_;
+
+			mGammaRamp_ = that.mGammaRamp_;
+
+			mName_ = that.mName_;
+			mWasMoved_ = false;
+			that.mWasMoved_ = true;
 		}
-
-		//To finish...
-
 		return *this;
 	}
 
@@ -82,8 +106,8 @@ namespace GLFrameworkInternal {
 	}
 	
 	VideoMode GraphicsLanguageFrameworkMonitor::getPrimaryVideoMode() const {
-		if (mCurrentVideoMode_) {
-			return *mCurrentVideoMode_;
+		if (mPrimaryVideoMode_) {
+			return *mPrimaryVideoMode_;
 		}
 		else {
 			fprintf(WRNLOG, "\nWARNING! For some reason there was no primary video mode set for monitor %s(0x%p)!\n", mName_.c_str(), mHandle_);
@@ -93,6 +117,9 @@ namespace GLFrameworkInternal {
 
 	VideoMode GraphicsLanguageFrameworkMonitor::getSpecificVideoMode(size_t index) const {
 		if (mAvailableVideoModes_ == 0u) {
+			fprintf(WRNLOG, "\nWARNING! A video mode at index %u was requested for monitor %s(handle=0x%p),\n"
+				"    but no valid video mode exists at this index. A \"bogus\" video mode will generated as a placeholder!\n", index,
+				mName_.c_str(), mHandle_);
 			//Create and return a bogus videomode
 			GLFWvidmode bogus;
 			bogus.height = 1;
@@ -120,10 +147,11 @@ namespace GLFrameworkInternal {
 	}
 	
 	bool GraphicsLanguageFrameworkMonitor::checkIfIsPrimaryMonitor() {
-		return (*this == glfwGetPrimaryMonitor());
+		return (*this == glfwGetPrimaryMonitor()); //Uses overloaded 'operator==' with GLFWmonitor* as second parameter 
 	}
 
-	void GraphicsLanguageFrameworkMonitor::getMonitorProperties() {
+
+	void GraphicsLanguageFrameworkMonitor::aquireMonitorDetails() {
 		getMonitorName();
 		getVideoModes();
 		updateVirtualPosition();
@@ -139,8 +167,7 @@ namespace GLFrameworkInternal {
 
 	void GraphicsLanguageFrameworkMonitor::getVideoModes() {
 		int availableVideoModes = 0;
-		const GLFWvidmode * arrayOfVidModes = glfwGetVideoModes(const_cast<GLFWmonitor*>(mHandle_),
-			&availableVideoModes);
+		const GLFWvidmode * arrayOfVidModes = glfwGetVideoModes(const_cast<GLFWmonitor*>(mHandle_), &availableVideoModes);
 		if ( (arrayOfVidModes == nullptr) || (availableVideoModes <= 0)) {
 			fprintf(ERRLOG, "\nError: Unable to obtain video modes for monitor %s(0x%p)\n", mName_.c_str(), mHandle_);
 			return;
@@ -157,7 +184,7 @@ namespace GLFrameworkInternal {
 
 		//Last of all, get the primary video mode
 		const GLFWvidmode* primary = glfwGetVideoMode(const_cast<GLFWmonitor*>(mHandle_));
-		mCurrentVideoMode_ = std::make_unique<VideoMode>(*primary, physicalSizeX, physicalSizeY);
+		mPrimaryVideoMode_ = std::make_unique<VideoMode>(*primary, physicalSizeX, physicalSizeY);
 	}
 
 	void GraphicsLanguageFrameworkMonitor::getMonitorPhysicalSize(int& w, int& h) {
