@@ -38,13 +38,11 @@ float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 
-#define BASIC_VERT
+//#define BASIC_VERT
 //#define COOL_VERT
-//#define SOMETHING_ELSE
+#define SOMETHING_ELSE
 
 #if defined BASIC_VERT
-
-
 void main() {
 
 	float flip = -1.0;
@@ -102,7 +100,7 @@ void main() {
 #elif defined SOMETHING_ELSE 
 
 void main() {
-	position = ModelPosition + vec4(12.0*cos(inst + time), 8.0*sin(inst + time), 0.05 * inst, zoom);
+	position = ModelPosition + vec4(200.0 *cos(5.2*inst + 0.25*time), 18.0*sin(20.7301*inst + 0.1*time), 10.5 * inst + time, zoom);
 	
 	texCoord = ModelTexCoord;
 

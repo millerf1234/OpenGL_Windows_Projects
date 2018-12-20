@@ -186,7 +186,7 @@ void AssetLoadingDemo::loadModels() {
 
 	//Initial Scale values for the objects
 	float blockThing_QuadsScale = 2.2f;
-	float beveledCubeScale = 0.36f;
+	float beveledCubeScale = 2.3f;
 	float blockShipScale = 4.5f;
 	float subdivisionCubeScale = 4.9f;
 	float abstractShapeScale = 2.0f;
@@ -205,7 +205,7 @@ void AssetLoadingDemo::loadModels() {
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 3.5f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 3.5f));
 	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
@@ -325,8 +325,10 @@ void AssetLoadingDemo::pause() {
 	auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
 	auto end = std::chrono::high_resolution_clock::now();
 	fprintf(MSGLOG, "PAUSED!\n");
-	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000) {
-		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000));
+	//Upon first pausing, enter into the following loop for a short period of time before moving on to
+	//the full pause loop. This will prevent unpausing from occuring directly after a pause is initiated. 
+	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000ll) {
+		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000ll));
 		end = std::chrono::high_resolution_clock::now();
 	}
 
@@ -343,7 +345,7 @@ void AssetLoadingDemo::pause() {
 			return;
 		}
 		else { //wait for a little bit before polling again
-			std::this_thread::sleep_for(std::chrono::nanoseconds(3333333));
+			std::this_thread::sleep_for(std::chrono::nanoseconds(3333333ll));
 		}
 	}
 }
@@ -597,8 +599,8 @@ void AssetLoadingDemo::buildNewShader() {
 	backupSceneShader = nullptr;
 	backupSceneShader = std::make_unique<ShaderProgram>();
 	for (auto shaderIterator = shaderSources.begin(); shaderIterator != shaderSources.end(); shaderIterator++) {
+		
 		switch (shaderIterator->type) {
-
 		case (ShaderInterface::ShaderType::VERTEX):
 			if (shaderIterator->primary)
 				backupSceneShader->attachVert(shaderIterator->file.filepath().c_str());
@@ -669,7 +671,14 @@ void AssetLoadingDemo::updateFrameClearColor() {
 	backgroundColor.y = abs(sin(counter + backgroundColor.y + PI/3.0f));
 	backgroundColor.z = abs(sin(counter + backgroundColor.y + PI / 2.0f));
 
+	///For some reason the next 2 lines do not do the same thing...
 	backgroundColor /= backgroundColor.length(); //normalize backgroundColor
+	//backgroundColor = glm::normalize(backgroundColor); //Keep background color normalized
+
+	/*//Experiment:
+	glm::vec3 divideCalculation = backgroundColor;
+	fprintf(MSGLOG, "Background is:   Red=%f,  Green=%f,   Blue=%f\n", divideCalculation.r, divideCalculation.b, divideCalculation.g);
+	*/
 }
 
 
