@@ -200,7 +200,17 @@ namespace WindowCallbackInternal {
 	}
 
 	void filedropCallback(GLFWwindow* window, int count, const char ** filePaths) {
-
+		if (count <= 0) {
+			fprintf(ERRLOG, "\nERROR! For some reason the file drop callback function was called but\n"
+				"the 'count' parameter representing the number of files that were dropped\n"
+				"was set to the value %d! This is obviosly a major issue!\n", count);
+		}
+		else {
+			fprintf(MSGLOG, "\nDetected that the following files was dragged and dropped onto the render window:\n");
+			for (int i = 0; i < count; i++) {
+				fprintf(MSGLOG, "\t(%d)  %s\n", i, filePaths[i]);
+			}
+		}
 	}
 
 
