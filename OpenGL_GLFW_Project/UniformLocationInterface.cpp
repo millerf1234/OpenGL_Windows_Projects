@@ -26,7 +26,7 @@ namespace ShaderInterface {
 	}
 
 
-	UniformLocationInterface::UniformLocationInterface(UniformLocationInterface&& that) {
+	UniformLocationInterface::UniformLocationInterface(UniformLocationInterface&& that) noexcept {
 		initialize(); 
 		mActivated_ = that.mActivated_;
 		mUniformLocationTracker_ = std::move(that.mUniformLocationTracker_);
@@ -35,7 +35,7 @@ namespace ShaderInterface {
 	}
 
 
-	UniformLocationInterface& UniformLocationInterface::operator=(UniformLocationInterface&& that) {
+	UniformLocationInterface& UniformLocationInterface::operator=(UniformLocationInterface&& that) noexcept {
 		if (this != &that) {
 			mActivated_ = that.mActivated_;
 			mUniformLocationTracker_ = std::move(that.mUniformLocationTracker_);

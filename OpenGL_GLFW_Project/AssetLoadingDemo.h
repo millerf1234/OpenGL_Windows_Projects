@@ -55,7 +55,7 @@ class AssetLoadingDemo : public RenderDemoBase {
 public:
 	AssetLoadingDemo() = delete;
 	AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo);
-	virtual ~AssetLoadingDemo() override;
+	virtual ~AssetLoadingDemo() override = default;
 
 	virtual void loadAssets() override;
 	virtual void run() override;

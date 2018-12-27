@@ -10,9 +10,6 @@
 
 namespace AssetLoadingInternal {
 
-	//The destructor for this class is quite simple:
-	Face::FaceComponent::~FaceComponent() { ; }
-
 	bool Face::FaceComponent::compareAsTriangles(const FaceComponent& that) const {
 		bool equality = (
 			(mVertIndices_[0] == that.mVertIndices_[0]) &&
@@ -20,10 +17,6 @@ namespace AssetLoadingInternal {
 			(mVertIndices_[2] == that.mVertIndices_[2]));
 		return equality;
 	}
-
-	//The descturctor is quite simple:
-	Face::~Face() { ; }
-
 
 	void Face::initialize() {
 		mValidData_ = false;

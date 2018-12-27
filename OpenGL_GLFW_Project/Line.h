@@ -21,7 +21,7 @@ namespace AssetLoadingInternal {
 
 	static constexpr const int LINE_VERTICE_COUNT = 2;
 
-	class Line {
+	class Line final {
 	public:
 		Line() : mEndpoints_{0u, 0u} { mValidData_ = false; }
 		
@@ -35,8 +35,13 @@ namespace AssetLoadingInternal {
 		//indexing that begins at 0.
 		Line(const char * lineLine, bool fixIndexing = true); 
 
+		~Line() = default;
 
-		~Line() { ; }
+		//Copying and Moving use a default implementation
+		Line(const Line&) = default;
+		Line(Line&&) = default;
+		Line& operator=(const Line&) = default;
+		Line& operator=(Line&&) = default;
 
 		bool operator==(const Line& that) const { return (mEndpoints_ == that.mEndpoints_); }
 		bool operator!=(const Line& that) const { return (mEndpoints_ != that.mEndpoints_); }

@@ -33,7 +33,13 @@ namespace AssetLoadingInternal {
 			FaceComponent() : mVertIndices_({ 0, 0, 0, 0 }) { ; }
 			FaceComponent(Offset off1, Offset off2, Offset off3) : mVertIndices_({ off1, off2, off3, 0 }) { ; }
 			FaceComponent(Offset off1, Offset off2, Offset off3, Offset off4) : mVertIndices_({ off1, off2, off3, off4 }) { ; }
-			~FaceComponent();
+			
+			//Desctructor, Copying and Moving are all default
+			~FaceComponent() = default;
+			FaceComponent(const FaceComponent&) = delete;// default;
+			FaceComponent(FaceComponent&&) = default;
+			FaceComponent& operator=(const FaceComponent&) = delete;// default;
+			FaceComponent& operator=(FaceComponent&&) = default;
 
 			//Compares indices for equality (will always compare all 4 components)
 			bool operator==(const FaceComponent& that) const { return (mVertIndices_ == that.mVertIndices_); }
@@ -56,7 +62,13 @@ namespace AssetLoadingInternal {
 		//attempt to be accessed, object will issue a warning.
 		Face();
 
-		~Face();
+		//Desctructor, Copying and Moving are all default 
+		~Face() = default;
+		Face(const Face&) = delete;// default;
+		Face(Face&&) = default;
+		Face& operator=(const Face&) = delete;// default;
+		Face& operator=(Face&&) = default;
+
 		/*  Note: Since the '.obj' standard allows for faces to be negative numbers instead of
 				  positive offsets into a list, and since this object will have no way of knowing
 				  where to start counting backwards from in the list of vertices, this constructor

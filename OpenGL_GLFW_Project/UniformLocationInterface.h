@@ -49,9 +49,9 @@ namespace ShaderInterface {
 		UniformLocationInterface(const GLuint programID);
 		~UniformLocationInterface();
 		UniformLocationInterface(const UniformLocationInterface&) = delete;
-		UniformLocationInterface(UniformLocationInterface&&);
+		UniformLocationInterface(UniformLocationInterface&&) noexcept;
 		UniformLocationInterface& operator=(const UniformLocationInterface&) = delete;
-		UniformLocationInterface& operator=(UniformLocationInterface&&);
+		UniformLocationInterface& operator=(UniformLocationInterface&&) noexcept;
 
 		//This function puts this object into an 'activated' state which allows for all of the
 		//uniform-related functions to be passed on to the UniformLocationTracker 

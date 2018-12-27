@@ -101,9 +101,9 @@
 			
 			//Allow moving but disallow copying
 			ShaderProgram(const ShaderProgram&) = delete;
-			ShaderProgram(ShaderProgram&&); 
+			ShaderProgram(ShaderProgram&&) noexcept; 
 			ShaderProgram& operator=(const ShaderProgram&) = delete;
-			ShaderProgram& operator=(ShaderProgram&&);
+			ShaderProgram& operator=(ShaderProgram&&) noexcept;
 
 			//-------------------------------
 			// Public Interface Functions

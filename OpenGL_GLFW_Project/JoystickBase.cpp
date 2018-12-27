@@ -10,6 +10,8 @@ void JoystickBase::initialize() {
 	mTokenID_ = UNASSIGNED;
 	mType_ = JoystickType::INVALID;
 	mJoystickName_ = "UNASSIGNED";
+
+	mWasAssignedAsJoystickUserPointer_ = false;
 }
 
 JoystickBase::JoystickBase(int joystickToken) {
@@ -18,7 +20,21 @@ JoystickBase::JoystickBase(int joystickToken) {
 
 
 JoystickBase::~JoystickBase() {
-
+	//I was thinking it would be nice to make absolutly sure an object of this type removes itself 
+	//as the attached user pointer of a Joystick in case it hadn't already removed itself, 
+	//but this just seems like a bad idea...
+	/* if (mWasAssignedAsJoystickUserPointer_) { //If this object still is set as a GLFW Joystick's user pointer
+		//Check to see if the Joystick object still exists
+		if (glfwJoystickPresent(mTokenID_)) {
+			void * temp = glfwGetJoystickUserPointer(mTokenID_);
+			if (temp != NULL) {
+				//See if temp is equal to this objects address
+				if (temp == static_cast<void*> (this)) {
+					glfwSetJoystickUserPointer(mTokenID_, NULL);
+				}
+			}
+		}
+	} */ //Too dangerous 
 }
 
 

@@ -22,7 +22,7 @@ namespace ShaderInterface {
 
 	class UniformLocationTracker; //Defined later, declared here to let that class be friend of this one
 
-	class CachedUniformLocation {
+	class CachedUniformLocation final {
 	public:
 		friend class UniformLocationTracker; //Based off example at https://www.codingunit.com/cplusplus-tutorial-friend-function-and-friend-class
 											 //friend bool UniformLocationTracker::checkIfInitialized() const { return mWasInitialized; }

@@ -75,7 +75,7 @@ namespace AssetLoadingInternal {
 		}
 	}
 
-	AsciiAsset::AsciiAsset(AsciiAsset&& that) {
+	AsciiAsset::AsciiAsset(AsciiAsset&& that) noexcept {
 		initialize();
 		this->mFilepath_ = std::move(that.mFilepath_);
 		this->mValidFilepath_ = that.mValidFilepath_;
@@ -120,7 +120,7 @@ namespace AssetLoadingInternal {
 		return (*this);
 	}
 
-	AsciiAsset& AsciiAsset::operator=(AsciiAsset&& that) {
+	AsciiAsset& AsciiAsset::operator=(AsciiAsset&& that) noexcept {
 		if (this != &that) {
 			initialize();
 			std::string tempFilepathCopy = that.mFilepath_;

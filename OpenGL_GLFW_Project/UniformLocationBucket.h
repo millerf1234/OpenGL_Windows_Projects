@@ -67,7 +67,7 @@ namespace ShaderInterface {
 			this->mError_ = that.mError_;
 			this->mType_ = that.mType_;
 		}
-		UniformLocationBucket(UniformLocationBucket&& that) {
+		UniformLocationBucket(UniformLocationBucket&& that) noexcept {
 			this->mLocation_ = that.mLocation_;
 			this->mName_ = that.mName_;
 			this->mError_ = that.mError_;
@@ -84,7 +84,7 @@ namespace ShaderInterface {
 			return *this;
 		}
 
-		UniformLocationBucket& operator=(UniformLocationBucket&& that) {
+		UniformLocationBucket& operator=(UniformLocationBucket&& that) noexcept {
 			if (this != &that) {
 				this->mLocation_ = that.mLocation_;
 				this->mName_ = that.mName_;

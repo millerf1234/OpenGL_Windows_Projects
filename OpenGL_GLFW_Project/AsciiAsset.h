@@ -101,7 +101,7 @@ namespace AssetLoadingInternal {
 		AsciiAsset(const AsciiAsset& that);
 
 		//Emplaces another AsciiAsset object into this one
-		AsciiAsset(AsciiAsset&& that);
+		AsciiAsset(AsciiAsset&& that) noexcept;
 
 
 		//------------------------------------------------------------
@@ -131,7 +131,7 @@ namespace AssetLoadingInternal {
 		AsciiAsset& operator=(const AsciiAsset& that);
 
 		//Moves the contents of a different AsciiAsset object into this object.
-		AsciiAsset& operator=(AsciiAsset&& that);
+		AsciiAsset& operator=(AsciiAsset&& that) noexcept;
 
 
 		//------------------------------------------------------------

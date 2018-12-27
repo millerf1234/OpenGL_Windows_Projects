@@ -74,7 +74,7 @@ ShaderProgram::~ShaderProgram() {
 }
 
 //Move Constructor
-ShaderProgram::ShaderProgram(ShaderProgram&& that) : uniforms() {
+ShaderProgram::ShaderProgram(ShaderProgram&& that) noexcept : uniforms() {
 	this->mProgramID = that.mProgramID;
 	that.mProgramID = 0u;
 
@@ -120,7 +120,7 @@ ShaderProgram::ShaderProgram(ShaderProgram&& that) : uniforms() {
 }
 
 //Move assignment operator
-ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) {
+ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 	if (this != &that) {
 		this->mProgramID = that.mProgramID;
 		that.mProgramID = 0u;

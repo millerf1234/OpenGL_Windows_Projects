@@ -165,8 +165,8 @@ public:
 	//            Move            \\
 	//----------------------------\\
 
-	JoystickBase(JoystickBase&&) /*noexcept*/;  //Perhaps best to not delcare these noexcept since they are dealing with GLFW's C API and pointer stuff
-	JoystickBase& operator=(JoystickBase&&) /*noexcept*/;
+	JoystickBase(JoystickBase&&);
+	JoystickBase& operator=(JoystickBase&&);
 
 	 //----------------------------------\\
 	//  Public State-Querying Functions   \\
@@ -216,7 +216,11 @@ protected: //These are basically the fields that are directly assignable from GL
 	std::string mJoystickName_;
 
 
-private: //These are internal helper/implementation functions
+private: 
+	//Use a flag to verify if this object successfully gets assigned to a GLFW Joystick's UserPointer
+	bool mWasAssignedAsJoystickUserPointer_;
+	
+	//Internal Utility functions
 	void initialize();
     
 
