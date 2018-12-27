@@ -78,10 +78,10 @@ public:
 	/* Vertex(const Vert&, const Vert&);
 	Vertex(const Vert&, const Vert&, const Vert&);*/
 
-	Vertex(Vertex&&);
+	Vertex(Vertex&&) noexcept;
 
 	Vertex& operator=(const Vertex&);
-	Vertex& operator=(Vertex&&);
+	Vertex& operator=(Vertex&&) noexcept;
 
 	bool operator==(const Vertex& other) const;
 	bool operator!=(const Vertex& other) const;
@@ -127,10 +127,10 @@ public:
 	/* Vertex(const Vert&, const Vert&);
 	Vertex(const Vert&, const Vert&, const Vert&);*/
 
-	PTNVertex(PTNVertex&&);
+	PTNVertex(PTNVertex&&) noexcept;
 
 	PTNVertex& operator=(const PTNVertex&);
-	PTNVertex& operator=(PTNVertex&&);
+	PTNVertex& operator=(PTNVertex&&) noexcept;
 
 	bool operator==(const PTNVertex& other) const;
 	bool operator!=(const PTNVertex& other) const;
@@ -180,10 +180,10 @@ public:
 	FullVertex(const Vertex&, const Vertex&, const Vertex&);
 
 	FullVertex(const FullVertex&);
-	FullVertex(FullVertex&&);
+	FullVertex(FullVertex&&) noexcept;
 
 	FullVertex& operator=(const FullVertex&);
-	FullVertex& operator=(FullVertex&&);
+	FullVertex& operator=(FullVertex&&) noexcept;
 
 	bool operator==(const FullVertex& other) const;
 
@@ -220,9 +220,9 @@ public:
 
 	//Copying:
 	ExtendedVertex(const ExtendedVertex&);
-	ExtendedVertex(ExtendedVertex&&);
+	ExtendedVertex(ExtendedVertex&&) noexcept;
 	ExtendedVertex& operator=(const ExtendedVertex&);
-	ExtendedVertex& operator=(ExtendedVertex&&);
+	ExtendedVertex& operator=(ExtendedVertex&&) noexcept;
 
 	bool operator==(const ExtendedVertex& other) const;
 

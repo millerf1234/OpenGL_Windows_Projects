@@ -42,7 +42,7 @@ Vertex::Vertex(const Vertex& that)  {
 	mComponents_ = that.mComponents_;
 }
 
-Vertex::Vertex(Vertex&& that) {
+Vertex::Vertex(Vertex&& that) noexcept {
 	mComponents_ = std::move(that.mComponents_);
 }
 
@@ -57,7 +57,7 @@ Vertex& Vertex::operator=(const Vertex& that) {
 	return *this;
 }
 
-Vertex& Vertex::operator=(Vertex&& that) {
+Vertex& Vertex::operator=(Vertex&& that) noexcept {
 	if (this != &that) {
 		mComponents_ = std::move(that.mComponents_);
 	}
@@ -128,7 +128,7 @@ PTNVertex::PTNVertex(const PTNVertex& that) {
 	mComponents_ = that.mComponents_;
 }
 
-PTNVertex::PTNVertex(PTNVertex&& that) {
+PTNVertex::PTNVertex(PTNVertex&& that) noexcept {
 	mComponents_ = std::move(that.mComponents_);
 }
 
@@ -139,7 +139,7 @@ PTNVertex& PTNVertex::operator=(const PTNVertex& that) {
 	return *this;
 }
 
-PTNVertex& PTNVertex::operator=(PTNVertex&& that) {
+PTNVertex& PTNVertex::operator=(PTNVertex&& that) noexcept {
 	if (this != &that) {
 		mComponents_ = std::move(that.mComponents_);
 	}
@@ -250,7 +250,7 @@ FullVertex::FullVertex(const FullVertex& that) {
 	//}
 }
 
-FullVertex::FullVertex(FullVertex&& that) {
+FullVertex::FullVertex(FullVertex&& that) noexcept {
 	mComponents_ = std::move(that.mComponents_);
 }
 
@@ -262,7 +262,7 @@ FullVertex& FullVertex::operator=(const FullVertex& that) {
 	return *this;
 }
 
-FullVertex& FullVertex::operator=(FullVertex&& that) {
+FullVertex& FullVertex::operator=(FullVertex&& that) noexcept {
 	if (this != &that) {
 		mComponents_ = std::move(that.mComponents_);
 	}
@@ -432,7 +432,7 @@ ExtendedVertex::ExtendedVertex(const ExtendedVertex& that) {
 	mExtendedComponents_ = that.mExtendedComponents_;
 }
 
-ExtendedVertex::ExtendedVertex(ExtendedVertex&& that) {
+ExtendedVertex::ExtendedVertex(ExtendedVertex&& that) noexcept {
 	mExtendedComponents_ = std::move(that.mExtendedComponents_);
 }
 
@@ -444,7 +444,7 @@ ExtendedVertex& ExtendedVertex::operator=(const ExtendedVertex& that) {
 }
 
 
-ExtendedVertex& ExtendedVertex::operator=(ExtendedVertex&& that) {
+ExtendedVertex& ExtendedVertex::operator=(ExtendedVertex&& that) noexcept {
 	if (this != &that) {
 		mExtendedComponents_ = std::move(that.mExtendedComponents_);
 	}
