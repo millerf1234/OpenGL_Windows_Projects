@@ -88,8 +88,33 @@ namespace WindowCallbackInternal {
 		}
 	}
 
-	void joystickConnectionCallback(GLFWwindow * window, int joyID, int connected) {
+	void joystickConnectionCallback(int joyID, int connected) {
+		fprintf(MSGLOG, "\nGLFW Event Callback! Joystick Connection Event Detected!\n"
+			"Joystick ID: %d       \tEvent Code: %d", joyID, connected);
+		if (connected == GLFW_CONNECTED) {
+			fprintf(MSGLOG, "\tEvent: Connected\n");
+		}
+		else if (connected == GLFW_DISCONNECTED) {
+			fprintf(MSGLOG, "\tEvent: Disconnected\n");
+		}
+		else {
+			fprintf(ERRLOG, "\nERROR: An invalid value was passed to the GLFW Joystick event Callback function!\n"
+				"The value passed in was %d, which is not supposed to happen!\n", connected);
+		}
+	}
 
+
+	void windowMaximizeCallback(GLFWwindow* window, int iconified) {
+		if (iconified == GLFW_TRUE) {
+			fprintf(MSGLOG, "\nWindow Maximized!\n");
+		}
+		else if (iconified == GLFW_FALSE) {
+			fprintf(MSGLOG, "\nWindow Is No Longer Maximized!\n");
+		}
+		else {
+			fprintf(ERRLOG, "\nERROR: An invalid value was passed to the GLFW Window Maximize Callback function!\n"
+				"The value passed in was %d, which is not supposed to happen!\n", iconified);
+		}
 	}
 
 	//---------------------------------------------------------------------------------

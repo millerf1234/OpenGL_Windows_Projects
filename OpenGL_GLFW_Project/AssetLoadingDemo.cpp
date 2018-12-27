@@ -24,11 +24,12 @@
 //                        single threaded and my algorithm performs several iterations over the data to 
 //                        change it from its '.obj' storage (with Positions, Texture Coordinates and 
 //                        Normals stored in seperate sections of the file) to interlaced vertices (in the 
-//                        9-component ordering of {x,y,z,w,s,t,nx,ny,nz}  [with nx, ny, nz being the normal])
-//                        With some rewriting the number of steps (i.e. copies and allocations) performed
-//                        should be reducable. I have also been investigating potential Task-based solutions
-//                        for breaking up loading to be performed concurrently. If loading multiple models,
-//                        the use of 'std::packaged_task' looks promising. 
+//                        9-component ordering of {x,y,z,w,s,t,nx,ny,nz}  [with nx, ny, nz as the normal's
+//                        xyz components]). With some rewriting the number of steps (i.e. copies and  
+//                        allocations) performed should be reducable. I have also been investigating
+//                        potential Task-based solutions for breaking up loading to be performed concurrently.
+//                        To speed up the loading of multiple models, wrapping each model's loader object
+//                        in a 'std::packaged_task' looks promising... 
 //                     
 //                  
 // Instructions:        To change which model(s) get loaded, find the member function loadModels() and
@@ -117,7 +118,7 @@
 //                   [What I mean by this is that there is a heck of a lot of implementation code
 //                        that really should be burried into seperate classes]
 //
-//Programmer:  Forrest Miller
+//Programmer:          Forrest Miller
 //Date Created:        November 14, 2018
 //Date Completed:      tbd...
 
@@ -336,15 +337,15 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
 	
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));

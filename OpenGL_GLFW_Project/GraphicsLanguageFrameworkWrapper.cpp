@@ -136,9 +136,11 @@ bool GraphicsLanguageFrameworkWrapper::validateRuntimeGLFWVersion() const {
 	//If the major versions of GLFW do not match, then the libraries are incompatible
 	if (GLFW_VERSION_MAJOR != runtimeVersionMajor) {
 		fprintf(ERRLOG, "\nERROR! An issue occured while initializing Graphics Language Framework (GLFW) library!\n"
-			"This application was %s, but the GLFW shared-library that this executable linked with at run\n"
+			"This application was expecting to link with GLFW %s, but the GLFW shared-library that this executable linked with at run\n"
 			"time is GLFW %d.%d.%d\n"
-			"These two versions are incompatible!\n", getGLFWCompileTimeVersionString().c_str(), runtimeVersionMajor,
+			"Unfortunatly these two versions are incompatible!\n"
+			"   [A possible fix may be finding and building the correct GLFW '.dll' matching the\n"
+			"    version expected by this application]\n", getGLFWCompileTimeVersionString().c_str(), runtimeVersionMajor,
 			runtimeVersionMinor, runtimeRevision);
 		return false;
 	}
@@ -147,7 +149,7 @@ bool GraphicsLanguageFrameworkWrapper::validateRuntimeGLFWVersion() const {
 		fprintf(WRNLOG, "\nWARNING! This application was compiled against Graphics Language Framework (GLFW) Library %d.%d.%d\n"
 			"while the Graphics Language Framework (GLFW) Library that was linked against at\n"
 			"runtime is GLFW %d.%d.%d\n"
-			"If unusual behavior is displayed by this application, a potential cause may be attributed to this mismatch!\n",
+			"If unusual behavior is displayed by this application, a potential cause may be attributed to this version mismatch!\n",
 			GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION, runtimeVersionMajor, runtimeVersionMinor,
 			runtimeRevision);
 	}

@@ -22,7 +22,12 @@
 
 namespace WindowCallbackInternal {
 
+	//---------------------------------------------------------------------------------
+	//   Joystick Connection Discovered/Lost Callback                [THIS IS A GLOBAL CALLBACK, NOT WINDOW/MONITOR DEPENDENT] 
+	//---------------------------------------------------------------------------------
+	void joystickConnectionCallback(int joyID, int connected);  //Second parameter is either GLFW_CONNECTED or GLFW_DISCONNECTED
 	
+
 
 	//There is a global variable here for dropped filepaths. It is unfortunate that this is global, but
 	//it seems a less-worse than any other alternatives (such as performing a memory allocation to store
@@ -59,10 +64,9 @@ namespace WindowCallbackInternal {
 	void windowFocusChangeCallback(GLFWwindow* window, int focused);
 
 	//---------------------------------------------------------------------------------
-	//   Joystick Connection Discovered/Lost Callback               
+	//   Window Maximize Callback
 	//---------------------------------------------------------------------------------
-	void joystickConnectionCallback(GLFWwindow * window, int joyID, int connected);  //Second parameter is either GLFW_CONNECTED or GLFW_DISCONNECTED
-
+	void windowMaximizeCallback(GLFWwindow* window, int iconified); //See glfw3.h line 1272, second parameter is GLFW_TRUE if maximized, and GLFW_FALSE if restored
 
 	//Input callbacks:
 

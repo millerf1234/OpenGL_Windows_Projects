@@ -248,6 +248,10 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 
 		glfwSetDropCallback(mWindow, WindowCallbackInternal::filedropCallback);
 
+		glfwSetWindowMaximizeCallback(mWindow, WindowCallbackInternal::windowMaximizeCallback);
+
+		glfwSetJoystickCallback(WindowCallbackInternal::joystickConnectionCallback);
+
 		//glfwSetMouseButtonCallback(mWindow, mouseButtonCallback);
 		//glfwSetScrollCallback(mWindow, mouseScrollCallback);
 		//glfwSetCursorEnterCallback(mWindow, curserEnterCallback);

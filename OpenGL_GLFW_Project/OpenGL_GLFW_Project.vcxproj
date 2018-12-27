@@ -155,6 +155,7 @@
     <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp" />
     <ClCompile Include="GraphicsLanguageFrameworkWrapper.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
+    <ClCompile Include="JoystickBase.cpp" />
     <ClCompile Include="Lightsource.cpp" />
     <ClCompile Include="LightsourceTestDemo.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="GraphicsLanguageFrameworkMonitor.h" />
     <ClInclude Include="GraphicsLanguageFrameworkWindow.h" />
     <ClInclude Include="GraphicsLanguageFrameworkWrapper.h" />
+    <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="VideoMode.h" />
     <ClInclude Include="WindowCallbackEvent.h" />
