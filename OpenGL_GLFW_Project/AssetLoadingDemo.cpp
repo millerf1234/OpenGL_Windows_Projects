@@ -1,22 +1,152 @@
 //File:        AssetLoadingDemo.cpp
 //
+//Description:          What to say. This is the furthest along project (as of late December 2018)
+//                        yet from among the RenderDemo projects. The idea of this project is to be able 
+//                        to load '.obj' models and then render them.
+//   Main Features:   -Supports instanced rendering. While this feature is initially disabled, it can
+//                        be enabled with a single key press. Excellent way to have the demo draw 
+//                        many millions of triangles at once without chugging (at least on my computer).
+//                    -The main shaders for this project are able to be dynamically updated without
+//                        requiring for the project to be closed, re-opened and re-loaded (just save
+//                        any changes to the shader to attempt rebuild*).                                   *Note: Only a few of the shaders are currently supported 
+//                    -Texturing is not yet supported, but it wouldn't take much                                 and they won't rebuild if they contain errors
+//                        preperatory work to add, since uv-coordinates are loaded 
+//                        for models that have them available. Models without UV coords 
+//                        will have randomly generated texture coordinates, which could 
+//                        be interesting if used to sample from one of the availble noise
+//                        functions. 
+//                     -Models that do not contain normal data will have it generated for them on a 
+//                        triangle-by-triangle basis (i.e. all 3 vertices of each triangle are assigned
+//                        the same normal). This is (I think) less-than-ideal compared with per-vertex
+//                        normals, but it gets the job done just fine.
+//                     -The load times can get pretty long for larger models, there is definitly
+//                        work needed still for object loading. The current implementation is entirely
+//                        single threaded and my algorithm performs several iterations over the data to 
+//                        change it from its '.obj' storage (with Positions, Texture Coordinates and 
+//                        Normals stored in seperate sections of the file) to interlaced vertices (in the 
+//                        9-component ordering of {x,y,z,w,s,t,nx,ny,nz}  [with nx, ny, nz being the normal])
+//                        With some rewriting the number of steps (i.e. copies and allocations) performed
+//                        should be reducable. I have also been investigating potential Task-based solutions
+//                        for breaking up loading to be performed concurrently. If loading multiple models,
+//                        the use of 'std::packaged_task' looks promising. 
+//                     
+//                  
+// Instructions:        To change which model(s) get loaded, find the member function loadModels() and
+//                        just follow the syntax of any of the sample models that are available, 
+//                        the only difference being to change the filepath to match the model
+//                        you want. If unsure of filepath of a model/file, click and drag+drop
+//                        the model onto this RenderDemo's mainRenderWindow while it is running, there is
+//                        a callback implemented that will print the filepath of any files that
+//                        are dropped.
+//                      In this project's current state, the only supported 3D model format is '.obj', 
+//                        and even then not every feature define in the '.obj' file standard is supported.
+//                      A work-around for misbehaving models is to first import their '.obj' into the free modeling
+//                        software Blender ( https://www.blender.org/ ) and then use Blender's export feature to
+//                        export the model as an '.obj'. Blender's exported '.obj's are typically well
+//                        behaved and predictable. Triangulating faces is not necessary.   
+//      
+//
+// Available User Input: 
+//                           [Disclaimer]   
+//  All of the user input for this RenderDemo is currently hard coded. While 
+//  chances are the input bindings will not change, there is a chance the following 
+//  controls get remapped to different inputs than documented here. Also chances are this
+//  list is not an exhaustive list. 
+//
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |            Input                |                              Description of Action                             |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |           Arrow Keys            |           Modifies the rotations angles for Pitch and Head(Yaw)                |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |     Arrow Keys + L/R Shift      |          Modifies the rotations Roll and a sped-up Pitch                       |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              Z, W               |                  Changes the value of the uniform 'zoom'                       |
+//  |         Z, W  + L-/R-Shift      |                       (same as before, except faster)                          |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                 Modifies input primitive for scene draw calls                  |
+//  |     Tilde/'1'/'2'/'3'           |              [Press tilde once for LINES, twice for LINE_STRIP]                |
+//  |                                 |     [Press '1' for triangles, '2' for TRIANGLE_STRIP, '3' for TRIANGLE_FAN]    |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |             Space               |                         Pause/Unpause Program Execution                        |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              't'                |                                  Freeze time                                   |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              'r'                |                                  Reset Demo                                    |
+//  |                                 | [see member function reset();  should set time to 0 and reset rotations/zoom]  |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              'i'                |                           Toggle Instanced Rendering**                         |      **Note: Vertex shader must use gl_InstanceID in some way
+//  |           '+' and '-'           | (Requires Instanced Rendering Actived) Increment/Decrement rendered instances  |              or else all instances will be drawn in the same place.
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |     'w', 'a', 's', 'd'          |                      Translates all models in the scene                        |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |             'esc'               |                                   Exit Demo                                    |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              'b'                |                               Toggle Blending                                  |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//
+//
+//
+//  Additional Notes and General Things to be Aware Of:
+//                  -The rotation matrix used in this RenderDemo is built from Euler angles and thus
+//                      quite easily runs into the issue of Gimble lock.
+//                  -The behavior of the models on the screen is highly variable dependent upon what the
+//                      sceneShaders are doing ("AssetLoadingDemo.vert"  and  "AssetLoadingDemo.frag")
+//                  -To allow for the use of a single shader program for rendering models that will not 
+//                      necessarily have the same vertex information
+//
+//                  -There was a lot of experiementing that went into 
+//                        this RenderDemo, so a lot of the private member functions of this 
+//                        class ideally will make their way into future Utility classes.
+//                   [What I mean by this is that there is a heck of a lot of implementation code
+//                        that really should be burried into seperate classes]
 //
 //Programmer:  Forrest Miller
-//Date:        November 14, 2018
-
+//Date Created:        November 14, 2018
+//Date Completed:      tbd...
 
 
 #include "AssetLoadingDemo.h"
 
+//The following 2 global variables can be used to define how models are to be loaded into the scene.
+//The first model loaded is translated by the vector:
+constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.0f, -0.0f, -0.0f);
+//Each object after the first has the following translation applied (Note 
+// Z-translation is disabled for your own safety due to Z-Clipping hazards!):
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(3.0f, 3.0f);
 
+
+
+//This function is intended to be called only through this class's constructor and 
+//is in charge of assigning every member field an initial value
 void AssetLoadingDemo::initialize() {
+	//Set error flag
 	error = false;
+	//Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameLineTypeLastSwitched = 0ull;
 	frameInstancedDrawingBehaviorLastToggled = 0ull;
 	frameInstancedDrawingCountLastModified = 0ull;
 	frameTimeFreezeLastToggled = 0ull;
+	frameBlendOperationLastToggled = 0ull;
+
 	counter = 0.0f;
 	vao = vbo = 0u;
 
@@ -30,7 +160,8 @@ void AssetLoadingDemo::initialize() {
 	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 
 	freezeTimeToggle = false;
-	
+	enableBlending = false;
+
 	//Set values for screen projection 
 	fov = 56.0f;
 	screenHeight = 2160.0f;
@@ -43,7 +174,7 @@ void AssetLoadingDemo::initialize() {
 	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
 
 	//Set values for view matrix
-	cameraPos = glm::vec3(0.0f, 0.0f, 15.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+	cameraPos = glm::vec3(0.0f, 0.0f, 10.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
 	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
 	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -57,14 +188,16 @@ void AssetLoadingDemo::initialize() {
 	pitch = 0.0f;
 	roll = 0.0f;
 	//Calculate rotation matrix
-	rotation = glm::mat4(1.0f);    //Set rotation matrix to 4x4 identity matrix
+	rotation = glm::mat4(1.0f);    //Initialize the rotation matrix to 4x4 identity matrix (it will be set to a real rotation matrix later)
 
 	//Keep an extra zoom parameter
 	zoom = 1.0f; //Higher number means farther away
 
 
 	//Set initial background color
-	backgroundColor = glm::vec3(0.0025f, 0.5f, 0.75f);
+	backgroundColor = glm::vec3(0.025f, 0.5f, 0.75f); //Based off some non-exhaustive testing thus far, I
+	//                                                 //have reached the conjecture that these initial values matter
+	//                                                 //not at all. See the function for the background color update
 
 }
 
@@ -91,7 +224,7 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 		fprintf(WRNLOG, warning.str().c_str());
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
 	}
-	window = screenInfo->activeMonitor;
+	mainRenderWindow = screenInfo->activeMonitor;
 }
 
 
@@ -149,16 +282,14 @@ void AssetLoadingDemo::loadShaders() {
 	//Create and attach a secondary vertex shader containing implementations for some noise functions
 	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
 		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
-	vertexNoiseShader->makeSecondary();
-	sceneShader->attachSecondaryVert(vertexNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
+	///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
 	//Create and attach a secondary fragment shader containing implementations for some noise functions 
 	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
 		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
 	fragmentNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-	shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+	///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
 	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
 	sceneShader->link();
@@ -168,8 +299,12 @@ void AssetLoadingDemo::loadShaders() {
 	else {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-		std::cin.get(); //Hold the window open if there was an error
+		std::cin.get(); //Hold the mainRenderWindow open if there was an error
+		markMainRenderWindowAsReadyToClose(); //Mark it for closing once error is acknowledged
+		return;
 	}
+
+	fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
 }
 
 
@@ -180,6 +315,8 @@ GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer() const {
 
 
 void AssetLoadingDemo::loadModels() {
+
+	fprintf(MSGLOG, "\nAquiring and parsing Model(s) data from file(s)...\n");
 
 	//[RFP == Relative File Path]
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
@@ -192,29 +329,40 @@ void AssetLoadingDemo::loadModels() {
 	float abstractShapeScale = 2.0f;
 
 	//Load some models
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 3.5f));
 	
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
+	
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
 
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
-	fprintf(MSGLOG, "\n%u models have been loaded.\n", sceneObjects.size());
+	size_t loadedModlCount = sceneObjects.size();
+	if (loadedModlCount == 0u) {
+		fprintf(MSGLOG, "\nNo Models were loaded!\n");
+	}
+	else if (loadedModlCount == 1u) {
+		fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
+	}
+	else {
+		fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
+	}
 
 }
 
@@ -229,28 +377,33 @@ void AssetLoadingDemo::prepareScene() {
 }
 
 
-
 void AssetLoadingDemo::renderLoop() {
-	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
+	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
 		//Check Input
 		if (checkToSeeIfShouldCloseWindow()) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-			continue; //Skip the rest of this loop iteration to close window quickly
+			markMainRenderWindowAsReadyToClose();
+			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
 		}
 		if (checkIfShouldPause()) {
 			pause();
 			continue;
 		}
 		if (checkIfShouldReset()) {
-			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 				pause();
 				continue;
 			}
 			reset();
 		}
-
+		if (checkIfShouldFreezeTime()) { //'checkIfShouldFreezeTime()' relies on 'toggleFreezeTime()' to 
+			toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
+		}
+		if (checkIfShouldToggleBlending()) {
+			toggleBlending();
+		}
+		
 		//More Input Checking
-		toggleTimeFreeze(); 
+		
 		changePrimitiveType();
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
@@ -279,7 +432,7 @@ void AssetLoadingDemo::renderLoop() {
 			counter += 0.0125f; //Increment time 
 		}
 
-		glfwSwapBuffers(window); //Swap the buffer to present image to monitor
+		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
 
 		glfwPollEvents();
 
@@ -288,7 +441,7 @@ void AssetLoadingDemo::renderLoop() {
 			fprintf(MSGLOG, "\nContext Reset Required!\n");
 			fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
 			std::cin.get();
-			glfwSetWindowShouldClose(window, GLFW_TRUE); //For now just close the window
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
 		}
 		
 
@@ -299,8 +452,10 @@ void AssetLoadingDemo::renderLoop() {
 }
 
 
+
+
 bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
@@ -308,7 +463,7 @@ bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const {
 
 bool AssetLoadingDemo::checkIfShouldPause() const {
 	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
-		&& (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)) {
+		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
@@ -316,9 +471,30 @@ bool AssetLoadingDemo::checkIfShouldPause() const {
 
 
 bool AssetLoadingDemo::checkIfShouldReset() const {
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
 		return true;
 	return false;
+}
+
+bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
+	if ((frameNumber - frameTimeFreezeLastToggled) > 15ull) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool AssetLoadingDemo::checkIfShouldToggleBlending() const {
+
+	if ((frameNumber - frameBlendOperationLastToggled) > 15ull) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
+			return true;
+		}
+	}
+	return false;
+	
 }
 
 void AssetLoadingDemo::pause() {
@@ -335,13 +511,13 @@ void AssetLoadingDemo::pause() {
 	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
 	while (true) {
 		glfwPollEvents();
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 			frameUnpaused = frameNumber;
 			fprintf(MSGLOG, "UNPAUSED!\n");
 			return;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
 			return;
 		}
 		else { //wait for a little bit before polling again
@@ -366,6 +542,7 @@ void AssetLoadingDemo::reset() {
 	frameInstancedDrawingBehaviorLastToggled = 0ull;
 	frameInstancedDrawingCountLastModified = 0ull;
 	frameTimeFreezeLastToggled = 0ull;
+	frameBlendOperationLastToggled = 0ull;
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
@@ -375,24 +552,38 @@ void AssetLoadingDemo::reset() {
 }
 
 void AssetLoadingDemo::toggleTimeFreeze() {
-	if ((frameNumber - frameTimeFreezeLastToggled) > 15ull) {
-		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-			frameTimeFreezeLastToggled = frameNumber;
-			freezeTimeToggle = !freezeTimeToggle;
-			if (freezeTimeToggle) {
-				fprintf(MSGLOG, "Time Frozen!\n");
-			}
-			else {
-				fprintf(MSGLOG, "Time Unfrozen!\n");
-			}
-		}
+	//Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
+	frameTimeFreezeLastToggled = frameNumber;
+	freezeTimeToggle = !freezeTimeToggle;
+	if (freezeTimeToggle) {
+		fprintf(MSGLOG, "Time Frozen!\n");
+	}
+	else {
+		fprintf(MSGLOG, "Time Unfrozen!\n");
+	}
+}
+
+void AssetLoadingDemo::toggleBlending() {
+	//Note that it is vitally important that 'frameBlendOperationLastToggled' is updated to match the current 'frameNumber'
+	frameBlendOperationLastToggled = frameNumber;
+
+	enableBlending = !enableBlending;
+	if (enableBlending) {
+		fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to 'ONE_MINUS_SOURCE_ALPHA' \n");
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	else {
+		fprintf(MSGLOG, "Blending Disabled!\n");
+		glDisable(GL_BLEND);
 	}
 }
 
 void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 	//Only allow toggling to happen every 11 frames
 	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > 11ull) {
-		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
 			frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
 			drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
 			fprintf(MSGLOG, "Instanced Rendering set to: %s",
@@ -403,12 +594,12 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 	//Only allow the instance count to be modified every 12 frames (1/5th second)
 	if ((frameNumber - frameInstancedDrawingCountLastModified) > 12ull) {
 		if (drawMultipleInstances) {
-			if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
 				instanceCount++;
 				fprintf(MSGLOG, "Rendered Instances increased to: %u\n", instanceCount);
 			}
-			else if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+			else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
 				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
 					frameInstancedDrawingBehaviorLastToggled = frameNumber;
 					instanceCount--;
@@ -426,22 +617,22 @@ void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
 	GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
 
 	//Check for updates to X period
-	if (glfwGetKey(window, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
-		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_x -= xChangeRate * rightShiftFactor;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_x -= xChangeRate * leftShiftFactor;
 		}
 		else {
 			instanceSpiralPatternPeriod_x -= xChangeRate;
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS) {
-		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_x += xChangeRate * rightShiftFactor;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_x += xChangeRate * leftShiftFactor;
 		}
 		else {
@@ -451,22 +642,22 @@ void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
 
 
 	//Check for updates to Y period
-	if (glfwGetKey(window, GLFW_KEY_SEMICOLON) == GLFW_PRESS) {
-		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_y -= yChangeRate * rightShiftFactor;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_y -= yChangeRate * leftShiftFactor;
 		}
 		else {
 			instanceSpiralPatternPeriod_y -= yChangeRate;
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
-		if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_y += yChangeRate * rightShiftFactor;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			instanceSpiralPatternPeriod_y += yChangeRate * leftShiftFactor;
 		}
 		else {
@@ -477,16 +668,16 @@ void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
 
 void AssetLoadingDemo::changePrimitiveType() {
 	
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS)
 		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
-	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_2) == GLFW_PRESS)
 		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
 
-	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_3) == GLFW_PRESS)
 		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
 
-	if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
 		if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
 			frameLineTypeLastSwitched = frameNumber;
 		}
@@ -505,50 +696,50 @@ void AssetLoadingDemo::changePrimitiveType() {
 
 void AssetLoadingDemo::rotate() {
 
-	if ((glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
-		(glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
+	if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
+		(glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
 
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS) {
 			pitch += 0.05f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
 			pitch -= 0.05f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
 			zoom += 0.095f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
 			zoom -= 0.095f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
 			roll += 0.3f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 			roll -= 0.3f;
 		}
 	}
 	else {
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS) {
 			head += 0.05f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
 			head -= 0.05f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
 			roll += 0.05f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 			roll -= 0.05f;
 		}
 
 
 		//Sneak scaling in here as well..
-		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
 			zoom += 0.025f;
 		}
-		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
 			zoom -= 0.025f;
 		}
 	}
@@ -558,27 +749,27 @@ void AssetLoadingDemo::translate() {
 	float turbo = 1.0f;
 	float xSpeed = 0.1f;
 	float ySpeed = 0.1f;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 		turbo = 5.0f;
 	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		turbo *= 4.0f;
 	}
 
 	//UP/Down
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_W) == GLFW_PRESS) {
 		yTranslation += turbo * ySpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
 		yTranslation -= turbo * ySpeed;
 	}
 
 
 	//Left/Right
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_A) == GLFW_PRESS) {
 		xTranslation += turbo * xSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
 		xTranslation -= turbo * xSpeed;
 	}
 
@@ -658,7 +849,7 @@ void AssetLoadingDemo::buildNewShader() {
 		else {
 			fprintf(ERRLOG, "New Shader Program was not successfully linked!\n");
 			//fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n"); //
-			//std::cin.get(); //Hold the window open if there was an error
+			//std::cin.get(); //Hold the mainRenderWindow open if there was an error
 		}
 	
 }
@@ -666,19 +857,32 @@ void AssetLoadingDemo::buildNewShader() {
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
-	glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
-	backgroundColor.x = abs(sin(counter + backgroundColor.x));
-	backgroundColor.y = abs(sin(counter + backgroundColor.y + PI/3.0f));
-	backgroundColor.z = abs(sin(counter + backgroundColor.y + PI / 2.0f));
+	//if (false) {
+	//	glClearColor(0.32f, 0.4f, 0.35f, 1.0f);
+	//}
+	//else if (true) {
+		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
+		backgroundColor.x = abs(sin(counter + backgroundColor.x));
+		backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
+		backgroundColor.z = abs(sin(counter + backgroundColor.y + PI / 2.0f));
 
-	///For some reason the next 2 lines do not do the same thing...
-	backgroundColor /= backgroundColor.length(); //normalize backgroundColor
-	//backgroundColor = glm::normalize(backgroundColor); //Keep background color normalized
+		
+		backgroundColor /= backgroundColor.length(); //normalize backgroundColor
+		//backgroundColor = glm::normalize(backgroundColor); //Keep background color normalized
 
-	/*//Experiment:
-	glm::vec3 divideCalculation = backgroundColor;
-	fprintf(MSGLOG, "Background is:   Red=%f,  Green=%f,   Blue=%f\n", divideCalculation.r, divideCalculation.b, divideCalculation.g);
-	*/
+		/*
+		//Experiment:
+		glm::vec3 divideCalculation = backgroundColor;
+		fprintf(MSGLOG, "Background is:   Red=%f,  Green=%f,   Blue=%f\n", divideCalculation.r, divideCalculation.b, divideCalculation.g);
+		
+		//A second experiment:
+		//glm::vec3 bckgrndColorByGLMNormalization = glm::normalize(backgroundColor);
+		//fprintf(MSGLOG, "\nExperiment:  background color is (%f, %f, %f) and glm::normalize(background) is:  (%f, %f, %f)\n"
+		//	"The difference between the two is thus: (%f, %f, %f) \n", backgroundColor.r, backgroundColor.g, backgroundColor.b, bckgrndColorByGLMNormalization.r, bckgrndColorByGLMNormalization.g, bckgrndColorByGLMNormalization.b, backgroundColor.r - bckgrndColorByGLMNormalization.r, backgroundColor.g - bckgrndColorByGLMNormalization.g, backgroundColor.b - bckgrndColorByGLMNormalization.b);
+		//fprintf(MSGLOG, "For reference, length(background) is: %f\n", backgroundColor.length());
+	    */
+
+	//}
 }
 
 
@@ -728,12 +932,6 @@ void AssetLoadingDemo::drawVerts() {
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
 
 
 	if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
@@ -796,18 +994,38 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() {
 
 void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 
-	const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.0f, -0.0f, -0.0f);
-	const glm::vec3 CHANGE_BETWEEN_OBJECTS(5.0f, 5.0f, 0.00f);
+	
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
 
-	sceneBuffer.reserve(20000u * sceneObjects.size());  //This is just a rough guess as to the size of the scene data. 
+	//Compute the scene size
+	size_t sceneSize = 0u;
+	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {
+		if (((*objIter)->hasNormals())) {
+			if ((*objIter)->hasTexCoords()) {
+				sceneSize += (*objIter)->mVertices_.size();
+			}
+			else {
+				sceneSize += (((*objIter)->mVertices_.size() / (4u+3u)) * (4u + 2u + 3u)); //Divide by 'position-normal' vertex size (7u) and then multiply by 'position-texCoord-normal' vertex size (9u)
+			}
+		}
+		else if (((*objIter)->hasTexCoords())) {
+			sceneSize += (((*objIter)->mVertices_.size() / (4u+2u)) * (4u + 2u + 3u));  //Divide by 'position-texCoord' vertex size and then multiply by 'position-texCoord-normal' vertex size
+		}
+		else {
+			sceneSize += (((*objIter)->mVertices_.size() / 4u) * (4u + 2u + 3u)); //Divide by 'position' vertex size and then multiply by 'position-texCoord-normal' vertex size
+		}
+	}
 
-														//Iterate through each object in the sceneObjects vector
+	//Reserve that much space
+	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
+	sceneBuffer.reserve(sceneSize); 
+
+	//Iterate through each object in the sceneObjects vector
 	for (auto sceneObjIter = sceneObjects.begin(); sceneObjIter != sceneObjects.end(); sceneObjIter++) {
 		objectCounter++;
 		fprintf(MSGLOG, "\tAdding Object %d to scene...\n", objectCounter);
-		fprintf(MSGLOG, "\t\tPosition of Object %d:   <%.2f, %.2f, %.2f>\n", objectCounter,
+		fprintf(MSGLOG, "\t\tPosition of Object %d:   <%3.3f, %3.3f, %3.3f>\n", objectCounter,
 			objectPositionOffset.x, objectPositionOffset.y, objectPositionOffset.z);
 
 		//Objects missing Normal and/or Texture Coordinates will need to have data generated for them
@@ -831,10 +1049,8 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		}
 
 		//Increment offset to prepare for the next object
-		objectPositionOffset += CHANGE_BETWEEN_OBJECTS;
-		if (objectPositionOffset.z > 1.0f) {
-			objectPositionOffset.z = -0.05f;
-		}
+		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x;
+		objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y;
 	}
 }
 

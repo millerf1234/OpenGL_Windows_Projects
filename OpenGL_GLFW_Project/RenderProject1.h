@@ -39,7 +39,7 @@ public:
 
 private:
 	bool error;
-	GLFWwindow * window; //Pointer to target renderable window (Application should have this)
+	GLFWwindow * mainRenderWindow; //Pointer to target renderable mainRenderWindow (Application should have this)
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
 	float counter;
 	float zRotation;

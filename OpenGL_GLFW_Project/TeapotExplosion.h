@@ -64,7 +64,7 @@ private:
 	GLfloat colorModificationValues[COLOR_MOD_VALUES_COUNT];
 
 	//The GLFWwindow pointer is a protected member of the RenderDemoBase class 
-	//GLFWwindow * window; //Pointer to target renderable window (Application should provide this)
+	//GLFWwindow * mainRenderWindow; //Pointer to target renderable mainRenderWindow (Application should provide this)
 
 	std::unique_ptr<ShaderProgram> sceneShader; 
 	std::unique_ptr<ShaderProgram> sceneShaderLine;

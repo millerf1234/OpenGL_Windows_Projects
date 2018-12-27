@@ -106,9 +106,18 @@ protected:
 	bool mRenderDemoLoaded;
 	*/
 
-	GLFWwindow * window; //Pointer to target renderable window (Application must provide this)
+	GLFWwindow * mainRenderWindow; //Pointer to target renderable window (Application must provide this)
 
-	//void 
+	
+	// Marks the close flag for the RenderDemo's Main Window. The actual closing of the window
+	//must be handled elsewhere.
+	//  [Class Implementation Detail]  (i.e. expectation on how this function impacts derived classes)   
+	//     If this function is called before the render loop is first
+	//       initiated, the render loop will just instantly exit once
+	//       reached. Otherwise, if this function is called from within a
+	//       render loop iteration, the remaining parts of the current
+	//       iteration will be performed.
+	void markMainRenderWindowAsReadyToClose() const { glfwSetWindowShouldClose(mainRenderWindow, true); }
 
 
 };

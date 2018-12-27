@@ -243,6 +243,11 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 		glfwSetWindowSizeCallback(mWindow, WindowCallbackInternal::windowSizeCallback);
 		glfwSetFramebufferSizeCallback(mWindow, WindowCallbackInternal::framebufferSizeCallback);
 		glfwSetWindowPosCallback(mWindow, WindowCallbackInternal::windowPositionCallback);
+
+		glfwSetWindowOpacity(mWindow, 1.0f);
+
+		glfwSetDropCallback(mWindow, WindowCallbackInternal::filedropCallback);
+
 		//glfwSetMouseButtonCallback(mWindow, mouseButtonCallback);
 		//glfwSetScrollCallback(mWindow, mouseScrollCallback);
 		//glfwSetCursorEnterCallback(mWindow, curserEnterCallback);
@@ -300,7 +305,9 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 	}
 	else {
 		fprintf(ERRLOG, "Error! GLFW failed while communicating with your display.\nError is due to the following reason:\n"
-			"\tUNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. PERHAPS TRY A DIFFERENT MONITOR? OR REBOOT? OR CALL I.T.\n");
+			"\tUNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. PERHAPS TRY A DIFFERENT MONITOR? OR REBOOT? OR CALL I.T.\n"
+			"[If you are IT and you are reading this message, then chances are something is funky with the monitor since\n"
+			"it is not communicating nicely with this program]\n\n");
 		this->contextIsValid = false;
 	}
 }

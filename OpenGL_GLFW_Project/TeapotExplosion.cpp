@@ -68,7 +68,7 @@ TeapotExplosion::TeapotExplosion(std::shared_ptr<MonitorData> screenInfo) : Rend
 		fprintf(WRNLOG, warning.str().c_str());
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
 	}
-	window = screenInfo->activeMonitor;
+	mainRenderWindow = screenInfo->activeMonitor;
 }
 
 
@@ -154,7 +154,7 @@ void TeapotExplosion::loadShaders() {
 	else {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-		std::cin.get(); //Hold the window open if there was an error
+		std::cin.get(); //Hold the mainRenderWindow open if there was an error
 	}
 }
 
@@ -183,10 +183,10 @@ void TeapotExplosion::loadTeapot() {
 }
 
 void TeapotExplosion::renderLoop() {
-	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
+	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
 		if (checkToSeeIfShouldCloseWindow()) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-			continue; //Skip the rest of this loop iteration to close window quickly
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
+			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
 		}
 
 		if (checkIfShouldPause()) {
@@ -198,7 +198,7 @@ void TeapotExplosion::renderLoop() {
 			recordColorToLog();
 
 		if (checkIfShouldReset()) {
-			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 				pause();
 				continue;
 			}
@@ -221,7 +221,7 @@ void TeapotExplosion::renderLoop() {
 		counter += 0.000125f;
 		//counter += 0.00000002f*0.000125f;
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(mainRenderWindow);
 		
 		glfwPollEvents();
 		frameNumber++; //Increment the frame counter
@@ -231,7 +231,7 @@ void TeapotExplosion::renderLoop() {
 
 
 bool TeapotExplosion::checkToSeeIfShouldCloseWindow() const {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
@@ -239,7 +239,7 @@ bool TeapotExplosion::checkToSeeIfShouldCloseWindow() const {
 
 bool TeapotExplosion::checkIfShouldPause() const {
 	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
-		&& (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)) {
+		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
@@ -248,14 +248,14 @@ bool TeapotExplosion::checkIfShouldPause() const {
 bool TeapotExplosion::checkIfShouldRecordColor() const {
 	if ((frameNumber >= (frameOfMostRecentColorRecording +
 		DELAY_BETWEEN_SCREEN_COLOR_RECORDINGS_IN_RENDER_PROJECTS))
-		&& (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)) {
+		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_P) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
 }
 
 bool TeapotExplosion::checkIfShouldReset() const {
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
 		return true;
 	return false;
 
@@ -273,13 +273,13 @@ void TeapotExplosion::pause() {
 	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
 	while (true) { 
 		glfwPollEvents();
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 			frameUnpaused = frameNumber;
 			fprintf(MSGLOG, "UNPAUSED!\n");
 			return;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
 			return;
 		}
 		else { //wait for a little bit before polling again
@@ -307,91 +307,91 @@ void TeapotExplosion::reset() {
 
 void TeapotExplosion::changePrimitiveType() {
 
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) 
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS) 
 		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
-	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) 
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_2) == GLFW_PRESS) 
 		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
 
-	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) 
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_3) == GLFW_PRESS) 
 		currentTriangleInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
 }
 
 void TeapotExplosion::modifyColorThreshhold() {
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS) {
 		if (colorChangeThreshold < 1.0f)
 			colorChangeThreshold += 0.005f;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_W) == GLFW_PRESS) {
 		if (colorChangeThreshold > 0.0f)
 			colorChangeThreshold -= 0.005f;
 	}
 }
 
 void TeapotExplosion::rotateColor() {
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS) 
 		blueRotationTheta += 0.025f;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
 		blueRotationTheta -= 0.025f;
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
 		greenRotationTheta += 0.025f;
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		greenRotationTheta -= 0.025f;
 }
 
 void TeapotExplosion::updateColorModificationValues() {
 	
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_A) == GLFW_PRESS) {
 		colorModificationValues[0] += 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
 		colorModificationValues[0] -= 0.33f * COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
 		colorModificationValues[1] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
 		colorModificationValues[1] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
 		colorModificationValues[2] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_C) == GLFW_PRESS) {
 		colorModificationValues[2] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_F) == GLFW_PRESS) {
 		colorModificationValues[3] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_V) == GLFW_PRESS) {
 		colorModificationValues[3] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) {
 		colorModificationValues[4] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
 		colorModificationValues[4] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_H) == GLFW_PRESS) {
 		colorModificationValues[5] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_N) == GLFW_PRESS) {
 		colorModificationValues[5] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_J) == GLFW_PRESS) {
 		colorModificationValues[6] += COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
-	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_M) == GLFW_PRESS) {
 		colorModificationValues[6] -= COLOR_MOD_VALUE_CHANGE_SPEED;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_K) == GLFW_PRESS) {
 		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
 			colorModificationValues[i] = MathFunc::getRandomInRangef(-110.0f, 110.0f);
 		}
 		colorModificationValues[0] = 1.0f;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_L) == GLFW_PRESS) {
 		for (int i = 0; i < COLOR_MOD_VALUES_COUNT; i++) {
 			colorModificationValues[i] = colorModificationValues[i] * 0.8f;
 		}
@@ -399,10 +399,10 @@ void TeapotExplosion::updateColorModificationValues() {
 }
 
 void TeapotExplosion::updateVelocity() {
-	if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 		velocity *= 1.05f;
 	}
-	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
 		velocity /= 1.05f;
 	}
 	

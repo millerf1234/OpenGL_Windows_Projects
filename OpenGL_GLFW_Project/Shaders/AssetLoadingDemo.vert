@@ -18,13 +18,15 @@ uniform float time;
 uniform mat4 rotation;
 uniform mat4 MVP;
 
-//uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
-//uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the pattern used when drawing instances
+uniform float instanceSpiralPatternPeriod_x;  //Modifier for the x value of the pattern used when drawing instances 
+uniform float instanceSpiralPatternPeriod_y;  //Modifier for the x value of the pattern used when drawing instances
+
+#define mod1 instanceSpiralPatternPeriod_x; //That long name I chose is a pain to type 
+#define mod2 instanceSpiralPatternPeriod_y;
 
 
-#define pos position
 #define vert float(gl_VertexID)
-#define inst (float(gl_InstanceID) + 1)
+#define inst (float(gl_InstanceID)*2.0)
 
 ///////////////////////////////////////////////////////////////////////////
 // EXTERNAL FUNCTION PROTOTYPES  [for noise]
@@ -37,12 +39,33 @@ float fbm(float x);            //1d Fractal Brownian Motion
 float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
 
-
 //#define BASIC_VERT
+#define INSTANCED_CIRCLE_VERT
+//#define EXTRA_ROTATION_PER_INSTANCE_VERT
 //#define COOL_VERT
-#define SOMETHING_ELSE
 
 #if defined BASIC_VERT
+
+void main() {
+	normal = mat3(MVP) * ModelNormal;
+
+	position = MVP * ModelPosition + vec4(0.0, 0.0, 0.0, zoom);
+	gl_Position = position;
+}
+
+#elif defined INSTANCED_CIRCLE_VERT
+
+void main() {
+	normal = mat3(rotation) * ModelNormal;
+
+	//texCoord = ModelTexCoord;
+
+	//Step value (for second step function) determined through experimentation
+	position = MVP * (rotation * ModelPosition + vec4(0., 0., 0., zoom)) + step(-inst, -0.1) * vec4(15.0*cos(inst), 25.0*sin(inst), 0., 0.0) + step(-inst, -711.01) * vec4(45.0*cos(inst), 65.0*sin(inst), 0.0, 0.);
+	gl_Position = position;
+}
+
+#elif defined EXTRA_ROTATION_PER_INSTANCE_VERT
 void main() {
 
 	float flip = -1.0;
@@ -81,10 +104,10 @@ void main() {
 	cool *= step(0.257, abs(cool));
 	position = ModelPosition +vec4(3.0*cos(inst + cool), (1.0 - inst) / cool, (0.5*inst) / cool, zoom);
 	
-	for (float i = 0; i < inst; i += 1.0) {
-		position *= rotation;
-		position += vec4(cos(vert / 5.7), cos(vert / 5.9), cos(vert / 3.2), 0.0);
-	}
+	//for (float i = 0; i < inst; i += 1.0) {
+	//	position *= rotation;
+	//	position += vec4(cos(vert / 5.7), cos(vert / 5.9), cos(vert / 3.2), 0.0);
+	//}
 
 	texCoord = ModelTexCoord; 
 
@@ -94,20 +117,7 @@ void main() {
 
 
 	//gl_Position = (MVP * position) + vec4(-2.0, -2.0, 0.0, 0.0) + (0.001 + 0.002*sin(time))*vec4(mat3(rotation)*vec3(cnoise(position)+vert), 0.0);
-	gl_Position = (MVP * position) + vec4(-2.0, -2.0, 0.0000005*vert, 0.0);
-}
-
-#elif defined SOMETHING_ELSE 
-
-void main() {
-	position = ModelPosition + vec4(200.0 *cos(5.2*inst + 0.25*time), 18.0*sin(20.7301*inst + 0.1*time), 10.5 * inst + time, zoom);
-	
-	texCoord = ModelTexCoord;
-
-	normal = mat3(rotation) * ModelNormal;
-
-
-	gl_Position = MVP * position;
+	gl_Position = (MVP * position);
 }
 
 #endif

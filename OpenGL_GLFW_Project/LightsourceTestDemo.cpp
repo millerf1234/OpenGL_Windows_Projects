@@ -56,7 +56,7 @@ LightsourceTestDemo::LightsourceTestDemo(std::shared_ptr<MonitorData> screenInfo
 		fprintf(WRNLOG, warning.str().c_str());
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
 	}
-	window = screenInfo->activeMonitor;
+	mainRenderWindow = screenInfo->activeMonitor;
 }
 
 void LightsourceTestDemo::cleanup() {
@@ -132,7 +132,7 @@ void LightsourceTestDemo::loadShaders() {
 	else {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-		std::cin.get(); //Hold the window open if there was an error
+		std::cin.get(); //Hold the mainRenderWindow open if there was an error
 	}
 }
 
@@ -203,10 +203,10 @@ void LightsourceTestDemo::loadModels() {
 }
 
 void LightsourceTestDemo::renderLoop() {
-	while (glfwWindowShouldClose(window) == GLFW_FALSE) {
+	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
 		if (checkToSeeIfShouldCloseWindow()) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-			continue; //Skip the rest of this loop iteration to close window quickly
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
+			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
 		}
 
 		if (checkIfShouldPause()) {
@@ -219,7 +219,7 @@ void LightsourceTestDemo::renderLoop() {
 			//behavior if both pause and reset are pressed at same time (because
 			//the delay on pause detection is based off frame counter). Note that
 			//the function 'checkIfShouldPause()' is intentionally not used here.
-			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 				pause();
 				continue;
 			}
@@ -240,7 +240,7 @@ void LightsourceTestDemo::renderLoop() {
 
 		counter += 0.0125f;
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(mainRenderWindow);
 
 		glfwPollEvents();
 		frameNumber++; //Increment the frame counter
@@ -251,7 +251,7 @@ void LightsourceTestDemo::renderLoop() {
 
 
 bool LightsourceTestDemo::checkToSeeIfShouldCloseWindow() const {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
@@ -259,7 +259,7 @@ bool LightsourceTestDemo::checkToSeeIfShouldCloseWindow() const {
 
 bool LightsourceTestDemo::checkIfShouldPause() const {
 	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
-		&& (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)) {
+		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
 	}
 	return false;
@@ -267,7 +267,7 @@ bool LightsourceTestDemo::checkIfShouldPause() const {
 
 
 bool LightsourceTestDemo::checkIfShouldReset() const {
-	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_TAB) == GLFW_PRESS)
 		return true;
 	return false;
 
@@ -285,13 +285,13 @@ void LightsourceTestDemo::pause() {
 	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
 	while (true) {
 		glfwPollEvents();
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
 			frameUnpaused = frameNumber;
 			fprintf(MSGLOG, "UNPAUSED!\n");
 			return;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
 			return;
 		}
 		else { //wait for a little bit before polling again
@@ -315,46 +315,46 @@ void LightsourceTestDemo::reset() {
 void LightsourceTestDemo::changeNoiseType() {
 	
 
-	/*if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+	/*if (glfwGetKey(mainRenderWindow, GLFW_KEY_A) == GLFW_PRESS) {
 		noiseResolution++;
 	}
-	else if ((glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)) {
+	else if ((glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS)) {
 		noiseResolution--;
 		if (noiseResolution == 0)
 			noiseResolution = 1;
 	}*/
 
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS) {
 		noiseFunctionToUse = 0;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_W) == GLFW_PRESS) {
 		if (noiseFunctionToUse != 1) { //Always start option 1 off without a color shift
 			colorShift = 1; 
 		}
 		noiseFunctionToUse = 1;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS) {
 		noiseFunctionToUse = 2;
 	}
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS) {
 		noiseFunctionToUse = 3;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS) {
 		noiseFunctionToUse = 4;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_Y) == GLFW_PRESS) {
 		noiseFunctionToUse = 5;
 	}
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+	if (glfwGetKey(mainRenderWindow, GLFW_KEY_U) == GLFW_PRESS) {
 		noiseFunctionToUse = 6;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
 		noiseFunctionToUse = 7;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_O) == GLFW_PRESS) {
 		noiseFunctionToUse = 8;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_P) == GLFW_PRESS) {
 		noiseFunctionToUse = 9;
 	}
 }
@@ -369,7 +369,7 @@ void LightsourceTestDemo::toggleDither() {
 	if ((frameDitherLastToggled + 20ull) >= frameNumber) {
 		return;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
 		frameDitherLastToggled = frameNumber;
 		useDither = !useDither;
 		if (useDither) {
@@ -387,7 +387,7 @@ void LightsourceTestDemo::toggleBlend() {
 	if ((frameBlendLastToggled + 20ull) >= frameNumber) {
 		return;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
 		frameBlendLastToggled = frameNumber;
 		useBlend = !useBlend;
 		if (useBlend) {
@@ -407,7 +407,7 @@ void LightsourceTestDemo::togglePolygonSmooth() {
 	if ((framePolygonSmoothLastToggled + 20ull) >= frameNumber) {
 		return;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
 		framePolygonSmoothLastToggled = frameNumber;
 		usePolygonSmooth = !usePolygonSmooth;
 		if (usePolygonSmooth) {
@@ -429,7 +429,7 @@ void LightsourceTestDemo::toggleColorshift() {
 	if ((frameColorshiftLastToggled + 12ull) >= frameNumber) {
 		return;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) {
 		frameColorshiftLastToggled = frameNumber;
 		colorShift *= -1;
 		if (colorShift < 0) {

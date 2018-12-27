@@ -271,9 +271,6 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
       <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\Nvidia_Aftermath_GPU_DEBUGGER">
-      <UniqueIdentifier>{e908ff7c-5a1f-4e79-8615-a7c575b6055b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\ApplicationConstantSettings">
       <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
     </Filter>
@@ -469,9 +466,6 @@
     </Library>
     <Library Include="OpenAL\OpenAL32.lib">
       <Filter>Third Party\OpenAL</Filter>
-    </Library>
-    <Library Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.lib">
-      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
@@ -883,12 +877,6 @@
     <ClInclude Include="PrimaryWindowState.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow</Filter>
     </ClInclude>
-    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\defines.h">
-      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
-    </ClInclude>
-    <ClInclude Include="Nvidia_Aftermath_GPU_Debug\include\GFSDK_Aftermath.h">
-      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
-    </ClInclude>
     <ClInclude Include="PrimaryRenderWindow.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClInclude>
@@ -1086,9 +1074,6 @@
     <None Include="AssetLoadingDemo_CoolEffect.frag">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
     </None>
-    <None Include="Nvidia_Aftermath_GPU_Debug\lib\x86\GFSDK_Aftermath_Lib.x86.dll">
-      <Filter>Third Party\Nvidia_Aftermath_GPU_DEBUGGER</Filter>
-    </None>
     <None Include="obj\NewOrderTie_Triangulated.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
@@ -1163,6 +1148,9 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="NotesAndReferences\VirtualDesctructors.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="UserInputConsiderationsAndNotes.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>

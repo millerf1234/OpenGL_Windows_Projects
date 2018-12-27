@@ -65,7 +65,7 @@ private:
 	float counter;
 	unsigned long long frameNumber;
 	unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled, 
-		frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled;
+		frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled;
 
 	glm::vec3 backgroundColor;
 
@@ -78,7 +78,7 @@ private:
 	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
 
 	bool freezeTimeToggle; 
-	
+	bool enableBlending;
 
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
@@ -132,7 +132,6 @@ private:
 	//all models for the scene have finished loading
 	void prepareScene();
 
-
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////
 	///////////////////////////////////////////////////////
@@ -149,6 +148,8 @@ private:
 	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
 	bool checkIfShouldPause() const; //Probably 'space'
 	bool checkIfShouldReset() const;
+	bool checkIfShouldFreezeTime() const;
+	bool checkIfShouldToggleBlending() const;
 
 
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -158,6 +159,7 @@ private:
 	void pause();
 	void reset();
 	void toggleTimeFreeze();
+	void toggleBlending();
 	void changePrimitiveType();
 	void changeInstancedDrawingBehavior();
 	void modifyInstancedDrawingSpiralPattern();

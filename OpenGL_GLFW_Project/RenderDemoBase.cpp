@@ -7,7 +7,7 @@
 
 
 RenderDemoBase::RenderDemoBase() {
-	window = nullptr;
+	mainRenderWindow = nullptr;
 }
 
 
