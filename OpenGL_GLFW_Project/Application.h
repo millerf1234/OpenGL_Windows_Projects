@@ -59,6 +59,13 @@ public:
 	~Application();
 	void launch();
 
+	//No Copying or Moving allowed
+	Application(const Application&) = delete;
+	Application(Application&&) = delete;
+	Application& operator=(const Application&) = delete;
+	Application& operator=(Application&&) = delete;
+
+
 private:
 	bool mApplicationValid;
 	std::shared_ptr<MonitorData> displayInfo;

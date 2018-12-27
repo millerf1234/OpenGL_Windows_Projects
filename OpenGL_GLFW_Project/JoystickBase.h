@@ -165,8 +165,8 @@ public:
 	//            Move            \\
 	//----------------------------\\
 
-	JoystickBase(JoystickBase&&);
-	JoystickBase& operator=(JoystickBase&&);
+	JoystickBase(JoystickBase&&) /*noexcept*/;  //Perhaps best to not delcare these noexcept since they are dealing with GLFW's C API and pointer stuff
+	JoystickBase& operator=(JoystickBase&&) /*noexcept*/;
 
 	 //----------------------------------\\
 	//  Public State-Querying Functions   \\
