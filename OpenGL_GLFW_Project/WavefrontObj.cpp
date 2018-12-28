@@ -8,6 +8,8 @@
 
 #include "WavefrontObj.h"
 
+#ifndef WAVEFRONT_OBJ_INCOMPLETE_ //Code is disabled since I never finished it and it isn't used anywhere
+
 void WavefrontObj::initialize() {
 	mFile_ = nullptr;
 	
@@ -71,4 +73,4 @@ bool WavefrontObj::aquireFile(std::string filepath) {
 	return true; //File was successfully aquired
 }
 
- 
+#endif //WAVEFRONT_OBJ_INCOMPLETE_

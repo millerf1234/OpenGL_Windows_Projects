@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-
+#ifndef MESH_CLASS_IS_INCOMPLETE_
 
 Mesh::Mesh() {
 
@@ -20,3 +20,5 @@ DatapointCount Mesh::getMeshSizeBeyondOffset(Offset offset) const {
 		return (mMeshSize_ - offset);
 	}
 }
+
+#endif //MESH_CLASS_IS_INCOMPLETE_

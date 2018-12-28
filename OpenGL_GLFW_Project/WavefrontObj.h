@@ -36,6 +36,10 @@
 #ifndef WAVEFRONT_OBJ_H_
 #define WAVEFRONT_OBJ_H_
 
+#define WAVEFRONT_OBJ_INCOMPLETE_
+
+#ifndef WAVEFRONT_OBJ_INCOMPLETE_
+
 #include "AssetInterface.h" //This class inherits from base class found in this file
 #include "Mesh.h"           //Loaded data will be placed into "Mesh.h"
 #include "Line.h"           //Used internally by class
@@ -182,7 +186,7 @@ private:
 
 
 
-
+#endif //WAVEFRONT_OBJ_INCOMPLETE_
 
 
 #endif //WAVEFRONT_OBJ_H_

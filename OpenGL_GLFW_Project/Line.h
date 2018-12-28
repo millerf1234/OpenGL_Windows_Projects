@@ -15,7 +15,9 @@
 #include <cstdlib>  //strtoul  (Used to convert numbers in a string to unsigned long 'Offset')
 #include <array>    //std::array
 
-#include "Mesh.h"   //Use the types defined within Mesh
+using Offset = size_t;
+using DatapointCount = size_t;
+
 
 namespace AssetLoadingInternal {
 

@@ -12,9 +12,8 @@
 #define FACE_H_
 
 
-#include <array>    //std::array
+#include <array>   
 
-//#include "Mesh.h"
 using Offset = size_t;
 using DatapointCount = size_t;
 

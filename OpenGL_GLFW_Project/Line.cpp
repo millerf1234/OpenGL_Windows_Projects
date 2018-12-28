@@ -6,6 +6,7 @@
 
 #include "Line.h"
 
+#include "LoggingMessageTargets.h"
 
 namespace AssetLoadingInternal {
 

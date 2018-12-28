@@ -1,7 +1,7 @@
 //File:                       JoystickBase.h
 //Class:                      JoystickBase
 //
-//  Description:              Wrapper class for a generic 'JoystickBase' controller. Essentially this
+//Description:                Wrapper class for a generic 'JoystickBase' controller. Essentially this
 //                               class's purpose is to exist as a wrapper for any device the GLFW library
 //                               recognizes as a 'JoystickBase'. This class is seperate from the rest of GLFW
 //                               however because unlike pretty much every other part of GLFW that is in some
@@ -179,9 +179,9 @@ public:
 	JoystickBase(JoystickBase&&);
 	JoystickBase& operator=(JoystickBase&&);
 
-	 //----------------------------------\\
-	//  Public State-Querying Functions   \\
-	\\------------------------------------//
+	 //----------------------------------//
+	//  Public State-Querying Functions  //
+   //------------------------------------//
 
 	bool connected() const { return mConnected_; }
     //Retrieves this objects uniquely assigned joystickID

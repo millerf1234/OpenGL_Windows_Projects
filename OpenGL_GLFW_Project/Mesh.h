@@ -12,6 +12,9 @@
 #ifndef MESH_H_
 #define MESH_H_
 
+#define MESH_CLASS_IS_INCOMPLETE_
+#ifndef MESH_CLASS_IS_INCOMPLETE_
+
 #include <vector>
 #include <array>
 #include <tuple>
@@ -98,4 +101,7 @@ private:
 	//std::vector<ExtendedVertex> mExtendedVertices_;
 };
 
+#endif //MESH_CLASS_IS_INCOMPLETE_
+
 #endif //MESH_H_
+
