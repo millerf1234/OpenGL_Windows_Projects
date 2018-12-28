@@ -8,13 +8,17 @@
 
 #include "Face.h"
 
+#include <cstdlib>  //strtoul  (Used to convert numbers in a string to unsigned long 'Offset')
+
+#include "LoggingMessageTargets.h"
+
 namespace AssetLoadingInternal {
 
 	bool Face::FaceComponent::compareAsTriangles(const FaceComponent& that) const {
 		bool equality = (
 			(mVertIndices_[0] == that.mVertIndices_[0]) &&
 			(mVertIndices_[1] == that.mVertIndices_[1]) &&
-			(mVertIndices_[2] == that.mVertIndices_[2]));
+			(mVertIndices_[2] == that.mVertIndices_[2]) );
 		return equality;
 	}
 

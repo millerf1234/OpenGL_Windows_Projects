@@ -82,7 +82,7 @@ FilepathWrapper::FilepathWrapper(const FilepathWrapper& that) {
 	this->mLastWriteTime_ = that.mLastWriteTime_;
 }
 
-FilepathWrapper::FilepathWrapper(FilepathWrapper&& that) {
+FilepathWrapper::FilepathWrapper(FilepathWrapper&& that) noexcept {
 	this->mPath_ = std::move(that.mPath_); 
 	this->mFileExists_ = that.mFileExists_;
 	this->mExtension_ = std::move(that.mExtension_);
@@ -90,9 +90,10 @@ FilepathWrapper::FilepathWrapper(FilepathWrapper&& that) {
 	this->mLastWriteTime_ = that.mLastWriteTime_;
 }
 
-FilepathWrapper::~FilepathWrapper() {
-
-}
+//Changed destructor to just be '= default'
+//FilepathWrapper::~FilepathWrapper() {
+//
+//}
 
 FilepathWrapper& FilepathWrapper::operator=(const FilepathWrapper& that) {
 	if (this != &that) {
@@ -105,7 +106,7 @@ FilepathWrapper& FilepathWrapper::operator=(const FilepathWrapper& that) {
 	return *this;
 }
 
-FilepathWrapper& FilepathWrapper::operator=(FilepathWrapper&& that) {
+FilepathWrapper& FilepathWrapper::operator=(FilepathWrapper&& that) noexcept {
 	if (this != &that) {
 		this->mPath_ = std::move(that.mPath_);
 		this->mFileExists_ = that.mFileExists_;

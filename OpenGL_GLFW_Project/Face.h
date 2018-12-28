@@ -11,10 +11,13 @@
 #ifndef FACE_H_
 #define FACE_H_
 
-#include <cstdlib>  //strtoul  (Used to convert numbers in a string to unsigned long 'Offset')
+
 #include <array>    //std::array
 
-#include "Mesh.h"
+//#include "Mesh.h"
+using Offset = size_t;
+using DatapointCount = size_t;
+
 
 namespace AssetLoadingInternal {
 	//Dictates how the '==' operator evaluates invalid faces

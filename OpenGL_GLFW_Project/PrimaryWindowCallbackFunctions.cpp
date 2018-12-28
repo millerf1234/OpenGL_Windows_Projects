@@ -148,7 +148,8 @@ namespace WindowCallbackInternal {
 
 		if (isGamepad) {
 			//Try out the gamepad-specific functions
-
+			std::string gamepadName = glfwGetGamepadName(joyID);
+			fprintf(MSGLOG, "\nGamepad name is %s\n", gamepadName.c_str());
 		}
 	}
 

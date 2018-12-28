@@ -75,13 +75,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>-std:c++17</AdditionalOptions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <SmallerTypeCheck>false</SmallerTypeCheck>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,7 +106,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -113,7 +115,8 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -349,6 +352,7 @@
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\2DTexturedQuadPlane.mtl" />
+    <None Include="obj\3D_Arrow.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
@@ -486,6 +490,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
+    <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
     <Image Include="obj\2DTexturedQuadPlaneTexture.png" />
     <Image Include="obj\BeveledCube.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png" />

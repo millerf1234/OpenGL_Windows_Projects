@@ -58,11 +58,11 @@ public:
 	FilepathWrapper(const std::string& fp);
 
 	FilepathWrapper(const FilepathWrapper&);
-	FilepathWrapper(FilepathWrapper&&);
-	~FilepathWrapper();
+	FilepathWrapper(FilepathWrapper&&) noexcept;
+	~FilepathWrapper() = default;
 
 	FilepathWrapper& operator=(const FilepathWrapper&);
-	FilepathWrapper& operator=(FilepathWrapper&&);
+	FilepathWrapper& operator=(FilepathWrapper&&) noexcept;
 
 	//Returns the filepath as a std::string
 	std::string filepath() const { return mPath_; }

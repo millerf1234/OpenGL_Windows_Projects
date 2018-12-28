@@ -339,7 +339,7 @@ void AssetLoadingDemo::loadModels() {
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
@@ -350,9 +350,8 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
-
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
 	size_t loadedModlCount = sceneObjects.size();
 	if (loadedModlCount == 0u) {
@@ -415,7 +414,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		//Perform logic 
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
-			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) {
+			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame for updated shaders
 			if (checkForUpdatedShaders()) {
 				buildNewShader();
 			}

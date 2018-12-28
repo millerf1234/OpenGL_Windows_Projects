@@ -328,6 +328,9 @@
     <Filter Include="Source Files\Utility\UI\Joystick/Controller\ControllerTypes">
       <UniqueIdentifier>{17db7dfd-f9a7-4f85-82cf-934ef32a9205}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Parse_Challenge">
+      <UniqueIdentifier>{f9b29e90-d08e-4419-89e5-ef4671087722}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -1089,6 +1092,9 @@
     <None Include="obj\NewOrderTie_Triangulated.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
+    <None Include="obj\3D_Arrow.mtl">
+      <Filter>Resource Files\Parse_Challenge</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1213,6 +1219,9 @@
     </Image>
     <Image Include="obj\2DTexturedQuadPlaneTexture.png">
       <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+    </Image>
+    <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png">
+      <Filter>NotesAndReferences</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
