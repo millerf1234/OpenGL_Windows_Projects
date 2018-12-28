@@ -9,19 +9,19 @@
 //                               an entire program. The only restriction is that GLFW should be initialized
 //                               first.
 //     
-//--------------------------+----------------------------------------------------------------------------------------------+
-//     !!! IMPORTANT !!!    |   To ensure proper program execution, careful attention should be paid to due to the         |
-//                          |     external and physical nature of USB Joystick Controllers, there is always a risk         |
-//      Please Read --->    |     of a controller disconnect event occuring at any time during the course of a program's   |
-//                          |     execution. This class provides an internal flag representing the controller's            |
-//                          |     connection state; as soon as a disconnection event occurs that flag will be set to mark  |
-//                          |     this controller as having been disconnected. The connection status of each controller    |
-//                          |     can be polled through the use of the function:                                           |
-//                          |                                                  bool connected()                            |
-//                          |   While this class and it's derived types should be able to prevent any major catastrophes   |
-//                          |     arising from trying to read input from a disconnected controller, it is HIGHLY           |
-//                          |     recommended to poll each controller's connection status before reading input.            |
-//--------------------------+----------------------------------------------------------------------------------------------+
+//+--------------------------+----------------------------------------------------------------------------------------------+
+//|     !!! IMPORTANT !!!    |   To ensure proper program execution, careful attention should be paid to due to the         |
+//|                          |     external and physical nature of USB Joystick Controllers, there is always a risk         |
+//|      Please Read --->    |     of a controller disconnect event occuring at any time during the course of a program's   |
+//|                          |     execution. This class provides an internal flag representing the controller's            |
+//|                          |     connection state; as soon as a disconnection event occurs that flag will be set to mark  |
+//|                          |     this controller as having been disconnected. The connection status of each controller    |
+//|                          |     can be polled through the use of the provided public member function:                    |
+//|                          |               bool connected()                                                               |
+//|                          |   While this class and it's derived types should be able to prevent any major catastrophes   |
+//|                          |     arising from trying to read input from a disconnected controller, it is HIGHLY           |
+//|                          |     recommended to poll each controller's connection status before reading input.            |
+//+--------------------------+----------------------------------------------------------------------------------------------+
 //
 //
 //
