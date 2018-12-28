@@ -96,10 +96,59 @@ namespace WindowCallbackInternal {
 		}
 		else if (connected == GLFW_DISCONNECTED) {
 			fprintf(MSGLOG, "\tEvent: Disconnected\n");
+			//fprintf(MSGLOG, "\n[Just for yuks... The function 'glfwJoystickPresent(%d)' has returned %d ]\n",
+			//	glfwJoystickPresent(joyID));
+			//fprintf(MSGLOG, "\n       [FYI GLFW_TRUE is %d and GLFW_FALSE is %d]\n\n", GLFW_TRUE, GLFW_FALSE);
+			return;
 		}
 		else {
 			fprintf(ERRLOG, "\nERROR: An invalid value was passed to the GLFW Joystick event Callback function!\n"
 				"The value passed in was %d, which is not supposed to happen!\n", connected);
+			return;
+		}
+
+		//Only do the following if 'event' was GLFW_CONNECTED
+		fprintf(MSGLOG, "\nLet's take a closer look at what sort of info GLFW\n"
+			"will convey to us about this new input device...\n");
+
+		fprintf(MSGLOG, "\nFirst let's just get the obvious out of the way... \n");
+		int controllerIsConnected = glfwJoystickPresent(joyID);
+		fprintf(MSGLOG, "\tThe function 'glfwJoystickPresent(%d)' has returned %d, which is also the macro: ",
+			joyID, controllerIsConnected);
+		if (controllerIsConnected == GLFW_TRUE) {
+			fprintf(MSGLOG, " GLFW_TRUE\n");
+		}
+		else if (controllerIsConnected == GLFW_FALSE) {
+			fprintf(MSGLOG, " GLFW_FALSE\n");
+		}
+		else {
+			fprintf(ERRLOG, " ERROR INVALID MACRO !!!\n");
+			return;
+		}
+
+		
+		int isGamepad = glfwJoystickIsGamepad(joyID);
+		std::string name = glfwGetJoystickName(joyID);
+		int buttonCount = 0;
+		const unsigned char* buttons = glfwGetJoystickButtons(joyID, &buttonCount);
+		int axisStates = 0;
+		const float* axes = glfwGetJoystickAxes(joyID, &axisStates);
+		int hatCount = 0;
+		const unsigned char* hats = glfwGetJoystickHats(joyID, &hatCount);
+		std::string guid = glfwGetJoystickGUID(joyID);
+
+		fprintf(MSGLOG, "\nHere are the interesting details:\n\tGUID = %s\n\t\tName = %s\n", guid.c_str(), name.c_str());
+		fprintf(MSGLOG, "\t\tButton Count is %d\n\t\tAxes Count is %d\n\t\tHat Count is %d\n\n", buttonCount, axisStates, hatCount);
+		fprintf(MSGLOG, "\nIs it a gamepad?  Answer = ");
+		if (isGamepad)
+			fprintf(MSGLOG, "YES!  =)\n\n");
+		else
+			fprintf(MSGLOG, "no...  =(  too bad...\n\n");
+
+
+		if (isGamepad) {
+			//Try out the gamepad-specific functions
+
 		}
 	}
 

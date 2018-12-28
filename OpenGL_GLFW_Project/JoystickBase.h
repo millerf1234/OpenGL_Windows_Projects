@@ -126,6 +126,7 @@
 //
 //  Reference:                https://www.glfw.org/docs/3.3/input_guide.html#joystick
 //                            http://discourse.glfw.org/t/glfw-controller-database/768
+//                            https://www.glfw.org/docs/3.3/group__input.html#gaed5104612f2fa8e66aa6e846652ad00f
 //
 //  Programmer:               Forrest Miller
 //  Date:                     December 27, 2018
@@ -159,7 +160,7 @@ public:
 	//         Destructor         \\
 	//----------------------------\\
 
-	virtual ~JoystickBase();
+	virtual ~JoystickBase() = default;
 
 	//----------------------------\\
 	//            Move            \\
