@@ -98,6 +98,16 @@
 //               where the JoystickBase is stored.
 //-----------------------------------------------------------------------------------------------------------------------------
 //
+//    UPDATE:  24 hours after I intially started writing this class, I now have a much more thourough grasp on how 
+//             GLFW and Joysticks interact with eachother and the App. All four of the concerns I list below I now
+//             have answers too. Unfortunatly, with more knowledge comes more questions. I believe it will be wise 
+//             to investigate the properties of certain joysticks which GLFW recognizes as meeting a criteria to 
+//             be called a 'gamepad', and there is some sort of link between GLFW and SDL for keeping a document that
+//              allows the very many different types and vareities of gamepad to be parseable and useable. Perhaps there
+//              now needs to be a 'gamepad' class that inherits from this class.
+//            I have also discovered that each joystick has a unqiue value known as its GUID/UUID. Perhaps I will modify 
+//             this class to track joysticks by their GUID, which will remain constant even if several controllers are 
+//              connected/disconnected randomly. They may not be completly unique though, more testing is required...
 //
 //  IDEA(s)  (delete these next few sections once implementation is more complete): 
 //                            There will be this class which wraps individual JoystickBase objects, and 
