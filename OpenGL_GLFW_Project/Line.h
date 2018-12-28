@@ -15,11 +15,17 @@
 #include <cstdlib>  //strtoul  (Used to convert numbers in a string to unsigned long 'Offset')
 #include <array>    //std::array
 
-using Offset = size_t;
-using DatapointCount = size_t;
+
 
 
 namespace AssetLoadingInternal {
+
+	//The following two alias-types are introduced to (hopefully) increase
+	//the readability of the code. Yes, they both are really just size_t,
+	//but by having a distinction provides a clue about how the type is
+	//to be used 
+	using Offset = size_t;
+	using DatapointCount = size_t;
 
 	static constexpr const int LINE_VERTICE_COUNT = 2;
 

@@ -14,11 +14,17 @@
 
 #include <array>   
 
-using Offset = size_t;
-using DatapointCount = size_t;
-
 
 namespace AssetLoadingInternal {
+
+	//The following two alias-types are introduced to (hopefully) increase
+	//the readability of the code. Yes, they both are really just size_t,
+	//but by having a distinction provides a clue about how the type is
+	//to be used 
+	using Offset = size_t;
+	using DatapointCount = size_t;
+
+
 	//Dictates how the '==' operator evaluates invalid faces
 	static constexpr bool TREAT_INVALID_FACES_AS_EQUIVALENT = true;
 
@@ -27,7 +33,7 @@ namespace AssetLoadingInternal {
 	static constexpr const int TRIANGLE_VERTICE_COUNT = 3; //A triangle consists of 3 vertices
 
 
-	class Face {
+	class Face final {
 		//Class that represents the component of a face (such as position, normal or tex coord). There are
 		//up to four vertices per face if the input mesh uses quads.
 		class FaceComponent {
@@ -216,4 +222,4 @@ namespace AssetLoadingInternal {
 
 } //namespace AssetLoadingInternal
 
-#endif  //FACE_H_
+#endif //FACE_H_
