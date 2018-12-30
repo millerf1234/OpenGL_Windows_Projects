@@ -151,6 +151,8 @@
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="JoystickStatePrinter.cpp" />
+    <ClCompile Include="MappedGamepad.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GraphicsLanguageFrameworkContext.cpp" />
@@ -158,7 +160,9 @@
     <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp" />
     <ClCompile Include="GraphicsLanguageFrameworkWrapper.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
+    <ClCompile Include="Joystick.cpp" />
     <ClCompile Include="JoystickBase.cpp" />
+    <ClCompile Include="JoystickManager.cpp" />
     <ClCompile Include="Lightsource.cpp" />
     <ClCompile Include="LightsourceTestDemo.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -200,12 +204,16 @@
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="CurrentlyConnectedMonitors.h" />
+    <ClInclude Include="JoystickStatePrinter.h" />
+    <ClInclude Include="MappedGamepad.h" />
     <ClInclude Include="GLFrameworkErrorCallback.h" />
     <ClInclude Include="GraphicsLanguageFrameworkContext.h" />
     <ClInclude Include="GraphicsLanguageFrameworkMonitor.h" />
     <ClInclude Include="GraphicsLanguageFrameworkWindow.h" />
     <ClInclude Include="GraphicsLanguageFrameworkWrapper.h" />
+    <ClInclude Include="Joystick.h" />
     <ClInclude Include="JoystickBase.h" />
+    <ClInclude Include="JoystickManager.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="VideoMode.h" />
     <ClInclude Include="WindowCallbackEvent.h" />

@@ -27,7 +27,8 @@ namespace MeshFunc {
 
 	//Computes normalized Vertex Normals for a triangle T = (V0, V1, V2), where each Vi is a 3-dimensional position vector.
 	//    [This version of the function performs the normal calculation directly based off the parameter vertices without 
-	//     verifying triangle validity. Passing in a degenerate triangle will cause bad things to happen]
+	//     verifying triangle validity. Passing in a degenerate triangle will cause bad things to happen, so only call
+    //     this function when dealing with meshes that are guarenteed/known to be well behaved]
 	glm::vec3 computeNormalizedVertexNormalsForTriangle_Unsafe(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
 	
 

@@ -148,6 +148,8 @@ void AssetLoadingDemo::initialize() {
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
 
+	stickPrinter = JoystickStatePrinter(0);
+
 	counter = 0.0f;
 	vao = vbo = 0u;
 
@@ -443,7 +445,8 @@ void AssetLoadingDemo::renderLoop() {
 			std::cin.get();
 			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
 		}
-		
+	
+		stickPrinter.printState();
 
 		frameNumber++; //Increment the frame counter
 		prepareGLContextForNextFrame(); 

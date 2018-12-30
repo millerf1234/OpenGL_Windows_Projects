@@ -89,8 +89,11 @@ namespace WindowCallbackInternal {
 	}
 
 	void joystickConnectionCallback(int joyID, int connected) {
+		fprintf(MSGLOG, "\n-----------------------------------------------------------------\n");
+		fprintf(MSGLOG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n");
+
 		fprintf(MSGLOG, "\nGLFW Event Callback! Joystick Connection Event Detected!\n"
-			"Joystick ID: %d       \tEvent Code: %d", joyID, connected);
+			"Joystick ID: %d    \tEvent Code: %d", joyID, connected);
 		if (connected == GLFW_CONNECTED) {
 			fprintf(MSGLOG, "\tEvent: Connected\n");
 		}
@@ -108,23 +111,23 @@ namespace WindowCallbackInternal {
 		}
 
 		//Only do the following if 'event' was GLFW_CONNECTED
-		fprintf(MSGLOG, "\nLet's take a closer look at what sort of info GLFW\n"
+		fprintf(MSGLOG, "Let's take a closer look at what sort of info GLFW\n"
 			"will convey to us about this new input device...\n");
 
-		fprintf(MSGLOG, "\nFirst let's just get the obvious out of the way... \n");
-		int controllerIsConnected = glfwJoystickPresent(joyID);
-		fprintf(MSGLOG, "\tThe function 'glfwJoystickPresent(%d)' has returned %d, which is also the macro: ",
-			joyID, controllerIsConnected);
-		if (controllerIsConnected == GLFW_TRUE) {
-			fprintf(MSGLOG, " GLFW_TRUE\n");
-		}
-		else if (controllerIsConnected == GLFW_FALSE) {
-			fprintf(MSGLOG, " GLFW_FALSE\n");
-		}
-		else {
-			fprintf(ERRLOG, " ERROR INVALID MACRO !!!\n");
-			return;
-		}
+		//fprintf(MSGLOG, "\nFirst let's just get the obvious out of the way... \n");
+		//int controllerIsConnected = glfwJoystickPresent(joyID);
+		//fprintf(MSGLOG, "\tThe function 'glfwJoystickPresent(%d)' has returned %d, which is also the macro: ",
+		//	joyID, controllerIsConnected);
+		//if (controllerIsConnected == GLFW_TRUE) {
+		//	fprintf(MSGLOG, " GLFW_TRUE\n");
+		//}
+		//else if (controllerIsConnected == GLFW_FALSE) {
+		//	fprintf(MSGLOG, " GLFW_FALSE\n");
+		//}
+		//else {
+		//	fprintf(ERRLOG, " ERROR INVALID MACRO !!!\n");
+		//	return;
+		//}
 
 		
 		int isGamepad = glfwJoystickIsGamepad(joyID);
@@ -139,11 +142,11 @@ namespace WindowCallbackInternal {
 
 		fprintf(MSGLOG, "\nHere are the interesting details:\n\tGUID = %s\n\t\tName = %s\n", guid.c_str(), name.c_str());
 		fprintf(MSGLOG, "\t\tButton Count is %d\n\t\tAxes Count is %d\n\t\tHat Count is %d\n\n", buttonCount, axisStates, hatCount);
-		fprintf(MSGLOG, "\nIs it a gamepad?  Answer = ");
+		fprintf(MSGLOG, "\nIs it a (recognized) gamepad?  Answer = ");
 		if (isGamepad)
-			fprintf(MSGLOG, "YES!  =)\n\n");
+			fprintf(MSGLOG, "YES!  \n");
 		else
-			fprintf(MSGLOG, "no...  =(  too bad...\n\n");
+			fprintf(MSGLOG, "no...     too bad...\n\n");
 
 
 		if (isGamepad) {

@@ -7,7 +7,6 @@
 
 #pragma once
 
-
 #ifndef FSM_MATH_FUNCTIONS_H_  //FSM is the author's initials
 #define FSM_MATH_FUNCTIONS_H_ 
 
@@ -62,7 +61,7 @@ namespace MathFunc {
 
 	//Random number generation
 	//   (Future Idea: Use function pointers to swap out random number generation algorithms). Have a static variable that dictates which rand generation method to use.
-	//   Include the option to toggle seeding random number generation
+	//   Include the option to toggle re-seeding the random number generation
 	float getRandomInRangef(float, float);
 	int getRandomInRangei(int, int);
 

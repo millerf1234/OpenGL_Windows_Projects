@@ -39,7 +39,6 @@ namespace GLFrameworkInternal {
 		aquireMonitorDetails();
 	}
 
-
 	GraphicsLanguageFrameworkMonitor::~GraphicsLanguageFrameworkMonitor() {
 		//for debug
 		fprintf(MSGLOG, "\n\nDEBUG NOTIFICATION:: Detected that the monitor at address %p has been disconnected!\n", mHandle_);

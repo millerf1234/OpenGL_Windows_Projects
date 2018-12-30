@@ -145,6 +145,7 @@ private:
 	void setGLFWErrorCallback();
 	void setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile);
 	bool validateRuntimeGLFWVersion() const; //Compares runtime-linked GLFW version with version used during compile time 
+	void setInitializationHints() const;
 	bool initializeGLFW(); 
 	int countAvailableMonitors() const;
 	void aquireAvailableMonitors() const;

@@ -32,6 +32,8 @@ GraphicsLanguageFrameworkWrapper::GraphicsLanguageFrameworkWrapper(const int glV
 		return;
 	}
 
+	setInitializationHints();
+
 	if (!initializeGLFW()) {
 		mGLFWWasInitialized_ = false;
 		return;
@@ -154,6 +156,20 @@ bool GraphicsLanguageFrameworkWrapper::validateRuntimeGLFWVersion() const {
 			runtimeRevision);
 	}
 	return true;
+}
+
+void GraphicsLanguageFrameworkWrapper::setInitializationHints() const {
+	//Set all GLFW hints that will affect GLFW's initialization. These must be set before
+	//the function 'glfwInit()' is called.
+	//Luckily, as of GLFW 3.3, the only relevant initialzation hint to set is just a minor detail
+	//affecting how GLFW reports the state of connected Joysticks (i.e. controllers).
+
+	//We want GLFW to report Joystick Hat inputs seperately in their own 'Hats' caragory instead of
+	//bunching them in with the normal button reporting. 
+	glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); 
+
+	//There are also a few macOS-specific hints, which are not relevant once macOS stopped really
+	//supporting OpenGL
 }
 
 bool GraphicsLanguageFrameworkWrapper::initializeGLFW() {

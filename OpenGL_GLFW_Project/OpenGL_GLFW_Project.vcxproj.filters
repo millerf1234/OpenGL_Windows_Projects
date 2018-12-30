@@ -325,11 +325,17 @@
     <Filter Include="Source Files\Utility\UI\Joystick/Controller">
       <UniqueIdentifier>{ac7ddb60-abf3-49ca-a0ff-80c90c247384}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\UI\Joystick/Controller\ControllerTypes">
-      <UniqueIdentifier>{17db7dfd-f9a7-4f85-82cf-934ef32a9205}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Parse_Challenge">
       <UniqueIdentifier>{f9b29e90-d08e-4419-89e5-ef4671087722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt">
+      <UniqueIdentifier>{6a24f5fc-3443-4a7c-a89c-a5f9e55eee23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\Joystick">
+      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment">
+      <UniqueIdentifier>{693c8518-7ceb-46c3-a270-668680afb57b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -466,7 +472,19 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
     </ClCompile>
     <ClCompile Include="JoystickBase.cpp">
-      <Filter>Source Files\Utility\UI\Joystick/Controller</Filter>
+      <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
+    </ClCompile>
+    <ClCompile Include="JoystickManager.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="MappedGamepad.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="Joystick.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="JoystickStatePrinter.cpp">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -904,9 +922,6 @@
     <ClInclude Include="GLFrameworkErrorCallback.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorFunction</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsLanguageFrameworkContext.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsLanguageFrameworkMonitor.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
     </ClInclude>
@@ -920,7 +935,22 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
     </ClInclude>
     <ClInclude Include="JoystickBase.h">
-      <Filter>Source Files\Utility\UI\Joystick/Controller</Filter>
+      <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkContext.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="JoystickManager.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClInclude>
+    <ClInclude Include="MappedGamepad.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClInclude>
+    <ClInclude Include="Joystick.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+    </ClInclude>
+    <ClInclude Include="JoystickStatePrinter.h">
+      <Filter>Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
