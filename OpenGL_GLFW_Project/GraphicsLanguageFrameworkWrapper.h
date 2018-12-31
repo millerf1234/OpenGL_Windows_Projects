@@ -1,5 +1,8 @@
 //File:                 GraphicsLanguageFrameworkWrapper.h
 //
+//  
+//
+// (OUT OF DATE DESCRIPTION)
 //Description:         Defines a wrapper class for the GLFW (Graphics Language FrameWork) library.
 //                     Is intended to be used as a convient object for OS-Independent Window and GL Context 
 //                     creation and usage (in other words, provide a C++-based object-oriented encapsulation for GLFW,
@@ -19,7 +22,7 @@
 //
 //
 // Programmer:          Forrest Miller
-// Date:                December 2018
+// Date:                December 2018 -  January 2019
 
 #pragma once
 
@@ -29,7 +32,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-
 
 #include "ProjectSetup.h" //For GLFW library
 

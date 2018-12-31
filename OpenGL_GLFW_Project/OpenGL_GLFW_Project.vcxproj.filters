@@ -337,6 +337,12 @@
     <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment">
       <UniqueIdentifier>{693c8518-7ceb-46c3-a270-668680afb57b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Debug">
+      <UniqueIdentifier>{a478040c-0ce3-411f-b165-64750b9cbbc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Debug\Joystick State Printer">
+      <UniqueIdentifier>{385cc002-a531-42b4-90e5-1e92af730cbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -484,7 +490,7 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="JoystickStatePrinter.cpp">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment</Filter>
+      <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -950,7 +956,7 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="JoystickStatePrinter.h">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment</Filter>
+      <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

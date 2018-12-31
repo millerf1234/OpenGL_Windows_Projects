@@ -5,13 +5,45 @@
 //The original GeometryShaderExplosion class was based off the code example at
 //  http://web.engr.oregonstate.edu/~mjb/cs519/Handouts/geometry_shaders.6pp.pdf
 //      (Slides 29-32) 
+//
+// References:
+//             - This RenderDemo draws 'point' primitives. While each 'point'
+//                  is not texture mapped (currently) and thus doesn't qualify
+//                  as a 'point sprite', this RenderDemo does make use of several
+//                  of the available point features such as variable point size
+//                  and point - relative fragment coordinates. For more detail on 
+//                  the available options and considerations of rendering with point
+//                  primitives, see: 
+//                      https://www.khronos.org/opengl/wiki/Primitive#Point_primitives
+// 
+//
+// Behind The Scenes:    
+//                This RenderDemo was the first RenderDemo to be created over the course
+//                  of this project. This demo underwent a lot of its development in tandem
+//                  with the utility code, and was the first runnable demo that served as 
+//                  the proving ground for a big chunk of this Application's basic infrastructure 
+//                  (consisting mostly of the code found within the 'ShaderInterface' 
+//                  namespace). This demo was written before there was any capabilities 
+//                  of loading data from files, so it pulls its model data from the 
+//                  header file "teapot.h" containing a static array of vertex positions
+//                  for the classic Utah Teapot. 
+//
+//                 
+//                  
+//
+// Programmer:      Forrest Miller
+// Date:            Sept-Oct 2018 
+// 
+//                  Beyond October:
+//                    Slight modifications have been made to this demo to keep it compatible as 
+//                    the underlying utility code driving it morphs and grows.
 
 #pragma once
 
 #ifndef TEAPOT_EXPLOSION_H_
 #define TEAPOT_EXPLOSION_H_
 
-#include <thread>
+//#include <thread>
 
 #include "ProjectConstants.h"
 #include "ProjectParameters.h"
