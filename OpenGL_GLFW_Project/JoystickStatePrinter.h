@@ -80,7 +80,7 @@ public:
 	//'undetected' message is printed until a joystick reactivates this
 	//object.
 	void printState();	
-	//Returns an empty string if no Joystick is located with the target ID
+	//Returns an empty string if no Joystick is located which has the target ID
 	std::string getStateString();
 
 	//Changes the mode of output from this object. There are 2 available 
@@ -96,6 +96,11 @@ public:
 	//only detected inputs are printed. Otherwise this will return false if
 	//the object is in it's primary mode of printing the entire Joystick state.
 	bool isUsingSecondaryPrintMode() const { return !mPrintFullJoystickState_; }
+
+	//Refreshes the stored internal default state for this Joystick. Useful for 
+	//fixing a Joystick that wasn't in default state when it was first intialized.
+	//Will not have any effect if there is no controller connected with target ID.
+	void reaquireDefaultState();
 
 	~JoystickStatePrinter() = default;
 	JoystickStatePrinter(const JoystickStatePrinter&) = delete;

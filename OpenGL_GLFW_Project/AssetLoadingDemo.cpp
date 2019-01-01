@@ -148,8 +148,6 @@ void AssetLoadingDemo::initialize() {
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
 
-	stickPrinter = JoystickStatePrinter(0);
-
 	counter = 0.0f;
 	vao = vbo = 0u;
 
@@ -415,6 +413,9 @@ void AssetLoadingDemo::renderLoop() {
 		}
 
 		//Perform logic 
+
+		performRenderDemoSharedInputLogic(); 
+
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
 			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame for updated shaders
 			if (checkForUpdatedShaders()) {
@@ -446,7 +447,7 @@ void AssetLoadingDemo::renderLoop() {
 			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
 		}
 	
-		stickPrinter.printState();
+		
 
 		frameNumber++; //Increment the frame counter
 		prepareGLContextForNextFrame(); 

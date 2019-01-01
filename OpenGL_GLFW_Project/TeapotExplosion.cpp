@@ -211,6 +211,8 @@ void TeapotExplosion::renderLoop() {
 		updateColorModificationValues();
 		updateVelocity();
 
+		performRenderDemoSharedInputLogic();
+
 		updateFrameClearColor();
 
 		updateUniforms();

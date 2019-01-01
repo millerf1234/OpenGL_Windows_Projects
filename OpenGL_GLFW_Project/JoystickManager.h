@@ -28,13 +28,6 @@
 #include "LoggingMessageTargets.h"
 #include "Joystick.h"
 
-
-//Just in case for some reason GLFW_JOYSTICK_LAST wasn't defined
-#ifndef GLFW_JOYSTICK_LAST     
-#define GLFW_JOYSTICK_LAST 1
-#endif
-
-
 class JoystickManager final {
 public:
 	//Calling this constructor will bring a JoystickManager into existance, but note that the 

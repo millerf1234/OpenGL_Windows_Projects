@@ -44,6 +44,8 @@
 #include "GLFW_Init.h"              //For the MonitorData struct
 //#include "MissingAsset.h"         //For assets that are missing
 
+#include "JoystickStatePrinter.h"
+
 enum class PIPELINE_PRIMATIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, LINE_STRIP };  //Technically LINE and LINE_STRIP are not triangles
 
 class RenderDemoBase {
@@ -97,6 +99,7 @@ public:
 	//Checks to see if the Render Demo object has successfully loaded all of the 
 	//pieces it needs to have its 'run()' member function called.
 	inline bool checkIfRenderDemoLoaded() const { return mRenderDemoLoaded; }
+	*/
 
 protected:
 
@@ -108,6 +111,9 @@ protected:
 
 	GLFWwindow * mainRenderWindow; //Pointer to target renderable window (Application must provide this)
 
+	//Performs input-handling and logic configuration on the shared members of every RenderDemo object.
+	//This function should be called as part of the render loop.
+	void performRenderDemoSharedInputLogic(); 
 	
 	// Marks the close flag for the RenderDemo's Main Window. The actual closing of the window
 	//must be handled elsewhere.
@@ -120,6 +126,12 @@ protected:
 	void markMainRenderWindowAsReadyToClose() const { glfwSetWindowShouldClose(mainRenderWindow, true); }
 
 
+private:
+	bool mJoystickStatePrintingEnabled_;
+	unsigned long long mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
+	JoystickStatePrinter joystickPrinter;
+
+	void doJoystickPrinterLoopLogic();
 };
 
 

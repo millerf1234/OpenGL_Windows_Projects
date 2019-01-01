@@ -34,8 +34,6 @@
 #include "RelativeFilepathsToResources.h"
 #include "ShaderProgram.h"
 
-#include "JoystickStatePrinter.h"
-
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
 
@@ -70,8 +68,6 @@ private:
 		frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled;
 
 	glm::vec3 backgroundColor;
-
-	JoystickStatePrinter stickPrinter;
 
 	GLuint vao, vbo; 
 

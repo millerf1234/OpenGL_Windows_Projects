@@ -52,11 +52,31 @@ void JoystickStatePrinter::toggleMessageOutputMode() {
 	mPrintFullJoystickState_ = !mPrintFullJoystickState_;
 }
 
+void JoystickStatePrinter::reaquireDefaultState() {
+	//Please Note that this function is not intended to 
+	//be used to get the initial state of a Joystick when
+	//one if first connected. Calling this function
+	//with mHasDefaultState_ set to true will return 
+	//without any modification.
+	if (mHasDefaultState_) {
+		BaseJoyState joyStateBackup = mDefaultState_;
+
+		mHasDefaultState_ = false; //Temporarily fake object not having a set default state
+		recordNewlyConnectedJoystickState(); //Try to aquire a default state
+
+		if (!mHasDefaultState_) { //If something went wrong
+            //Revert to stored backup 
+			mDefaultState_ = joyStateBackup; 
+			mHasDefaultState_ = true;
+		}
+	}
+}
+
 void JoystickStatePrinter::recordNewlyConnectedJoystickState() {
 	if (mHasDefaultState_) { return; } //If a default state is already recorded, then return
 
 	//Confirm that there is a joystick availble
-	if (!glfwJoystickPresent(mID_)) { return; } //
+	if (!glfwJoystickPresent(mID_)) { return; } 
 
 	clearPreviouslyStoredDefaultState(); 
 

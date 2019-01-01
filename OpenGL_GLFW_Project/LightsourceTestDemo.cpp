@@ -226,7 +226,7 @@ void LightsourceTestDemo::renderLoop() {
 			reset();
 		}
 
-		
+		performRenderDemoSharedInputLogic();
 		
 		changeNoiseType();
 		togglePipelineEffects();

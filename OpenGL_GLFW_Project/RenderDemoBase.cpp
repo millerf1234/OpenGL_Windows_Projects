@@ -8,6 +8,8 @@
 
 RenderDemoBase::RenderDemoBase() {
 	mainRenderWindow = nullptr;
+	mJoystickStatePrintingEnabled_ = false;
+	mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
 }
 
 
@@ -62,4 +64,38 @@ bool RenderDemoBase::checkForContextReset() {
 	}
 
 	return resetDetected;
+}
+
+
+void RenderDemoBase::performRenderDemoSharedInputLogic() {
+	doJoystickPrinterLoopLogic();
+}
+
+
+void RenderDemoBase::doJoystickPrinterLoopLogic() {
+	mIterationsSinceLastJoystickStatePrintingLastModified_++;
+	
+	//Perform Input Checking
+	if (mIterationsSinceLastJoystickStatePrintingLastModified_ > 11ull) {
+
+		if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ||
+			(glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)) {
+
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_J) == GLFW_PRESS) {
+				mJoystickStatePrintingEnabled_ = !mJoystickStatePrintingEnabled_;
+				mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+			}
+
+			if (glfwGetKey(mainRenderWindow, GLFW_KEY_K) == GLFW_PRESS) {
+				joystickPrinter.reaquireDefaultState();
+				mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+			}
+
+		}
+	}
+
+	//Perform logic
+	if (mJoystickStatePrintingEnabled_) {
+		joystickPrinter.printState();
+	}
 }

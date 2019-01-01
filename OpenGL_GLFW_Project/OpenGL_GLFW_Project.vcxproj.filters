@@ -334,9 +334,6 @@
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2\Joystick">
       <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\JoystickExperiment">
-      <UniqueIdentifier>{693c8518-7ceb-46c3-a270-668680afb57b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Debug">
       <UniqueIdentifier>{a478040c-0ce3-411f-b165-64750b9cbbc6}</UniqueIdentifier>
     </Filter>
