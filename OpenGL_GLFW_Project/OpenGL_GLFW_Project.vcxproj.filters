@@ -1128,6 +1128,9 @@
     <None Include="obj\3D_Arrow.mtl">
       <Filter>Resource Files\Parse_Challenge</Filter>
     </None>
+    <None Include="AssetLoadingDemoVertBackup.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">

@@ -65,8 +65,34 @@ static constexpr const float AXIS_DEAD_ZONE_SIZE = 0.1f;
 class JoystickStatePrinter final {
 public:
 
+	//Constructing/Deleting/Copying/Moving
 	JoystickStatePrinter() : JoystickStatePrinter(0) { ; }
 	JoystickStatePrinter(int id);
+	~JoystickStatePrinter() = default;
+	JoystickStatePrinter(const JoystickStatePrinter&) = delete;
+	JoystickStatePrinter(JoystickStatePrinter&&) noexcept = default;
+	JoystickStatePrinter& operator=(const JoystickStatePrinter&) = delete;
+	JoystickStatePrinter& operator=(JoystickStatePrinter&&) noexcept = default;
+
+	//------------------------------------------------------------------------------//
+	//                           Public Interface                                   //
+	//------------------------------------------------------------------------------//
+
+	///////////////////////////////////
+	////      Print Functions      ////
+	///////////////////////////////////
+
+	//Prints out a formated message containing the data retrieved from 
+	//a joystick with target ID. If no joystick is detected, a single
+	//'undetected' message is printed until a joystick reactivates this
+	//object.
+	void printState();
+	//Returns an empty string if no Joystick is located which has the target ID
+	std::string getStateString();
+
+	///////////////////////////////////
+	////       Change Target       ////
+	///////////////////////////////////
 
 	//Gets the ID of the joystick being monitored by this object
 	int id() const { return mID_; }
@@ -74,15 +100,22 @@ public:
 	//Values outside of the range from 0 to GLFW_JOYSTICK_LAST will be ignored.
 	void changeID(int);
 
+	//Switches target Joystick_ID to be printed by going to the next ID. Note that
+	//this doesn't mean next connected Joystick. So if Joysticks 1 and 3 are connected
+	//and state is state to poll joystick 1, calling this function will move polling 
+	//target to Joystick 2 even though no Joystick with that ID is connected.
+	void nextJoystick(); 
 
-	//Prints out a formated message containing the data retrieved from 
-	//a joystick with target ID. If no joystick is detected, a single
-	//'undetected' message is printed until a joystick reactivates this
-	//object.
-	void printState();	
-	//Returns an empty string if no Joystick is located which has the target ID
-	std::string getStateString();
+	//Switches target Joystick_ID to be printed by going to the previous ID. Note that
+	//this doesn't skip disconnected Joysticks. So if Joysticks 1 and 3 are connected
+	//and state is state to poll joystick 3, calling this function will move polling 
+	//target to Joystick 2 even though no Joystick with ID==2 is connected.
+	void previousJoystick();
 
+	///////////////////////////////////
+	////     Change Output Type    ////
+	///////////////////////////////////
+	
 	//Changes the mode of output from this object. There are 2 available 
 	//modes currently, one which prints the entire controllers state and
 	//a second mode which only reports inputs that differ from the 
@@ -95,18 +128,19 @@ public:
 	//Returns true if this object is currently in its alternative mode where 
 	//only detected inputs are printed. Otherwise this will return false if
 	//the object is in it's primary mode of printing the entire Joystick state.
-	bool isUsingSecondaryPrintMode() const { return !mPrintFullJoystickState_; }
+	bool isUsingEchoInputPrintMode() const { return !mPrintFullJoystickState_; }
+
+
+	///////////////////////////////////
+	////       Reset Joystick      ////       //This only really affects the DetectedInput print mode
+	///////////////////////////////////
 
 	//Refreshes the stored internal default state for this Joystick. Useful for 
 	//fixing a Joystick that wasn't in default state when it was first intialized.
 	//Will not have any effect if there is no controller connected with target ID.
 	void reaquireDefaultState();
 
-	~JoystickStatePrinter() = default;
-	JoystickStatePrinter(const JoystickStatePrinter&) = delete;
-	JoystickStatePrinter(JoystickStatePrinter&&) noexcept = default;
-	JoystickStatePrinter& operator=(const JoystickStatePrinter&) = delete;
-	JoystickStatePrinter& operator=(JoystickStatePrinter&&) noexcept = default;
+	
 
 private:
 	//Object Internal Members

@@ -1,25 +1,25 @@
-
-//Fragment shader for the asset loading demo
-//
-// Programmer:  Forrest Miller
-// Date:        November 28, 2018
+//Fragment shader 
+//Assigns a color to each pixel that is covered after rasterization
 
 #version 450 core
 
-//Test:
-in vec4 position;
-in vec2 texCoord;
-in vec3 normal;
+//Input from vertex shader
+in vec4 position;     //<x, y, z, w>
+in vec2 texCoord;     //<u, v>
+in vec3 normal;       //<x, y, z>
 
-out vec4 color;
-
-uniform float time;
-
+//Output to screen
+out vec4 color;    //<Red, Green, Blue, Alpha>      Alpha only matters when blending    
 
 
+//"uniform" => parameter to be set by the application which remains constant over the course of a draw call
+uniform float time;  
 
+
+///Ignore these for now, they aren't essential
+/*
 ///////////////////////////////////////////////////////////////////////////
-// EXTERNAL FUNCTION PROTOTYPES  [for noise]
+// EXTERNAL FUNCTION PROTOTYPES  [for noise]        (these are implemented in a seperate file)
 ///////////////////////////////////////////////////////////////////////////
 float noise(vec2 p);           //   Generic 2d noise       
 float pNoise(vec2 p, int res); //2d Perlin
@@ -28,11 +28,11 @@ float cnoise(vec4 P);          //4d Periodic Classic Perlin Noise
 float fbm(float x);            //1d Fractal Brownian Motion
 float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
-
+*/
 
 void main() {
-	//vec3 lightDir = vec3(-3.0, -1.0, 1.0);//vec3(3.75 * cos(0.2*time), 0.1, 4.0 * sin(time*1.80));
-	vec3 lightDir = vec3(10.0 * cos(time), 11.0 * sin(time), -30.0);
+
+	vec3 lightDir = vec3(2.0, 2.0, 2.0);
 	float intensity; 
 	intensity = dot(normalize(lightDir), normal);
 
@@ -50,13 +50,7 @@ void main() {
 		color = vec4(0.32, 0.301, 0.2501, 1.0);
 	}
 	else {
-		color = vec4(0.0612, 0.17, 0.21, 1.0);// +vec4(0.95*sin(cnoise(position))*position);
-	} 
+		color = vec4(0.0612, 0.17, 0.21, 1.0);
+	}
 
-	//float extraNoise = smoothstep(-color.b, 3.0*color.r, gl_FragCoord.x / (9.00 / (intensity + (0.2 * sin(5.0*time))))*0.075*snoise(0.05*(dot(gl_FragCoord.yy, gl_FragCoord.xx)*gl_FragCoord.xy)*fbm(intensity * gl_FragCoord.xy)));
-	//if (intensity < (0.6 - abs(0.5*cos(0.1*time)) ))
-	//	color.r += extraNoise + sin(extraNoise / time);
-	//else
-	//	color.g = clamp( (color.r+color.b) / extraNoise, 0.3, 0.7);
-	color.a = 0.5 - 0.45*abs(sin(0.01*time));
 }	

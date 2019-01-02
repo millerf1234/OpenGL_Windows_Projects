@@ -76,21 +76,53 @@ void RenderDemoBase::doJoystickPrinterLoopLogic() {
 	mIterationsSinceLastJoystickStatePrintingLastModified_++;
 	
 	//Perform Input Checking
-	if (mIterationsSinceLastJoystickStatePrintingLastModified_ > 11ull) {
+	if (mIterationsSinceLastJoystickStatePrintingLastModified_ > 11ull) { //Have a slight delay between when inputs are accepted
 
 		if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ||
 			(glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)) {
 
 			if (glfwGetKey(mainRenderWindow, GLFW_KEY_J) == GLFW_PRESS) {
 				mJoystickStatePrintingEnabled_ = !mJoystickStatePrintingEnabled_;
+				fprintf(MSGLOG, "\nJoystick Output Reporting Is Now ");
+				if (mJoystickStatePrintingEnabled_)
+					fprintf(MSGLOG, "Enabled\n");
+				else
+					fprintf(MSGLOG, "Disabled\n");
 				mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
 			}
 
-			if (glfwGetKey(mainRenderWindow, GLFW_KEY_K) == GLFW_PRESS) {
-				joystickPrinter.reaquireDefaultState();
-				mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
-			}
+			if (mJoystickStatePrintingEnabled_) {
 
+				//Check if need to reset stored default state for joystick (this would be necessary if
+				//buttons were held down when stick connected)
+				if (glfwGetKey(mainRenderWindow, GLFW_KEY_K) == GLFW_PRESS) {
+					joystickPrinter.reaquireDefaultState();
+					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+				}
+
+				//Toggle Message Output Mode
+				if (glfwGetKey(mainRenderWindow, GLFW_KEY_H)) {
+					joystickPrinter.toggleMessageOutputMode();
+					fprintf(MSGLOG, "\nJoystick Output Mode set to: ");
+					if (joystickPrinter.isUsingEchoInputPrintMode())
+						fprintf(MSGLOG, "ECHO INPUT\n");
+					else
+						fprintf(MSGLOG, "ECHO FULL STATE\n");
+					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+				}
+
+				if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON)) {
+					//increment joystick ID to poll
+					joystickPrinter.nextJoystick();
+					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+				}
+
+				if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE)) {
+					//derement joystick ID to poll
+					joystickPrinter.previousJoystick();
+					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+				}
+			}
 		}
 	}
 

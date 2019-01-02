@@ -14,10 +14,12 @@ void Application::initialize() {
 	fprintf(MSGLOG, "Application is loading...\n");
 	if ( !setupGLFW() ) {
 		fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
+		mApplicationValid = false;
 		return;
 	}
 	if ( !loadGraphicsLanguageFunctions() ) {
 		fprintf(ERRLOG, "\nThe application encountered an error while loading the graphics language!\n");
+		mApplicationValid = false;
 		return;
 	}
 
@@ -41,6 +43,10 @@ void Application::initialize() {
 
 Application::Application() {
 	initialize();
+	if (!mApplicationValid) {
+		fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
+		std::cin.get(); //Need this on Windows to keep the terminal window open
+	}
 }
 
 

@@ -8,6 +8,14 @@ JoystickStatePrinter::JoystickStatePrinter(int id) : mID_(id) {
 	mPrintedDisconnectMessage_ = false;
 	mWasSetToNewID_ = false;
 	mPrintFullJoystickState_ = false; //Print full state by default
+
+	if ((id < 0) || (id > GLFW_JOYSTICK_LAST)) {
+		fprintf(WRNLOG, "\nWARNING! Invalid Joystick ID requested for input echoing!\n"
+			"Joystick %d was requested, but only Joysticks 0-%d are available for state printing!\n"
+			"By default, Joystick 0 will be printed\n", id, GLFW_JOYSTICK_LAST);
+		id = 0;
+	}
+
 	if (glfwJoystickPresent(id)) {
 		mName_ = glfwGetJoystickName(id);
 		mHasName_ = true;
@@ -23,8 +31,15 @@ JoystickStatePrinter::JoystickStatePrinter(int id) : mID_(id) {
 
 
 void JoystickStatePrinter::changeID(int id) {
-	if ( (id < 0) || (id == mID_) || (id > GLFW_JOYSTICK_LAST) ) { return; }
-	
+
+	if ( (id < 0) || (id == mID_) || (id > GLFW_JOYSTICK_LAST) ) { 
+		fprintf(WRNLOG, "\nWARNING! Unable to switch Joystick echoing target to Joystick $d!\n"
+			"Only Joysticks 0-%d are available!\n", id, GLFW_JOYSTICK_LAST);
+		return; 
+	}
+	else {
+		fprintf(MSGLOG, "\nNow echoing the state of Joystick %d\n", id);
+	}
 	mPrintedDisconnectMessage_ = false;
 	mWasSetToNewID_ = false;
 	mID_ = id;
@@ -39,6 +54,19 @@ void JoystickStatePrinter::changeID(int id) {
 	}
 }
 
+void JoystickStatePrinter::nextJoystick() {
+	if (mID_ == GLFW_JOYSTICK_LAST)
+		changeID(0);
+	else
+		changeID(mID_ + 1);	
+}
+
+void JoystickStatePrinter::previousJoystick() {
+	if (mID_ == 0)
+		changeID(GLFW_JOYSTICK_LAST);
+	else 
+		changeID(mID_ - 1);
+}
 
 void JoystickStatePrinter::printState() {
 	fprintf(MSGLOG, "%s", buildStateString().c_str());
