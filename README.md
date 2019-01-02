@@ -111,6 +111,8 @@ missing). After rebuilding the GLFW dll on this other computer and still encount
 issue to be from when the files are cloned from GitHub into Visual Studio, Visual Studio opens them all up as a directory rather 
 than open the project solution. Finding the project solution in the directory, right-clicking it and selecting 'Open' should 
 open the project properly. But wait, there are still the following issues:
+
       -None of the '.obj' model files are on GitHub.
+      
       -Project is still hardcoded to be run on a 4k monitor (flaw in the class GLFW_Init, which is set to soon be replaced)
       
