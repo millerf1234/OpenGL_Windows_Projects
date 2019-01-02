@@ -2,12 +2,14 @@
 Playground for OpenGL and Windows
 
 [Project Description] 
+
 A MSVC C++ project of a 3D rendering engine built targeting OpenGL 4.5 and later. Project compiles under C++17 and (probably) could be
 made to compile under C++14 with only a few changes. 
 
 
 
-[Project Background / 'Why I Started']
+[Project Background / 'Why I Started'] 
+
 This project is my attempt at creating a 3D renderer in modern C++ (i.e. C++17) targeting OpenGL 4.5 (and now 4.6) built on
 top of the Open-Source library 'GLFW' [version 3.3]. This project itself began when I first wrote the 3 lines of code constituting
 the function main() in early July 2018; however, the groundwork in place for my experience with computer graphics had begun
@@ -99,8 +101,9 @@ a lot of my 'Space-Game's GLFW_Init class (while rewritting the most egregious p
 in the process currently of figuring out how to replace this old foundational code (see Graphics Language Framework version 1
 ('Space-Game' import version) and version 2 (still in progress rewrite).
 
-[Current Portablility Issues]
-Forrest Miller -- January 1, 2019
+
+[Current Portablility Issues]  {Forrest Miller -- January 1, 2019}
+
 I just today tried to open and run this project on my friends computer and realized the project here has several deficiencies.
 First off, attempting to clone the project straight into visual studio will result in all of the files apearing in a visual
 studio project like normal, but the project will fail to build (and might blame the issue on the GLFW shared library being
