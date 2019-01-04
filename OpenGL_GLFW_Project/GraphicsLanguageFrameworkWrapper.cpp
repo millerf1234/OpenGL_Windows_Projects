@@ -8,25 +8,24 @@
 #include "GraphicsLanguageFrameworkWrapper.h"
 
 #include "LoggingMessageTargets.h"
-#include "GLFrameworkErrorCallback.h"   //defines global error callback function to use with GLFW library
+#include "GLFrameworkCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
 
 
-std::unique_ptr<std::unique_ptr<GLFrameworkInternal::CurrentlyConnectedMonitors>> GraphicsLanguageFrameworkWrapper::connectedMonitors = nullptr;
 
 void GraphicsLanguageFrameworkWrapper::giveMemberVariablesInitialValues() {
 	mGLFWWasInitialized_ = false;
 	mGLVersionMajor_ = 0;
 	mGLVersionMinor_ = 0;
 	mGLCompatabilityMode_ = false;
-
 }
 
 GraphicsLanguageFrameworkWrapper::GraphicsLanguageFrameworkWrapper(const int glVersionMajor,
 	const int glVersionMinor, const bool useCompatabilityProfile) {
 	
-	giveMemberVariablesInitialValues(); //Assigns initial values to all of this object's fields
+	giveMemberVariablesInitialValues(); 
 
-	setGLFWErrorCallback(); 
+	//Set up the relevant Callback functions for before GLFW initialization occurs 
+	GLFrameworkInternal::configurePreInitializationCallbackFunctions(); 
 
 	if (!validateRuntimeGLFWVersion()) {
 		return;
@@ -42,6 +41,13 @@ GraphicsLanguageFrameworkWrapper::GraphicsLanguageFrameworkWrapper(const int glV
 		mGLFWWasInitialized_ = true;
 	}
 
+	//After GLFW has been successfully initialized, set up the relevant callbacks for post-initialization
+	GLFrameworkInternal::configurePostInitializationCallbackFunctions(); 
+
+	//Since we now have the GLFW layer initialized, use it to querry the underlying operating system
+	//to determine what available components we have to work with by enumerating them and storing what
+	//we get into our member storage objects. 
+	aquireGLFrameworkComponents();
 }
 
 GraphicsLanguageFrameworkWrapper::~GraphicsLanguageFrameworkWrapper() {
@@ -110,20 +116,6 @@ std::string GraphicsLanguageFrameworkWrapper::getGLFWRuntimeVersionString() cons
 
 
 
-
-
-
-void GraphicsLanguageFrameworkWrapper::setGLFWErrorCallback() {
-	GLFWerrorfun  previousErrorFun = glfwSetErrorCallback(GLFrameworkInternal::graphicsLanguageFrameworkErrorCallbackFunction);
-	//Question: Do GLFW applications using GLFW as a shared library (DLL) each get to set their error callback function independently?
-	//Just in case there was an error callback function that was already set, probably best be safe and print out a warning that it has
-	//been replaced by this application's error callback function. If GLFW is well behaved, this message will never be printed.
-	if (previousErrorFun != nullptr) {
-		fprintf(WRNLOG, "\nWarning! While setting up the Graphics Language Framework's error-reporting function,\n"
-			"a previously set error function was replaced!\n");
-	}
-}
-
 void GraphicsLanguageFrameworkWrapper::setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile) {
 	mGLVersionMajor_ = glVersionMajor;
 	mGLVersionMinor_ = glVersionMinor;
@@ -180,10 +172,17 @@ bool GraphicsLanguageFrameworkWrapper::initializeGLFW() {
 	return true;
 }
 
-int GraphicsLanguageFrameworkWrapper::countAvailableMonitors() const {
-	int count = 0;
-	glfwGetMonitors(&count);
-	return count;
+
+void GraphicsLanguageFrameworkWrapper::aquireGLFrameworkComponents() {
+
+
 }
+
+
+//int GraphicsLanguageFrameworkWrapper::aquireAllAvailableMonitors() const {
+//	int count = 0;
+//	glfwGetMonitors(&count);
+//	return count;
+//}
 
 

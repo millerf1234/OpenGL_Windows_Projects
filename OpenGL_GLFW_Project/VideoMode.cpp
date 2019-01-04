@@ -32,6 +32,123 @@ namespace GLFrameworkInternal {
 		return vidMode.str();
 	}
 
+	//Comparison steps are performed in the following order: 
+	//    (1)Width, (2)Height, (3)Refresh Rate, (4)Sum of Bit Depths, (5)Green bit depth,
+	//           (6)Blue bit depth, (7)Red bit depth
+	bool VideoMode::operator<(const VideoMode& that) const {
+		//Perform comparison steps as outlined in header
+		if (mWidth_ < that.mWidth_) 
+			return true;
+		else if (mWidth_ > that.mWidth_) 
+			return false;
+		else {
+			if (mHeight_ < that.mHeight_) 
+				return true;
+			else if (mHeight_ > that.mHeight_) 
+				return false;
+			else {
+				if (mRefreshRate_ < that.mRefreshRate_)
+					return true;
+				else if (mRefreshRate_ > that.mRefreshRate_) 
+					return false;
+				else {
+					//Compute sum of bit depths
+					int bitDepthThis = mRedBits_ + mGreenBits_ + mBlueBits_;
+					int bitDepthThat = that.mRedBits_ + that.mGreenBits_ + that.mBlueBits_;
+					if (bitDepthThis < bitDepthThat) 
+						return true;
+					else if (bitDepthThis > bitDepthThat) 
+						return false;
+					else {
+						//At this point chances are quite likely that both VideoModes are equal.
+						//Let's save time by ruling out this case:
+						if (*this == that) 
+							return false;
+						else { //Hmm else there actually is a difference. Let's find it
+							if (mGreenBits_ < that.mGreenBits_) 
+								return true;
+							else if (mGreenBits_ > that.mGreenBits_)
+								return false;
+							else {
+								if (mBlueBits_ < that.mBlueBits_) 
+									return true;
+								else if (mBlueBits_ > that.mBlueBits_) 
+									return false;
+								else {
+									if (mRedBits_ < that.mRedBits_) 
+										return true;
+									else if (mRedBits_ > that.mRedBits_) 
+										return false;
+									else 
+										return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//Comparison steps are performed in the following order: 
+	//    (1)Width, (2)Height, (3)Refresh Rate, (4)Sum of Bit Depths, (5)Green bit depth,
+	//           (6)Blue bit depth, (7)Red bit depth
+	bool VideoMode::operator>(const VideoMode& that) const {
+		//Perform comparison steps as outlined in header
+		if (mWidth_ < that.mWidth_)
+			return false;
+		else if (mWidth_ > that.mWidth_)
+			return true;
+		else {
+			if (mHeight_ < that.mHeight_)
+				return false;
+			else if (mHeight_ > that.mHeight_)
+				return true;
+			else {
+				if (mRefreshRate_ < that.mRefreshRate_)
+					return false;
+				else if (mRefreshRate_ > that.mRefreshRate_)
+					return true;
+				else {
+					//Compute sum of bit depths
+					int bitDepthThis = mRedBits_ + mGreenBits_ + mBlueBits_;
+					int bitDepthThat = that.mRedBits_ + that.mGreenBits_ + that.mBlueBits_;
+					if (bitDepthThis < bitDepthThat)
+						return false;
+					else if (bitDepthThis > bitDepthThat)
+						return true;
+					else {
+						//At this point chances are quite likely that both VideoModes are equal.
+						//Let's save time by ruling out this case:
+						if (*this == that)
+							return false;
+						else { //Hmm else there actually is a difference. Let's find it
+							if (mGreenBits_ < that.mGreenBits_)
+								return false;
+							else if (mGreenBits_ > that.mGreenBits_)
+								return true;
+							else {
+								if (mBlueBits_ < that.mBlueBits_)
+									return false;
+								else if (mBlueBits_ > that.mBlueBits_)
+									return true;
+								else {
+									if (mRedBits_ < that.mRedBits_)
+										return false;
+									else if (mRedBits_ > that.mRedBits_)
+										return true;
+									else 
+										return false; 
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 	bool VideoMode::operator==(const VideoMode& that) const {
 		if (this == &that) { return true; }
 		

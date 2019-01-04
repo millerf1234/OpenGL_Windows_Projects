@@ -46,32 +46,8 @@
     <Filter Include="Source Files\Utility\Asset Loading">
       <UniqueIdentifier>{61aefebc-6b93-4f8d-a147-495f549eeeb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models">
-      <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ">
-      <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine">
-      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine\Engine2">
-      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample">
-      <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BeveledCube">
-      <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Filepath">
       <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
-      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
-      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\EntityComponents">
       <UniqueIdentifier>{0dfbfc85-f03b-441f-9cd3-8bbee7a5d1a1}</UniqueIdentifier>
@@ -79,80 +55,23 @@
     <Filter Include="Source Files\EntityComponents\Mesh">
       <UniqueIdentifier>{652b5ccd-e9d6-4564-b565-e0119f2128d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing">
-      <UniqueIdentifier>{b27f6ba1-997a-4053-abd2-295730fb77ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads">
-      <UniqueIdentifier>{796caf25-89a3-42cb-8c45-8fcdefe3d0a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated">
-      <UniqueIdentifier>{a4d5854e-8b4e-43f1-8565-7522d1d234e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets">
       <UniqueIdentifier>{dbe0ec7f-4cd2-48c8-a42a-8668b8980862}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj">
       <UniqueIdentifier>{612d584d-fa74-4e7c-bcc7-fe6dbe9bbdbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\MultiPrimitiveTest">
-      <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
-      <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\ParentedPrimatives">
-      <UniqueIdentifier>{5f3c8f11-43ac-4194-86dd-ebf2270af7be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party">
-      <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\GLFW">
-      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\glad">
-      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType">
-      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType\freetype">
-      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\FreeType\freetype\config">
-      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\stb_image">
-      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl">
       <UniqueIdentifier>{cdaf0160-e6f0-4017-abec-92a6ea34e00a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
-      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Thing">
-      <UniqueIdentifier>{c0a6b5bf-70d6-49fc-9f1d-a486e6f5aff0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships">
-      <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test">
-      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\StarSuzerian">
-      <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\Common">
       <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
-      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
@@ -163,20 +82,8 @@
     <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions">
       <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\GLM">
-      <UniqueIdentifier>{d67bba8a-509a-4284-9788-76ce98beb124}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\GLM\gtc">
-      <UniqueIdentifier>{310d5a25-3241-4d25-8355-024386bfd8ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
-      <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SetupAndConfiguration\Debug">
       <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\OpenAL">
-      <UniqueIdentifier>{8c70782d-c522-4932-968f-333dafd7b7db}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Audio">
       <UniqueIdentifier>{8509665d-7627-442d-aee1-e5c02c778924}</UniqueIdentifier>
@@ -238,12 +145,6 @@
     <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader">
       <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
-      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShape">
-      <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
       <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
     </Filter>
@@ -253,20 +154,11 @@
     <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial">
       <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane">
-      <UniqueIdentifier>{3d4f588e-0b60-4a26-b419-af25b7237116}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
       <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShapeDecimated">
-      <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\UI">
       <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
-      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
       <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
@@ -304,29 +196,8 @@
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions">
       <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorFunction">
-      <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents">
-      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor">
-      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window">
-      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context">
-      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode">
-      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\UI\Joystick/Controller">
       <UniqueIdentifier>{ac7ddb60-abf3-49ca-a0ff-80c90c247384}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Parse_Challenge">
-      <UniqueIdentifier>{f9b29e90-d08e-4419-89e5-ef4671087722}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt">
       <UniqueIdentifier>{6a24f5fc-3443-4a7c-a89c-a5f9e55eee23}</UniqueIdentifier>
@@ -339,6 +210,138 @@
     </Filter>
     <Filter Include="Source Files\Utility\Debug\Joystick State Printer">
       <UniqueIdentifier>{385cc002-a531-42b4-90e5-1e92af730cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models">
+      <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ">
+      <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine">
+      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine\Engine2">
+      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
+      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample">
+      <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BeveledCube">
+      <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
+      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
+      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing">
+      <UniqueIdentifier>{b27f6ba1-997a-4053-abd2-295730fb77ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads">
+      <UniqueIdentifier>{796caf25-89a3-42cb-8c45-8fcdefe3d0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated">
+      <UniqueIdentifier>{a4d5854e-8b4e-43f1-8565-7522d1d234e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\MultiPrimitiveTest">
+      <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\ParentedPrimatives">
+      <UniqueIdentifier>{5f3c8f11-43ac-4194-86dd-ebf2270af7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
+      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Thing">
+      <UniqueIdentifier>{c0a6b5bf-70d6-49fc-9f1d-a486e6f5aff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
+      <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShape">
+      <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane">
+      <UniqueIdentifier>{3d4f588e-0b60-4a26-b419-af25b7237116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShapeDecimated">
+      <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
+      <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships">
+      <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test">
+      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
+      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\StarSuzerian">
+      <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
+      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party">
+      <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLFW">
+      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad">
+      <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType">
+      <UniqueIdentifier>{50c2dbb5-ab49-488a-9082-f4b7d179b6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype">
+      <UniqueIdentifier>{9c43f139-353b-4f11-b058-66cee2982332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\FreeType\freetype\config">
+      <UniqueIdentifier>{e2a720e5-62e6-48cf-a7de-359b9909b6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\stb_image">
+      <UniqueIdentifier>{fb4aa324-4045-4075-992e-cacdbba37b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLM">
+      <UniqueIdentifier>{d67bba8a-509a-4284-9788-76ce98beb124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLM\gtc">
+      <UniqueIdentifier>{310d5a25-3241-4d25-8355-024386bfd8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\OpenAL">
+      <UniqueIdentifier>{8c70782d-c522-4932-968f-333dafd7b7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorCallbackFunction">
+      <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction">
+      <UniqueIdentifier>{4fac4fee-ea86-437f-a085-cb9ec2f5aa4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes">
+      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor">
+      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode">
+      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window">
+      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context">
+      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects">
+      <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -463,16 +466,16 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkContext.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Context</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkMonitor.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
     </ClCompile>
     <ClCompile Include="VideoMode.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
     </ClCompile>
     <ClCompile Include="JoystickBase.cpp">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
@@ -488,6 +491,15 @@
     </ClCompile>
     <ClCompile Include="JoystickStatePrinter.cpp">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFrameworkMonitorEventCallback.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFrameworkCallbackInitializer.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectedMonitors.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -923,25 +935,19 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
     </ClInclude>
     <ClInclude Include="GLFrameworkErrorCallback.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorFunction</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorCallbackFunction</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsLanguageFrameworkMonitor.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsLanguageFrameworkWindow.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="CurrentlyConnectedMonitors.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
     </ClInclude>
     <ClInclude Include="VideoMode.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor\VideoMode</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
     </ClInclude>
     <ClInclude Include="JoystickBase.h">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsLanguageFrameworkContext.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponents\Monitor</Filter>
     </ClInclude>
     <ClInclude Include="JoystickManager.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
@@ -954,6 +960,18 @@
     </ClInclude>
     <ClInclude Include="JoystickStatePrinter.h">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLanguageFrameworkContext.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFrameworkMonitorEventCallback.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFrameworkCallbackInitializer.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectedMonitors.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1126,10 +1144,7 @@
       <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
     <None Include="obj\3D_Arrow.mtl">
-      <Filter>Resource Files\Parse_Challenge</Filter>
-    </None>
-    <None Include="AssetLoadingDemoVertBackup.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+      <Filter>Resource Files\Models\OBJ</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

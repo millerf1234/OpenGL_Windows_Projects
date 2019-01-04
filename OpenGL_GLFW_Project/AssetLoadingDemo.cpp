@@ -56,6 +56,7 @@
 //
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |            Input                |                              Description of Action                             |
+//  +---------------------------------+--------------------------------------------------------------------------------+                                                                                                             
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |           Arrow Keys            |           Modifies the rotations angles for Pitch and Head(Yaw)                |
@@ -283,6 +284,9 @@ void AssetLoadingDemo::loadShaders() {
 	//Create and attach a secondary vertex shader containing implementations for some noise functions
 	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
 		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
+	vertexNoiseShader->makeSecondary();
+	sceneShader->attachSecondaryVert(vertexNoiseShader.get());
+	shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::VERTEX);
 	///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
 	//Create and attach a secondary fragment shader containing implementations for some noise functions 
@@ -290,7 +294,8 @@ void AssetLoadingDemo::loadShaders() {
 		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
 	fragmentNoiseShader->makeSecondary();
 	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-	///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+	shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+    ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
 	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
 	sceneShader->link();
@@ -301,7 +306,7 @@ void AssetLoadingDemo::loadShaders() {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
 		std::cin.get(); //Hold the mainRenderWindow open if there was an error
-		markMainRenderWindowAsReadyToClose(); //Mark it for closing once error is acknowledged
+		markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
 		return;
 	}
 
@@ -337,9 +342,9 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
@@ -800,10 +805,10 @@ void AssetLoadingDemo::buildNewShader() {
 			if (shaderIterator->primary)
 				backupSceneShader->attachVert(shaderIterator->file.filepath().c_str());
 			else {
-				std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-					std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
-				vertexNoiseShader->makeSecondary();
-				backupSceneShader->attachSecondaryVert(vertexNoiseShader.get());
+				std::unique_ptr<ShaderInterface::VertexShader> secondaryVertexShader =
+					std::make_unique<ShaderInterface::VertexShader>(shaderIterator->file.filepath().c_str());
+				secondaryVertexShader->makeSecondary();
+				backupSceneShader->attachSecondaryVert(secondaryVertexShader.get());
 			}
 			break;
 
@@ -826,10 +831,10 @@ void AssetLoadingDemo::buildNewShader() {
 			if (shaderIterator->primary)
 				backupSceneShader->attachFrag(shaderIterator->file.filepath().c_str());
 			else {
-				std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-					std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
-				fragmentNoiseShader->makeSecondary();
-				backupSceneShader->attachSecondaryFrag(fragmentNoiseShader.get());
+				std::unique_ptr<ShaderInterface::FragmentShader> secondaryFragmentShader =
+					std::make_unique<ShaderInterface::FragmentShader>(shaderIterator->file.filepath().c_str());
+				secondaryFragmentShader->makeSecondary();
+				backupSceneShader->attachSecondaryFrag(secondaryFragmentShader.get());
 			}
 			break;
 

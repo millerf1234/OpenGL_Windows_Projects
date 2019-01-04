@@ -1,10 +1,24 @@
 //File:                          VideoMode.h
 //
-//Description:                   Based off the GLFW struct GLFWvidmode, this file defines a class used to 
-//                               track information about a display's available video modes.
+//Description:                   Built around the GLFW struct GLFWvidmode, this class provides a wrapper 
+//                               for tracking the properties of a single available video mode that is
+//                               supported by a connected monitor. 
+//
+//                               Each  VideoMode of a monitor contains the following properties:
+//                                      - Width and Height in screen coordinates
+//                                      - Width and Height in physical size (millimeters or inches)
+//                                      - Refresh Rate   (in Hz)
+//                                      - Red bit depth, Green bit depth, Blue bit depth  *         
+//
+//
+//
+// Note on Bit Depths:   GLFW 3.3 documentation mentions bit depths can be modified through hints? This 
+//                               has not been tested
 //
 //Programmer:                    Forrest Miller
 //Date:                          December 2018
+//
+//Modifications:                 January 2, 2019  -- Added comparison operators '>' and '<' 
 
 #pragma once
 
@@ -13,7 +27,7 @@
 
 #include "LoggingMessageTargets.h"
 #include "ProjectSetup.h"
-#include "ProjectConstants.h"   //Defines the constant used to convert millimeters to inches
+#include "ProjectConstants.h"   //Defines the constant used to convert millimeters to inches (for DPI calculation)
 
 namespace GLFrameworkInternal {
 
@@ -24,7 +38,7 @@ namespace GLFrameworkInternal {
 		VideoMode() = delete;
 		VideoMode(const GLFWvidmode& vid, int physicalWidthMM, int physicalHeightMM);
 
-		~VideoMode() { ; }   //Desctructor is trivial
+		~VideoMode() = default;
 
 		VideoMode(const VideoMode&) = default;
 		VideoMode(VideoMode&&) = default;
@@ -34,6 +48,40 @@ namespace GLFrameworkInternal {
 		//Formats this object's data into a 2-line string meant for printing to a console or log screen
 		//                                          [untested, format may need editing]
 		std::string toString() const;
+
+
+		//////////////////////////////////////////
+		//////     Comparison Operators     //////
+		//////////////////////////////////////////
+
+		//Assigns an well-defined ordering to the set of all VideoModes. Expression evaluation 
+		//proceeds by performing the following comparisons, with each evaluation after the first
+		//only being reached after the event of a tie from the previous:
+		//   1) Compare Widths                         
+		//   2) Compare Heights
+		//   3) Compare Refresh Rates
+		//   4) Compare sum of Red, Green and Blue bit depths
+		//   5) Compare Green bit depths
+		//   6) Compare Blue bit depths
+		//   7) Compare Red bit depths
+		//In the event that both of the VideoModes are equivalent, 'false' will be returned 
+		//by default
+		bool operator<(const VideoMode&) const;
+
+		//Assigns an well-defined ordering to the set of all VideoModes. Expression evaluation 
+		//proceeds by performing the following comparisons, with each evaluation after the first
+		//only being reached after the event of a tie from the previous comparison:
+		//   1) Compare Widths                         
+		//   2) Compare Heights
+		//   3) Compare Refresh Rates
+		//   4) Compare sum of Red, Green and Blue bit depths
+		//   5) Compare Green bit depths
+		//   6) Compare Blue bit depths
+		//   7) Compare Red bit depths
+		//In the event that both of the VideoModes are equivalent, 'false' will be returned 
+		//by default
+		bool operator>(const VideoMode&) const;
+		
 
 		//Compares this object with another VideoMode object for equality. All
 		//fields (aside from physical screen dimensions) must match exactly for equality
@@ -46,11 +94,17 @@ namespace GLFrameworkInternal {
 		//Compares this object with a GLFWvidmode struct for inequality
 		bool operator!=(const GLFWvidmode&) const;
 
-		//This class has a whole lot of getters
+		///////////////////////////////////////////////////////////
+		////////         Stored Member Data Access        /////////
+		///////////////////////////////////////////////////////////
 
-		//Returns the monitor's width (in screen coordinates) for this videomode
+		//Returns the monitor's width (in screen coordinates) for this videomode.
+		//Note that screen coordinates are not guarenteed to match the monitor's 
+		//pixels/resolution.
 		int getWidth() const; 
-		//Returns the monitor's height (in screen coordinates) for this videomode
+		//Returns the monitor's height (in screen coordinates) for this videomode.
+		//Note that screen coordinates are not guarenteed to match the monitor's 
+		//pixels/resolution.
 		int getHeight() const;
 
 		//Returns the monitors [approximate] physical height (in millimeters)

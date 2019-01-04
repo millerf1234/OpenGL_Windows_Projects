@@ -28,7 +28,7 @@
 //Callback function for GLFW error reporting. Unlike every other GLFW callback function,
 //this function is set globally for the entire library as opposed to on a per-window basis.
 namespace GLFrameworkInternal {
-	void graphicsLanguageFrameworkErrorCallbackFunction(int error, const char* description) {
+	inline void graphicsLanguageFrameworkErrorCallbackFunction(int error, const char* description) {
 
 		//Build a formated error message printout
 		std::stringstream errorMessage;

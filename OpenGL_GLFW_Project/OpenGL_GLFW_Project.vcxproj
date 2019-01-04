@@ -160,9 +160,12 @@
     <ClCompile Include="AssetLoadingDemo.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="ConnectedMonitors.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="GLFrameworkCallbackInitializer.cpp" />
+    <ClCompile Include="GLFrameworkMonitorEventCallback.cpp" />
     <ClCompile Include="JoystickStatePrinter.cpp" />
     <ClCompile Include="MappedGamepad.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
@@ -215,7 +218,9 @@
     <ClInclude Include="AsciiAsset.h" />
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
-    <ClInclude Include="CurrentlyConnectedMonitors.h" />
+    <ClInclude Include="ConnectedMonitors.h" />
+    <ClInclude Include="GLFrameworkCallbackInitializer.h" />
+    <ClInclude Include="GLFrameworkMonitorEventCallback.h" />
     <ClInclude Include="JoystickStatePrinter.h" />
     <ClInclude Include="MappedGamepad.h" />
     <ClInclude Include="GLFrameworkErrorCallback.h" />
@@ -363,7 +368,6 @@
     <ClInclude Include="WindowCurserState.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AssetLoadingDemoVertBackup.vert" />
     <None Include="AssetLoadingDemo_CoolEffect.frag" />
     <None Include="AssetLoadingDemo_CoolEffect.vert" />
     <None Include="freetype.dll" />

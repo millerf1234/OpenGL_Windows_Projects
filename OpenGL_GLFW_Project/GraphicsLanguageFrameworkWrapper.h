@@ -1,8 +1,14 @@
 //File:                 GraphicsLanguageFrameworkWrapper.h
 //
 //  
+//  Notes on GLFW behavior:     
+//                            -If a monitor with one or more fullscreen windows on it gets disconnected,
+//                             those windows are forced into windowed mode. 
 //
-// (OUT OF DATE DESCRIPTION)
+//
+//-----------------------------------------------------------------------------------------------------------//
+// (OUT OF DATE DESCRIPTION) [I really need to hold off on writing these until I have finalized my design]   //
+//-----------------------------------------------------------------------------------------------------------//
 //Description:         Defines a wrapper class for the GLFW (Graphics Language FrameWork) library.
 //                     Is intended to be used as a convient object for OS-Independent Window and GL Context 
 //                     creation and usage (in other words, provide a C++-based object-oriented encapsulation for GLFW,
@@ -37,10 +43,14 @@
 
 #include "GraphicsLanguageFrameworkContext.h"
 #include "GraphicsLanguageFrameworkMonitor.h"
-#include "CurrentlyConnectedMonitors.h"
 #include "GraphicsLanguageFrameworkWindow.h"
 
-//I am trying out this thing where I have moved the implementation-dependent-only "#include" statements in the .cpp file
+#include "ConnectedMonitors.h"
+
+//#include "GLFrameworkCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
+
+
+//I am trying out this thing where I have moved the implementation-dependent-only "#include" statements over to the .cpp file
 //#include "LoggingMessageTargets.h"
 
 class GraphicsLanguageFrameworkWrapper final {
@@ -72,7 +82,7 @@ public:
 	//    ||            Safe to call at any time              ||
 	//    \\--------------------------------------------------//    
 
-	//Returns the version of OpenGL that contexts created with this class will use. These values can only 
+	//Sets parameters to match the version of OpenGL that contexts created with this class will use. These values can only 
 	//be specified as parameters during object construction. 
 	void getRequestedGLVersion(int& versionMajor, int& versionMinor, bool& usesCompatMode) const;
 	//Returns the OpenGL version major that contexts created through this object will use. This value is set 
@@ -115,7 +125,11 @@ public:
 	//    //---------------------------------------------------------\\
 	//    ||       Call only after confirming object is ready        ||    
 	//    \\---------------------------------------------------------//
-	//Calling any of the following functions before the member function 'ready()' returns true will cause the functions to return immediatly
+	//Calling any of the following functions while the member function 'ready()'
+	//has not returned true will cause the function to return immediatly
+
+
+
 
 
 	//                 //////////////////////////////////////////////////////
@@ -131,29 +145,27 @@ public:
 private:
 	bool mGLFWWasInitialized_;
 	int mGLVersionMajor_, mGLVersionMinor_, mGLCompatabilityMode_;
-	static std::unique_ptr<std::unique_ptr<GLFrameworkInternal::CurrentlyConnectedMonitors>> connectedMonitors;
 
-	//static bool shouldRedetectMonitors; //Used as flag by monitorEventCallback
-	//unsigned int mNumberOfConnectedMonitors_;
-	//std::vector<std::unique_ptr<GLFrameworkInternal::GraphicsLanguageFrameworkMonitor>> connectedMonitors;
-
+	ConnectedMonitors mAvailableMonitors_;
 	
+
+
 	//////////////////////
 	// Helper functions //
 	//////////////////////
 
 	//Call the following only from a constructor
 	void giveMemberVariablesInitialValues(); 
-	void setGLFWErrorCallback();
 	void setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile);
 	bool validateRuntimeGLFWVersion() const; //Compares runtime-linked GLFW version with version used during compile time 
 	void setInitializationHints() const;
 	bool initializeGLFW(); 
-	int countAvailableMonitors() const;
-	void aquireAvailableMonitors() const;
+	void aquireGLFrameworkComponents();
 
-	//Monitor event callback (used to handle monitor connect/disconnect events)
-	static void monitorEventCallback(GLFWmonitor *, int);
+
+	
+
+	
 };
 
 

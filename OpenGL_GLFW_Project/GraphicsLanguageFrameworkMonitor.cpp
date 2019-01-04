@@ -25,14 +25,18 @@ namespace GLFrameworkInternal {
 	//}
 
 	GraphicsLanguageFrameworkMonitor::GraphicsLanguageFrameworkMonitor(GLFWmonitor * handle) {
+
+		initialize();
 		if (!handle) {
 			fprintf(ERRLOG, "\nERROR! A GraphicsLanguageFrameworkMonitor object's constructor was called with nullptr!\n"
 				"This is a very bad thing that happened! Please review code and ensure that only valid\n"
 				"Monitor handles ever get passed to this constructor!\n");
 			mIsConnected_ = false;
+		} 
+		else {
+			mHandle_ = handle;
 		}
-		mHandle_ = handle;
-		initialize();
+
 		if (checkIfIsPrimaryMonitor()) {
 			mIsPrimary_ = true;
 		}
