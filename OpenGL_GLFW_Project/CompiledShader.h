@@ -80,7 +80,7 @@
 
 #include <fstream>
 
-#include "ProjectConstants.h"
+#include "GlobalConstants.h"
 
 namespace ShaderInterface {
 

@@ -45,11 +45,11 @@
 
 //#include <thread>
 
-#include "ProjectConstants.h"
-#include "ProjectParameters.h"
+#include "GlobalConstants.h"
+#include "GlobalIncludes.h"
 #include "MathFunctions.h"
 #include "GLFW_Init.h"
-#include "ProjectSetup.h"
+
 
 #include "RelativeFilepathsToResources.h" //Contains asset filepath locations
 

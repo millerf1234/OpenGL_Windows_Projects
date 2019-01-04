@@ -1,7 +1,7 @@
 // JoystickPrinter.h
 //
 // Description:        A class built for debugging which simply echos input
-//                     read from a single connected Joystick.
+//                     read from a connected Joystick. Requires GLFW to have been initialized.
 //
 // How To Use:         Pass in target joystick's ID during construction to specify the 
 //                     specific joystick to have input echoed from. Default construction
@@ -55,12 +55,13 @@
 
 #pragma once
 
-#include "ProjectSetup.h"
 #include <string>
 #include <vector>
 
+#include "GlobalIncludes.h"
+
 static const std::string DISCONNECTED_JOYSTICK_NAME = "[NO_JOYSTICK_AVAILABLE]";
-static constexpr const float AXIS_DEAD_ZONE_SIZE = 0.1f;
+static constexpr const float AXIS_DEAD_ZONE_SIZE = 0.085f;  //This is just an estimate ... Tweak as needed 
 
 class JoystickStatePrinter final {
 public:

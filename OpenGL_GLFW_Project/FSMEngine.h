@@ -1,9 +1,15 @@
-//File:                 GraphicsLanguageFrameworkWrapper.h
+// File:                               FSMEngine.h
 //
 //  
-//  Notes on GLFW behavior:     
-//                            -If a monitor with one or more fullscreen windows on it gets disconnected,
-//                             those windows are forced into windowed mode. 
+//  Quick and Broad Description:  This is the class that exists at the top of the entire graphics framework
+//                                collection of classes. Applications using the graphics framework should only
+//                                need to interact with this class for everything they need. This includes 
+//                                performing all necessary OpenGL configuration, creating/destroying windows, 
+//                                performing UI through Keyboard/Mouse and Joysticks, getting window-events, etc.
+//
+//                                The entire FSMEngine is built on top of the GLFW (Graphics-Language-Framework) 
+//                                library 
+//
 //
 //
 //-----------------------------------------------------------------------------------------------------------//
@@ -26,20 +32,25 @@
 //          [GLFW Documentation]                 https://www.glfw.org/docs/3.3/intro_guide.html#init_hints
 //
 //
+//  Notes on GLFW behavior:     
+//                            -If a monitor with one or more fullscreen windows on it gets disconnected,
+//                             those windows are forced into windowed mode. 
+//
+//
 //
 // Programmer:          Forrest Miller
 // Date:                December 2018 -  January 2019
 
 #pragma once
 
-#ifndef GRAPHICS_LANGUAGE_FRAMEWORK_WRAPPER_H_
-#define GRAPHICS_LANGUAGE_FRAMEWORK_WRAPPER_H_
+#ifndef F_S_M_ENGINE_H_
+#define F_S_M_ENGINE_H_
 
 #include <vector>
 #include <string>
 #include <sstream>
 
-#include "ProjectSetup.h" //For GLFW library
+#include "GlobalIncludes.h" //For GLFW library
 
 #include "GraphicsLanguageFrameworkContext.h"
 #include "GraphicsLanguageFrameworkMonitor.h"
@@ -47,23 +58,18 @@
 
 #include "ConnectedMonitors.h"
 
-//#include "GLFrameworkCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
 
-
-//I am trying out this thing where I have moved the implementation-dependent-only "#include" statements over to the .cpp file
-//#include "LoggingMessageTargets.h"
-
-class GraphicsLanguageFrameworkWrapper final {
+class FSMEngine final {
 public:
 	//                  /////////////////////////////////////////////////////////
 	//                  //////////            Constructor(s)           //////////
 	//                  /////////////////////////////////////////////////////////
 
-	//Creates an instance of the GraphicsLanguageFrameworkWrapper class. This will perform all steps necessary
+	//Creates an instance of the FSMEngine class. This will perform all steps necessary
 	//for the member functions to create a graphics context and window to be called. Default OpenGL version is
 	//4.5, but can set to a different version through parameters glVersionMajor and glVersionMinor. It is 
 	//recommended to stick with version 4.5 or later and to not use the compatability profile. 
-	GraphicsLanguageFrameworkWrapper(const int glVersionMajor = 4,
+	FSMEngine(const int glVersionMajor = 4,
 		                             const int glVersionMinor = 5,
 		                             const bool useCompatabilityProfile = false);
 
@@ -71,7 +77,7 @@ public:
 	//                  //////////////////////////////////////////////////////
 	//                  //////////            Destructor            //////////
 	//                  //////////////////////////////////////////////////////
-	~GraphicsLanguageFrameworkWrapper();
+	~FSMEngine();
 
 
 	//                  //////////////////////////////////////////////////////
@@ -135,10 +141,10 @@ public:
 	//                 //////////////////////////////////////////////////////
 	//                 //////////    Copying/Moving are disabled    /////////
 	//                 //////////////////////////////////////////////////////
-	GraphicsLanguageFrameworkWrapper(const GraphicsLanguageFrameworkWrapper&) = delete;
-	GraphicsLanguageFrameworkWrapper(GraphicsLanguageFrameworkWrapper &&) = delete;
-	GraphicsLanguageFrameworkWrapper& operator=(const GraphicsLanguageFrameworkWrapper&) = delete;
-	GraphicsLanguageFrameworkWrapper& operator=(GraphicsLanguageFrameworkWrapper&&) = delete;
+	FSMEngine(const FSMEngine&) = delete;
+	FSMEngine(FSMEngine &&) = delete;
+	FSMEngine& operator=(const FSMEngine&) = delete;
+	FSMEngine& operator=(FSMEngine&&) = delete;
 
 	
 
@@ -168,7 +174,7 @@ private:
 	
 };
 
+#endif //F_S_M_ENGINE_H_
 
-#endif //GRAPHICS_LANGUAGE_FRAMEWORK_WRAPPER_H_
 
 

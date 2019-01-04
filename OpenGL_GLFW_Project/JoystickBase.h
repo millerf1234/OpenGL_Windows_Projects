@@ -148,7 +148,7 @@
 
 #include <string>
 
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 
 //Note that chances are any joystick which is assigned the type 'GENERIC' probably hasn't been

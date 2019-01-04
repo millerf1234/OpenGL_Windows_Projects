@@ -28,7 +28,7 @@
 
 #include <string>
 
-#include "ProjectConstants.h"
+#include "GlobalIncludes.h"
 
 namespace ShaderInterface {
 

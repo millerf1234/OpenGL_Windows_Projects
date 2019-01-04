@@ -16,9 +16,9 @@
 #ifndef TEAPOT_EXPLOSION_DEMO_GENERIC_VERTEX_ATTRIBUTE_SET_H_
 #define TEAPOT_EXPLOSION_DEMO_GENERIC_VERTEX_ATTRIBUTE_SET_H_
 
-#include "ProjectConstants.h"
-
 #include <vector>
+
+#include "GlobalConstants.h"
 
 namespace ShaderInterface {
 

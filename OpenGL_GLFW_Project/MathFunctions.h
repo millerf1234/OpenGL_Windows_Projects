@@ -15,7 +15,7 @@
 #include <random>
 
 #include "FloatingPointTolerance.h"  //for constant FP_TOLERANCE for use with floating point calculations
-#include "ProjectSetup.h" //for glm
+#include "GlobalIncludes.h" //for glm
 
 namespace MathFunc {
 

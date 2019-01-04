@@ -14,7 +14,7 @@
 #ifndef CACHED_UNIFORM_LOCATION_H_
 #define CACHED_UNIFORM_LOCATION_H_
 
-#include "ProjectConstants.h"
+#include "GlobalIncludes.h"
 #include "UniformLocationBucket.h"
 #include "UniformLocationTracker.h"
 

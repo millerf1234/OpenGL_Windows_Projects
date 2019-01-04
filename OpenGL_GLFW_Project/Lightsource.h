@@ -7,7 +7,7 @@
 #define LIGHTSOURCE_H_
 
 
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 class Lightsource {
 public:

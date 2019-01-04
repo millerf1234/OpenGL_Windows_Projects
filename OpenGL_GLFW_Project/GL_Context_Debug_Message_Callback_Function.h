@@ -32,28 +32,41 @@
 #define GL_CONTEXT_DEBUG_MESSAGE_CALLBACK_FUNCTION_H_
 
 #include <stdio.h>
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 #include "LoggingMessageTargets.h"
 
 
 //The detail provided in this message could use a more detailed implementation
 static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
-	GLenum type,
-	GLuint id,
-	GLenum severity,
-	GLsizei length,
-	const GLchar* message,
-	const void* userParam) {
+	                                                       GLenum type,
+	                                                       GLuint id,
+	                                                       GLenum severity,
+	                                                       GLsizei length,
+	                                                       const GLchar* message,
+	                                                       const void* userParam) {
 
-	// In case synchronization is disabled between the application and the graphics context,
-	//the debug message output will use snprintf to fill a buffer until the very end
+	//Implementation Detail:
+	//       Due to the possibility that synchronization may be disabled between the application and the graphics context,
+	//       this debug message will forgo the typical use of muliple calls to 'fprintf' for printing its output statement.
+	//       Instead, the function 'snprintf' will be used, which prints each message into a buffer of known size. Once 
+	//       the entire message has been completed into the buffer, the buffer is printed using a single call to 'fprintf'.
+	//       This will prevent logging messages originating from the Application from appearing interlaced with the 
+	//       components of a message from the context. Please note however that a complete context debug message could 
+	//       appear in the middle of an Application message that is written over multiple 'fprintf' calls.
+
+
 	static constexpr const size_t BUFFER_SIZE_TOTAL = 4096u; //This should be big enough to cover all cases [hopefully]
+
+	static constexpr const size_t BUFFER_SPACE_REQUIRED_FOR_FORMATTING = 320u;
+
+
 #define BUFFER_SIZE (BUFFER_SIZE_TOTAL-bufferIter)
+
 	size_t bufferIter = 0u;
 	char msgBuff[BUFFER_SIZE_TOTAL];
 
-
-	if (static_cast<size_t>(length) > (BUFFER_SIZE - 320u)) {
+	//Just in case the callback message is too large for the buffer 
+	if (static_cast<size_t>(length) > (BUFFER_SIZE - BUFFER_SPACE_REQUIRED_FOR_FORMATTING)) {
 		fprintf(ERRLOG, "\nGL Callback Error But The Message is too long for formatting!\nMsg: %s", message);
 		return;
 	}
@@ -113,7 +126,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
+				"<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
 		
 		} //The fprintf call is made at the end of all the MEDIUM/HIGH priority source cases
 
@@ -167,7 +180,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
 
 		}
 
@@ -241,7 +254,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"\n*******************************************************************************\n"); //80 characters
+				"*******************************************************************************\n"); //80 characters
 		}
 
 		//-------------------------------------------------------------
@@ -261,7 +274,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\nMessage is: %s\n", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE, 
-				"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+				"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		}
 
 		//Now print the buffer with a single call to fprintf
@@ -342,7 +355,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		}
 		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-			"\n-------------------------------------------------------------------------------\n");
+			"-------------------------------------------------------------------------------\n");
 	}
 
 
@@ -391,11 +404,16 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\n%s\n", message);
 		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-			"\n********************************************************************\n");
+			"********************************************************************\n");
 	}
 
 	fprintf(MSGLOG, "%s\n", msgBuff);
 }
+
+//Undefine macro so as to avoid polluting other files
+#ifdef BUFFER_SIZE 
+#undef BUFFER_SIZE
+#endif 
 
 
 

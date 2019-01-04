@@ -1,25 +1,23 @@
-//File:          GraphicsLanguageFrameworkWrapper.cpp
+//File:          FSMEngine.cpp
 //
 //   See header file for more details
 //
 // Programmer:    Forrest Miller
-// Date:          December 2018
+// Created:       December 2018 through January 2019 
 
-#include "GraphicsLanguageFrameworkWrapper.h"
-
+#include "FSMEngine.h"
 #include "LoggingMessageTargets.h"
 #include "GLFrameworkCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
 
 
-
-void GraphicsLanguageFrameworkWrapper::giveMemberVariablesInitialValues() {
+void FSMEngine::giveMemberVariablesInitialValues() {
 	mGLFWWasInitialized_ = false;
 	mGLVersionMajor_ = 0;
 	mGLVersionMinor_ = 0;
 	mGLCompatabilityMode_ = false;
 }
 
-GraphicsLanguageFrameworkWrapper::GraphicsLanguageFrameworkWrapper(const int glVersionMajor,
+FSMEngine::FSMEngine(const int glVersionMajor,
 	const int glVersionMinor, const bool useCompatabilityProfile) {
 	
 	giveMemberVariablesInitialValues(); 
@@ -50,7 +48,7 @@ GraphicsLanguageFrameworkWrapper::GraphicsLanguageFrameworkWrapper(const int glV
 	aquireGLFrameworkComponents();
 }
 
-GraphicsLanguageFrameworkWrapper::~GraphicsLanguageFrameworkWrapper() {
+FSMEngine::~FSMEngine() {
 	if (mGLFWWasInitialized_) {
 		mGLFWWasInitialized_ = false;
 		glfwTerminate();
@@ -58,21 +56,21 @@ GraphicsLanguageFrameworkWrapper::~GraphicsLanguageFrameworkWrapper() {
 }
 
 
-void GraphicsLanguageFrameworkWrapper::getRequestedGLVersion(int& versionMajor, int& versionMinor, bool& usesCompatMode) const {
+void FSMEngine::getRequestedGLVersion(int& versionMajor, int& versionMinor, bool& usesCompatMode) const {
 	versionMajor = mGLVersionMajor_;
 	versionMinor = mGLVersionMinor_;
 	usesCompatMode = mGLCompatabilityMode_;
 }
 
-int GraphicsLanguageFrameworkWrapper::getRequestedGLVersionMajor() const {
+int FSMEngine::getRequestedGLVersionMajor() const {
 	return mGLVersionMajor_;
 }
 
-int GraphicsLanguageFrameworkWrapper::getRequestedGLVersionMinor() const {
+int FSMEngine::getRequestedGLVersionMinor() const {
 	return mGLVersionMinor_;
 }
 
-std::string GraphicsLanguageFrameworkWrapper::getRequestedGLVersionString() const {
+std::string FSMEngine::getRequestedGLVersionString() const {
 	std::stringstream requestedGLVersionMsg;
 	requestedGLVersionMsg << "OpenGL " << mGLVersionMajor_ << "." << mGLVersionMinor_;
 	if (!mGLCompatabilityMode_) {
@@ -84,24 +82,24 @@ std::string GraphicsLanguageFrameworkWrapper::getRequestedGLVersionString() cons
 	return requestedGLVersionMsg.str();
 }
 
-void GraphicsLanguageFrameworkWrapper::getGLFWCompileTimeVersion(int& compileVersionMajor, int& compileVersionMinor, int& compileVersionRevision) const {
+void FSMEngine::getGLFWCompileTimeVersion(int& compileVersionMajor, int& compileVersionMinor, int& compileVersionRevision) const {
 	compileVersionMajor = GLFW_VERSION_MAJOR;
 	compileVersionMinor = GLFW_VERSION_MINOR;
 	compileVersionRevision = GLFW_VERSION_REVISION;
 }
 
-std::string GraphicsLanguageFrameworkWrapper::getGLFWCompileTimeVersionString() const {
+std::string FSMEngine::getGLFWCompileTimeVersionString() const {
 	std::stringstream compileTimeVersionMsg;
 	compileTimeVersionMsg << "compiled against GLFW " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR <<
 		"." << GLFW_VERSION_REVISION;
 	return compileTimeVersionMsg.str();
 }
 
-void GraphicsLanguageFrameworkWrapper::getGLFWRuntimeVersion(int& runtimeVersionMajor, int& runtimeVersionMinor, int& runtimeVersionRevision) const {
+void FSMEngine::getGLFWRuntimeVersion(int& runtimeVersionMajor, int& runtimeVersionMinor, int& runtimeVersionRevision) const {
 	glfwGetVersion(&runtimeVersionMajor, &runtimeVersionMinor, &runtimeVersionRevision);
 }
 
-std::string GraphicsLanguageFrameworkWrapper::getGLFWRuntimeVersionString() const {
+std::string FSMEngine::getGLFWRuntimeVersionString() const {
 	std::stringstream runtimeVersionMsg;
 	int rtMajor = 0;
 	int rtMinor = 0;
@@ -116,13 +114,13 @@ std::string GraphicsLanguageFrameworkWrapper::getGLFWRuntimeVersionString() cons
 
 
 
-void GraphicsLanguageFrameworkWrapper::setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile) {
+void FSMEngine::setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile) {
 	mGLVersionMajor_ = glVersionMajor;
 	mGLVersionMinor_ = glVersionMinor;
 	mGLCompatabilityMode_ = useCompatProfile;
 }
 
-bool GraphicsLanguageFrameworkWrapper::validateRuntimeGLFWVersion() const {
+bool FSMEngine::validateRuntimeGLFWVersion() const {
 	int runtimeVersionMajor = 0;
 	int runtimeVersionMinor = 0;
 	int runtimeRevision = 0;
@@ -150,7 +148,7 @@ bool GraphicsLanguageFrameworkWrapper::validateRuntimeGLFWVersion() const {
 	return true;
 }
 
-void GraphicsLanguageFrameworkWrapper::setInitializationHints() const {
+void FSMEngine::setInitializationHints() const {
 	//Set all GLFW hints that will affect GLFW's initialization. These must be set before
 	//the function 'glfwInit()' is called.
 	//Luckily, as of GLFW 3.3, the only relevant initialzation hint to set is just a minor detail
@@ -164,7 +162,7 @@ void GraphicsLanguageFrameworkWrapper::setInitializationHints() const {
 	//supporting OpenGL
 }
 
-bool GraphicsLanguageFrameworkWrapper::initializeGLFW() {
+bool FSMEngine::initializeGLFW() {
 	int glfwInitSuccess = glfwInit();
 	if (glfwInitSuccess == GLFW_FALSE) {
 		return false;
@@ -173,13 +171,13 @@ bool GraphicsLanguageFrameworkWrapper::initializeGLFW() {
 }
 
 
-void GraphicsLanguageFrameworkWrapper::aquireGLFrameworkComponents() {
+void FSMEngine::aquireGLFrameworkComponents() {
 
 
 }
 
 
-//int GraphicsLanguageFrameworkWrapper::aquireAllAvailableMonitors() const {
+//int FSMEngine::aquireAllAvailableMonitors() const {
 //	int count = 0;
 //	glfwGetMonitors(&count);
 //	return count;

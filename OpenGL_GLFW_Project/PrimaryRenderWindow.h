@@ -9,8 +9,8 @@
 #ifndef PRIMARY_RENDER_WINDOW_H_
 #define PRIMARY_RENDER_WINDOW_H_
 
-#include "ProjectConstants.h"
-#include "ProjectSetup.h"
+#include "GlobalConstants.h"
+#include "GlobalIncludes.h"
 
 class PrimaryRenderWindow final {
 public:

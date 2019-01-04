@@ -29,7 +29,7 @@
 #include <sstream>
 #include <optional>
 
-#include "ProjectSetup.h"  
+#include "GlobalIncludes.h"  
 
 namespace GLFrameworkInternal {
 

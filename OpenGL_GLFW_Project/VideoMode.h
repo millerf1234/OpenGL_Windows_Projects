@@ -26,8 +26,8 @@
 #define VIDEO_MODE_H_
 
 #include "LoggingMessageTargets.h"
-#include "ProjectSetup.h"
-#include "ProjectConstants.h"   //Defines the constant used to convert millimeters to inches (for DPI calculation)
+#include "GlobalIncludes.h"       //GLFWvideomode
+#include "GlobalConstants.h"   //Defines the constant used to convert millimeters to inches (for DPI calculation)
 
 namespace GLFrameworkInternal {
 

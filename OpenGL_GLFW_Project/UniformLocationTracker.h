@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <memory>
 
-#include "ProjectConstants.h"
+#include "GlobalIncludes.h"
 #include "UniformLocationBucket.h"
 #include "CachedUniformLocation.h"
 

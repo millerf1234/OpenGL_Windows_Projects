@@ -462,9 +462,6 @@
     <ClCompile Include="PrimaryRenderWindow.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsLanguageFrameworkWrapper.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkContext.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
     </ClCompile>
@@ -500,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="ConnectedMonitors.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMEngine.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -721,9 +721,6 @@
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
       <Filter>SetupAndConfiguration\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectConstants.h">
-      <Filter>SetupAndConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -847,9 +844,6 @@
     <ClInclude Include="LightsourceTest.h">
       <Filter>Source Files\Projects\RenderDemos\LightsourceTest\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectSetup.h">
-      <Filter>SetupAndConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -931,9 +925,6 @@
     <ClInclude Include="WindowCallbackEvent.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsLanguageFrameworkWrapper.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
-    </ClInclude>
     <ClInclude Include="GLFrameworkErrorCallback.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorCallbackFunction</Filter>
     </ClInclude>
@@ -972,6 +963,15 @@
     </ClInclude>
     <ClInclude Include="ConnectedMonitors.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMEngine.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalConstants.h">
+      <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalIncludes.h">
+      <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

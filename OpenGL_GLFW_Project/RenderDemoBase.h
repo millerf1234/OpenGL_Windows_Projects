@@ -39,8 +39,7 @@
 
 #include <iostream>  //fprintf 
 
-#include "LoggingMessageTargets.h"  //provides MSGLOG, WRNLOG and ERRLOG targets for fprintf
-#include "ProjectSetup.h"           //For GLFWwindow*
+#include "GlobalIncludes.h"         //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
 //#include "MissingAsset.h"         //For assets that are missing
 

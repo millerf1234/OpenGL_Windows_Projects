@@ -173,7 +173,7 @@
     <ClCompile Include="GraphicsLanguageFrameworkContext.cpp" />
     <ClCompile Include="GraphicsLanguageFrameworkMonitor.cpp" />
     <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp" />
-    <ClCompile Include="GraphicsLanguageFrameworkWrapper.cpp" />
+    <ClCompile Include="FSMEngine.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="Joystick.cpp" />
     <ClCompile Include="JoystickBase.cpp" />
@@ -227,7 +227,7 @@
     <ClInclude Include="GraphicsLanguageFrameworkContext.h" />
     <ClInclude Include="GraphicsLanguageFrameworkMonitor.h" />
     <ClInclude Include="GraphicsLanguageFrameworkWindow.h" />
-    <ClInclude Include="GraphicsLanguageFrameworkWrapper.h" />
+    <ClInclude Include="FSMEngine.h" />
     <ClInclude Include="Joystick.h" />
     <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="JoystickManager.h" />
@@ -344,9 +344,9 @@
     <ClInclude Include="OpenAL_Init.h" />
     <ClInclude Include="PhongShadingParameterSet.h" />
     <ClInclude Include="PrimaryWindowState.h" />
-    <ClInclude Include="ProjectConstants.h" />
+    <ClInclude Include="GlobalConstants.h" />
     <ClInclude Include="RelativeFilepathsToResources.h" />
-    <ClInclude Include="ProjectSetup.h" />
+    <ClInclude Include="GlobalIncludes.h" />
     <ClInclude Include="QuickObj.h" />
     <ClInclude Include="RenderDemoBase.h" />
     <ClInclude Include="resource.h" />

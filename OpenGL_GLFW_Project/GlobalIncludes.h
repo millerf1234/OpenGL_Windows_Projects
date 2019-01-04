@@ -1,17 +1,23 @@
 //This file contains headers that are meant to be included globally only once. 
-//There is also some functions which are just Pre-Processor checking
 //
-
-//Created by Forrest Miller on July 16, 2018
-// Reorganized document on November 8, 2018. It is still pretty disorganized...
+//
+//
+//   File History:
+//             - Created by Forrest Miller on July 16, 2018
+//             - Reorganized on November 8, 2018 
+//                   Removed several includes that could have their scope reduced
+//             - Renamed on January 4, 2019 to "GlobalIncludes.h"
+//                   Previous name was "ProjectSetup.h" 
+//                   Change was made to avoid confusion with code which pertains specifically
+//                       to RenderProjects
 
 #pragma once
+ 
+#ifndef GLOBAL_INCLUDES_H_
+#define GLOBAL_INCLUDES_H_
 
-#ifndef PROJECT_SETUP_H_
-#define PROJECT_SETUP_H_
-
-
-//Glad version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
+//
+//GLAD version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
 #include "glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
 
 
@@ -54,7 +60,16 @@
 // are used within the course of rendering. 
 #include "glm/gtc/matrix_transform.hpp"
 
+///////////////////////////////////////////
+///////  Project-Wide Log Message Output
+///////////////////////////////////////////
+#include "LoggingMessageTargets.h"
 
+
+//////////////////////////////////////////////////////////////////////////
+//////    These following Includes are not necessarily global but the engine components that will
+//////      use them have yet to be implemented. These will be relocated in future
+//////////////////////////////////////////////////////////////////////////
 
 //Freetype will be useful for when I get around to implementing a kick-butt glpyh-based text
 //rendering system (or integrate one of the many available Open-Source libraries that
@@ -70,14 +85,11 @@
 
 
 //
-#include "LoggingMessageTargets.h"
 
 
 
 
-
-
-#endif //PROJECT_SETUP_H_
+#endif //GLOBAL_INCLUDES_H_
 
 
 

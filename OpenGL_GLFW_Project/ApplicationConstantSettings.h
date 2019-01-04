@@ -22,7 +22,7 @@
 #define APPLICATION_CONSTANT_SETTINGS_H_
 
 #include "LoggingMessageTargets.h"
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 
 
@@ -52,18 +52,17 @@ static constexpr bool USE_DEBUG = false;
 static constexpr bool FORCE_SYNC_BETWEEN_CONTEXT_AND_APP = false;
 //This is the function that would be defined in "GL_Context_Debug_Message_Callback_Function.h"
 static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
-	GLenum type,
-	GLuint id,
-	GLenum severity,
-	GLsizei length,
-	const GLchar* message,
-	const void* userParam) {
-	//If not in debug mode, then this function can just have an empty definition. It shouldn't be called anywhere, but there's some set-up code
-	//that complains when this function is not defined... 
+														   GLenum type,
+														   GLuint id,
+														   GLenum severity,
+														   GLsizei length,
+														   const GLchar* message,
+														   const void* userParam) {
+	//If not in debug mode, then this function can just have an empty definition.
+	//This function shouldn't be called when not debugging, but there is some set-up code that
+	//complains when this function is not defined... 
 }
 #endif //USE_DEBUG_
-
-
 
 
 #endif //APPLICATION_CONSTANT_SETTINGS_H_

@@ -34,7 +34,7 @@
 #include <memory>   //Mostly for smart pointers
 #include <fstream>  //Gotta have that fstream
 
-#include "ProjectConstants.h"
+#include "GlobalConstants.h"
 #include "ApplicationConstantSettings.h"
 #include "GLFW_Init.h"
 

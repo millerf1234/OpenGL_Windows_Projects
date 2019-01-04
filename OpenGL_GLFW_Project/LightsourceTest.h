@@ -6,8 +6,9 @@
 
 #include <array>
 #include <vector>
-#include "ProjectSetup.h"
-#include "ProjectConstants.h"
+
+#include "GlobalIncludes.h"
+#include "GlobalConstants.h"
 
 //const float offsetMultiplier = (2.0 * PI) / (float(mPOLYGON_CORNERS_));
 

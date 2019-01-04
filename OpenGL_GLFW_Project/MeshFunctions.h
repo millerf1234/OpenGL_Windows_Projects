@@ -12,7 +12,7 @@
 #define MESH_FUNCTIONS_H_
 
 
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 
 namespace MeshFunc {
@@ -20,7 +20,7 @@ namespace MeshFunc {
 	//Computes normalized Vertex Normals for a triangle T = (V0, V1, V2), where each Vi is a 3-dimensional position vector.
 	//    [This function performs additional safety checks to prevent a division by 0 if a degenerate triangle is passed in.
 	//     If it can be guarenteed that the passed in triangle is not ill-formed, then consider using the function 
-	//           computeNormalizedVertexNormalsForTriangle_Unsafe() 
+	//           'computeNormalizedVertexNormalsForTriangle_Unsafe()' 
 	//     which will calculate the normalized triangle normal without any additional safety checks]
 	glm::vec3 computeNormalizedVertexNormalsForTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
 

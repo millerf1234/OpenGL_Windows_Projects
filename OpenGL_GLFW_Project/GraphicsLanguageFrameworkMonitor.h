@@ -20,7 +20,7 @@
 #include <memory>
 
 #include "LoggingMessageTargets.h"
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 #include "VideoMode.h"
 
 

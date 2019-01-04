@@ -16,7 +16,7 @@
 #include <atomic>
 #include <mutex>
 
-#include "ProjectSetup.h"    //To get GLFWwindow*
+#include "GlobalIncludes.h"    //To get GLFWwindow*
 #include "LoggingMessageTargets.h"
 #include "PrimaryWindowState.h"
 

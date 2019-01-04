@@ -14,8 +14,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "ProjectParameters.h"
-#include "ProjectConstants.h"
+#include "GlobalConstants.h"
 #include "PrimaryWindowCallbackFunctions.h"
 
 

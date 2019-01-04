@@ -4,18 +4,18 @@
 //categories.
 
 //Created by Forrest Miller on July 16, 2018
-//Modified continuously throughout the rest of 2018
+//Modified continuously throughout the rest of 2018 and into 2019
 
 #pragma once
 
-#ifndef PROJECT_CONSTANTS_H_
-#define PROJECT_CONSTANTS_H_
+#ifndef GLOBAL_CONSTANTS_H_
+#define GLOBAL_CONSTANTS_H_
 
 #include <array>
 #include <string>
 #include <stdexcept>  //For exceptions
 
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 
 //Useful Constants
@@ -42,4 +42,4 @@ static constexpr const std::array<int, 2> SCREEN_RESOLUTION_UHD = { 3840, 2160 }
 
 
 
-#endif //PROJECT_CONSTANTS_H_
+#endif //GLOBAL_CONSTANTS_H_

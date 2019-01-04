@@ -15,7 +15,7 @@
 #define RELATIVE_FILEPATHS_TO_RESOURCES_H_
 
 
-#include "ProjectSetup.h" //To get access to GL types
+//#include "ProjectSetup.h" //To get access to GL types
 
 ///////////////////////////////
 //  Settings                      [i.e. Parameters For Initialization] 

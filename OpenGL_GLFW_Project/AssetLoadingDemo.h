@@ -25,13 +25,12 @@
 #include <math.h>
 #include <functional>   //std::function
 
-#include "ProjectConstants.h"
-#include "ProjectParameters.h"
+#include "GlobalIncludes.h"
+#include "GlobalConstants.h"
+#include "RelativeFilepathsToResources.h"
 #include "MathFunctions.h"
 #include "MeshFunctions.h"
 #include "GLFW_Init.h"
-#include "ProjectSetup.h"
-#include "RelativeFilepathsToResources.h"
 #include "ShaderProgram.h"
 
 #include "RenderDemoBase.h"

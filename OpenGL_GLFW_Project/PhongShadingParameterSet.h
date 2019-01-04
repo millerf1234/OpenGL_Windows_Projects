@@ -29,7 +29,7 @@
 #define PHONG_ILLUMINATION_H_
 
 #include <array>
-#include "ProjectSetup.h"           //For glm
+#include "GlobalIncludes.h"           //For glm
 //#include "CachedUniformLocation.h"  //For Quickly loading data to GLSL
 
 class PhongShadingParameterSet {

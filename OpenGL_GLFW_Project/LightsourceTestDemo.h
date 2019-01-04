@@ -28,10 +28,10 @@
 #include <thread>
 #include <math.h>
 
-#include "ProjectConstants.h"
-#include "ProjectParameters.h"
+#include "GlobalConstants.h"
+#include "GlobalIncludes.h"
+
 #include "MathFunctions.h"
-#include "ProjectSetup.h"
 #include "RelativeFilepathsToResources.h" //Contains asset filepath locations
 #include "ShaderProgram.h"
 #include "RenderDemoBase.h"
