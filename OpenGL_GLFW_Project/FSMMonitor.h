@@ -1,4 +1,10 @@
-//File:          GraphicsLanguageFrameworkMonitor.h
+//  File:          FSMMonitor.h
+//  Class:         FSMMonitor
+//  QuickInfo:   
+//       Default Constructor    DISABLED
+//       Copy Operations        DISABLED
+//       Move Operations        ENABLED
+//
 //
 // Description:    todo...
 //
@@ -13,8 +19,8 @@
 
 #pragma once
 
-#ifndef GRAPHICS_LANGUAGE_FRAMEWORK_MONITOR_H_
-#define GRAPHICS_LANGUAGE_FRAMEWORK_MONITOR_H_
+#ifndef FSM_MONITOR_H_
+#define FSM_MONITOR_H_
 
 #include <vector>
 #include <memory>
@@ -24,21 +30,21 @@
 #include "VideoMode.h"
 
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
-	class GraphicsLanguageFrameworkMonitor final {
+	class FSMMonitor final {
 	public:
-		GraphicsLanguageFrameworkMonitor() = delete;
+		FSMMonitor() = delete;
 		//Only construct objects of this type with values that were returned from glfwGetMonitors(). 
 		//Once assigned it's GLFWmonitor* from the provided parameter, this value can not be changed.
 		//Failure to assign a valid GLFWmonitor* will cause undefined behavior from this class.
-		GraphicsLanguageFrameworkMonitor(GLFWmonitor *);
-		~GraphicsLanguageFrameworkMonitor();
+		FSMMonitor(GLFWmonitor *);
+		~FSMMonitor() = default;
 
-		GraphicsLanguageFrameworkMonitor(const GraphicsLanguageFrameworkMonitor&) = delete;
-		GraphicsLanguageFrameworkMonitor(GraphicsLanguageFrameworkMonitor&&);
-		GraphicsLanguageFrameworkMonitor& operator=(const GraphicsLanguageFrameworkMonitor&) = delete;
-		GraphicsLanguageFrameworkMonitor& operator=(GraphicsLanguageFrameworkMonitor&&);
+		FSMMonitor(const FSMMonitor&) = delete;
+		FSMMonitor(FSMMonitor&&);
+		FSMMonitor& operator=(const FSMMonitor&) = delete;
+		FSMMonitor& operator=(FSMMonitor&&);
 
 		//Returns a const pointer to const GLFWmonitor representing this monitor's handle. 
 		const GLFWmonitor* const getMonitorHandle() const { return mHandle_; }
@@ -102,10 +108,10 @@ namespace GLFrameworkInternal {
 
 		//Compares GLFWmonitor* handles for equality. Note that if both monitors have nullptr as a handle, they will
 		//compare as equal. However, if there are monitors with null handles, then something wrong already has happened.
-		bool operator==(const GraphicsLanguageFrameworkMonitor& that) const { return (mHandle_ == that.mHandle_); }
+		bool operator==(const FSMMonitor& that) const { return (mHandle_ == that.mHandle_); }
 		//Compares GLFWmonitor* handles for inequality. Note that if both monitors have nullptr as a handle, they will
 		//compare as equal. However, if there are monitors with null handles, then something wrong already has happened.
-		bool operator!=(const GraphicsLanguageFrameworkMonitor& that) const { return (mHandle_ != that.mHandle_); }
+		bool operator!=(const FSMMonitor& that) const { return (mHandle_ != that.mHandle_); }
 
 		//Compares this object's monitor handle with the provided monitor handle for equality. If this object's 
 		//handle is nullptr and second parameter is nullptr, then equality comparison will return true.
@@ -169,7 +175,7 @@ namespace GLFrameworkInternal {
 	};
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 
-#endif //GRAPHICS_LANGUAGE_FRAMEWORK_MONITOR_H_
+#endif //FSM_MONITOR_H_

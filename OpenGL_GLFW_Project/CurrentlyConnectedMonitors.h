@@ -59,9 +59,9 @@
 
 #include "GraphicsLanguageFrameworkMonitor.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
-	using Monitor = GraphicsLanguageFrameworkMonitor;
+	using Monitor = FSMMonitor;
 
 	inline static constexpr const int MONITOR_NOT_FOUND = -1; //Return value for failure to find a requested monitor
 
@@ -82,6 +82,6 @@ namespace GLFrameworkInternal {
 		
 	};
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 #endif //CURRENTLY_CONNECTED_MONITORS_H_

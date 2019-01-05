@@ -3,7 +3,7 @@
 
 #include "GraphicsLanguageFrameworkWindow.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	GraphicsLanguageFrameworkWindow::GraphicsLanguageFrameworkWindow() {
 
@@ -15,4 +15,4 @@ namespace GLFrameworkInternal {
 	}
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal

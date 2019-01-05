@@ -33,7 +33,7 @@ JoystickStatePrinter::JoystickStatePrinter(int id) : mID_(id) {
 void JoystickStatePrinter::changeID(int id) {
 
 	if ( (id < 0) || (id == mID_) || (id > GLFW_JOYSTICK_LAST) ) { 
-		fprintf(WRNLOG, "\nWARNING! Unable to switch Joystick echoing target to Joystick $d!\n"
+		fprintf(WRNLOG, "\nWARNING! Unable to switch Joystick echoing target to Joystick %d!\n"
 			"Only Joysticks 0-%d are available!\n", id, GLFW_JOYSTICK_LAST);
 		return; 
 	}

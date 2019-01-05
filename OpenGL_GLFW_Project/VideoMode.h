@@ -8,7 +8,7 @@
 //                                      - Width and Height in screen coordinates
 //                                      - Width and Height in physical size (millimeters or inches)
 //                                      - Refresh Rate   (in Hz)
-//                                      - Red bit depth, Green bit depth, Blue bit depth  *         
+//                                      - Red bit depth, Green bit depth, Blue bit depth           
 //
 //
 //
@@ -29,7 +29,7 @@
 #include "GlobalIncludes.h"       //GLFWvideomode
 #include "GlobalConstants.h"   //Defines the constant used to convert millimeters to inches (for DPI calculation)
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	//This class is based off the GLFW defined type GLFWvidmode. It includes some extra 
 	//capabilities from the basic GLFWvidmode struct.
@@ -144,6 +144,6 @@ namespace GLFrameworkInternal {
 	};
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 #endif //VIDEO_MODE_H_

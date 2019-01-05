@@ -1,4 +1,9 @@
-// File:                               FSMEngine.h
+// File:                        FSMEngine.h
+// Class:                       FSMEngine
+// QuickInfo:
+//       Default Constructor    DISABLED
+//       Copy Operations        DISABLED
+//       Move Operations        DISABLED
 //
 //  
 //  Quick and Broad Description:  This is the class that exists at the top of the entire graphics framework
@@ -10,18 +15,6 @@
 //                                The entire FSMEngine is built on top of the GLFW (Graphics-Language-Framework) 
 //                                library 
 //
-//
-//
-//-----------------------------------------------------------------------------------------------------------//
-// (OUT OF DATE DESCRIPTION) [I really need to hold off on writing these until I have finalized my design]   //
-//-----------------------------------------------------------------------------------------------------------//
-//Description:         Defines a wrapper class for the GLFW (Graphics Language FrameWork) library.
-//                     Is intended to be used as a convient object for OS-Independent Window and GL Context 
-//                     creation and usage (in other words, provide a C++-based object-oriented encapsulation for GLFW,
-//                     which is itself a C API). 
-//                     All GLFW-related function calls can be handled through this class. 
-//                     In the event of a GL context reset, this class will be able to use its stored internal state to 
-//                     provide a way to recover.
 //
 //  (NOTE FOR DEVELOPMENT, DELETE WHEN COMPLETED:)      This class is intended to replace the older GLFW_Init class and related 
 //                                                      GLFW functionality. If this note is still here, than chances are this class 
@@ -43,8 +36,8 @@
 
 #pragma once
 
-#ifndef F_S_M_ENGINE_H_
-#define F_S_M_ENGINE_H_
+#ifndef FSM_ENGINE_H_
+#define FSM_ENGINE_H_
 
 #include <vector>
 #include <string>
@@ -53,7 +46,7 @@
 #include "GlobalIncludes.h" //For GLFW library
 
 #include "GraphicsLanguageFrameworkContext.h"
-#include "GraphicsLanguageFrameworkMonitor.h"
+#include "FSMMonitor.h"
 #include "GraphicsLanguageFrameworkWindow.h"
 
 #include "ConnectedMonitors.h"
@@ -64,14 +57,15 @@ public:
 	//                  /////////////////////////////////////////////////////////
 	//                  //////////            Constructor(s)           //////////
 	//                  /////////////////////////////////////////////////////////
+	FSMEngine() = delete;
 
 	//Creates an instance of the FSMEngine class. This will perform all steps necessary
 	//for the member functions to create a graphics context and window to be called. Default OpenGL version is
 	//4.5, but can set to a different version through parameters glVersionMajor and glVersionMinor. It is 
 	//recommended to stick with version 4.5 or later and to not use the compatability profile. 
 	FSMEngine(const int glVersionMajor = 4,
-		                             const int glVersionMinor = 5,
-		                             const bool useCompatabilityProfile = false);
+		      const int glVersionMinor = 5,
+		      const bool useCompatabilityProfile = false);
 
 
 	//                  //////////////////////////////////////////////////////
@@ -147,7 +141,6 @@ public:
 	FSMEngine& operator=(FSMEngine&&) = delete;
 
 	
-
 private:
 	bool mGLFWWasInitialized_;
 	int mGLVersionMajor_, mGLVersionMinor_, mGLCompatabilityMode_;
@@ -156,9 +149,9 @@ private:
 	
 
 
-	//////////////////////
-	// Helper functions //
-	//////////////////////
+	//////////////////////////
+	//// Helper functions ////
+	//////////////////////////
 
 	//Call the following only from a constructor
 	void giveMemberVariablesInitialValues(); 
@@ -174,7 +167,7 @@ private:
 	
 };
 
-#endif //F_S_M_ENGINE_H_
+#endif //FSM_ENGINE_H_
 
 
 

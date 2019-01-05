@@ -10,6 +10,7 @@
 //                   Previous name was "ProjectSetup.h" 
 //                   Change was made to avoid confusion with code which pertains specifically
 //                       to RenderProjects
+//             - Replaced GLAD with newer version
 
 #pragma once
  
@@ -17,8 +18,9 @@
 #define GLOBAL_INCLUDES_H_
 
 //
-//GLAD version link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
-#include "glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
+//old GLAD version (OpenGL 4.5) link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
+//new GLAD version (OpenGL 4.6) link: http://glad.dav1d.de/#profile=core&api=gl%3D4.6&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle&language=c&specification=gl&loader=on
+#include "glad/glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
 
 
 

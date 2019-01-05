@@ -6,7 +6,7 @@
 
 #include "GraphicsLanguageFrameworkContext.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	GraphicsLanguageFrameworkContext::GraphicsLanguageFrameworkContext() {
 
@@ -18,4 +18,4 @@ namespace GLFrameworkInternal {
 	}
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal

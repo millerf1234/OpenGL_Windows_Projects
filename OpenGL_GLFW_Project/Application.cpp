@@ -115,6 +115,10 @@ bool Application::loadGraphicsLanguageFunctions() {
 		return false;
 	}
 
+	if (GLAD_GL_EXT_framebuffer_multisample) {
+		/* GL_EXT_framebuffer_multisample is supported */
+	}
+
 	fprintf(MSGLOG, "  Graphics Language loaded.\n");
 	fprintf(MSGLOG, "\tGraphics Language version: OpenGL %s\n", glGetString(GL_VERSION));
 	fprintf(MSGLOG, "\tGraphics Language Vendor:  %s\n", glGetString(GL_VENDOR));

@@ -14,7 +14,7 @@
 #ifndef GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_
 #define GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	class GraphicsLanguageFrameworkWindow {
 	public:
@@ -27,7 +27,7 @@ namespace GLFrameworkInternal {
 	};
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 
 #endif //GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_

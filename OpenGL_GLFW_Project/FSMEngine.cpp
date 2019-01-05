@@ -23,7 +23,7 @@ FSMEngine::FSMEngine(const int glVersionMajor,
 	giveMemberVariablesInitialValues(); 
 
 	//Set up the relevant Callback functions for before GLFW initialization occurs 
-	GLFrameworkInternal::configurePreInitializationCallbackFunctions(); 
+	FSMEngineInternal::configurePreInitializationCallbackFunctions(); 
 
 	if (!validateRuntimeGLFWVersion()) {
 		return;
@@ -40,7 +40,7 @@ FSMEngine::FSMEngine(const int glVersionMajor,
 	}
 
 	//After GLFW has been successfully initialized, set up the relevant callbacks for post-initialization
-	GLFrameworkInternal::configurePostInitializationCallbackFunctions(); 
+	FSMEngineInternal::configurePostInitializationCallbackFunctions(); 
 
 	//Since we now have the GLFW layer initialized, use it to querry the underlying operating system
 	//to determine what available components we have to work with by enumerating them and storing what
@@ -49,6 +49,9 @@ FSMEngine::FSMEngine(const int glVersionMajor,
 }
 
 FSMEngine::~FSMEngine() {
+
+	//Unitialize GLFW components
+
 	if (mGLFWWasInitialized_) {
 		mGLFWWasInitialized_ = false;
 		glfwTerminate();

@@ -34,7 +34,7 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 void main() {
 	
-	vec3 lightDir = vec3(10.0 * cos(time), 0.0 * sin(time), -10.0);
+	vec3 lightDir = vec3(-3.0, 2.0, 1.0);
 	float intensity;
 	intensity = dot(normalize(lightDir), normal);
 
@@ -44,6 +44,9 @@ void main() {
 	}
 	else if (intensity > 0.6) {
 		color = vec4(0.8, 0.75, 0.65, 1.0);
+	}
+	else if (intensity > 0.55) {
+		discard();
 	}
 	else if (intensity > (0.3)) {
 		color = vec4(0.32, 0.301, 0.2501, 1.0);
@@ -55,10 +58,5 @@ void main() {
 		color = vec4(0.0612, 0.17, 0.21, 1.0);// +vec4(0.95*sin(cnoise(position))*position);
 	}
 
-	//float extraNoise = smoothstep(-color.b, 3.0*color.r, gl_FragCoord.x / (9.00 / (intensity + (0.2 * sin(5.0*time))))*0.075*snoise(0.05*(dot(gl_FragCoord.yy, gl_FragCoord.xx)*gl_FragCoord.xy)*fbm(intensity * gl_FragCoord.xy)));
-	//if (intensity < (0.6 - abs(0.5*cos(0.1*time)) ))
-	//	color.r += extraNoise + sin(extraNoise / time);
-	//else
-	//	color.g = clamp( (color.r+color.b) / extraNoise, 0.3, 0.7);
 	color.a = smoothstep(-10.22, 10.5, 0.35 - 0.33*abs(sin(1.0*time + 4.0 * snoise(vec2(intensity, time)))));
 }

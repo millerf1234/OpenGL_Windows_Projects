@@ -31,7 +31,7 @@
 
 #include "GlobalIncludes.h"  
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	////////////      Interface to be used by the rest of the Application      ////////////
@@ -83,6 +83,6 @@ namespace GLFrameworkInternal {
 		std::queue<GLFWmonitor*>& recentMonitorDisconnections();
 	} //namespace MonitorEventCallbackInternal
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 #endif //GL_FRAMEWORK_MONITOR_EVENT_CALLBACK_H_

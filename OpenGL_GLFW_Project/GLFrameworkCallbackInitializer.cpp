@@ -11,7 +11,7 @@
 
 #include "GLFrameworkCallbackInitializer.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	//////////////////////////////////////////
 	/////  Internal Function Prototypes  /////
@@ -78,4 +78,4 @@ namespace GLFrameworkInternal {
 	} //namespace GLFrameworkCallbackImplementation
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal

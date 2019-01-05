@@ -90,7 +90,7 @@
 
 //see: https://www.khronos.org/opengl/wiki/GLAPI/glGetAttachedShaders
 
-		class ShaderProgram {
+		class ShaderProgram final {
 		public:
 			//-------------------------------
 			// Construction/Destruction/Copying/Moving
@@ -108,6 +108,7 @@
 			//-------------------------------
 			// Public Interface Functions
 			//-------------------------------
+
 			//Creates an object-local Vertex shader and attaches it to this program
 			inline bool attachVert(std::string vert) {   return (attachVert(vert.c_str()));   }
 			//Creates an object-local Vertex shader and attaches it to this program

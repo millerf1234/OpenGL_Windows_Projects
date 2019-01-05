@@ -21,7 +21,7 @@
 #include "GLFrameworkErrorCallback.h"
 #include "GLFrameworkMonitorEventCallback.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	//To be called before GLFW is initialized
 	//Expected Callbacks functions to set:
@@ -49,6 +49,6 @@ namespace GLFrameworkInternal {
 
 
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 #endif //GL_FRAMEWORK_CALLBACK_INITIALIZER_H_

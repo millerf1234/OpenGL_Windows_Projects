@@ -10,7 +10,7 @@
 #ifndef GRAPHICS_LANGUAGE_FRAMEWORK_CONTEXT_H_
 #define GRAPHICS_LANGUAGE_FRAMEWORK_CONTEXT_H_
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	class GraphicsLanguageFrameworkContext
 	{
@@ -19,6 +19,6 @@ namespace GLFrameworkInternal {
 		~GraphicsLanguageFrameworkContext();
 	};
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 #endif // GRAPHICS_LANGUAGE_FRAMEWORK_CONTEXT_H_

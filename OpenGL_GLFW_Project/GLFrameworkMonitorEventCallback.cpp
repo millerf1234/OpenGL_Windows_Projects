@@ -25,7 +25,7 @@
 
 #include "GLFrameworkMonitorEventCallback.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
 	//-------------------------------------------------------
 	//
@@ -123,4 +123,4 @@ namespace GLFrameworkInternal {
 
 	} //namespace MonitorEventCallbackInternal
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal

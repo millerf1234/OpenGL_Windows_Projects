@@ -27,7 +27,7 @@
 
 //Callback function for GLFW error reporting. Unlike every other GLFW callback function,
 //this function is set globally for the entire library as opposed to on a per-window basis.
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 	inline void graphicsLanguageFrameworkErrorCallbackFunction(int error, const char* description) {
 
 		//Build a formated error message printout
@@ -48,7 +48,7 @@ namespace GLFrameworkInternal {
 		//Print the message to the ERRLOG
 		fprintf(ERRLOG, "%s", errorMessage.str().c_str());
 	}
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal
 
 
 

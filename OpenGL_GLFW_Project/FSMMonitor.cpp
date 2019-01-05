@@ -1,11 +1,11 @@
-//File:    GraphicsLanguageFrameworkMonitor.cpp
+//File:    FSMMonitor.cpp
 //    See header file for more detail
 
-#include "GraphicsLanguageFrameworkMonitor.h"
+#include "FSMMonitor.h"
 
-namespace GLFrameworkInternal {
+namespace FSMEngineInternal {
 
-	void GraphicsLanguageFrameworkMonitor::initialize() {
+	void FSMMonitor::initialize() {
 		mWasMoved_ = false;
 		mIsConnected_ = true;
 		mIsPrimary_ = false;
@@ -20,15 +20,15 @@ namespace GLFrameworkInternal {
 
 	//Since a monitor requires a unique GLFWmonitor* to serve as its identifier (essentially it acts as a Primary Key),
 	//it doesn't make sense to have a default constructor. Thus the default constructor is disabled (deleted).
-	//GraphicsLanguageFrameworkMonitor::GraphicsLanguageFrameworkMonitor() {
+	//FSMMonitor::FSMMonitor() {
 	//	initialize();
 	//}
 
-	GraphicsLanguageFrameworkMonitor::GraphicsLanguageFrameworkMonitor(GLFWmonitor * handle) {
+	FSMMonitor::FSMMonitor(GLFWmonitor * handle) {
 
 		initialize();
 		if (!handle) {
-			fprintf(ERRLOG, "\nERROR! A GraphicsLanguageFrameworkMonitor object's constructor was called with nullptr!\n"
+			fprintf(ERRLOG, "\nERROR! A FSMMonitor object's constructor was called with nullptr!\n"
 				"This is a very bad thing that happened! Please review code and ensure that only valid\n"
 				"Monitor handles ever get passed to this constructor!\n");
 			mIsConnected_ = false;
@@ -43,12 +43,12 @@ namespace GLFrameworkInternal {
 		aquireMonitorDetails();
 	}
 
-	GraphicsLanguageFrameworkMonitor::~GraphicsLanguageFrameworkMonitor() {
-		//for debug
-		fprintf(MSGLOG, "\n\nDEBUG NOTIFICATION:: Detected that the monitor at address %p has been disconnected!\n", mHandle_);
-	}
+	//FSMMonitor::~FSMMonitor() {
+	//	//for debug
+	//	fprintf(MSGLOG, "\n\nDEBUG NOTIFICATION:: Detected that the monitor at address %p has been disconnected!\n", mHandle_);
+	//}
 
-	GraphicsLanguageFrameworkMonitor::GraphicsLanguageFrameworkMonitor(GraphicsLanguageFrameworkMonitor&& that) {
+	FSMMonitor::FSMMonitor(FSMMonitor&& that) {
 		mHandle_ = that.mHandle_;
 		mIsConnected_ = that.mIsConnected_;
 		mIsPrimary_ = that.mIsPrimary_;
@@ -70,7 +70,7 @@ namespace GLFrameworkInternal {
 		that.mWasMoved_ = true;
 	}
 
-	GraphicsLanguageFrameworkMonitor& GraphicsLanguageFrameworkMonitor::operator=(GraphicsLanguageFrameworkMonitor&& that) {
+	FSMMonitor& FSMMonitor::operator=(FSMMonitor&& that) {
 		if (this != &that) {
 			mHandle_ = that.mHandle_;
 			mIsConnected_ = that.mIsConnected_;
@@ -96,19 +96,19 @@ namespace GLFrameworkInternal {
 	}
 
 
-	void GraphicsLanguageFrameworkMonitor::updateVirtualPosition() {
+	void FSMMonitor::updateVirtualPosition() {
 		glfwGetMonitorPos(const_cast<GLFWmonitor*>(mHandle_), &mVirtualXPos_, &mVirtualYPos_);
 	}
 
-	void GraphicsLanguageFrameworkMonitor::updateContentScale() {
+	void FSMMonitor::updateContentScale() {
 		glfwGetMonitorContentScale(const_cast<GLFWmonitor*>(mHandle_), &mContentScaleX_, &mContentScaleY_);
 	}
 	
-	size_t GraphicsLanguageFrameworkMonitor::getNumberOfAvailableVideoModes() const {
+	size_t FSMMonitor::getNumberOfAvailableVideoModes() const {
 		return mAvailableVideoModes_;
 	}
 	
-	VideoMode GraphicsLanguageFrameworkMonitor::getPrimaryVideoMode() const {
+	VideoMode FSMMonitor::getPrimaryVideoMode() const {
 		if (mPrimaryVideoMode_) {
 			return *mPrimaryVideoMode_;
 		}
@@ -118,7 +118,7 @@ namespace GLFrameworkInternal {
 		}
 	}
 
-	VideoMode GraphicsLanguageFrameworkMonitor::getSpecificVideoMode(size_t index) const {
+	VideoMode FSMMonitor::getSpecificVideoMode(size_t index) const {
 		if (mAvailableVideoModes_ == 0u) {
 			fprintf(WRNLOG, "\nWARNING! A video mode at index %u was requested for monitor %s(handle=0x%p),\n"
 				"    but no valid video mode exists at this index. A \"bogus\" video mode will generated as a placeholder!\n", index,
@@ -139,36 +139,36 @@ namespace GLFrameworkInternal {
 		}
 	}
 
-	std::vector<VideoMode> GraphicsLanguageFrameworkMonitor::getAvailableVideoModes() const {
+	std::vector<VideoMode> FSMMonitor::getAvailableVideoModes() const {
 		return mVideoModes_;
 	}
 
-	void GraphicsLanguageFrameworkMonitor::setCustomGamma(float gamma) {
+	void FSMMonitor::setCustomGamma(float gamma) {
 		fprintf(MSGLOG, "\nSetting Custom Gamma Ramp of %f for monitor %s(handle=0x%p)!\n",
 			gamma, mName_.c_str(), mHandle_);
 		glfwSetGamma(const_cast<GLFWmonitor*>(mHandle_), gamma);
 	}
 	
-	bool GraphicsLanguageFrameworkMonitor::checkIfIsPrimaryMonitor() {
+	bool FSMMonitor::checkIfIsPrimaryMonitor() {
 		return (*this == glfwGetPrimaryMonitor()); //Uses overloaded 'operator==' with GLFWmonitor* as second parameter 
 	}
 
 
-	void GraphicsLanguageFrameworkMonitor::aquireMonitorDetails() {
+	void FSMMonitor::aquireMonitorDetails() {
 		getMonitorName();
 		getVideoModes();
 		updateVirtualPosition();
 		updateContentScale();
 	}
 
-	void GraphicsLanguageFrameworkMonitor::getMonitorName() {
+	void FSMMonitor::getMonitorName() {
 		const char * name = glfwGetMonitorName(const_cast<GLFWmonitor*>(mHandle_));
 		if ( (name != NULL) && (*name != '\0') ) {
 			mName_ = name;
 		}
 	}
 
-	void GraphicsLanguageFrameworkMonitor::getVideoModes() {
+	void FSMMonitor::getVideoModes() {
 		int availableVideoModes = 0;
 		const GLFWvidmode * arrayOfVidModes = glfwGetVideoModes(const_cast<GLFWmonitor*>(mHandle_), &availableVideoModes);
 		if ( (arrayOfVidModes == nullptr) || (availableVideoModes <= 0)) {
@@ -190,8 +190,8 @@ namespace GLFrameworkInternal {
 		mPrimaryVideoMode_ = std::make_unique<VideoMode>(*primary, physicalSizeX, physicalSizeY);
 	}
 
-	void GraphicsLanguageFrameworkMonitor::getMonitorPhysicalSize(int& w, int& h) {
+	void FSMMonitor::getMonitorPhysicalSize(int& w, int& h) {
 		glfwGetMonitorPhysicalSize(const_cast<GLFWmonitor*>(mHandle_), &w, &h);
 	}
 
-} //namespace GLFrameworkInternal
+} //namespace FSMEngineInternal

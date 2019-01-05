@@ -12,7 +12,7 @@
 #ifndef CONNECTED_MONITORS_H_
 #define CONNECTED_MONITORS_H_
 
-#include "GraphicsLanguageFrameworkMonitor.h"
+#include "FSMMonitor.h"
 
 class ConnectedMonitors {
 public:

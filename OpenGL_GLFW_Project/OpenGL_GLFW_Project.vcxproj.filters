@@ -190,20 +190,11 @@
     <Filter Include="Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
       <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2">
-      <UniqueIdentifier>{2b4199fa-3c19-4a70-bd7f-e97d113425a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions">
-      <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\UI\Joystick/Controller">
       <UniqueIdentifier>{ac7ddb60-abf3-49ca-a0ff-80c90c247384}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt">
       <UniqueIdentifier>{6a24f5fc-3443-4a7c-a89c-a5f9e55eee23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\Joystick">
-      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Debug">
       <UniqueIdentifier>{a478040c-0ce3-411f-b165-64750b9cbbc6}</UniqueIdentifier>
@@ -319,35 +310,44 @@
     <Filter Include="Third Party\OpenAL">
       <UniqueIdentifier>{8c70782d-c522-4932-968f-333dafd7b7db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorCallbackFunction">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine">
+      <UniqueIdentifier>{2b4199fa-3c19-4a70-bd7f-e97d113425a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions">
+      <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\GLFW_ErrorCallbackFunction">
       <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\GLFW_MonitorEventCallbackFunction">
       <UniqueIdentifier>{4fac4fee-ea86-437f-a085-cb9ec2f5aa4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes">
       <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor">
       <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode">
       <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Window">
       <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Context">
       <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects">
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick">
+      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ObjectCollections">
       <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad\KHR">
+      <UniqueIdentifier>{059a4290-81be-4aee-ba7e-91048ac05c1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="glad.c">
-      <Filter>Third Party\glad</Filter>
-    </ClCompile>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
     </ClCompile>
@@ -463,43 +463,46 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkContext.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsLanguageFrameworkMonitor.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsLanguageFrameworkWindow.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
     </ClCompile>
     <ClCompile Include="VideoMode.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
     </ClCompile>
     <ClCompile Include="JoystickBase.cpp">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClCompile>
     <ClCompile Include="JoystickManager.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="MappedGamepad.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="Joystick.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="JoystickStatePrinter.cpp">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClCompile>
     <ClCompile Include="GLFrameworkMonitorEventCallback.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
     </ClCompile>
     <ClCompile Include="GLFrameworkCallbackInitializer.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions</Filter>
     </ClCompile>
     <ClCompile Include="ConnectedMonitors.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ObjectCollections</Filter>
     </ClCompile>
     <ClCompile Include="FSMEngine.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMMonitor.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
+    </ClCompile>
+    <ClCompile Include="glad\glad.c">
+      <Filter>Third Party\glad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -514,12 +517,6 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="glad.h">
-      <Filter>Third Party\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="khrplatform.h">
-      <Filter>Third Party\glad</Filter>
-    </ClInclude>
     <ClInclude Include="glfw_config.h">
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
@@ -926,52 +923,58 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
     </ClInclude>
     <ClInclude Include="GLFrameworkErrorCallback.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_ErrorCallbackFunction</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsLanguageFrameworkMonitor.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\GLFW_ErrorCallbackFunction</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsLanguageFrameworkWindow.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Window</Filter>
     </ClInclude>
     <ClInclude Include="VideoMode.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor\VideoMode</Filter>
     </ClInclude>
     <ClInclude Include="JoystickBase.h">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClInclude>
     <ClInclude Include="JoystickManager.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="MappedGamepad.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="Joystick.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\Joystick</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="JoystickStatePrinter.h">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsLanguageFrameworkContext.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Context</Filter>
     </ClInclude>
     <ClInclude Include="GLFrameworkMonitorEventCallback.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\GLFW_MonitorEventCallbackFunction</Filter>
     </ClInclude>
     <ClInclude Include="GLFrameworkCallbackInitializer.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\CallbackFunctions</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions</Filter>
     </ClInclude>
     <ClInclude Include="ConnectedMonitors.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2\GraphicsLanguageFrameworkActiveObjects</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ObjectCollections</Filter>
     </ClInclude>
     <ClInclude Include="FSMEngine.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2</Filter>
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
     </ClInclude>
     <ClInclude Include="GlobalConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="GlobalIncludes.h">
       <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMMonitor.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\GraphicsLanguageFrameworkComponentTypes\Monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\glad.h">
+      <Filter>Third Party\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\KHR\khrplatform.h">
+      <Filter>Third Party\glad\KHR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
