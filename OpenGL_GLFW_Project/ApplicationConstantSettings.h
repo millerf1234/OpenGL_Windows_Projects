@@ -35,7 +35,7 @@ static constexpr const char * NAME_OF_APPLICATION = "OpenGL Render Demo";
 
 //OpenGL Version:
 static constexpr const int DEFAULT_OPENGL_VERSION_MAJOR = 4;
-static constexpr const int DEFAULT_OPENGL_VERSION_MINOR = 5;
+static constexpr const int DEFAULT_OPENGL_VERSION_MINOR = 6;
 
 
 

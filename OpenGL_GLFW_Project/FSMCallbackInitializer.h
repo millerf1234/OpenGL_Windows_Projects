@@ -1,7 +1,12 @@
-//  File:                      GLFrameworkCallbackInitializer.h
+//  File:                      FSMCallbackInitializer.h
+//  Class:                     FSMCallbackInitializer
+//  QuickInfo:
+//       Default Constructor    ENABLED
+//       Copy Operations        DISABLED
+//       Move Operations        DISABLED
 //
-//  Description:               Manages setting up callback functions for the 
-//                             GLFW library
+//
+//  Description:               Sets up callback functions 
 //
 //  
 //
@@ -15,13 +20,23 @@
 
 #pragma once
 
-#ifndef GL_FRAMEWORK_CALLBACK_INITIALIZER_H_
-#define GL_FRAMEWORK_CALLBACK_INITIALIZER_H_
+#ifndef FSM_CALLBACK_INITIALIZER_H_
+#define FSM_CALLBACK_INITIALIZER_H_
 
-#include "GLFrameworkErrorCallback.h"
-#include "GLFrameworkMonitorEventCallback.h"
+#include "FSMErrorCallback.h"
+#include "FSMMonitorEventCallback.h"
 
 namespace FSMEngineInternal {
+
+	class FSMCallbackInitializer final {
+	public:
+
+
+
+
+	private:
+
+	};
 
 	//To be called before GLFW is initialized
 	//Expected Callbacks functions to set:
@@ -42,7 +57,7 @@ namespace FSMEngineInternal {
 	//assigned to the window so that it behaves properly.
 	//These are the callbacks that will be assigned to the window:
 
-	void configureWindowSpecificCallbackFunctions(GLFWwindow*);
+	//void configureWindowSpecificCallbackFunctions(GLFWwindow*);
 	
 
 

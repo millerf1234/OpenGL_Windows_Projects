@@ -45,9 +45,9 @@
 
 #include "GlobalIncludes.h" //For GLFW library
 
-#include "GraphicsLanguageFrameworkContext.h"
+#include "FSMContext.h"
 #include "FSMMonitor.h"
-#include "GraphicsLanguageFrameworkWindow.h"
+#include "FSMWindow.h"
 
 #include "ConnectedMonitors.h"
 

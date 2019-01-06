@@ -1,4 +1,4 @@
-//File:                               GLFrameworkMonitorEventCallback.h
+//File:                               FSMMonitorEventCallback.h
 //
 // Description:                       Provides an interface for responding to Monitor Callback events.
 //                                    See anticiapted usgae section.
@@ -14,16 +14,14 @@
 //                                    get passed through the Operating System's callback, so please
 //                                    ensure the Application validates every event.
 //                                    
-//
-//
 //                                    
 // Programmer:                        Forrest Miller
 // Date:                              January 2, 2019
 
 #pragma once
 
-#ifndef GL_FRAMEWORK_MONITOR_EVENT_CALLBACK_H_
-#define GL_FRAMEWORK_MONITOR_EVENT_CALLBACK_H_
+#ifndef FSM_MONITOR_EVENT_CALLBACK_H_
+#define FSM_MONITOR_EVENT_CALLBACK_H_
 
 #include <queue>
 #include <sstream>
@@ -75,9 +73,12 @@ namespace FSMEngineInternal {
 	std::optional<GLFWmonitor*> getNextAvailableMonitorDisconnection();
 
 
-	//Declaration of callback function to assign to GLFW and the two queue 'functions,' 
-	//don't call
+	//////////////////////////////////////////////////////
+	//////   Implementation Details, Can Ignore       ////
+	//////////////////////////////////////////////////////
 	namespace MonitorEventCallbackInternal {
+		//Declaration of callback function to assign to GLFW and prototypes the two queue 'functions,' 
+		//don't call these functions 
 		void graphicsLanguageFrameworkMonitorEventCallbackFunction(GLFWmonitor*, int);
 		std::queue<GLFWmonitor*>& recentMonitorConnections();
 		std::queue<GLFWmonitor*>& recentMonitorDisconnections();

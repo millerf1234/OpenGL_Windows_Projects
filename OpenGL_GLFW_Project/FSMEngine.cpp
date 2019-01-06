@@ -7,7 +7,7 @@
 
 #include "FSMEngine.h"
 #include "LoggingMessageTargets.h"
-#include "GLFrameworkCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
+#include "FSMCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
 
 
 void FSMEngine::giveMemberVariablesInitialValues() {

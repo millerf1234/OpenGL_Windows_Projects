@@ -1,4 +1,4 @@
-// File:                       GLFrameworkCallbackInitializer.cpp
+// File:                       FSMCallbackInitializer.cpp
 //
 //
 //  Description:               Contains the implementation details which occur when setting up 
@@ -9,20 +9,20 @@
 //  Date:                      January 2, 2019
 //
 
-#include "GLFrameworkCallbackInitializer.h"
+#include "FSMCallbackInitializer.h"
 
 namespace FSMEngineInternal {
 
 	//////////////////////////////////////////
 	/////  Internal Function Prototypes  /////
 	//////////////////////////////////////////
-	namespace GLFrameworkCallbackImplementation {
+	namespace FSMCallbackImplementation {
 		//Pre-initialization
 		void setErrorCallback();
 		//Post-initialization
 		void setMonitorEventCallback();
 
-	} //namespace GLFrameworkCallbackImplementation
+	} //namespace FSMCallbackImplementation
 
 
 
@@ -36,13 +36,13 @@ namespace FSMEngineInternal {
 
 	//To be called before GLFW is initialized
 	void configurePreInitializationCallbackFunctions() {
-		GLFrameworkCallbackImplementation::setErrorCallback();
+		FSMCallbackImplementation::setErrorCallback();
 	}
 
 
 	//To be called after GLFW has been successfully initialized
 	void configurePostInitializationCallbackFunctions() {
-		GLFrameworkCallbackImplementation::setMonitorEventCallback();
+		FSMCallbackImplementation::setMonitorEventCallback();
 
 	}
 
@@ -55,10 +55,10 @@ namespace FSMEngineInternal {
 	//////  Implementation of Internal Callback Setup Functions  //////
 	///////////////////////////////////////////////////////////////////
 
-	namespace GLFrameworkCallbackImplementation {
+	namespace FSMCallbackImplementation {
 		
 		void setErrorCallback() {
-			GLFWerrorfun previousErrorFun = glfwSetErrorCallback(graphicsLanguageFrameworkErrorCallbackFunction);
+			GLFWerrorfun previousErrorFun = glfwSetErrorCallback(FSMErrorCallbackFunction);
 			
 			//Question: Do GLFW applications using GLFW as a shared library (DLL) each get to set their error callback function independently?
 			//Just in case there was an error callback function that was already set, probably best be safe and print out a warning that it has
@@ -75,7 +75,7 @@ namespace FSMEngineInternal {
 
 
 	
-	} //namespace GLFrameworkCallbackImplementation
+	} //namespace FSMCallbackImplementation
 
 
 } //namespace FSMEngineInternal

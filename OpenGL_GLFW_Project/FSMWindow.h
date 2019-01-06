@@ -1,4 +1,4 @@
-//File:          GraphicsLanguageFrameworkWindow.h
+//File:          FSMWindow.h
 //
 // Description:    todo...
 //
@@ -11,15 +11,15 @@
 
 #pragma once
 
-#ifndef GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_
-#define GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_
+#ifndef FSM_WINDOW_H_
+#define FSM_WINDOW_H_
 
 namespace FSMEngineInternal {
 
-	class GraphicsLanguageFrameworkWindow {
+	class FSMWindow {
 	public:
-		GraphicsLanguageFrameworkWindow();
-		~GraphicsLanguageFrameworkWindow();
+		FSMWindow();
+		~FSMWindow();
 
 	private:
 		bool mFullScreen_;
@@ -30,4 +30,4 @@ namespace FSMEngineInternal {
 } //namespace FSMEngineInternal
 
 
-#endif //GRAPHICS_LANGUAGE_FRAMEWORK_WINDOW_H_
+#endif //FSM_WINDOW_H_

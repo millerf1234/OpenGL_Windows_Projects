@@ -1,3 +1,25 @@
+//  File:                   JoystickStatePrinter.cpp
+//  
+//  Description:            See header for details
+//
+//
+//  IMPLEMENTATION DISCLAIMER: 
+//                          When I wrote this class, I did not intend for it to be something
+//                          that would be used beyond my initial goal of quickly getting a rough 
+//                          sense of the sort of input I could expect to recieve from some various
+//                          Joystick devices I had lying around. However this class soon proved to
+//                          be incredibly useful and so it grew into a permanent fixture. Due to 
+//                          the way in which this code was hastily written, it does not meet my
+//                          typical standards for both clarity and good design. If you are 
+//                          attempting to update this code, perhaps it might be quicker to just
+//                          re-write this entire implementation than understand what is happening.
+//
+//  
+//  Programmer:             Forrest Miller
+//  Date:                   December 29-30, 2018
+
+
+
 #include "JoystickStatePrinter.h"
 
 #include <sstream>

@@ -1,4 +1,4 @@
-//File:                     GLFrameworkErrorCallback.h
+//File:                     FSMErrorCallback.h
 //
 //  Defines the callback function to be used with GLFW for reporting errors. This function is
 //  to be assigned once per application and will be used for every window/context. Note that this
@@ -19,16 +19,16 @@
 
 #pragma once
 
-#ifndef GL_FRAMEWORK_ERROR_CALLBACK_H_
-#define GL_FRAMEWORK_ERROR_CALLBACK_H_
+#ifndef FSM_ERROR_CALLBACK_H_
+#define FSM_ERROR_CALLBACK_H_
 
 #include "LoggingMessageTargets.h" 
 #include <sstream>
 
-//Callback function for GLFW error reporting. Unlike every other GLFW callback function,
-//this function is set globally for the entire library as opposed to on a per-window basis.
+//Callback function for GLFW error reporting. Unlike [almost*] every other GLFW callback function,             
+//this function is set globally for the entire library as opposed to on a per-window basis.                               *Joystick and Monitor callbacks are exceptions
 namespace FSMEngineInternal {
-	inline void graphicsLanguageFrameworkErrorCallbackFunction(int error, const char* description) {
+	inline void FSMErrorCallbackFunction(int error, const char* description) {
 
 		//Build a formated error message printout
 		std::stringstream errorMessage;

@@ -126,7 +126,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
+				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
 		
 		} //The fprintf call is made at the end of all the MEDIUM/HIGH priority source cases
 
@@ -180,7 +180,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
+				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
 
 		}
 
@@ -254,7 +254,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-				"*******************************************************************************\n"); //80 characters
+				"\n*******************************************************************************\n"); //80 characters
 		}
 
 		//-------------------------------------------------------------
@@ -272,9 +272,9 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM\n");
 			}
 
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\nMessage is: %s\n", message);
+			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\nMessage is: %s", message);
 			snprintf(msgBuff + bufferIter, BUFFER_SIZE, 
-				"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+				"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		}
 
 		//Now print the buffer with a single call to fprintf
@@ -355,7 +355,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		}
 		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
 		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-			"-------------------------------------------------------------------------------\n");
+			"\n-------------------------------------------------------------------------------\n");
 	}
 
 
@@ -402,9 +402,9 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 			break;
 		}
 
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\n%s\n", message);
+		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\n%s", message);
 		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
-			"********************************************************************\n");
+			"\n********************************************************************\n");
 	}
 
 	fprintf(MSGLOG, "%s\n", msgBuff);

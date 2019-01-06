@@ -1,4 +1,10 @@
-// JoystickPrinter.h
+// File:              JoystickPrinter.h
+// Class:             JoystickPrinter
+// QuickInfo:
+//       Default Constructor    ENABLED 
+//       Copy Operations        ENABLED
+//       Move Operations        ENABLED
+//
 //
 // Description:        A class built for debugging which simply echos input
 //                     read from a connected Joystick. Requires GLFW to have been initialized.
@@ -49,8 +55,65 @@
 // Has Dependency:     The GLFW library must have been initialized for this class to operate
 //                     properly.
 //
+//
 // Programmer:         Forrest Miller
 // Date:               December 29-30, 2018
+//
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//--------------------------------------------------------------------------------------------------------------------
+//                                       JOYSTICK REFERENCE INFORMATION
+//--------------------------------------------------------------------------------------------------------------------
+//
+//            Common Joystick Types/Standards:
+//
+//STANDARD:     DirectInput          
+//                      - This is the old-school standard dating to back in the 90's, where it 
+//                           came into existance as one of Microsoft's many DirectX libraries.
+//                           The DirectInput standard is considered legacy now, with the most
+//                           recent update coming alongside DirectX 8 in 2002. 
+//            --------------------------------------------+--------------------------------------------------------
+//                      Limitations                       |               Advantanges
+//            --------------------------------------------+--------------------------------------------------------
+//             - Legacy, may become deprecated            |   - Large number of input devices beyond Xbox360 
+//                                                        |        controllers are supported
+//             - Right/Left triggers are reported as      |   - Supports Haptic feedback 
+//                  binary values                         |
+//             - Not supported by Windows Store Apps      |   - Excellent gamepad/joystick rumble support
+//                                                        |        (way more functionality than XInput provides)
+//             - Programmable UI was removed in Windows   |   - Supports 8 axes and 128 buttons
+//                  Vista and later                       |
+//                                                        |   - Can have more than 4 devices connected at once
+//            --------------------------------------------+--------------------------------------------------------
+//              
+//Standard:     XInput
+//                      - XInput is the modern input standard that released alongside the Xbox 360 and is supported
+//                           by DirectX 9.0 and later. This standard is built to closely represent the layout
+//                           and features found on the Xbox360 controller. Based off my current observations,
+//                           most modern gamepad controllers will default to using this standard.   
+//            --------------------------------------------+--------------------------------------------------------
+//                      Limitations                       |               Advantanges
+//            --------------------------------------------+--------------------------------------------------------
+//             - Only 4 controllers may be connected at   |   - Very specific on what input will be available and 
+//                  once                                  |        how gamepad can be expected to be mapped.
+//             - Xbox One controllers can't vibrate       |   - Widespread support from many different gamepads
+//                                                        |
+//             - Inputs limited to only the buttons/axes  |   - Can detect headsets connected to controllers
+//                  found on an Xbox360 controller        |
+//             - No Haptic feedback support               |
+//            --------------------------------------------+--------------------------------------------------------
+//
+//
+// References:   
+//  [DirectInput and XInput comparison by Microsoft]         
+//                  https://docs.microsoft.com/en-us/windows/desktop/xinput/xinput-and-directinput
+//  [Microsoft XInput documentation]
+//                  https://docs.microsoft.com/en-us/windows/desktop/api/xinput/index
+//
+//  [Hobbiest Xbox Controller Driver] 
+//                  https://www.s-config.com/xbcd-original-xbox-controllers-win10/
+//
 
 
 #pragma once

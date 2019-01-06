@@ -1,4 +1,4 @@
-//File:       GraphicsLanguageFrameworkContext.h
+//File:       FSMContext.h
 // 
 // Description:     todo...
 //
@@ -12,11 +12,11 @@
 
 namespace FSMEngineInternal {
 
-	class GraphicsLanguageFrameworkContext
+	class FSMContext
 	{
 	public:
-		GraphicsLanguageFrameworkContext();
-		~GraphicsLanguageFrameworkContext();
+		FSMContext();
+		~FSMContext();
 	};
 
 } //namespace FSMEngineInternal

@@ -168,15 +168,15 @@ void AssetLoadingDemo::initialize() {
 	fov = 56.0f;
 	screenHeight = 2160.0f;
 	screenWidth = 3840.0f;
-	zNear = 0.5f;
-	zFar = 100.0f;
+	zNear = 0.05f;
+	zFar = 10000.0f;
 	//Compute the screen -projection matrix
 	//perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
 	//see: https://gamedev.stackexchange.com/questions/98226/how-can-i-set-up-an-intuitive-perspective-projection-view-matrix-combination-in
 	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
 
 	//Set values for view matrix
-	cameraPos = glm::vec3(0.0f, 0.0f, 10.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
 	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
 	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -267,9 +267,40 @@ void AssetLoadingDemo::loadAssets() {
 
 
 void AssetLoadingDemo::loadShaders() { 
-
 	std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
+	/////////////////////////
+	////    RubyMine Shader   (from the internet)
+	/////////////////////////
+	fprintf(MSGLOG, "\nInitializing Shaders!\n");
+
+	sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
+	
+    //Attach the main shader stages to the sceneShader
+	sceneShader->attachVert(shadersRFP + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
+	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
+	sceneShader->attachFrag(shadersRFP + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
+	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
+	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
+	sceneShader->link();
+	if (sceneShader->checkIfLinked()) {
+		fprintf(MSGLOG, "Program Successfully linked!\n");
+		return;
+	}
+	else {
+		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+		std::cin.get(); //Hold the mainRenderWindow open if there was an error
+		markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
+		return;
+	}
+
+
+
+
+	/////////////////////////
+	////    Normal Shader
+	/////////////////////////
 	fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
 	sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
@@ -310,6 +341,8 @@ void AssetLoadingDemo::loadShaders() {
 		return;
 	}
 
+
+
 	fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
 }
 
@@ -337,12 +370,12 @@ void AssetLoadingDemo::loadModels() {
 	//Load some models
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
 
@@ -413,9 +446,9 @@ void AssetLoadingDemo::renderLoop() {
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
 		translate();
-		if (drawMultipleInstances) {  //If drawing instances
+		//if (drawMultipleInstances) {  //If drawing instances
 			modifyInstancedDrawingSpiralPattern();  //Change the parameters for how the instances are drawn
-		}
+		//}
 
 		//Perform logic 
 
@@ -620,8 +653,8 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 }
 
 void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
-	GLfloat xChangeRate = 0.0015f;
-	GLfloat yChangeRate = 0.0015f;
+	GLfloat xChangeRate = 0.015f;
+	GLfloat yChangeRate = 0.015f;
 	GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
 	GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
 
@@ -866,10 +899,10 @@ void AssetLoadingDemo::buildNewShader() {
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
-	//if (false) {
-	//	glClearColor(0.32f, 0.4f, 0.35f, 1.0f);
-	//}
-	//else if (true) {
+	if (true) {
+		glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
+	}
+	else if (false) {
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
 		backgroundColor.x = abs(sin(counter + backgroundColor.x));
 		backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
@@ -891,7 +924,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 		//fprintf(MSGLOG, "For reference, length(background) is: %f\n", backgroundColor.length());
 	    */
 
-	//}
+	}
 }
 
 

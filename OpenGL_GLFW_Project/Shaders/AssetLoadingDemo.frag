@@ -10,11 +10,7 @@ in vec4 position;
 in vec2 texCoord;
 in vec3 normal;
 
-
-
 out vec4 color;
-
-
 
 uniform float time;
 
@@ -45,8 +41,9 @@ void main() {
 	else if (intensity > 0.6) {
 		color = vec4(0.8, 0.75, 0.65, 1.0);
 	}
-	else if (intensity > 0.55) {
-		discard();
+	else if (intensity > 0.50) {
+		color = vec4(0.73, 0.7, 0.63, 1.0);
+		//discard;
 	}
 	else if (intensity > (0.3)) {
 		color = vec4(0.32, 0.301, 0.2501, 1.0);
