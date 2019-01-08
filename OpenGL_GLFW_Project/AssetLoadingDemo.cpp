@@ -361,7 +361,7 @@ void AssetLoadingDemo::loadModels() {
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
 	//Initial Scale values for the objects
-	float blockThing_QuadsScale = 2.2f;
+	float blockThing_QuadsScale = 1.2f;
 	float beveledCubeScale = 2.3f;
 	float blockShipScale = 4.5f;
 	float subdivisionCubeScale = 4.9f;
@@ -370,7 +370,7 @@ void AssetLoadingDemo::loadModels() {
 	//Load some models
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
@@ -382,8 +382,9 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 6.01f));
+
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
@@ -900,7 +901,8 @@ void AssetLoadingDemo::buildNewShader() {
 
 void AssetLoadingDemo::updateFrameClearColor() {
 	if (true) {
-		glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
+		glClearColor(0.0132f, 0.024f, 0.0135f, 1.0f);
+		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
 	}
 	else if (false) {
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);

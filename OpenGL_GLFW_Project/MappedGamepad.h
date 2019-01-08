@@ -15,7 +15,7 @@
 #define MAPPED_GAMEPAD_H_
 
 #include <string>
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 class MappedGamepad final {
 public:

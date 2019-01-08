@@ -26,8 +26,8 @@
 
 
 
-#define USE_DEBUG_
-#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
+//#define USE_DEBUG_
+//#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
 
 
 static constexpr const char * NAME_OF_APPLICATION = "OpenGL Render Demo";

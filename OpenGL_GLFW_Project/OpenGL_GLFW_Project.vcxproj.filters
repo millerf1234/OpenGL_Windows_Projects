@@ -223,9 +223,6 @@
     <Filter Include="Resource Files\Models\OBJ\Sample\BeveledCube">
       <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
-      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
       <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
     </Filter>
@@ -354,6 +351,12 @@
     </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback">
       <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
+      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter">
+      <UniqueIdentifier>{73d7db21-48d4-4fbb-b00e-0b95d24272b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1163,6 +1166,12 @@
     </None>
     <None Include="Shaders\Sample\RubyMine.vert">
       <Filter>Resource Files\Shaders\Sample\ShaderFrog\RubyMine</Filter>
+    </None>
+    <None Include="obj\ViperMKIV_Fighter.mtl">
+      <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
+    </None>
+    <None Include="obj\ViperMKIV_Fighter.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

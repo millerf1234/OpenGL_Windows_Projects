@@ -14,7 +14,7 @@
 #ifndef ASSET_INTERFACE_H_
 #define ASSET_INTERFACE_H_
 
-#include "ProjectSetup.h"
+#include "GlobalIncludes.h"
 
 class AssetInterface {
 public:

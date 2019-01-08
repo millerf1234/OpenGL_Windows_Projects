@@ -13,25 +13,24 @@
 ///precision highp float;    ///Removed by FSM
 ///precision highp int;      ///Removed by FSM
 
+// Based off https://github.com/Erkaman/glsl-worley
 
-out vec3 vPosition;      ///varying vec3 vPosition;     ///Modified by FSM
-out float vJitter;       ///varying float vJitter;      ///Modified by FSM
-out int vInst;
-
-uniform float zoom;     ///FSM -- Added additional uniform to control zoom
 uniform float time;
 
-uniform mat4 MVP;                ///Added by FSM
-uniform mat4 rotation;           ///Added by FSM
-///uniform mat4 modelViewMatrix;        //Modified by FSM
-///uniform mat4 projectionMatrix;       //Modified by FSM
+uniform float instanceSpiralPatternPeriod_x;
+uniform float instanceSpiralPatternPeriod_y;
+
+uniform mat4 rotation;
+
+vec3 color1 = vec3(abs(cos(instanceSpiralPatternPeriod_x)), 0.25 + abs(0.75*cos(0.23*instanceSpiralPatternPeriod_x)), 0.800 - 0.7 * abs(cos(instanceSpiralPatternPeriod_x)));   ///uniform vec3 color1;     ///Modified by FSM
+vec3 color2 = vec3(0.5, 0.72, 0.75);   ///uniform vec3 color2;     ///Modified by FSM 
 
 
-layout(location = 0) in vec4 ModelPosition;   ///Added by FSM
-layout(location = 1) in vec2 ModelTexCoord;   ///Added by FSM
-layout(location = 2) in vec3 ModelNormal;     ///Added by FSM
-///attribute vec3 position;
-///attribute vec3 normal;
+in vec3 vPosition;      ///varying vec3 vPosition;     ///Modified by FSM
+in float vJitter;       ///varying float vJitter;      ///Modified by FSM
+in flat int vInst;
+
+out vec4 outColor;   ///Added by FSM
 
 // Permutation polynomial: (34x^2 + x) mod 289
 vec3 permute(vec3 x) {
@@ -187,33 +186,28 @@ vec2 worley(vec3 P, float jitter) {
 }
 
 void main() {
-	///FSM updated main implementation
-
-	vInst = gl_InstanceID + 2 * gl_InstanceID;
-
-	vJitter = 10.0 + 8.00308 * sin(30.*time + gl_VertexID);
-	vPosition = (ModelPosition.xyz * 0.10) + 0.7*vec3(sin(time), cos(time), cos(time + 3.14));
 
 	vec2 worl = worley(vPosition, vJitter);
-	vec3 pos = ModelPosition.xyz - (0.3 + 0.003*vInst)*(length(worl) * ModelNormal * 0.2);
+	float world = worl.y - worl.x;
 
-	float instGrowth = float(floor(gl_InstanceID / 200)*pow(gl_InstanceID, 1.005) / 1000);
+	vec3 color = mat3(rotation * rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x)-worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), 0.0), clamp(world * 2.0, 0.0, 1.0));
 
-	gl_Position = (MVP * vec4(pos, ModelPosition.w)) + vec4(8.0 * instGrowth * cos( 2.0 * gl_InstanceID), 10.0 * instGrowth * sin(2.3*gl_InstanceID), -12.0, zoom);
+	color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
+
+	///gl_FragColor = vec4((color * 0.1) + (color * world), 1.0);   ///Modified by FSM
+	outColor = fwidthCoarse(vec4((color * 0.1) + (color * world), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
+
+	outColor *= (0.9 + 0.35*sin(time)) / length(outColor);
 
 
-	///Original Main implementation
-	/* 
-	vJitter = 1.0;
-	vPosition = (position * 2.0) + vec3(
-		sin(time),
-		cos(time),
-		cos(time + 3.14)
-	);
+	outColor.a = 1.12 * smoothstep(-1.0, 18.0*length(vec3(1.0, 1.0, 1.0)), length(outColor.rgb + color.rgr));//0.24;
+	if (vInst > 500) {
+		float dropoff = pow(0.9999, float(vInst - 499));
+		outColor.a *= dropoff;
+	}
 
-	vec2 worl = worley(vPosition, vJitter);
-	vec3 pos = position - (length(worl) * normal * 0.2);
+	outColor.gb += gl_SamplePosition;
+	outColor.r /= (outColor.r * gl_SampleID);
 
-	gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-	*/
+	
 }
