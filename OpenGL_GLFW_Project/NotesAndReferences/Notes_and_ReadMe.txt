@@ -58,6 +58,9 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+
+
+
 //FUTURE IDEAS:
 
 //Overall idea of project in its current state:
@@ -93,6 +96,9 @@ I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 //		  have it replace shaders that fail to load/compile.
 //
 //
+
+
+
 
 
 

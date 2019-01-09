@@ -38,6 +38,15 @@
         https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle
 */
 
+
+//I also added these next few lines to prevent both this version and debug GLAD from compiling
+//#include "c:/Users/Forrest/source/repos/OpenGL_GLFW_Project/OpenGL_GLFW_Project/DebugSettings.h"
+#include "../../DebugSettings.h"
+#ifndef USE_DEBUG_    //Matching endif statement at bottom of file
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -2012,3 +2021,8 @@ int gladLoadGLLoader(GLADloadproc load) {
 	return GLVersion.major != 0 || GLVersion.minor != 0;
 }
 
+
+
+
+//I am adding this last line
+#endif //USE_DEBUG_

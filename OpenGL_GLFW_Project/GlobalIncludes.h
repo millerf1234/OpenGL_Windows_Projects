@@ -1,5 +1,17 @@
-//This file contains headers that are meant to be included globally only once. 
+//This file contains headers that are meant to be included globally. 
 //
+//
+//  File structure:     There are 2 sets of includes contained within this header.
+//                       -) The first set contains headers that control universal 
+//                            settings which determine the behavior of the 
+//                            code across the entire project.  
+//                       -) The second set consists of the headers of several 
+//                            fundamental 3rd party libraries that are used 
+//                            throughout the codebase.  
+//                        
+//                       Please be aware that the second set of includes have 
+//                           dependencies on settings/macros specified by 
+//                           headers in the first set
 //
 //
 //   File History:
@@ -17,14 +29,51 @@
 #ifndef GLOBAL_INCLUDES_H_
 #define GLOBAL_INCLUDES_H_
 
-//
-//old GLAD version (OpenGL 4.5) link: http://glad.dav1d.de/#profile=core&specification=gl&api=gl%3D4.5&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&language=c&loader=on
-//new GLAD version (OpenGL 4.6) link: http://glad.dav1d.de/#profile=core&api=gl%3D4.6&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle&language=c&specification=gl&loader=on
-#include "glad/glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
+
+//////////////////////////////////////////////////////////////////////////////////////////////// 
+//1st set//////////////////            Global Configuration Headers            ///////////////// 
+//////////////////////////////////////////////////////////////////////////////////////////////// 
+
+///////////////////////////////////////////
+///////  Project-Wide Log Message Output
+///////////////////////////////////////////
+#include "LoggingMessageTargets.h"
+
+///////////////////////////////////////////
+///////  Project-Wide Debug Settings   
+///////////////////////////////////////////
+#include "DebugSettings.h"
 
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//2nd set//////////////////       Headers for 3rd Party Libraries       /////////////////
+/////////////////////////////////////////////////////////////////////////////////////////  
+
+
+///////////////////////////////////////////////
+//  Choose which GLAD library version to use //
+///////////////////////////////////////////////
+
+//GLAD has both a Debug version and a standard version. Which version is to be
+//included is determined from whether the project is in debug mode or not. 
+//    (Side Note: Both versions of glad depend on the header file 'khrplatform.h'.
+//                This header file is identical for both versions) 
+#ifdef USE_DEBUG_  
+//DEBUG GLAD version (OpenGL 4.6) 
+//       link:     http://glad.dav1d.de/#profile=core&api=gl%3D4.6&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle&language=c-debug&specification=gl&localfiles=on&loader=on
+#include "glad/debug/debug_glad.h"
+#else
+//NON-DEBUG GLAD version (OpenGL 4.6) 
+//       link: http://glad.dav1d.de/#profile=core&api=gl%3D4.6&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle&language=c&specification=gl&loader=on
+#include "glad/release/glad.h" //This one header file handles loading the entire graphics language. I am 'glad' it exists (lol)
+#endif 
+
+
+////////////////////////////////////////////////////////////////
+//  Include the 'Graphics Language Framework' (GLFW) library  //
+////////////////////////////////////////////////////////////////
 //#include "glfw_config.h"  //This is the file that was generated by cmake when GLFW was compiled, 
 //                          //however it is not necessary for it to be included in this project.
 #include "glfw3.h"
@@ -32,7 +81,7 @@
 
 
 //////////////////////////////
-//  Set up the GLM library  //
+//  Set up the GLM library  //         (GLM is mathematics utility library)
 //////////////////////////////
 #ifndef GLM_FORCE_SSE2
 #define GLM_FORCE_SSE2
@@ -62,10 +111,8 @@
 // are used within the course of rendering. 
 #include "glm/gtc/matrix_transform.hpp"
 
-///////////////////////////////////////////
-///////  Project-Wide Log Message Output
-///////////////////////////////////////////
-#include "LoggingMessageTargets.h"
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,9 +131,6 @@
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "stb_image.h"
 //#endif 
-
-
-//
 
 
 

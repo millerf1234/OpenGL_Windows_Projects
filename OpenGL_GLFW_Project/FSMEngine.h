@@ -64,7 +64,7 @@ public:
 	//4.5, but can set to a different version through parameters glVersionMajor and glVersionMinor. It is 
 	//recommended to stick with version 4.5 or later and to not use the compatability profile. 
 	FSMEngine(const int glVersionMajor = 4,
-		      const int glVersionMinor = 5,
+		      const int glVersionMinor = 6,
 		      const bool useCompatabilityProfile = false);
 
 

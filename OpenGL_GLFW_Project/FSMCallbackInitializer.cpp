@@ -11,7 +11,20 @@
 
 #include "FSMCallbackInitializer.h"
 
+
+
 namespace FSMEngineInternal {
+
+
+	FSMCallbackInitializer::FSMCallbackInitializer() {
+
+	}
+
+	struct FSMCallbackInitializer::Callback_State {
+		bool test;
+	};
+
+/*
 
 	//////////////////////////////////////////
 	/////  Internal Function Prototypes  /////
@@ -76,6 +89,8 @@ namespace FSMEngineInternal {
 
 	
 	} //namespace FSMCallbackImplementation
-
+*/
 
 } //namespace FSMEngineInternal
+
+

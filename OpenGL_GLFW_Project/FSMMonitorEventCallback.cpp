@@ -56,24 +56,26 @@ namespace FSMEngineInternal {
 
 
 	std::optional<GLFWmonitor*> getNextAvailableMonitorConnection() {
-		std::optional<GLFWmonitor*> monitorHandle = std::optional<GLFWmonitor*>(/*empty*/);
-		if ((MonitorEventCallbackInternal::recentMonitorConnections().empty())) 
-			return monitorHandle; //return the empty optional
+		if ((MonitorEventCallbackInternal::recentMonitorConnections().empty())) {
+			return std::nullopt; //return the empty optional
+		}
 		else {
-			monitorHandle = std::make_optional<GLFWmonitor*>(MonitorEventCallbackInternal::recentMonitorConnections().front());
-			MonitorEventCallbackInternal::recentMonitorConnections().pop(); //Remove monitor from front of queue
+			std::optional<GLFWmonitor*> monitorHandle =
+				std::make_optional<GLFWmonitor*>(MonitorEventCallbackInternal::recentMonitorConnections().front());
+			MonitorEventCallbackInternal::recentMonitorConnections().pop(); //Remove monitor from queue
 			return monitorHandle;
 		}
 	}
 
 
 	std::optional<GLFWmonitor*> getNextAvailableMonitorDisconnection() {
-		std::optional<GLFWmonitor*> monitorHandle = std::optional<GLFWmonitor*>(/*empty*/);
-		if ((MonitorEventCallbackInternal::recentMonitorDisconnections().empty()))
-			return monitorHandle; //return the empty optional
+		if ((MonitorEventCallbackInternal::recentMonitorDisconnections().empty())) {
+			return std::nullopt;
+		}
 		else {
-			monitorHandle = std::make_optional<GLFWmonitor*>(MonitorEventCallbackInternal::recentMonitorDisconnections().front());
-			MonitorEventCallbackInternal::recentMonitorDisconnections().pop(); //Remove monitor from front of queue
+			std::optional<GLFWmonitor*> monitorHandle = 
+				std::make_optional<GLFWmonitor*>(MonitorEventCallbackInternal::recentMonitorDisconnections().front());
+			MonitorEventCallbackInternal::recentMonitorDisconnections().pop(); //Remove monitor from queue
 			return monitorHandle;
 		}
 	}
@@ -101,13 +103,14 @@ namespace FSMEngineInternal {
 			return awaitingDisconnection;
 		}
 
+	
+		
 		//-------------------------------------------------------
 		//
 		//   The MonitorEventCallback function to be assigned to GLFW 
 		//
 		//-------------------------------------------------------
-		
-
+	
 		void graphicsLanguageFrameworkMonitorEventCallbackFunction(GLFWmonitor* handle, int event) {
 			if (event == GLFW_CONNECTED) {
 				recentMonitorConnections().push(handle);
@@ -115,8 +118,8 @@ namespace FSMEngineInternal {
 			else if (event == GLFW_DISCONNECTED) {
 				recentMonitorDisconnections().push(handle);
 			}
-			else {
-				fprintf(MSGLOG, "\nWARNING! Monitor Event Callback Function was called with an invalid Event code!\n");
+			else {  //Should never happen
+				fprintf(WRNLOG, "\nWARNING! Monitor Event Callback Function was called with an invalid Event code!\n");
 			}
 		}
 

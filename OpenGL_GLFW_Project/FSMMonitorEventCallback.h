@@ -1,18 +1,24 @@
 //File:                               FSMMonitorEventCallback.h
 //
 // Description:                       Provides an interface for responding to Monitor Callback events.
-//                                    See anticiapted usgae section.
+//                                    See 'Anticiapted Usage' section for proper usage.
 //
 //
 // Anticipated Usage Pattern:         Once every frame or so, the application should call
 //                                    the function 'checkMonitorEventQueues()'. It is expected
 //                                    that 99.99% of the time this will return false, but in the 
 //                                    event that this function does return true, the additional
-//                                    functions can be used to poll both queues to discover if either 
-//                                    (or both) has recorded an event. 
-//                                    The queues here do not perform any validation on the data they
-//                                    get passed through the Operating System's callback, so please
-//                                    ensure the Application validates every event.
+//                                    functions can be used to poll both the ConnectionEvent and 
+//                                    DisconnectionEvent queues to discover if either (or both)
+//                                    has an event awaiting further processing. 
+//                            
+// Other info:                        IMPORTANT! Please be aware that the queues here will not perform
+//                                    any validation on the data they receive from OS through the callback,
+//                                    so please ensure the Application validates every event (i.e. check
+//                                    to make sure the GLFWmonitor* is not NULL; if woried about security
+//                                    then after a connection event check to make sure the GLFWmonitor* for
+//                                    new monitor is contained in array returned by 'glfwGetMonitors()', 
+//                                    etc...)
 //                                    
 //                                    
 // Programmer:                        Forrest Miller
@@ -73,9 +79,9 @@ namespace FSMEngineInternal {
 	std::optional<GLFWmonitor*> getNextAvailableMonitorDisconnection();
 
 
-	//////////////////////////////////////////////////////
-	//////   Implementation Details, Can Ignore       ////
-	//////////////////////////////////////////////////////
+	//////////////////////////////////////////////////
+	//////   Implementation Details, Can Ignore   ////
+	//////////////////////////////////////////////////
 	namespace MonitorEventCallbackInternal {
 		//Declaration of callback function to assign to GLFW and prototypes the two queue 'functions,' 
 		//don't call these functions 

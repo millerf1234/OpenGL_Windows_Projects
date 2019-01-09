@@ -1,0 +1,155 @@
+
+I haven't done anything yet (as of January 2019) with textures for this project but I have come across information 
+that will be useful to know for when I do get to textures. This document here consists of notes/descriptions/considerations
+which should help when the time to finally get around to textures comes.
+
+
++==========================+
+|      PROXY TEXTURES      |       (See OpenGL Programming Guide 9e Page 264)
++==========================+
+   -) Each standard* OpenGL Texture target also has a proxy texture target.                       *('standard' means 'Every target except for GL_TEXTURE_BUFFER')
+      The purpose of proxy textures is to provide a way to test an OpenGL
+	  implementation to see if any issues occur when requesting certain 
+	  texture size/format combinations. The idea is to first try to create 
+	  the proxy, then querry that proxy to see if the creation failed. This
+	  is done by querrying the dimensions of the proxy; a failed proxy will
+	  have a width and height of 0.
+	  Please note that just because the proxy is created successfully does not
+	  guarentee that the identical call on the real target will succeed. A failed
+	  proxy will pretty much always guarentee the actual texture creation will fail
+	  as well. 
+
+
++===================================================+
+|  Normalized Texture Coordinates  &   Texel Space  |
++===================================================+
+                see: https://computergraphics.stackexchange.com/questions/7687/how-to-use-glsl-texelfetch
+
+  -)  Normalized texture coordinates are floating point values within the closed interval of [0, 1]
+
+  -)  Texel Space coordinates are integer values in the range [0, size)
+
+
+
+
++=======================================+
+|    Rectangle Textures and Samplers    |
++=======================================+
+                see: https://www.khronos.org/opengl/wiki/Rectangle_Texture
+
+
+
+
+
++===================================================+
+|   Texture Creation and Usage  [Application side]  |               (Based off OpenGL Programming Guide 9e: Chapter 6 / Pages 260-290)
++===================================================+
+
+  i)    TEXTURE CREATION
+               Textures are created using the function 'glCreateTextures()'. Parameters to this function
+	       include the number of textures to generate, the type/dimensionality of the textures (all
+	       textures generated with this function call must be of the same type), and a pointer to 
+           an array of GLuint which has already been allocated and is large enough to contain the 
+           generated textures.
+           
+       Function Prototype:             
+	               void glCreateTextures(GLenum target, GLsizei n, GLuint* textures);
+
+	   Additional Information:      
+	                 -)  '0' is a reserved texture name and will never be returned by this function
+					 -)  The returned array of texture 'names' may not have their values be a
+					        contiguous set of integers 
+                     -)  To determine if a name refers to an existing texture, use the
+					        function:
+					                 GLboolean glIsTexture(GLuint texture) 
+                     -)  Upon creation, textures exist in the default texture state of their
+					        requested target. The default state of each texture object target
+							can be found in state tables in the OpenGL specification.
+							
+   
+  ii)      TEXTURE STORAGE ALLOCATION 
+               After a texture is created, it must still have the proper storage for it allocated. 
+			        The OpenGL context will handle the storage allocation, which is requested by 
+					calling one of the following three functions based off the type of the texture.
+       Function Prototypes:             
+	               void glTextureStorage1D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width);
+				   void glTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
+				   void glTextureStorage3D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
+
+       Additional Information: 
+	                 -)  For array-type textures, the dimensionality is considered to be one greater
+					        than their base dimensionality 
+                     -)  CubeMaps are considered to be equivalent to 2D array textures (so require 3D storage)
+					 -)  The storage allocated by these functions is immutable, which means the store can 
+					        not be redifined beyond the specified paramters for creation.
+				     -)  The storage attributes for the texture will include the total amount of memory needed 
+					        to store the complete data associated with the texture, which will include all 
+							additional mipmaps (if any are used). The specified internalformat and chosen resolution
+							will have a direct impact on the size of the allocated storage.
+							
+  iii)     BIND TEXTURE TO TEXTURE UNIT
+               To actually use the texture, it must be bound to an available texture unit using the
+			        function 'glBindTextureUnit()'. 
+       Function Prototype:             
+	               void glBindTextureUnit(GLuint unit, GLuint texture);
+			   
+       Additional Information: 
+	                 -)  Calling this function will remove any previous texture's bound to the target 
+					        texture unit. Calling this function with texture 0 will unbind the texture unit.
+                     -)  The maximum number of available texture units supported can be determined with the
+					        macro GL_MAX_COMBINED_TEXTURE_UNITS. The available texture units will be located
+							between 0 and the value of this macro minus 1.
+  
+  iv)    Get data into that storage!
+            todo
+  V)   Other ways of getting data into that storage
+            todo
+  vi)  Create Samplers
+            todo
+  vii) Use samplers in GLSL
+            todo
+
+  ...) Other steps that got left out
+            todo
+
+  last) TEXTURE DELETION/DISPOSAL
+               After a texture is no longer needed, the function 'glDeleteTextures()' can be called to 
+	       let the context know that the texture is no longer needed. The context will then release the 
+		   underlying storage for each requested texture object once it has determined that the texture
+		   is no longer needed. 
+
+       Function Prototype:             
+	               void glDeleteTextures(GLsizei n, GLuint* textures);
+
+	   Additional Information:      
+	                 -)  '0' is a reserved texture name and will never be returned by this function
+					 -)  [I think] there is no requirement here that all textures being requested for
+					         deletion be of the same format/target/type.
+                     -)  (Direct Quote from OpenGL Programming Guide): "If a texture that is currently
+					         bound is deleted, that binding is removed as though glBindTextureUnit() were
+							 called with zero for the value of the [named] texture.
+
+
+
+
+
++==========================+
+|    Texture Type Table    |
++==========================+
+
+   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~~+
+   |               TARGET                |                 Sampler Type                |    Dimensions   |
+   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~~+
+   |                                     |                                             |                 |
+   |            GL_TEXTURE_1D            |                  sampler1D                  |       1D        |
+   |                                     |                                             |                 |
+   |         GL_TEXTURED_1D_ARRAY        |                sampler1DArray               |    1D array     |  
+   |                                     |                                             |                 |
+   |            GL_TEXTURE_2D            |                  sampler2D                  |       2D        |
+   |                                     |                                             |                 |
+   |         GL_TEXTURED_2D_ARRAY        |                sampler2DArray               |    2D array     |  
+   |                                     |                                             |                 |
+   |      GL_TEXTURE_2D_MULTISAMPLE      |                  sampler1D                  |       1D        |
+   |                                     |                                             |                 |
+   |         GL_TEXTURED_1D_ARRAY        |                sampler1DArray               |    1D array     |  
+   |                                     |                                             |                 |

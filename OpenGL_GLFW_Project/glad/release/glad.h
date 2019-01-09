@@ -39,6 +39,14 @@
 */
 
 
+//I am adding this include statement and the following header guard
+#include "../../DebugSettings.h"  //Used to see if project is in debug mode
+#ifndef USE_DEBUG_    
+//Closing Statement at end of file
+
+
+
+
 #ifndef __glad_h_
 #define __glad_h_
 
@@ -4120,3 +4128,9 @@ GLAPI int GLAD_GL_EXT_texture_swizzle;
 #endif
 
 #endif
+
+
+
+
+//I am adding this additional header guard
+#endif //USE_DEBUG_

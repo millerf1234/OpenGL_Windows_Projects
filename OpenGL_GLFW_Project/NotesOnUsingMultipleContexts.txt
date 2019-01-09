@@ -1,0 +1,14 @@
+
+Notes On Using Multiple Contexts:     
+       
+   Part 1)     DON'T
+
+
+
+
+   Part 2)  okay okay if this really is something that is to be persued, here are some links and notes on 
+               the topic:
+
+			   https://blog.gvnott.com/some-usefull-facts-about-multipul-opengl-contexts/
+
+			   See also OpenGL Insights Chapters 27, 28.6, 29.5

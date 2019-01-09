@@ -22,12 +22,8 @@
 #define APPLICATION_CONSTANT_SETTINGS_H_
 
 #include "LoggingMessageTargets.h"
+#include "DebugSettings.h"
 #include "GlobalIncludes.h"
-
-
-
-//#define USE_DEBUG_
-//#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
 
 
 static constexpr const char * NAME_OF_APPLICATION = "OpenGL Render Demo";

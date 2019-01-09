@@ -75,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>-std:c++17</AdditionalOptions>
@@ -104,6 +104,7 @@
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -112,7 +113,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -146,6 +147,7 @@
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\include;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -164,9 +166,13 @@
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
-    <ClCompile Include="glad\glad.c" />
     <ClCompile Include="FSMCallbackInitializer.cpp" />
     <ClCompile Include="FSMMonitorEventCallback.cpp" />
+    <ClCompile Include="glad\debug\debug_glad.c" />
+    <ClCompile Include="glad\release\glad.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="JoystickStatePrinter.cpp" />
     <ClCompile Include="MappedGamepad.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
@@ -219,10 +225,19 @@
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="ConnectedMonitors.h" />
-    <ClInclude Include="glad\glad.h" />
-    <ClInclude Include="glad\KHR\khrplatform.h" />
+    <ClInclude Include="DebugSettings.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
     <ClInclude Include="FSMMonitorEventCallback.h" />
+    <ClInclude Include="glad\debug\debug_glad.h" />
+    <ClInclude Include="glad\debug\KHR\khrplatform.h" />
+    <ClInclude Include="glad\release\glad.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="glad\release\KHR\khrplatform.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="JoystickStatePrinter.h" />
     <ClInclude Include="MappedGamepad.h" />
     <ClInclude Include="FSMErrorCallback.h" />
@@ -438,6 +453,8 @@
     <Text Include="NotesAndReferences\Notes_and_ReadMe.txt" />
     <Text Include="NotesAndReferences\TextureWebsiteResources.txt" />
     <Text Include="NotesAndReferences\VirtualDesctructors.txt" />
+    <Text Include="NotesOnTexturing.txt" />
+    <Text Include="NotesOnUsingMultipleContexts.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -472,11 +489,12 @@
     <None Include="obj\CrazyJetEngine.obj">
       <FileType>Document</FileType>
     </None>
-    <Object Include="obj\Engine2_Textured.obj">
+    <None Include="obj\Engine2_Textured.obj">
       <SubType>Designer</SubType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </Object>
+      <FileType>Document</FileType>
+    </None>
     <None Include="obj\SubdivisionCube.obj">
       <FileType>Document</FileType>
       <SubType>Designer</SubType>

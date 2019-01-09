@@ -313,9 +313,6 @@
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions">
       <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\glad\KHR">
-      <UniqueIdentifier>{059a4290-81be-4aee-ba7e-91048ac05c1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\Sample">
       <UniqueIdentifier>{23e3a8c6-4393-4a9b-aa94-9697a5d0fd99}</UniqueIdentifier>
     </Filter>
@@ -357,6 +354,18 @@
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter">
       <UniqueIdentifier>{73d7db21-48d4-4fbb-b00e-0b95d24272b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad\debug">
+      <UniqueIdentifier>{ff1cd793-0e8d-439d-8d17-e0f9dc53d161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad\release">
+      <UniqueIdentifier>{da46edd2-63d2-4db0-b545-fa3bc307f133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad\release\KHR">
+      <UniqueIdentifier>{da5656c7-c5ea-438b-a2e1-b4dd3c3a3735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\glad\debug\KHR">
+      <UniqueIdentifier>{bf46e63b-d421-4205-8845-8c161abcdb64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -501,9 +510,6 @@
     <ClCompile Include="FSMMonitor.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClCompile>
-    <ClCompile Include="glad\glad.c">
-      <Filter>Third Party\glad</Filter>
-    </ClCompile>
     <ClCompile Include="FSMWindow.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
     </ClCompile>
@@ -515,6 +521,12 @@
     </ClCompile>
     <ClCompile Include="FSMMonitorEventCallback.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback</Filter>
+    </ClCompile>
+    <ClCompile Include="glad\release\glad.c">
+      <Filter>Third Party\glad\release</Filter>
+    </ClCompile>
+    <ClCompile Include="glad\debug\debug_glad.c">
+      <Filter>Third Party\glad\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -967,12 +979,6 @@
     <ClInclude Include="FSMMonitor.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClInclude>
-    <ClInclude Include="glad\glad.h">
-      <Filter>Third Party\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="glad\KHR\khrplatform.h">
-      <Filter>Third Party\glad\KHR</Filter>
-    </ClInclude>
     <ClInclude Include="FSMWindow.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
     </ClInclude>
@@ -987,6 +993,21 @@
     </ClInclude>
     <ClInclude Include="FSMErrorCallback.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugSettings.h">
+      <Filter>SetupAndConfiguration\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\release\glad.h">
+      <Filter>Third Party\glad\release</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\release\KHR\khrplatform.h">
+      <Filter>Third Party\glad\release\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\debug\KHR\khrplatform.h">
+      <Filter>Third Party\glad\debug\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\debug\debug_glad.h">
+      <Filter>Third Party\glad\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1247,6 +1268,12 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="UserInputConsiderationsAndNotes.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NotesOnTexturing.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NotesOnUsingMultipleContexts.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>

@@ -38,6 +38,9 @@
         https://glad.dav1d.de/#profile=core&language=c-debug&specification=gl&loader=on&api=gl%3D4.6&extensions=GL_EXT_convolution&extensions=GL_EXT_framebuffer_blit&extensions=GL_EXT_framebuffer_multisample&extensions=GL_EXT_framebuffer_multisample_blit_scaled&extensions=GL_EXT_framebuffer_object&extensions=GL_EXT_framebuffer_sRGB&extensions=GL_EXT_multisample&extensions=GL_EXT_polygon_offset&extensions=GL_EXT_provoking_vertex&extensions=GL_EXT_shadow_funcs&extensions=GL_EXT_texture&extensions=GL_EXT_texture_buffer_object&extensions=GL_EXT_texture_compression_latc&extensions=GL_EXT_texture_compression_rgtc&extensions=GL_EXT_texture_compression_s3tc&extensions=GL_EXT_texture_cube_map&extensions=GL_EXT_texture_filter_anisotropic&extensions=GL_EXT_texture_object&extensions=GL_EXT_texture_sRGB&extensions=GL_EXT_texture_swizzle
 */
 
+//I am adding this include statement and the following header guard
+#include "../../DebugSettings.h"  //Used to see if project is in debug mode
+#if defined USE_DEBUG_    //Closing Statement at end of file
 
 #ifndef __glad_h_
 #define __glad_h_
@@ -4868,3 +4871,9 @@ GLAPI int GLAD_GL_EXT_texture_swizzle;
 #endif
 
 #endif
+
+
+
+
+//I added this extra '#endif'
+#endif //USE_DEBUG_

@@ -15,7 +15,7 @@
 class LightEmitterSource final{
 public:
 	LightEmitterSource(std::array<float, 3u> pos, std::array<float, 3u> col,
-		size_t sides = 12u, size_t iterations = 24u, float baseGrowth = 0.75f,
+		GLuint sides = 12u, GLuint iterations = 24u, float baseGrowth = 0.75f,
 		float incrementalGrowth = 1.1f) {
 		mSides_ = (sides > 3u) ? sides : 3u;
 		mIterations_ = iterations;
@@ -34,8 +34,8 @@ public:
 
 
 private:
-	size_t mSides_;
-	size_t mIterations_;
+	GLuint mSides_;
+	GLuint mIterations_;
 	float mBaseGrowth_;
 	float mIncrementalGrowth_;
 	std::array<float, 3u> mPosition_;
@@ -54,9 +54,9 @@ private:
 
 		//float currentRadius = 0.0f;
 		float offsetMultiplier = ((2.0f * PI) / mSides_);
-		for (size_t i = 0; i < mIterations_; i++) {
+		for (GLuint i = 0; i < mIterations_; i++) {
 			float growth = (mBaseGrowth_ * (powf(mIncrementalGrowth_, static_cast<float>(i))));
-			for (size_t j = 0; j < mSides_; j++) {
+			for (GLuint j = 0; j < mSides_; j++) {
 				std::array<float, 3u> pos = mPosition_;
 				pos[0] += growth * cosf(offsetMultiplier * static_cast<float>(j));
 				pos[1] += growth * sinf(offsetMultiplier * static_cast<float>(j));
@@ -73,12 +73,12 @@ private:
 		mElemOrder_.clear();
 		mElemOrder_.reserve(2u*(mSides_ * 3u) + ((mIterations_ - 1u) * (2u * mSides_))); //This is probably too big...
 
-		size_t vertCounter = 1u;
+		GLuint vertCounter = 1u;
 
 		//Create the inner triangles
-		for (size_t i = 0u; i < mSides_; i++) {
+		for (GLuint i = 0u; i < mSides_; i++) {
 			mElemOrder_.push_back(0u);
-			mElemOrder_.push_back(vertCounter++);
+			mElemOrder_.push_back(static_cast<unsigned int>(vertCounter++));
 			if (i != (mSides_ - 1u)) {
 				mElemOrder_.push_back(vertCounter);
 			}
@@ -90,10 +90,10 @@ private:
 			return;
 		}
 		//Now create the outer layers
-		size_t firstOuterIndex = vertCounter;
-		for (size_t i = 0u; i < (mIterations_ - 1u); i++) {
-			size_t currentOuterLayerStartingIndex = firstOuterIndex + (mSides_ * i);
-			for (size_t j = 0u; j < mSides_; j++) {
+		GLuint firstOuterIndex = vertCounter;
+		for (GLuint i = 0u; i < (mIterations_ - 1u); i++) {
+			GLuint currentOuterLayerStartingIndex = firstOuterIndex + (mSides_ * i);
+			for (GLuint j = 0u; j < mSides_; j++) {
 				mElemOrder_.push_back(currentOuterLayerStartingIndex);
 				mElemOrder_.push_back(currentOuterLayerStartingIndex - mSides_);
 				if (j != (mSides_ - 1u)) {
@@ -122,13 +122,13 @@ private:
 	}
 
 	void addVertex(std::array<float, 3> pos, std::array<float, 3> color) {
-		mData_.push_back(pos[0]);
-		mData_.push_back(pos[1]);
-		mData_.push_back(pos[2]);
+		mData_.push_back(pos[0]);  //x
+		mData_.push_back(pos[1]);  //y
+		mData_.push_back(pos[2]);  //z
 
-		mData_.push_back(color[0]);
-		mData_.push_back(color[1]);
-		mData_.push_back(color[2]);
+		mData_.push_back(color[0]); //r
+		mData_.push_back(color[1]); //g
+		mData_.push_back(color[2]); //b
 	}
 
 	std::array<float, 3> computeColor(float radius) {
