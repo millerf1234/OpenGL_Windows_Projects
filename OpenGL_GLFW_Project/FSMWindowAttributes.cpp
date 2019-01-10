@@ -2,8 +2,8 @@
 
 
 
-FSMWindowAttributes::FSMWindowAttributes()
-{
+FSMWindowAttributes::FSMWindowAttributes() {
+
 }
 
 

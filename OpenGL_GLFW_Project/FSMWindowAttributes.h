@@ -3,7 +3,9 @@
 // QuickInfo:
 //       Default Constructor    DISABLED
 //       Copy Operations        DISABLED
-//       Move Operations        MOSTLY DISABLED            (Is enabled internally) 
+//       Move Operations        MOSTLY DISABLED          (Is enabled for internal use by the class FSMWindow) 
+//
+//
 //
 //  todo: Write a better description when I get time
 //
@@ -29,11 +31,13 @@ public:
     ~FSMWindowAttributes() = default;
 
 
-protected:
-    FSMWindowAttributes(FSMWindowAttributes&&) nothrow;
-    FSMWindowAttributes& operator=(FSMWindowAttributes&&)
-private:
+protected:  //The move constructor and operator are callable by the FSMWindow class
     friend class FSMWindow; //Declare FSMWindow as a friend
+    FSMWindowAttributes(FSMWindowAttributes&&) noexcept;
+    FSMWindowAttributes& operator=(FSMWindowAttributes&&) noexcept;
+
+private:
+    
 
 };
 
