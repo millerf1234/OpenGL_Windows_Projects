@@ -313,36 +313,6 @@
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions">
       <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Sample">
-      <UniqueIdentifier>{23e3a8c6-4393-4a9b-aa94-9697a5d0fd99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Sample\ShaderFrog">
-      <UniqueIdentifier>{ad643cbd-2af1-4aba-bcea-a0a00bcd9bb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Sample\ShaderFrog\RubyMine">
-      <UniqueIdentifier>{62a7bb2a-7429-430a-ab23-f6a584c0201b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions">
-      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor">
-      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode">
-      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window">
-      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Context">
-      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections">
-      <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick">
-      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback">
       <UniqueIdentifier>{4fac4fee-ea86-437f-a085-cb9ec2f5aa4b}</UniqueIdentifier>
     </Filter>
@@ -366,6 +336,39 @@
     </Filter>
     <Filter Include="Third Party\glad\debug\KHR">
       <UniqueIdentifier>{bf46e63b-d421-4205-8845-8c161abcdb64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample">
+      <UniqueIdentifier>{23e3a8c6-4393-4a9b-aa94-9697a5d0fd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog">
+      <UniqueIdentifier>{ad643cbd-2af1-4aba-bcea-a0a00bcd9bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine">
+      <UniqueIdentifier>{62a7bb2a-7429-430a-ab23-f6a584c0201b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions">
+      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor">
+      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode">
+      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window">
+      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Context">
+      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick">
+      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections">
+      <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes">
+      <UniqueIdentifier>{3d7008b9-eccd-4d25-960b-da5d35b8f900}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -504,9 +507,6 @@
     <ClCompile Include="ConnectedMonitors.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
     </ClCompile>
-    <ClCompile Include="FSMEngine.cpp">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
-    </ClCompile>
     <ClCompile Include="FSMMonitor.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClCompile>
@@ -527,6 +527,15 @@
     </ClCompile>
     <ClCompile Include="glad\debug\debug_glad.c">
       <Filter>Third Party\glad\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMEnginePrototype.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMRenderEngine.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMWindowAttributes.cpp">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -967,9 +976,6 @@
     <ClInclude Include="ConnectedMonitors.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
     </ClInclude>
-    <ClInclude Include="FSMEngine.h">
-      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalConstants.h">
       <Filter>SetupAndConfiguration</Filter>
     </ClInclude>
@@ -1008,6 +1014,15 @@
     </ClInclude>
     <ClInclude Include="glad\debug\debug_glad.h">
       <Filter>Third Party\glad\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMEnginePrototype.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMRenderEngine.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMWindowAttributes.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1183,16 +1198,19 @@
       <Filter>Resource Files\Models\OBJ</Filter>
     </None>
     <None Include="Shaders\Sample\RubyMine.frag">
-      <Filter>Resource Files\Shaders\Sample\ShaderFrog\RubyMine</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
     </None>
     <None Include="Shaders\Sample\RubyMine.vert">
-      <Filter>Resource Files\Shaders\Sample\ShaderFrog\RubyMine</Filter>
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
     </None>
     <None Include="obj\ViperMKIV_Fighter.mtl">
       <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
     <None Include="obj\ViperMKIV_Fighter.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
+    </None>
+    <None Include="obj\Engine2_Textured.obj">
+      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1276,11 +1294,6 @@
     <Text Include="NotesOnUsingMultipleContexts.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="obj\Engine2_Textured.obj">
-      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
-    </Object>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">

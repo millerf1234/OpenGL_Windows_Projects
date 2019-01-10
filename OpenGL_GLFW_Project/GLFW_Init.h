@@ -61,7 +61,7 @@ private:
 	GLFWwindow * mWindow; //The display to be rendering to (might add ability to change displays in the future
 	bool decoratedBorder, resizeable, forwardCompatible; //Configuration option booleans
 	int contextVersionMajor, contextVersionMinor, aaSamples, vSyncInterval; //Configuration option integers
-	bool contextIsValid; //Will be false if an initialization step fails
+	bool glfwIsInitialized; //Will be false if an initialization step fails
 	bool openFullScreen; 
 	int defaultMonitor;
 	int width, height, refreshRate; 

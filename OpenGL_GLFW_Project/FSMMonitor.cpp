@@ -3,7 +3,7 @@
 
 #include "FSMMonitor.h"
 
-namespace FSMEngineInternal {
+//namespace FSMEngineInternal {
 
 	void FSMMonitor::initialize() {
 		mWasMoved_ = false;
@@ -194,4 +194,4 @@ namespace FSMEngineInternal {
 		glfwGetMonitorPhysicalSize(const_cast<GLFWmonitor*>(mHandle_), &w, &h);
 	}
 
-} //namespace FSMEngineInternal
+//} //namespace FSMEngineInternal

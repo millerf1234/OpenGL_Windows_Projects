@@ -39,7 +39,7 @@ vec3 permute(vec3 x) {
 }
 
 vec3 dist(vec3 x, vec3 y, vec3 z) {
-	return x * x + y * y + z * z;
+	return x * x + y * y + z * z ;
 }
 
 vec2 worley(vec3 P, float jitter) {

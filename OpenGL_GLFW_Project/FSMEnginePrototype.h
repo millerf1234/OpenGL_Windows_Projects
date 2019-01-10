@@ -1,34 +1,18 @@
-// File:                        FSMEngine.h
-// Class:                       FSMEngine
+// File:                        FSMEnginePrototype.h
+// Class:                       FSMEnginePrototype
 // QuickInfo:
 //       Default Constructor    DISABLED
 //       Copy Operations        DISABLED
 //       Move Operations        DISABLED
 //
 //  
-//  Quick and Broad Description:  This is the class that exists at the top of the entire graphics framework
-//                                collection of classes. Applications using the graphics framework should only
-//                                need to interact with this class for everything they need. This includes 
-//                                performing all necessary OpenGL configuration, creating/destroying windows, 
-//                                performing UI through Keyboard/Mouse and Joysticks, getting window-events, etc.
+//  For now, only a single context will be supported. This will help keep the scope of everything in check
 //
-//                                The entire FSMEngine is built on top of the GLFW (Graphics-Language-Framework) 
-//                                library 
-//
-//
-//  (NOTE FOR DEVELOPMENT, DELETE WHEN COMPLETED:)      This class is intended to replace the older GLFW_Init class and related 
-//                                                      GLFW functionality. If this note is still here, than chances are this class 
-//                                                      and the related sub-classes are not yet fully functional.
+//  Quick and Broad Description:  
 //
 //
 //  References:            
 //          [GLFW Documentation]                 https://www.glfw.org/docs/3.3/intro_guide.html#init_hints
-//
-//
-//  Notes on GLFW behavior:     
-//                            -If a monitor with one or more fullscreen windows on it gets disconnected,
-//                             those windows are forced into windowed mode. 
-//
 //
 //
 // Programmer:          Forrest Miller
@@ -43,27 +27,27 @@
 #include <string>
 #include <sstream>
 
-#include "GlobalIncludes.h" //For GLFW library
+#include "GlobalIncludes.h" //For GLFW and glad
 
-#include "FSMContext.h"
 #include "FSMMonitor.h"
+#include "FSMContext.h"
 #include "FSMWindow.h"
 
 #include "ConnectedMonitors.h"
 
 
-class FSMEngine final {
+class FSMEnginePrototype final {
 public:
 	//                  /////////////////////////////////////////////////////////
 	//                  //////////            Constructor(s)           //////////
 	//                  /////////////////////////////////////////////////////////
-	FSMEngine() = delete;
+	FSMEnginePrototype() = delete;
 
-	//Creates an instance of the FSMEngine class. This will perform all steps necessary
+	//Creates an instance of the FSMEnginePrototype class. This will perform all steps necessary
 	//for the member functions to create a graphics context and window to be called. Default OpenGL version is
 	//4.5, but can set to a different version through parameters glVersionMajor and glVersionMinor. It is 
 	//recommended to stick with version 4.5 or later and to not use the compatability profile. 
-	FSMEngine(const int glVersionMajor = 4,
+	FSMEnginePrototype(const int glVersionMajor = 4,
 		      const int glVersionMinor = 6,
 		      const bool useCompatabilityProfile = false);
 
@@ -71,7 +55,7 @@ public:
 	//                  //////////////////////////////////////////////////////
 	//                  //////////            Destructor            //////////
 	//                  //////////////////////////////////////////////////////
-	~FSMEngine();
+	~FSMEnginePrototype();
 
 
 	//                  //////////////////////////////////////////////////////
@@ -115,6 +99,7 @@ public:
 	//the GLFW library which gets linked at run-time. 
 	std::string getGLFWRuntimeVersionString() const;
 
+
 	//Checks to see if this object is ready for use
 	inline bool ready() const { return mGLFWWasInitialized_; }
     //Allows for the object to be treated as a bool in certain expressions. Will take on the value
@@ -135,10 +120,10 @@ public:
 	//                 //////////////////////////////////////////////////////
 	//                 //////////    Copying/Moving are disabled    /////////
 	//                 //////////////////////////////////////////////////////
-	FSMEngine(const FSMEngine&) = delete;
-	FSMEngine(FSMEngine &&) = delete;
-	FSMEngine& operator=(const FSMEngine&) = delete;
-	FSMEngine& operator=(FSMEngine&&) = delete;
+	FSMEnginePrototype(const FSMEnginePrototype&) = delete;
+	FSMEnginePrototype(FSMEnginePrototype &&) = delete;
+	FSMEnginePrototype& operator=(const FSMEnginePrototype&) = delete;
+	FSMEnginePrototype& operator=(FSMEnginePrototype&&) = delete;
 
 	
 private:

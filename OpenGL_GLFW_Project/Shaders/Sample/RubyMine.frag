@@ -23,7 +23,7 @@ uniform float instanceSpiralPatternPeriod_y;
 uniform mat4 rotation;
 
 vec3 color1 = vec3(abs(cos(instanceSpiralPatternPeriod_x)), 0.25 + abs(0.75*cos(0.923*instanceSpiralPatternPeriod_x)), 0.800 - 0.37 * abs(cos(instanceSpiralPatternPeriod_x)));   ///uniform vec3 color1;     ///Modified by FSM
-vec3 color2 = vec3(0.995, 0.9972, 0.9975);   ///uniform vec3 color2;     ///Modified by FSM 
+vec3 color2 = vec3(0.095, 0.09972, 0.9975);   ///uniform vec3 color2;     ///Modified by FSM 
 
 
 in vec3 vPosition;      ///varying vec3 vPosition;     ///Modified by FSM
@@ -32,7 +32,7 @@ in flat int vInst;
 
 out vec4 outColor;   ///Added by FSM
 
-#define time time*10.0
+//#define time time*5.0
 
 // Permutation polynomial: (34x^2 + x) mod 289
 vec3 permute(vec3 x) {
@@ -197,7 +197,7 @@ void main() {
 	//color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
 
 	///gl_FragColor = vec4((color * 0.1) + (color * world), 1.0);   ///Modified by FSM
-	outColor = fwidthCoarse(vec4((color * 0.1) + 10.0*(color * world * gl_FragCoord.x), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
+	outColor = fwidthFine(vec4((color * 0.1) + 10.0*(color * world * gl_FragCoord.x), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
 
 	outColor *= (0.9 + 0.35*sin(time)) / length(outColor);
 

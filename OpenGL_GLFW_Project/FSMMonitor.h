@@ -30,7 +30,7 @@
 #include "VideoMode.h"
 
 
-namespace FSMEngineInternal {
+//namespace FSMEngineInternal {
 
 	class FSMMonitor final {
 	public:
@@ -100,7 +100,7 @@ namespace FSMEngineInternal {
 		//Returns a vector containing all available video modes.
 		std::vector<VideoMode> getAvailableVideoModes() const;
 
-		//Returns true if this monitor's handle is nullptr and false otherwise
+		//Returns false if this monitor's handle is nullptr and true otherwise
 		bool handleNotNull() const { return (mHandle_ == nullptr); }
 
 		//Should always return false in well-formed code
@@ -175,7 +175,7 @@ namespace FSMEngineInternal {
 	};
 
 
-} //namespace FSMEngineInternal
+//} //namespace FSMEngineInternal
 
 
 #endif //FSM_MONITOR_H_

@@ -29,7 +29,7 @@
 #include "GlobalIncludes.h"       //GLFWvideomode
 #include "GlobalConstants.h"   //Defines the constant used to convert millimeters to inches (for DPI calculation)
 
-namespace FSMEngineInternal {
+//namespace FSMEngineInternal {
 
 	//This class is based off the GLFW defined type GLFWvidmode. It includes some extra 
 	//capabilities from the basic GLFWvidmode struct.
@@ -144,6 +144,6 @@ namespace FSMEngineInternal {
 	};
 
 
-} //namespace FSMEngineInternal
+//} //namespace FSMEngineInternal
 
 #endif //VIDEO_MODE_H_

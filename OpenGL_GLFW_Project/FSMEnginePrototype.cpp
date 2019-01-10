@@ -1,23 +1,23 @@
-//File:          FSMEngine.cpp
+//File:          FSMEnginePrototype.cpp
 //
 //   See header file for more details
 //
 // Programmer:    Forrest Miller
 // Created:       December 2018 through January 2019 
 
-#include "FSMEngine.h"
+#include "FSMEnginePrototype.h"
 #include "LoggingMessageTargets.h"
 #include "FSMCallbackInitializer.h"  //Provides functions which handle assigning GLFW callback functions.
 
 
-void FSMEngine::giveMemberVariablesInitialValues() {
+void FSMEnginePrototype::giveMemberVariablesInitialValues() {
 	mGLFWWasInitialized_ = false;
 	mGLVersionMajor_ = 0;
 	mGLVersionMinor_ = 0;
 	mGLCompatabilityMode_ = false;
 }
 
-FSMEngine::FSMEngine(const int glVersionMajor,
+FSMEnginePrototype::FSMEnginePrototype(const int glVersionMajor,
 	const int glVersionMinor, const bool useCompatabilityProfile) {
 	
 	giveMemberVariablesInitialValues(); 
@@ -48,7 +48,7 @@ FSMEngine::FSMEngine(const int glVersionMajor,
 	aquireGLFrameworkComponents();
 }
 
-FSMEngine::~FSMEngine() {
+FSMEnginePrototype::~FSMEnginePrototype() {
 
 	//Unitialize GLFW components
 
@@ -59,21 +59,21 @@ FSMEngine::~FSMEngine() {
 }
 
 
-void FSMEngine::getRequestedGLVersion(int& versionMajor, int& versionMinor, bool& usesCompatMode) const {
+void FSMEnginePrototype::getRequestedGLVersion(int& versionMajor, int& versionMinor, bool& usesCompatMode) const {
 	versionMajor = mGLVersionMajor_;
 	versionMinor = mGLVersionMinor_;
 	usesCompatMode = mGLCompatabilityMode_;
 }
 
-int FSMEngine::getRequestedGLVersionMajor() const {
+int FSMEnginePrototype::getRequestedGLVersionMajor() const {
 	return mGLVersionMajor_;
 }
 
-int FSMEngine::getRequestedGLVersionMinor() const {
+int FSMEnginePrototype::getRequestedGLVersionMinor() const {
 	return mGLVersionMinor_;
 }
 
-std::string FSMEngine::getRequestedGLVersionString() const {
+std::string FSMEnginePrototype::getRequestedGLVersionString() const {
 	std::stringstream requestedGLVersionMsg;
 	requestedGLVersionMsg << "OpenGL " << mGLVersionMajor_ << "." << mGLVersionMinor_;
 	if (!mGLCompatabilityMode_) {
@@ -85,24 +85,24 @@ std::string FSMEngine::getRequestedGLVersionString() const {
 	return requestedGLVersionMsg.str();
 }
 
-void FSMEngine::getGLFWCompileTimeVersion(int& compileVersionMajor, int& compileVersionMinor, int& compileVersionRevision) const {
+void FSMEnginePrototype::getGLFWCompileTimeVersion(int& compileVersionMajor, int& compileVersionMinor, int& compileVersionRevision) const {
 	compileVersionMajor = GLFW_VERSION_MAJOR;
 	compileVersionMinor = GLFW_VERSION_MINOR;
 	compileVersionRevision = GLFW_VERSION_REVISION;
 }
 
-std::string FSMEngine::getGLFWCompileTimeVersionString() const {
+std::string FSMEnginePrototype::getGLFWCompileTimeVersionString() const {
 	std::stringstream compileTimeVersionMsg;
 	compileTimeVersionMsg << "compiled against GLFW " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR <<
 		"." << GLFW_VERSION_REVISION;
 	return compileTimeVersionMsg.str();
 }
 
-void FSMEngine::getGLFWRuntimeVersion(int& runtimeVersionMajor, int& runtimeVersionMinor, int& runtimeVersionRevision) const {
+void FSMEnginePrototype::getGLFWRuntimeVersion(int& runtimeVersionMajor, int& runtimeVersionMinor, int& runtimeVersionRevision) const {
 	glfwGetVersion(&runtimeVersionMajor, &runtimeVersionMinor, &runtimeVersionRevision);
 }
 
-std::string FSMEngine::getGLFWRuntimeVersionString() const {
+std::string FSMEnginePrototype::getGLFWRuntimeVersionString() const {
 	std::stringstream runtimeVersionMsg;
 	int rtMajor = 0;
 	int rtMinor = 0;
@@ -117,13 +117,13 @@ std::string FSMEngine::getGLFWRuntimeVersionString() const {
 
 
 
-void FSMEngine::setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile) {
+void FSMEnginePrototype::setGLVersion(const int glVersionMajor, const int glVersionMinor, const bool useCompatProfile) {
 	mGLVersionMajor_ = glVersionMajor;
 	mGLVersionMinor_ = glVersionMinor;
 	mGLCompatabilityMode_ = useCompatProfile;
 }
 
-bool FSMEngine::validateRuntimeGLFWVersion() const {
+bool FSMEnginePrototype::validateRuntimeGLFWVersion() const {
 	int runtimeVersionMajor = 0;
 	int runtimeVersionMinor = 0;
 	int runtimeRevision = 0;
@@ -151,7 +151,7 @@ bool FSMEngine::validateRuntimeGLFWVersion() const {
 	return true;
 }
 
-void FSMEngine::setInitializationHints() const {
+void FSMEnginePrototype::setInitializationHints() const {
 	//Set all GLFW hints that will affect GLFW's initialization. These must be set before
 	//the function 'glfwInit()' is called.
 	//Luckily, as of GLFW 3.3, the only relevant initialzation hint to set is just a minor detail
@@ -165,7 +165,7 @@ void FSMEngine::setInitializationHints() const {
 	//supporting OpenGL
 }
 
-bool FSMEngine::initializeGLFW() {
+bool FSMEnginePrototype::initializeGLFW() {
 	int glfwInitSuccess = glfwInit();
 	if (glfwInitSuccess == GLFW_FALSE) {
 		return false;
@@ -174,13 +174,13 @@ bool FSMEngine::initializeGLFW() {
 }
 
 
-void FSMEngine::aquireGLFrameworkComponents() {
+void FSMEnginePrototype::aquireGLFrameworkComponents() {
 
 
 }
 
 
-//int FSMEngine::aquireAllAvailableMonitors() const {
+//int FSMEnginePrototype::aquireAllAvailableMonitors() const {
 //	int count = 0;
 //	glfwGetMonitors(&count);
 //	return count;

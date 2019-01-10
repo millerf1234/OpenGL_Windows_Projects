@@ -10,7 +10,7 @@
 
 #include <sstream>
 
-namespace FSMEngineInternal {
+//namespace FSMEngineInternal {
 
 	VideoMode::VideoMode(const GLFWvidmode& vid, int physicalWidthMM, int physicalHeightMM) {
 		mPhysicalHeightMM_ = physicalHeightMM;
@@ -288,4 +288,4 @@ namespace FSMEngineInternal {
 	}
 
 
-} //namespace FSMEngineInternal
+//} //namespace FSMEngineInternal

@@ -34,7 +34,7 @@ GLFW_Init::GLFW_Init() {
 	}
 	openFullScreen = USE_FULLSCREEN; 
 	defaultMonitor = MONITOR_TO_USE;
-	contextIsValid = false;
+	glfwIsInitialized = false;
 }
 
 GLFW_Init::~GLFW_Init() {
@@ -54,11 +54,11 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");
-		contextIsValid = false;
+		glfwIsInitialized = false;
 		return nullptr;
 	}
 	else {
-		contextIsValid = true;
+		glfwIsInitialized = true;
 	}
 	fprintf(MSGLOG, "DONE!  GLFW version: %s\n", glfwGetVersionString()); 
 
@@ -141,7 +141,10 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	monitors = glfwGetMonitors(&connectedDisplayCount);//Tell GLFW to look for all monitors connected currently.
 	if ((connectedDisplayCount == 0) || (monitors == nullptr) ) {
 		fprintf(ERRLOG, "ERROR! GLFW was unable to detect any connected monitors!\n");
-		contextIsValid = false;
+        fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
+        std::cin.get();
+        glfwTerminate();
+		glfwIsInitialized = false;
 		return nullptr;
 	}
 	fprintf(MSGLOG, "\t%d connected displays are detected!\n", connectedDisplayCount);
@@ -151,8 +154,11 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	if (openFullScreen) {
 		if (connectedDisplayCount >= (defaultMonitor + 1)) { //Check to make sure there is at least enough connected displays for defaultMonitor to exist
 			detectDisplayResolution(defaultMonitor, width, height, refreshRate);
-			if (!contextIsValid) {
+			if (!glfwIsInitialized) {
 				fprintf(ERRLOG, "\nError detecting display resolution!\n");
+                fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
+                std::cin.get();
+                //glfwTerminate();
 				return nullptr;
 			}
 			//Otherwise log the display information
@@ -171,7 +177,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 			}
 			else {
 				fprintf(ERRLOG, "Error occured creating GLFW window in fullscreen mode on monitor!\n");
-				contextIsValid = false;
+				glfwIsInitialized = false;
 			}
 		}
 		//Re-Implement more robust window checking later... 
@@ -218,7 +224,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		}
 		else {
 			fprintf(ERRLOG, "Error opening a GLFW window in windowed mode (i.e. not fullscreen)!\n");
-			contextIsValid = false;
+			glfwIsInitialized = false;
 			return nullptr;
 		}
 	}
@@ -226,12 +232,12 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	//I do one additional check to make sure mWindow definitly is not nullptr (this check is surpurfulous but doesn't hurt)
 	if (mWindow == nullptr) {
 		fprintf(ERRLOG, "Failed Creating OpenGL Context and Window\n");
-		contextIsValid = false;
+		glfwIsInitialized = false;
 		return nullptr;
 	}
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
-		contextIsValid = true;
+		glfwIsInitialized = true;
 	}
 
 	return (std::move(generateDetectedMonitorsStruct()));
@@ -284,7 +290,7 @@ std::shared_ptr<MonitorData> GLFW_Init::generateDetectedMonitorsStruct() {
 	detectedDisplayData->monitorArray = monitors;
 	detectedDisplayData->activeMonitor = mWindow;
 
-	detectedDisplayData->validContext = contextIsValid;
+	detectedDisplayData->validContext = glfwIsInitialized;
 
 	return std::move(detectedDisplayData); //This struct winds up getting moved a lot
 }
@@ -313,7 +319,7 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 			"\tUNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. PERHAPS TRY A DIFFERENT MONITOR? OR REBOOT? OR CALL I.T.\n"
 			"[If you are IT and you are reading this message, then chances are something is funky with the monitor since\n"
 			"it is not communicating nicely with this program]\n\n");
-		this->contextIsValid = false;
+		this->glfwIsInitialized = false;
 	}
 }
 

@@ -3,11 +3,17 @@
 // Description:    todo...
 //
 // Programmer:   Forrest Miller
-// Date:         December 2018
+// Date:         January 2019
 
 
 //Note:  Windowed mode windows can be made full screen by setting a monitor with glfwSetWindowMonitor(). Likewise,
 //       Fullscreen windows can be made windowed through the same function.
+
+//
+//  Notes on GLFW behavior:     
+//                            -If a monitor with one or more fullscreen windows on it gets disconnected,
+//                             those windows are forced into windowed mode. 
+
 
 #pragma once
 

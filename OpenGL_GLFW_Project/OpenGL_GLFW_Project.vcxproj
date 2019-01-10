@@ -168,6 +168,8 @@
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="FSMCallbackInitializer.cpp" />
     <ClCompile Include="FSMMonitorEventCallback.cpp" />
+    <ClCompile Include="FSMRenderEngine.cpp" />
+    <ClCompile Include="FSMWindowAttributes.cpp" />
     <ClCompile Include="glad\debug\debug_glad.c" />
     <ClCompile Include="glad\release\glad.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -179,7 +181,7 @@
     <ClCompile Include="FSMContext.cpp" />
     <ClCompile Include="FSMMonitor.cpp" />
     <ClCompile Include="FSMWindow.cpp" />
-    <ClCompile Include="FSMEngine.cpp" />
+    <ClCompile Include="FSMEnginePrototype.cpp" />
     <ClCompile Include="GLFW_Init.cpp" />
     <ClCompile Include="Joystick.cpp" />
     <ClCompile Include="JoystickBase.cpp" />
@@ -228,6 +230,8 @@
     <ClInclude Include="DebugSettings.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
     <ClInclude Include="FSMMonitorEventCallback.h" />
+    <ClInclude Include="FSMRenderEngine.h" />
+    <ClInclude Include="FSMWindowAttributes.h" />
     <ClInclude Include="glad\debug\debug_glad.h" />
     <ClInclude Include="glad\debug\KHR\khrplatform.h" />
     <ClInclude Include="glad\release\glad.h">
@@ -244,7 +248,7 @@
     <ClInclude Include="FSMContext.h" />
     <ClInclude Include="FSMMonitor.h" />
     <ClInclude Include="FSMWindow.h" />
-    <ClInclude Include="FSMEngine.h" />
+    <ClInclude Include="FSMEnginePrototype.h" />
     <ClInclude Include="Joystick.h" />
     <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="JoystickManager.h" />
