@@ -117,7 +117,7 @@ namespace ShaderInterface {
 			case ShaderType::GEOMETRY:
 				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||      // {COMPUTE, FRAGMENT} < GEOMETRY < {All Other Shaders}
 					(other.mShaderID.mType != ShaderType::FRAGMENT));																	//etc...
-			case ShaderType::TESSELATION_CONTROL:
+			case ShaderType::TESSELLATION_CONTROL:
 				return ((other.mShaderID.mType != ShaderType::COMPUTE) ||
 					(other.mShaderID.mType != ShaderType::FRAGMENT) ||
 					(other.mShaderID.mType != ShaderType::GEOMETRY));

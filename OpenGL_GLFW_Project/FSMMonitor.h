@@ -8,7 +8,7 @@
 //
 // Description:    todo...
 //
-//  NOTE:        GLFW (as of version 3.3) does not provide a function for querrying if a monitor is connected
+//  NOTE:        GLFW (as of version 3.3) does not provide a function for querying if a monitor is connected
 //               or disconnected beyond the assignable callback function. Thus it is up to any code using this
 //               object to ensure that this object is notified by that callback when the monitor gets disconnected.
 //
@@ -61,13 +61,13 @@
 		void updateVirtualPosition();
 
 		//Returns the Virtual Desktop screen X coordinate used for this monitor's viewport. 
-		//Measured from the top left corner of monitor. Coordiante will be unique for each monitor.
+		//Measured from the top left corner of monitor. Coordinate will be unique for each monitor.
 		int getVirtualPositionX() const {
 			return mVirtualXPos_;
 		}
 
 		//Returns the Virtual Desktop screen Y coordinate used for this monitor's viewport. 
-		//Measured from the top left corner of monitor. Coordiante will be unique for each monitor.
+		//Measured from the top left corner of monitor. Coordinate will be unique for each monitor.
 		int getVirtualPositionY() const {
 			return mVirtualYPos_;
 		}

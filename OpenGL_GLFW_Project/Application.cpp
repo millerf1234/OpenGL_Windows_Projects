@@ -73,9 +73,9 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 
-	fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	runAssetLoadingDemo();
-	return;
+	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	//runAssetLoadingDemo();
+	//return;
 	
 	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
 	runLightsourceTestDemo();
@@ -83,7 +83,7 @@ void Application::launch() {
 	
 	fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
 	runTeapotExplosionDemo();
-	return;
+	//return;
 }
 
 
@@ -94,7 +94,7 @@ bool Application::setupGLFW() {
 	displayInfo = glfwInitializer->initialize();
 	
 	if (!displayInfo) {
-		fprintf(ERRLOG, "\nAn Error Occured Setting Up The GLFW Window!\n");
+		fprintf(ERRLOG, "\nAn Error Occurred Setting Up The GLFW Window!\n");
 		mApplicationValid = false;
 		return false;
 	}
@@ -138,7 +138,7 @@ void Application::configureGraphicsContextDebugCallbackFunctions() const {
 		}
 		else {
 			fprintf(MSGLOG, "\nWARNING! GL Context has been configured as a debug context but without\n"
-				"forced syncronization between the context and the application.\n"
+				"forced synchronization between the context and the application.\n"
 				"This means Context Callback messages may appear a long time after the\n"
 				"event that caused them!\n"
 				"[Re-enable debug output synchronization or disable debugging to remove this warning!]\n");

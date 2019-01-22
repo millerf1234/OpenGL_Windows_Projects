@@ -87,7 +87,7 @@ namespace ShaderInterface {
 	//-------------------------------
 	//Enum for the various shader types
 	//-------------------------------
-	enum class ShaderType {VERTEX, GEOMETRY, TESSELATION_CONTROL,
+	enum class ShaderType {VERTEX, GEOMETRY, TESSELLATION_CONTROL,
 						   TESSELATION_EVALUATION, FRAGMENT,
 						   COMPUTE, UNASSIGNED};
 
@@ -153,8 +153,8 @@ namespace ShaderInterface {
 		//Public Interface Functions  
 		//-------------------------------
 
-		//Decomission marks a shader as no-longer needed for more programs and releases this objects resources.
-		//After being decommisioned, a shader must be reinstated in order to be attached to new shader programs.
+		//Decommission marks a shader as no-longer needed for more programs and releases this objects resources.
+		//After being decommissioned, a shader must be reinstated in order to be attached to new shader programs.
 		void decommision();  //Alternative function names: abolish(), deactivate(), unload(), 
 
 		//Reinstate recompiles the shader and allows it to be attached to ShaderPrograms again. Could change this
@@ -175,7 +175,7 @@ namespace ShaderInterface {
 
 		//Returns the filepath of this shader's source file.
 		std::string getFilepath() const { return mFilepath; }
-		//Returns true if this shader has been decomissioned
+		//Returns true if this shader has been decommissioned
 		bool seeIfIsDecomissioned() const { return mIsDecomissioned; }
 		//Returns true if this shader is ready to be attached to a ShaderProgram
 		bool readyToBeAttached() const { return mReadyToBeAttached; }
@@ -187,7 +187,7 @@ namespace ShaderInterface {
 		bool validFilepath() const { return mValidFilepath; }
 		//Checks with the GLContext to see if the shader is compiled
 		bool isCompiled() const; 
-		//Checks to see if an error has occured with this shader (includes both client (Application) and Server (GPU) errors)
+		//Checks to see if an error has occurred with this shader (includes both client (Application) and Server (GPU) errors)
 		bool error() const { return mError; }
 		//Returns the type of this CompiledShader. Type is expected to always match the type of the derived shader object.
 		ShaderType type() const { return mShaderID.mType; }
@@ -220,14 +220,14 @@ namespace ShaderInterface {
 		//Compiles the shader within OpenGL. Expects for there to be the loaded source text stored within a valid string pointed to by mSourceText 
 		bool compile(GLenum type);
 
-		//Creates a new shader within the GL Context and aquires a GLuint handle to the shader object. 
+		//Creates a new shader within the GL Context and acquires a GLuint handle to the shader object. 
 		//Note that 0u will never be used as a shader handle
 		void aquireShaderID(GLenum type);
 
 		//Loads the text of a file located at filepath. Useful for loading shaders
 		bool loadSourceFile();
 
-		//This function is to faciliate copying/moving amongst derived objects of this type. 
+		//This function is to facilitate copying/moving amongst derived objects of this type. 
 		//Will copy all of the non-pointer member variables from Source to the object calling this function.
 		//Does not copy mSourceText since that is a pointer.
 		void copyMemberVariables(CompiledShader& source);
@@ -248,7 +248,7 @@ namespace ShaderInterface {
 		//----------------------------
 		//Private functions
 		//----------------------------
-		//Gives values to all of this classes member variables but doesn't necessarly put the object
+		//Gives values to all of this classes member variables but doesn't necessarily put the object
 		//in a valid state
 		void initialize();
 		

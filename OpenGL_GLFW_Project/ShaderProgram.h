@@ -9,26 +9,26 @@
 //					attached to it and also has a UniformLocationTracker to manage updating program
 //					uniforms. 
 //   Usage:
-//					The steps for creating a useable CompiledShader object are:
+//					The steps for creating a usable CompiledShader object are:
 //						1) Attach Shaders     (see rules*)
 //						2) Link 
 //						3) call 'use()' to set this ShaderProgram to active
 //
-//			*(rules):  A ShaderProgram must meet the following conditions to be eligable to be linked:
+//			*(rules):  A ShaderProgram must meet the following conditions to be eligible to be linked:
 //						- Must have either a ComputeShader attached or both a Vertex and a Fragment shader
 //						     attached. (In the future: it might actually be possible to get by with just a vert shader?)
 //						- If a ComputeShader is attached, then no other shader type can be attached, and
 //						- If any shader type other than compute is attached, then a compute shader can not be attached
-//						- If a tesselation control is attached, then a tesselation evaluation must also be attached,
+//						- If a tessellation control is attached, then a tessellation evaluation must also be attached,
 //						      and vice-versa.
 //						- It is possible to mark CompiledShaders as secondary, which by doing so means you
-//						      can guarentee the shader does not contain a 'main()' function. There are then special 
+//						      can guarantee the shader does not contain a 'main()' function. There are then special 
 //						      functions for attaching secondary shaders to a ShaderProgram. Secondary shaders do 
 //							  not count towards occupying the primary shader spot of their type (duh), and there 
 //							  is (currently) no limit on the number of secondary shaders that can be attached. The
 //							  same rules apply towards what types of secondary shaders can be attached as towards primary
 //							  (i.e. if a compute is attached then no other type can be attached, and vice versa; must have 
-//							  both types of tesselation if one is present).
+//							  both types of tessellation if one is present).
 //
 //
 //  Justification for using c_strings over C++'s std::strings:
@@ -40,7 +40,7 @@
 //			 September 14-15, 2018  --  Added support for attaching secondary shaders (i.e. shaders without a 'main()' function)
 //										to programs so that multiple shaders of the same type can be used.
 //
-//           December 3-5 (or so)  2018  -- (MAYBE) Add support for having each shader program's shaders querry the operating system [using C++17/C++20's  
+//           December 3-5 (or so)  2018  -- (MAYBE) Add support for having each shader program's shaders query the operating system [using C++17/C++20's  
 //                                          std::filesystem::last_write_time()] to determine if the files containing their source code
 //                                          has been modified from the version they were built with, and then having them rebuild themselves from
 //                                          the updated source. Note that this functionality will be disabled for both unlinked/incomplete shader programs
@@ -79,8 +79,8 @@
 #include "ComputeShader.h"
 #include "VertexShader.h"
 #include "GeometryShader.h"
-#include "TesselationControlShader.h"
-#include "TesselationEvaluationShader.h"
+#include "TessellationControlShader.h"
+#include "TessellationEvaluationShader.h"
 #include "FragmentShader.h"
 #include "FilepathWrapper.h" //Provides useful static functions for allowing dynamic rebuilding of shaders
 
@@ -143,7 +143,7 @@
 			bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
 			//Uses already created Tesselation Control and Evaluation shaders and attachs them to this program. 
 			//This object does not assume control of the shaders.
-			void attachTess(const ShaderInterface::TesselationControlShader* tessc, const ShaderInterface::TesselationEvaluationShader* tesse);
+			void attachTess(const ShaderInterface::TessellationControlShader* tessc, const ShaderInterface::TessellationEvaluationShader* tesse);
 			
 
 			//Creates an object-local Tesselation Evaluation shader and attaches it to this program
@@ -153,12 +153,12 @@
 			//Uses an already-created Tesselation Evaluation shader and attachs it to this program. Does not
 			//assume control of the tesse shader. (i.e. this object's mTesselationEvaluationShader remains
 			//nullptr)
-			void attachTesse(const ShaderInterface::TesselationEvaluationShader * tesse);
+			void attachTesse(const ShaderInterface::TessellationEvaluationShader * tesse);
 			//Uses an already created Tesse shader that does not contain a 'main' function and has
 			//been marked as secondary using the 'makeSecondary()' function and attaches it to this
 			//shader program. It is possible to attach as many secondarys as are available, though it is an
 			//error to attach the same secondary twice. 
-			void attachSecondaryTesse(const ShaderInterface::TesselationEvaluationShader * tesse);
+			void attachSecondaryTesse(const ShaderInterface::TessellationEvaluationShader * tesse);
 			
 
 			//Creates an object-local Tesselation Control shader and attaches it to this program
@@ -168,12 +168,12 @@
 			//Uses an already-created Tesselation Control shader and attachs it to this program. Does not
 			//assume control of the tessc shader. (i.e. this object's mTesselationControlShader remains
 			//nullptr)
-			void attachTessc(const ShaderInterface::TesselationControlShader * tessc);
+			void attachTessc(const ShaderInterface::TessellationControlShader * tessc);
 			//Uses an already created Tessc shader that does not contain a 'main' function and has
 			//been marked as secondary using the 'makeSecondary()' function and attaches it to this
 			//shader program. It is possible to attach as many secondaries as are available, however it is an
 			//error to try to attach the same secondary shader multiple times to one program. 
-			void attachSecondaryTessc(const ShaderInterface::TesselationControlShader * tessc);
+			void attachSecondaryTessc(const ShaderInterface::TessellationControlShader * tessc);
 			
 
 			//Creates an object-local Fragment shader and attaches it to this program.
@@ -314,8 +314,8 @@
 			//Primary shaders (can only have 1 of each at a time)
 			std::unique_ptr<ShaderInterface::VertexShader> mVertexShader;
 			std::unique_ptr<ShaderInterface::GeometryShader> mGeometryShader;
-			std::unique_ptr<ShaderInterface::TesselationControlShader> mTesselationControlShader;
-			std::unique_ptr<ShaderInterface::TesselationEvaluationShader> mTesselationEvaluationShader;
+			std::unique_ptr<ShaderInterface::TessellationControlShader> mTesselationControlShader;
+			std::unique_ptr<ShaderInterface::TessellationEvaluationShader> mTesselationEvaluationShader;
 			std::unique_ptr<ShaderInterface::FragmentShader> mFragmentShader;
 			std::unique_ptr<ShaderInterface::ComputeShader> mComputeShader;
 

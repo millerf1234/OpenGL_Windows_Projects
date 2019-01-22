@@ -2,11 +2,9 @@
 
 
 
-FSMWindowAttributes::FSMWindowAttributes() {
+//FSMWindowAttributes::FSMWindowAttributes() {
+//
+//}
 
-}
 
 
-FSMWindowAttributes::~FSMWindowAttributes()
-{
-}

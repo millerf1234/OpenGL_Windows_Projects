@@ -13,8 +13,8 @@
 //                                  - configure graphics context by setting callbacks and global state
 //                            
 //                            Once these initialization tasks are accomplished, the second phase is commenced by calling
-//                            the member funcion launch(). The way launch() operates is to first verify that all 
-//                            initialization has occured without issue, followed by presenting the program user with a             *(to be implemented still...)
+//                            the member function launch(). The way launch() operates is to first verify that all 
+//                            initialization has occurred without issue, followed by presenting the program user with a             *(to be implemented still...)
 //                            menu selection* of the various 'RenderDemos' available.     
 //                            Once a 'RenderDemo' is selected, the application uses the polymorphic behavior of the 
 //                            'RemderDemoBase' class and the member function runRenderDemo() to run the various 'RenderDemos'
@@ -23,8 +23,6 @@
 //Programmer:                 Forrest Miller
 //Dates:                      July - November 2018   
 
-
-//RANDOM NOTE: To see vcpkg commands, go to the link: https://docs.microsoft.com/en-us/cpp/vcpkg#command-line-reference
 
 #pragma once
 
@@ -78,7 +76,6 @@ private:
 	bool loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
 	void configureGraphicsContextDebugCallbackFunctions() const; //The callback function is provided by Application and is found in its own header file 
 	void setInitialGLState();
-
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
 	void playIntroMovie();
@@ -94,7 +91,7 @@ private:
 
 
 	//The following functions are for setting up and running different demo programs. These functions rely on
-	//the runRenderDemo() function above for polymorphically calling their overriden virtual functions. 
+	//the runRenderDemo() function above for polymorphically calling their overridden virtual functions. 
 	
 	void runAssetLoadingDemo();
 	void runLightsourceTestDemo();

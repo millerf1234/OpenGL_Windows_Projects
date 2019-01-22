@@ -11,11 +11,11 @@
 //						    in the CompiledShader implementation file. 
 
 
-#include "TesselationEvaluationShader.h"
+#include "TessellationEvaluationShader.h"
 
 namespace ShaderInterface {
 
-	TesselationEvaluationShader::TesselationEvaluationShader(const char * filepath) : CompiledShader(filepath, GL_TESS_EVALUATION_SHADER) {
+	TessellationEvaluationShader::TessellationEvaluationShader(const char * filepath) : CompiledShader(filepath, GL_TESS_EVALUATION_SHADER) {
 		if (mShaderID.mID != 0u)
 			mShaderID.mType = ShaderType::TESSELATION_EVALUATION;
 
@@ -25,16 +25,16 @@ namespace ShaderInterface {
 #endif //PRINT_SHADER_COMPILE_MESSAGES 
 	}
 
-	TesselationEvaluationShader::TesselationEvaluationShader(TesselationEvaluationShader&& other) : CompiledShader() {
+	TessellationEvaluationShader::TessellationEvaluationShader(TessellationEvaluationShader&& other) : CompiledShader() {
 		copyMemberVariables(other);
 		other.invalidateCompiledShaderAfterCopying();
 	}
 
-	TesselationEvaluationShader::~TesselationEvaluationShader() {
+	//TessellationEvaluationShader::~TessellationEvaluationShader() {
+    //
+	//}
 
-	}
-
-	void TesselationEvaluationShader::reinstate() {
+	void TessellationEvaluationShader::reinstate() {
 		if (!mIsDecomissioned) {
 			fprintf(WRNLOG, "\nWarning! Reinstate() was called on shader \"%s\" even though this shader was never decomissioned!\n", mFilepath);
 			return;
@@ -56,7 +56,7 @@ namespace ShaderInterface {
 		}
 	}
 
-	TesselationEvaluationShader& TesselationEvaluationShader::operator=(TesselationEvaluationShader&& that) {
+	TessellationEvaluationShader& TessellationEvaluationShader::operator=(TessellationEvaluationShader&& that) {
 		if (this != &that) {
 			copyMemberVariables(that);
 			that.invalidateCompiledShaderAfterCopying();
@@ -64,7 +64,7 @@ namespace ShaderInterface {
 		return *this;
 	}
 
-	//void TesselationEvaluationShader::aquireShaderID() {
+	//void TessellationEvaluationShader::aquireShaderID() {
 	//	if (mShaderID.mID != 0u) {
 	//		fprintf(ERRLOG, "\nError aquiring shaderID. This shader already has ID %u\n", mShaderID.mID);
 	//		return;
@@ -72,7 +72,7 @@ namespace ShaderInterface {
 	//	mShaderID = glCreateShader(GL_TESS_EVALUATION_SHADER);
 	//}
 
-	void TesselationEvaluationShader::makeSureShaderSourceTextIsLoaded() {
+	void TessellationEvaluationShader::makeSureShaderSourceTextIsLoaded() {
 		if (mSourceText == nullptr) {
 			loadSourceFile();
 		}

@@ -208,9 +208,10 @@ void main() {
 	//	outColor.a *= dropoff;
 	//}
 
-	outColor.rb += gl_SamplePosition;
-	outColor.g += (outColor.r * gl_SampleID);
+	//outColor.rb += gl_SamplePosition;
+	//outColor.g += 5000.0*(outColor.r * gl_SampleID);
 
 	outColor.rgb *= mix(outColor.rgb, vec3(0.5 + 0.5*sin(time), worley(outColor.rgb, vJitter)), abs(sin(3.14159 * time / 18.0)));
 	
+    
 }

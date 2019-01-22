@@ -1,4 +1,4 @@
-//Class: TesselationEvaluationShader
+//Class: TessellationEvaluationShader
 //Namespace: ShaderInterface
 //Programmer: Forrest Miller
 //Date(s): 7/24/2018 - 7/31/2018  
@@ -31,23 +31,23 @@
 
 namespace ShaderInterface {
 
-	class TesselationEvaluationShader final : public CompiledShader {
+	class TessellationEvaluationShader final : public CompiledShader {
 	public:
-		TesselationEvaluationShader(const char * filePath);
-		TesselationEvaluationShader(std::string filePath) : TesselationEvaluationShader(filePath.c_str()) { ; }  //Requires C++11
-		TesselationEvaluationShader(const TesselationEvaluationShader&) = delete; //No Copying
-		TesselationEvaluationShader(TesselationEvaluationShader&&); //Moving is okay though
-		TesselationEvaluationShader(const CompiledShader&) = delete;  //Contruction is not allowed from CompiledShaders not of type TessEval  
-		TesselationEvaluationShader(CompiledShader&&) = delete; //This explicitly deletes the move constructor as well for other CompiledShader types
-		virtual ~TesselationEvaluationShader() override;
+		TessellationEvaluationShader(const char * filePath);
+		TessellationEvaluationShader(std::string filePath) : TessellationEvaluationShader(filePath.c_str()) { ; }  //Requires C++11
+		TessellationEvaluationShader(const TessellationEvaluationShader&) = delete; //No Copying
+		TessellationEvaluationShader(TessellationEvaluationShader&&); //Moving is okay though
+		TessellationEvaluationShader(const CompiledShader&) = delete;  //Construction is not allowed from CompiledShaders not of type TessEval  
+		TessellationEvaluationShader(CompiledShader&&) = delete; //This explicitly deletes the move constructor as well for other CompiledShader types
+		virtual ~TessellationEvaluationShader() override = default;
 
-		//Restores this shader if it was decomissioned 
+		//Restores this shader if it was decommissioned 
 		virtual void reinstate() override;
 
-		TesselationEvaluationShader& operator=(const TesselationEvaluationShader&) = delete;
-		TesselationEvaluationShader& operator=(TesselationEvaluationShader&&); //Moving of derived types is okay
-		TesselationEvaluationShader& operator=(const CompiledShader&) = delete;
-		TesselationEvaluationShader& operator=(CompiledShader&&) = delete;
+		TessellationEvaluationShader& operator=(const TessellationEvaluationShader&) = delete;
+		TessellationEvaluationShader& operator=(TessellationEvaluationShader&&); //Moving of derived types is okay
+		TessellationEvaluationShader& operator=(const CompiledShader&) = delete;
+		TessellationEvaluationShader& operator=(CompiledShader&&) = delete;
 
 	protected:
 		//virtual void aquireShaderID() override;

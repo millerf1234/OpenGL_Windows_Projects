@@ -1,3 +1,5 @@
+[Not every note/thought contained in this document is complete at this time]
+
 This is just an extra text file containing random notes related to a whole range of topics. This means 
 that this file includes notes/research/weblinks towards ideas I have going forward but haven't implemented yet,
 random thoughts I have/had whilest writing the code (including explination and justification of how I expect/hope for
@@ -7,6 +9,9 @@ like to use.
 I created this file on July 25, 2018,  but the plan is to fill it in as I go...
 
 -Forrest
+
+//RANDOM NOTE: To see vcpkg commands, go to the link: https://docs.microsoft.com/en-us/cpp/vcpkg#command-line-reference
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Random Design Philosophy Note(s)   --   November 2, 2018

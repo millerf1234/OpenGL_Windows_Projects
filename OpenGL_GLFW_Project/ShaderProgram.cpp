@@ -49,7 +49,7 @@ ShaderProgram::ProgramState::ProgramState() {
 
 void ShaderProgram::initialize() {
 	mProgramID = 0u;
-	mState = ProgramState();  //Explicity call default constructor
+	mState = ProgramState();  //Explicitly call default constructor
 	mVertexShader = nullptr;
 	mGeometryShader = nullptr;
 	mTesselationControlShader = nullptr;
@@ -174,18 +174,19 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 	bool ShaderProgram::attachVert(const char * vert) {
 		if (vert == nullptr) { return false; }
 		if (mState.mLinked) {
-			fprintf(WRNLOG, "\nWarning! Unable to attach vert shader \"%s\"\nto this ShaderProgram "
-				"because this ShaderProgram has already been linked!\n", vert);
+			fprintf(WRNLOG, "\nWarning! Unable to attach Vertex shader \"%s\"\n"
+                "to this ShaderProgram because this ShaderProgram has already been linked!\n", vert);
 			return false;
 		}
 		if (mState.mHasVert) {
-			fprintf(WRNLOG, "\nWARNING! Unable to attach Vertex shader \"%s\" to this shaderprogram\n"
-				"because this shaderprogram already has a vertex shader attached!\n", vert);
+			fprintf(WRNLOG, "\nWARNING! Unable to attach Vertex shader \"%s\" to this ShaderProgram\n"
+				"because this ShaderProgram already has a vertex shader attached!\n", vert);
 			return false;
 		}
 		if ( (mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0) ) {
-			fprintf(WRNLOG, "\nWarning! Unable to attach Vertex shader \"%s\"\nto this "
-				"ShaderProgram object because this ShaderProgram object has a Compute shader attached to it!\n", vert);
+			fprintf(WRNLOG, "\nWarning! Unable to attach Vertex shader \"%s\"\n"
+                "to this ShaderProgram object because this ShaderProgram object has\n"
+                "a Compute shader attached to it!\n", vert);
 			return false;
 		}
 		mVertexShader = std::make_unique<VertexShader>(vert);
@@ -216,7 +217,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 			return;
 		}
 		if (!(vert->readyToBeAttached())) {
-			fprintf(ERRLOG, "\nError attaching vertex shader to program, shader is not currently ready to be attached!\n");
+			fprintf(ERRLOG, "\nError attaching Vertex shader to program, shader is not currently ready to be attached!\n");
 			return;
 		}
 		if (vert->markedAsSecondary()) {
@@ -389,7 +390,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 
 
 
-	void ShaderProgram::attachTess(const ShaderInterface::TesselationControlShader * tessc, const ShaderInterface::TesselationEvaluationShader * tesse) {
+	void ShaderProgram::attachTess(const ShaderInterface::TessellationControlShader * tessc, const ShaderInterface::TessellationEvaluationShader * tesse) {
 		//We can avoid validating each parameter object's state here because each of the following 2 functions
 		//will handle their own parameter evaluation.
 		attachTesse(tesse); 
@@ -417,7 +418,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 				"because this ShaderProgram already has a Compute attached!\n", tesse);
 			return false;
 		}
-		mTesselationEvaluationShader = std::make_unique<TesselationEvaluationShader>(tesse);
+		mTesselationEvaluationShader = std::make_unique<TessellationEvaluationShader>(tesse);
 		if ( (mTesselationEvaluationShader->readyToBeAttached())  &&  (mTesselationEvaluationShader->type() == ShaderType::TESSELATION_EVALUATION) ) {
 			glAttachShader(mProgramID, mTesselationEvaluationShader->ID());
 			mState.mHasTesse = true;
@@ -430,7 +431,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 		return false;
 	}
 
-	void ShaderProgram::attachTesse(const ShaderInterface::TesselationEvaluationShader * tesse) {
+	void ShaderProgram::attachTesse(const ShaderInterface::TessellationEvaluationShader * tesse) {
 		if (tesse == nullptr) { return; }
 		if (mState.mLinked) {
 			fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Evaluation shader %s\n" 
@@ -465,7 +466,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTesse();
 	}
 
-	void ShaderProgram::attachSecondaryTesse(const ShaderInterface::TesselationEvaluationShader * secondaryTesse) {
+	void ShaderProgram::attachSecondaryTesse(const ShaderInterface::TessellationEvaluationShader * secondaryTesse) {
 		if (secondaryTesse == nullptr) { return; }
 		if (!(secondaryTesse->readyToBeAttached())) {
 			fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Evaluation shader \"%s\"\n"
@@ -527,8 +528,8 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 				"because this ShaderProgram already has a Compute attached!\n", tessc);
 			return false;
 		}
-		mTesselationControlShader = std::make_unique<TesselationControlShader>(tessc);
-		if ((mTesselationControlShader->readyToBeAttached()) && (mTesselationControlShader->type() == ShaderType::TESSELATION_CONTROL)) {
+		mTesselationControlShader = std::make_unique<TessellationControlShader>(tessc);
+		if ((mTesselationControlShader->readyToBeAttached()) && (mTesselationControlShader->type() == ShaderType::TESSELLATION_CONTROL)) {
 			glAttachShader(mProgramID, mTesselationControlShader->ID());
 			mState.mHasTessc = true;
 			mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTessc();
@@ -540,7 +541,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 		return false;
 	}
 	
-	void ShaderProgram::attachTessc(const ShaderInterface::TesselationControlShader * tessc) {
+	void ShaderProgram::attachTessc(const ShaderInterface::TessellationControlShader * tessc) {
 		if (tessc == nullptr) { return; }
 		if (mState.mLinked) {
 			fprintf(ERRLOG, "\nUnable to attach Tesselation Control shader %s\n"
@@ -570,7 +571,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 			fprintf(ERRLOG, "Error! Attaching Tesselation Control shader \"%s\"\n"
 				"failed because object is not ready to be attached\n", tessc->getFilepath().c_str());
 		}
-		if ((tessc->ID() == 0) || (tessc->type() != ShaderType::TESSELATION_CONTROL)) {
+		if ((tessc->ID() == 0) || (tessc->type() != ShaderType::TESSELLATION_CONTROL)) {
 			fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
 				"Tesselation Control shader to this program!\n", tessc->getFilepath().c_str());
 			return;
@@ -580,7 +581,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 		mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTessc();
 	}
 
-	void ShaderProgram::attachSecondaryTessc(const ShaderInterface::TesselationControlShader * secondaryTessc) {
+	void ShaderProgram::attachSecondaryTessc(const ShaderInterface::TessellationControlShader * secondaryTessc) {
 		if (secondaryTessc == nullptr) { return; }
 		if (!(secondaryTessc->readyToBeAttached())) {
 			fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Control shader \"%s\"\n"
@@ -882,10 +883,10 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Geometry shader attached!\n");
 				}
 				if (mState.mHasTessc) {
-					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tesselation Control shader attached!\n");
+					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tessellation Control shader attached!\n");
 				}
 				if (mState.mHasTesse) {
-					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tesselation Evaluation shader attached!\n");
+					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Tessellation Evaluation shader attached!\n");
 				}
 				if (mState.mHasFrag) {
 					fprintf(WRNLOG, "Shader program is unable to link because program has both a Compute and a Fragment shader attached!\n");
@@ -893,7 +894,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 			}
 			else {
 				if (mState.mHasTessc && !mState.mHasTesse) {
-					fprintf(WRNLOG, "Shader program is unable to link because a Tesselation Control is attached but no Tesselation Evaluation is attached!\n");
+					fprintf(WRNLOG, "Shader program is unable to link because a Tessellation Control is attached but no Tessellation Evaluation is attached!\n");
 				}
 				else if (!mState.mHasTessc && mState.mHasTesse) {
 					fprintf(WRNLOG, "Shader program is unable to link because a Tesselation Control is attached but no Tesselation Evaluation is attached!\n");

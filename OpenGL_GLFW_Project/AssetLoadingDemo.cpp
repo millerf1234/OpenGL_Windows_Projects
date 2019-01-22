@@ -217,7 +217,7 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 		warning << "\nWARNING!\n[In AssetLoadingDemo's constructor]\n" <<
 			"AssetLoadingDemo detected that the GLFW active context was set" <<
 			"\nto a different monitor or different execution-thread then\n" <<
-			"the one passed to AssetLoadingDemo's contructor!\n";
+			"the one passed to AssetLoadingDemo's constructor!\n";
 		warning << "This means that running AssetLoadingDemo will invalidate\n" <<
 			"the previous context by replacing it with this one, which\n" <<
 			"could (probably) lead to errors! Please ensure that the correct context\n" <<
@@ -238,7 +238,7 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 
 void AssetLoadingDemo::run() {
 	if (error) {
-		fprintf(ERRLOG, "An error occured while loading AssetLoadingDemo\n");
+		fprintf(ERRLOG, "An error occurred while loading AssetLoadingDemo\n");
 		return;
 	}
 	fprintf(MSGLOG, "\nAsset Loading Demo project has loaded and will begin running!\n");
@@ -355,7 +355,7 @@ GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer() const {
 
 void AssetLoadingDemo::loadModels() {
 
-	fprintf(MSGLOG, "\nAquiring and parsing Model(s) data from file(s)...\n");
+	fprintf(MSGLOG, "\nAcquiring and parsing Model(s) data from file(s)...\n");
 
 	//[RFP == Relative File Path]
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
@@ -382,9 +382,9 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 6.01f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 6.01f));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
@@ -848,17 +848,17 @@ void AssetLoadingDemo::buildNewShader() {
 
 		case (ShaderInterface::ShaderType::GEOMETRY):
 			fprintf(MSGLOG, "\nDetected that a geometry shader was updated!\n"
-				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
+				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
-		case (ShaderInterface::ShaderType::TESSELATION_CONTROL):
-			fprintf(MSGLOG, "\nDetected that a Tesselation Control shader was updated!\n"
-				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
+		case (ShaderInterface::ShaderType::TESSELLATION_CONTROL):
+			fprintf(MSGLOG, "\nDetected that a Tessellation Control shader was updated!\n"
+				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
-			fprintf(MSGLOG, "\nDetected that a Tesselation Evaluation shader was updated!\n"
-				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
+			fprintf(MSGLOG, "\nDetected that a Tessellation Evaluation shader was updated!\n"
+				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		case (ShaderInterface::ShaderType::FRAGMENT):
@@ -874,7 +874,7 @@ void AssetLoadingDemo::buildNewShader() {
 
 		case (ShaderInterface::ShaderType::COMPUTE):
 			fprintf(MSGLOG, "\nDetected that a Compute shader was updated!\n"
-				"Unfortuantly that type of shader is not yet supported for dynamic updates!\n");
+				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
 		default:

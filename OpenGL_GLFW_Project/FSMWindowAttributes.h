@@ -7,7 +7,9 @@
 //
 //
 //
+
 //  todo: Write a better description when I get time
+//
 //
 //  Basic idea:   Provide a wrapper for the attributes listed 
 //                at: https://www.glfw.org/docs/3.3/window_guide.html#window_attribs
@@ -25,10 +27,19 @@
 
 class FSMWindowAttributes final {
 public:
+
+    FSMWindowAttributes(bool focused, bool iconified, bool maximized, bool visible,
+        bool resizable, bool decorated, bool floating);
+
+    ~FSMWindowAttributes() = default;
+
+
+    //////////////////////////////////////////
+    /////     Disabled Functionality     /////
+    //////////////////////////////////////////
     FSMWindowAttributes() = delete;
     FSMWindowAttributes(const FSMWindowAttributes&) = delete;
     FSMWindowAttributes& operator=(const FSMWindowAttributes&) = delete;
-    ~FSMWindowAttributes() = default;
 
 
 protected:  //The move constructor and operator are callable by the FSMWindow class
@@ -37,7 +48,7 @@ protected:  //The move constructor and operator are callable by the FSMWindow cl
     FSMWindowAttributes& operator=(FSMWindowAttributes&&) noexcept;
 
 private:
-    
+    //bool window
 
 };
 

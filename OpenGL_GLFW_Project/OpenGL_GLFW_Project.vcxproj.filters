@@ -393,12 +393,6 @@
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
-    <ClCompile Include="TesselationControlShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="TesselationEvaluationShader.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClCompile>
     <ClCompile Include="RenderDemoBase.cpp">
       <Filter>Source Files\Projects\RenderDemos</Filter>
     </ClCompile>
@@ -536,6 +530,12 @@
     </ClCompile>
     <ClCompile Include="FSMWindowAttributes.cpp">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="TessellationControlShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="TessellationEvaluationShader.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -734,12 +734,6 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="GeometryShader.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="TesselationControlShader.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="TesselationEvaluationShader.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
@@ -1023,6 +1017,12 @@
     </ClInclude>
     <ClInclude Include="FSMWindowAttributes.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="TessellationControlShader.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="TessellationEvaluationShader.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

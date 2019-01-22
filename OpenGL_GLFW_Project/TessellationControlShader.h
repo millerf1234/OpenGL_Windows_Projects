@@ -1,4 +1,4 @@
-//Class: TesselationControlShader
+//Class: TessellationControlShader
 //Namespace: ShaderInterface
 //Programmer: Forrest Miller
 //Date(s): 7/24/2018 - 7/31/2018  
@@ -31,23 +31,23 @@
 
 namespace ShaderInterface {
 
-	class TesselationControlShader final : public CompiledShader {
+	class TessellationControlShader final : public CompiledShader {
 	public:
-		TesselationControlShader(const char * filePath);
-		TesselationControlShader(std::string filePath) : TesselationControlShader(filePath.c_str()) { ; } //Requires C++11
-		TesselationControlShader(const TesselationControlShader&) = delete; //No Copying
-		TesselationControlShader(TesselationControlShader&&); //Moving is okay though
-		TesselationControlShader(const CompiledShader&) = delete; //Contruction is not allowed from CompiledShaders not of type TessControl 
-		TesselationControlShader(CompiledShader&&) = delete; //This explicitly deletes the move constructor as well for other CompiledShader types
-		virtual ~TesselationControlShader() override;
+		TessellationControlShader(const char * filePath);
+		TessellationControlShader(std::string filePath) : TessellationControlShader(filePath.c_str()) { ; } //Requires C++11
+		TessellationControlShader(const TessellationControlShader&) = delete; //No Copying
+		TessellationControlShader(TessellationControlShader&&); //Moving is okay though
+		TessellationControlShader(const CompiledShader&) = delete; //Construction is not allowed from CompiledShaders not of type TessControl 
+		TessellationControlShader(CompiledShader&&) = delete; //This explicitly deletes the move constructor as well for other CompiledShader types
+		virtual ~TessellationControlShader() override;
 
-		//Restores this shader if it was decomissioned 
+		//Restores this shader if it was decommissioned 
 		virtual void reinstate() override;
 
-		TesselationControlShader& operator=(const TesselationControlShader&) = delete;
-		TesselationControlShader& operator=(TesselationControlShader&&); //Moving of derived types is okay
-		TesselationControlShader& operator=(const CompiledShader&) = delete;
-		TesselationControlShader& operator=(CompiledShader&&) = delete;
+		TessellationControlShader& operator=(const TessellationControlShader&) = delete;
+		TessellationControlShader& operator=(TessellationControlShader&&); //Moving of derived types is okay
+		TessellationControlShader& operator=(const CompiledShader&) = delete;
+		TessellationControlShader& operator=(CompiledShader&&) = delete;
 
 	protected:
 		//virtual void aquireShaderID() override;

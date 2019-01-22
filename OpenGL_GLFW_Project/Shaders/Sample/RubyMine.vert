@@ -192,13 +192,13 @@ void main() {
 	vInst = gl_InstanceID + 2 * gl_InstanceID;
 
 	///vJitter = 0.0 + 0.00308 * sin(30.*time + gl_VertexID);
-	vJitter = exp(abs(0.000308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
+	vJitter = exp(abs(0.00090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
 	vPosition = (ModelPosition.xyz * 0.10) + 0.7*vec3(sin(time), cos(time), cos(time + 3.14));
 
 	vec2 worl = worley(vPosition, vJitter);
 	vec3 pos = ModelPosition.xyz - (0.3 + 0.003*vInst)*(length(worl) * ModelNormal * 0.2);
 
-	float instGrowth = float(floor(gl_InstanceID / 200)*int(pow(float(gl_InstanceID), 1.005)) / 1000);
+	float instGrowth = float(floor(gl_InstanceID / 100)*int(pow(float(gl_InstanceID), 1.005)) / 1000);
 
 	gl_Position = (MVP * vec4(pos, ModelPosition.w + vJitter)) + vec4(8.0 * instGrowth * cos( 2.0 * gl_InstanceID), 10.0 * instGrowth * sin(2.3*gl_InstanceID), -12.0, zoom);
 

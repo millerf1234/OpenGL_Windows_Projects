@@ -72,7 +72,7 @@ public:
 	//------------------------------------
 
 	//(Based off advice in OpenGL Super Bible 7e Chapter 15: Debugging and Stability) [Pages 737-740]
-	//Current GPUs and grpahics drivers are not yet at the level of robustness comapred with
+	//Current GPUs and graphics drivers are not yet at the level of robustness comapred with
 	//modern CPUs and operating systems when it comes to dealing with rouge/misbehaving processes.
 	//In the event that an errant task begins hogging all of the GPUs resources, about the best that
 	//can be done is to kick everything off the GPU and reset everything. Since the GPU is a shared-resource,
