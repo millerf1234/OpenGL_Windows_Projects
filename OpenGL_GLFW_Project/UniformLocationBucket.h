@@ -47,7 +47,7 @@ namespace ShaderInterface {
 		UniformLocationBucket() = delete;
 		UniformLocationBucket(GLuint programID, const char * str, UniformType type = UniformType::UNSPECIFIED) {
 			mType_ = type;
-			mName_ = std::move(std::string(str)); //The odd syntax here just ensures an unnecessary copy is not made 
+			mName_ = std::string(str); //The odd syntax here just ensures an unnecessary copy is not made 
 			mLocation_ = glGetUniformLocation(programID, str);  //Crashes here if programID is invalid...
 			if (mLocation_ == -1) {
 				fprintf(WRNLOG, "\nWarning! Unable to get uniform location for uniform: %s\n", str);
@@ -59,7 +59,7 @@ namespace ShaderInterface {
 			}
 		}
 		//Destructor
-		~UniformLocationBucket() { ; }
+        ~UniformLocationBucket() = default;
 		//Copy/Move fully enabled
 		UniformLocationBucket(const UniformLocationBucket& that) {
 			this->mLocation_ = that.mLocation_;
