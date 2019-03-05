@@ -41,7 +41,7 @@ namespace ShaderInterface {
 		UNSPECIFIED
 	};
 
-	class UniformLocationBucket {
+	class UniformLocationBucket final {
 	public:
 		//Constructor
 		UniformLocationBucket() = delete;

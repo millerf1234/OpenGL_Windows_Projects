@@ -189,29 +189,39 @@ vec2 worley(vec3 P, float jitter) {
 
 void main() {
 
-	vec2 worl = worley(vPosition, vJitter);
-	float world = worl.y * worl.x;
+#if 0
+    outColor = vec4(1.0, 0.0, 1.0, 1.0);
 
-	vec3 color = mat3(rotation + rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x)-worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), 0.0), clamp(world * 2.0, 0.0, 1.0));
+#else 
 
-	//color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
+        vec2 worl = worley(vPosition, vJitter);
+        float world = worl.y * worl.x;
 
-	///gl_FragColor = vec4((color * 0.1) + (color * world), 1.0);   ///Modified by FSM
-	outColor = fwidthFine(vec4((color * 0.1) + 10.0*(color * world * gl_FragCoord.x), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
+        vec3 color = mat3(rotation + rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x) - worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), 0.0), clamp(world * 2.0, 0.0, 1.0));
 
-	outColor *= (0.9 + 0.35*sin(time)) / length(outColor);
+        //color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
+
+        ///gl_FragColor = vec4((color * 0.1) + (color * world), 1.0);   ///Modified by FSM
+        outColor = fwidthFine(vec4((color * 0.1) + 10.0*(color * world * gl_FragCoord.x), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
+
+        outColor *= (0.9 + 0.35*sin(time)) / length(outColor);
 
 
-	outColor.a = 0.12 * smoothstep(-90.0, 29.0, length(outColor.rgb + color.grg) + (10.0 + 5.0*abs(sin(15.0*time))));//0.24;
-	//if (vInst > 500) {
-	//	float dropoff = pow(0.9999, float(vInst - 499));
-	//	outColor.a *= dropoff;
-	//}
+        outColor.a = 0.12 * smoothstep(-90.0, 29.0, length(outColor.rgb + color.grg) + (10.0 + 5.0*abs(sin(15.0*time))));//0.24;
+        //if (vInst > 500) {
+        //	float dropoff = pow(0.9999, float(vInst - 499));
+        //	outColor.a *= dropoff;
+        //}
 
-	//outColor.rb += gl_SamplePosition;
-	//outColor.g += 5000.0*(outColor.r * gl_SampleID);
+        //outColor.rb += gl_SamplePosition;
+        //outColor.g += 5000.0*(outColor.r * gl_SampleID);
 
-	outColor.rgb *= mix(outColor.rgb, vec3(0.5 + 0.5*sin(time), worley(outColor.rgb, vJitter)), abs(sin(3.14159 * time / 18.0)));
-	
-    
+        outColor.rgb *= mix(outColor.rgb, vec3(0.5 + 0.5*sin(time), worley(outColor.rgb, vJitter)), abs(sin(3.14159 * time / 18.0)));
+
+
+        if (length(outColor.rgb) < 0.5) {
+            outColor.rgb = vec3(1.2) - outColor.rgb;
+        }
+
+#endif
 }

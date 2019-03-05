@@ -35,15 +35,15 @@ namespace AssetLoadingInternal {
 
 	Face::Face(const char * faceLine, bool fixIndexing) {
 		initialize();
-		if (*faceLine != 'f') {
-			fprintf(ERRLOG, "\nError parsing face from string: %s\n"
-				"The first character in this string must be 'f'!\n",
-				faceLine);
-			return;
-		}
-		else { //else we have read the 'f' char, so chances are pretty good it's a face line
+		//if (*faceLine != 'f') {
+		//	fprintf(ERRLOG, "\nError parsing face from string: %s\n"
+		//		"The first character in this string must be 'f'!\n",
+		//		faceLine);
+		//	return;
+		//}
+		//else { //else we have read the 'f' char, so chances are pretty good it's a face line
 			faceLine++; //Move past the 'f'
-		}
+		//}
 
 		
 		if (!parseFaceLine(faceLine)) { //parseFaceLine handles setting member fields as appropriate
@@ -193,14 +193,14 @@ namespace AssetLoadingInternal {
 		enum class NextComponentType { POSITION, TEX_COORD, NORMAL };
 		NextComponentType next = NextComponentType::POSITION; //The first value read will be a position value. 
 		bool previousCharWasASlash = false; //Used to determine where in string we are
-		int readPositions = 0; //By the end this number must be either 3 or 4.  Otherwise invalid parse occured
+		int readPositions = 0; //By the end this number must be either 3 or 4.  Otherwise invalid parse occurred
 		int readTexCoords = 0; //By end, this number must be either 0, 3, or 4.        "           "
 		int readNormals = 0;  //By end, this number must be either 0, 3, or 4.         "           "
 		bool parseError = false;
 
 		const char * stringIter = faceLine; //Iterator for the parse loop
 
-		//Some '.obj' files contain only position data and no forward slashes. These will be parsed seperatly
+		//Some '.obj' files contain only position data and no forward slashes. These will be parsed separately
 		if (checkForNoForwardSlashes(stringIter)) { 
 			//reset stringIter
 			stringIter = faceLine;
@@ -289,8 +289,8 @@ namespace AssetLoadingInternal {
 							}
 						}
 						else {
-							fprintf(ERRLOG, "\nError! Too many positions were read!\n");
-							parseError = true;
+							//This face is an ngon, which would result in an invalid face
+                            parseError = true;
 						}
 					}
 					else if (next == NextComponentType::TEX_COORD) {
@@ -396,9 +396,11 @@ namespace AssetLoadingInternal {
 			}
 		}
 		else {
-			fprintf(ERRLOG, "\nERROR parsing face! %u characters read from line\n"
-				"before error! Text that was parsed:\t\"f%s\"\n",
-				(std::distance(faceLine, stringIter) + 1), faceLine); //The '+ 1' is for the 'f' that gets removed early on
+            fprintf(MSGLOG, "\nNGon detected in main parse function, skipping this line...\n");
+            return false; 
+			//fprintf(ERRLOG, "\nERROR parsing face! %u characters read from line\n"
+			//	"before error! Text that was parsed:\t\"f%s\"\n",
+			//	(std::distance(faceLine, stringIter) + 1), faceLine); //The '+ 1' is for the 'f' that gets removed early on
 		}
 		return parseError;
 	}

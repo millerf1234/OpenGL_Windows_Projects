@@ -136,7 +136,7 @@ namespace ShaderInterface {
 
 
 	bool CompiledShader::operator>(const CompiledShader& other) const {
-		return !( *this < other);
+		return !( (*this) < other);
 	}
 
 
@@ -307,7 +307,7 @@ namespace ShaderInterface {
 
 
 
-	bool CompiledShader::compareFilepaths(const char * fp1, const char * fp2) {
+	bool CompiledShader::compareFilepaths(const char * fp1, const char * fp2) noexcept {
 		if (fp1 == nullptr)
 			return false;
 		else if (fp2 == nullptr)

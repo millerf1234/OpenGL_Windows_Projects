@@ -49,6 +49,10 @@ static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
 
 static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ull;
 
+//To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
+//RenderDemo and try to change settings
+static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ull;
+
 
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
@@ -63,8 +67,9 @@ private:
 	bool error;
 	float counter;
 	unsigned long long frameNumber;
-	unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled, 
-		frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled;
+    unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
+        frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
+        frameDepthClampLastToggled;
 
 	glm::vec3 backgroundColor;
 
@@ -78,6 +83,7 @@ private:
 
 	bool freezeTimeToggle; 
 	bool enableBlending;
+    bool enableDepthClamping;
 
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
@@ -149,6 +155,7 @@ private:
 	bool checkIfShouldReset() const;
 	bool checkIfShouldFreezeTime() const;
 	bool checkIfShouldToggleBlending() const;
+    bool checkIfShouldToggleDepthClamping() const;
 
 
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -159,6 +166,7 @@ private:
 	void reset();
 	void toggleTimeFreeze();
 	void toggleBlending();
+    void toggleDepthClamping();
 	void changePrimitiveType();
 	void changeInstancedDrawingBehavior();
 	void modifyInstancedDrawingSpiralPattern();

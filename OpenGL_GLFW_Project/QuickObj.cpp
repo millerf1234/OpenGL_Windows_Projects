@@ -8,6 +8,8 @@
 
 #include "QuickObj.h"
 
+#include "QuickObj_NGonParser.h"
+
 namespace { //An anonymous namespace is used to prevent these constants from polluting the global namespace
 	static constexpr const size_t POSITION_INDEX = 0u;
 	static constexpr const size_t TEXTURE_COORD_INDEX = 1u;
@@ -27,8 +29,8 @@ namespace { //An anonymous namespace is used to prevent these constants from pol
 	//parsing logic
 	static constexpr const size_t QUAD_CORNER_0_OFFSETS = 0u;
 	static constexpr const size_t QUAD_CORNER_1_OFFSETS = 1u;
-	static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accomodate triangle winding order 
-	static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accomoate triangle winding order
+	static constexpr const size_t QUAD_CORNER_3_OFFSETS = 3u; //Is 3u to accommodate triangle winding order 
+	static constexpr const size_t QUAD_CORNER_2_OFFSETS = 2u; //Is 2u to accommodate triangle winding order
 }
 
 
@@ -45,7 +47,7 @@ QuickObj::QuickObj(std::string filepath, float scale) {
 		parseFile();
 	}
 	else {
-		fprintf(ERRLOG, "\nERROR aquiring file: %s!\n", filepath.c_str());
+		fprintf(ERRLOG, "\nERROR acquiring file: %s!\n", filepath.c_str());
 		mError_ = true;
 		return;
 	}
@@ -80,9 +82,9 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 }
 
 
-QuickObj::~QuickObj() {
-
-}
+//QuickObj::~QuickObj() {
+//
+//}
 
 
 
@@ -90,6 +92,21 @@ QuickObj::~QuickObj() {
 
 //This is a very quick and dirty implementation. Not clean
 void QuickObj::parseFile() {
+    //TODO  Calculate required space for each vector and reserve said space ahead of time
+    /*size_t tempFilesize = mFile_->getNumberOfLines();
+    mPositions_.reserve(tempFilesize);
+    mNormals_.reserve(tempFilesize);
+    mTexCoords_.reserve(tempFilesize);
+    */
+
+    //////////////////////////////////////////////
+    //TODO  finish this idea
+    //To test task-based computing, I am going to handle ngons as a separate task from parsing the 
+    //rest of the file. Any parsed ngon vertex data will then be appended onto the end of any loaded 
+    //data at the end of this function.
+    //auto ngons = findNGons(*mFile_);
+    //fprintf(MSGLOG, "\nTesting NGON Finder... Found %u NGons!\n\n", ngons.size());
+    ////////////////////////////////////
 
 	//In case a line starting with "vp" is parsed (representing freeform geometry data),
 	//we only need to print out a warning about parser not supporting freeform geometry 
@@ -150,7 +167,7 @@ void QuickObj::parseFile() {
 			}
 			break;
 		case 'f':
-			mFaces_.emplace_back(AssetLoadingInternal::Face(lineIter, true));
+            mFaces_.emplace_back(AssetLoadingInternal::Face{ lineIter, true });
 			break;
 		case 'l':
 			mLines_.emplace_back(AssetLoadingInternal::Line(lineIter, true));
@@ -215,6 +232,7 @@ void QuickObj::constructVerticesFromParsedData() {
 		mTexCoords_.size(), mNormals_.size());
 
 	if (lines > 0) {
+        //TODO 
 		fprintf(MSGLOG, "\n  [TODO: Implement the converting of parsed 'line' primitive data to GPU-ready data...]\n");
 	}
 
@@ -712,7 +730,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 	if (mHasTexCoords_) {
 		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS)) {
 			mError_ = true;
-			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+			fprintf(ERRLOG, "\nError occurred during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
 				"vertex size (6-components per vertex [4 position + 2 tex])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
@@ -722,7 +740,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 	else if (mHasNormals_) {
 		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS + NORMAL_COMPONENTS)) {
 			mError_ = true;
-			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+			fprintf(ERRLOG, "\nError occurred during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
 				"vertex size (7-components expected per vertex [4 position + 3 normal])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
@@ -732,7 +750,7 @@ void QuickObj::addMissingComponents(bool randomizeTextureCoords, float s, float 
 	else { //File was missing both normals and texture components
 		if (!verifyVertexComponents(loadedDataSize, POSITION_COMPONENTS)) {
 			mError_ = true;
-			fprintf(ERRLOG, "\nError occured during the loading of model from file: %s\n"
+			fprintf(ERRLOG, "\nError occurred during the loading of model from file: %s\n"
 				"The number of values (%u) loaded from the file does not match the expected\n"
 				"vertex size (4-components expected per vertex [4 position])!\n", mFile_->getFilepath().c_str(), loadedDataSize);
 			return;
@@ -795,7 +813,7 @@ void QuickObj::generateMissingTextureCoords(bool randomizeTextureCoords, float s
 
 void QuickObj::generateMissingNormals() {
 	if (!verifyVertexComponents(mVertices_.size(), POSITION_TEXCOORD_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE)) {
-		fprintf(ERRLOG, "\nError! Unable to generate triangle normal's for model from file: \"%s\"!\n"
+		fprintf(ERRLOG, "\nError! Unable to generate triangle normals for model from file: \"%s\"!\n"
 			"The data was loaded fine (positions and textures) but the number of values loaded does not match\n"
 			"the number needed for a whole number of triangles (%u values were loaded,\n"
 			"this number must be divisible by 18 for proper normal generation!)\n\n", mFile_->getFilepath().c_str(), mVertices_.size());
@@ -844,7 +862,7 @@ void QuickObj::generateMissingNormals() {
 
 void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t) {
 	if (!verifyVertexComponents(mVertices_.size(), POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)) {
-		fprintf(ERRLOG, "\nError! Unable to generate triangle normal's for model from file: \"%s\"!\n"
+		fprintf(ERRLOG, "\nError! Unable to generate triangle normals for model from file: \"%s\"!\n"
 			"The data was loaded fine (positions and textures) but the number of values loaded does not match\n"
 			"the number needed for a whole number of triangles (%u values were loaded,\n"
 			"this number must be divisible by 18 for proper normal generation!)\n\n", mFile_->getFilepath().c_str(), mVertices_.size());

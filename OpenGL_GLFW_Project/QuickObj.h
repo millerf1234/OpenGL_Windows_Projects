@@ -59,7 +59,7 @@ public:
 	//data) and 3 normal components (if normals were loaded). These values are all interlaced. 
 	QuickObj(std::string filepath, float scale = 1.0f);
 	//Tries to parse and load the '.obj' resource file into this object's memory. If the object is missing either normal and/or 
-	//texture-coordinate data, appropriate data will be loaded in their place. Normal's are computed on a triangle-by-triangle basis. 
+	//texture-coordinate data, appropriate data will be loaded in their place. Normals are computed on a triangle-by-triangle basis. 
 	//Texture coordinates can either be randomly assigned from within the closed interval [0.0, 1.0] or all assigned the same value as 
 	//determined by the parameters s and t. 
 	QuickObj(std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords = true, float s = 0.5f, float t = 0.5f);
@@ -68,7 +68,7 @@ public:
 	//////////////////////////
 	////    Destructor    ////
 	//////////////////////////
-	~QuickObj();
+	~QuickObj() = default;
 
 	QuickObj(const QuickObj&) = delete;
 	QuickObj(QuickObj&&) = delete;
@@ -114,9 +114,10 @@ private:
 	//Helper functions (borrowed from subclasses 'Face' and 'Line'):
 	//Checks to see if a string character is between '0' (i.e. 48u in ASCII) and '9' (i.e. 57u in ASCII) (i.e. if it's a number)
 	inline bool isNumber(const char * c) const { return ((*c >= static_cast<char>(48u)) && (*c <= static_cast<char>(57u))); }
-	//Checks to see if a chracter is the number '0'  (to make sure a face that might look like "10/0/3" is marked invalid)
+	//Checks to see if a character is the number '0'  (to make sure a face that might look like "10/0/3" is marked invalid)
 	inline bool isZero(const char * c) const { return (*c == static_cast<char>(48u)); }
 
+    //TODO verify if this function actually works as intended
 	inline void eatWhitespace(const char * c) {
 		while (*c == ' ') {
 			c++; 

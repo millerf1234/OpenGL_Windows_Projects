@@ -42,9 +42,9 @@ void main() {
 	float adjustedZoom = zoom + 65.0 * time * (0.5 * time);
 
 
-	//???
-	int numLayers = 5 << level; //???   (I think these are either steps or are number of pieces or something)
-	//???
+	// ???
+	int numLayers = 5 << level; // ???   (I think these are either steps or are number of pieces or something)
+	// ???
 
 	float dt = 15.0 / float(numLayers);
 	//float dt = 5.0 / float(numLayers);    //Increasing this value increases the explosions vigour

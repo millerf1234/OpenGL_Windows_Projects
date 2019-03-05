@@ -19,7 +19,7 @@
 // UPDATES/Changes:
 //					August 1, 2018            Changed this class's constructor so that it now requires an additional GLenum 
 //											  parameter which this class then stores and uses as the macro to use when
-//											  glCreateShader() is called. This effectivly is replacing the protected abstract 
+//											  glCreateShader() is called. This effectively is replacing the protected abstract 
 //											  member function  aquireShaderID(), which was intended to be implemented by 
 //											  derived classes so that they each could implement their own macro.
 //											  In other words, the GLContext Shader creation logic was moved from the derived
@@ -30,37 +30,43 @@
 //											  marking a shader as secondary, the application promises that the shader does not 
 //											  contain a 'main' function, since linking a program with 2 shaders of the same type
 //											  that both contain a main will lead to a program-linkage error. It is legal to attach
-//											  as many secondarys as are available for attaching, and it is legal to attach secondaries
+//											  as many secondaries as are available for attaching, and it is legal to attach secondaries
 //										      before attaching a primary (i.e. a shader that contains a 'main' function). 
 //											  
 //			
 //Notes:   -While it is possible to recover the shader's ID number, it is 
 //			highly advised that no calls are made to the GL Context that 
 //			will affect the state of this object (i.e. don't call glDeleteProgram() 
-//			with the id value aquired by the getter function 'ID()'  ).
+//			with the id value acquired by the getter function 'ID()'  ).
 //       
 //		   -Since it is advised to delete the compiled shader objects once the linking of
-//			shader programs is completed, this class provides a function called decomission()
-//			which handles cleaning up this shader. Once a shader is decomissioned, it will
+//			shader programs is completed, this class provides a function called decommission()
+//			which handles cleaning up this shader. Once a shader is decommissioned, it will
 //			need to be reinstated in order to be attached again. Reinstating involves
-//			reaquiring the text and recompiling the shader, and as such is not a cheap operation.
+//			reacquiring the text and recompiling the shader, and as such is not a cheap operation.
 //
 //		   -Both '==' and '!=' operators are defined between two CompiledShader instances.
 //			Comparison will just look to see that the shaders are of the same type and that
 //			they have the same filepath, any other differences in state will not impact equality.
 //
 //         -Since 0u will never be assigned to a valid shader within the GLContext, the way this
-//			object represents a valid shader is any shaderID that is not 0u. Thus, when the desctructor
+//			object represents a valid shader is any shaderID that is not 0u. Thus, when the destructor
 //			for this object is called, its shaderID number is checked. If the shaderID is not 0, then it
 //			is assumed that this shader represents a still-valid shader within the GLContext and a call
 //			to glDeleteShader(shaderID) is made, and the shaderID is changed to be 0u. Thus when copying/moving
 //			types derived from this class, it is important to invalidate one of the objects by setting its
 //			ShaderID to 0u. 
 //
-//		   -Comparison operatos < and > are defined to allow for the sorting of an array/vector of CompiledShaders.
-//			The ordering is first done by derived type in the order:
-//					Compute < Fragment < Geometry < TessC < TessE < Vertex < UNASSIGNED < ShaderWithError
-//          and within shaders of the same type the ordering is done alphabetically by filepath name
+// TODO  (write a better definition here for shader ordering...)
+//		   -Comparison operators < and > are defined to allow for the sorting of an array/vector of CompiledShaders.
+//			Ordering between compiled shader objects is defined as follows:
+//		        (i)  If the shaders are of separate types, then they will be ordered as: 
+//                      Compute < Fragment < Geometry < TessC < TessE < Vertex < UNASSIGNED < ShaderWithError
+//              (ii) If the shaders are of the same type, they will be ordered based off their filepaths as c-strings
+//                      (the comparsion is done using the c function 'strcmp')
+//
+//          The ordering between shaders of the same type and filepath is arbitrary, but well-defined    
+//           
 //
 //
 //Errors to watch for:  Invalid Filepath
@@ -139,8 +145,8 @@ namespace ShaderInterface {
 		//by type
 		bool operator>(const CompiledShader&) const;
 
-		//Returns true if the shader is ready to be attached (thus not decomissioned),
-		//and false otherwise (if there was an error, a bad filepath or shader gets decomissioned)
+		//Returns true if the shader is ready to be attached (thus not decommissioned),
+		//and false otherwise (if there was an error, a bad filepath or shader gets decommissioned)
 		explicit operator bool() const; //(the 'explicit' keyword prevents this class from being allowed to conversion-construct a bool)
 
 		//Returns true if for any reason the shader is not ready to be attached. 
@@ -259,7 +265,7 @@ namespace ShaderInterface {
 		bool checkForCompilationErrors();
 
 		//Used as part of the implementation for operator< and operator>
-		static bool compareFilepaths(const char * fp1, const char * fp2);
+		static bool compareFilepaths(const char * fp1, const char * fp2) noexcept;
 	};
 
 }  //namespace ShaderInterface

@@ -88,7 +88,7 @@
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |              'i'                |                           Toggle Instanced Rendering**                         |      **Note: Vertex shader must use gl_InstanceID in some way
-//  |           '+' and '-'           | (Requires Instanced Rendering Actived) Increment/Decrement rendered instances  |              or else all instances will be drawn in the same place.
+//  |           '+' and '-'           |  (Requires Instanced Rendering Activated) Increment/Decrement instance count   |              or else all instances will be drawn in the same place.
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |     'w', 'a', 's', 'd'          |                      Translates all models in the scene                        |
@@ -102,22 +102,33 @@
 //  |              'b'                |                               Toggle Blending                                  |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              'c'                |                              Toggle Depth Clamp                                |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
 //
 //
 //
 //  Additional Notes and General Things to be Aware Of:
 //                  -The rotation matrix used in this RenderDemo is built from Euler angles and thus
-//                      quite easily runs into the issue of Gimble lock.
+//                      quite easily runs into the issue of Gimbel lock.
 //                  -The behavior of the models on the screen is highly variable dependent upon what the
 //                      sceneShaders are doing ("AssetLoadingDemo.vert"  and  "AssetLoadingDemo.frag")
 //                  -To allow for the use of a single shader program for rendering models that will not 
 //                      necessarily have the same vertex information
 //
-//                  -There was a lot of experiementing that went into 
+//                  -There was a lot of experimenting that went into 
 //                        this RenderDemo, so a lot of the private member functions of this 
 //                        class ideally will make their way into future Utility classes.
 //                   [What I mean by this is that there is a heck of a lot of implementation code
-//                        that really should be burried into seperate classes]
+//                        that really should be buried into separate classes]
+//                   [In fact, I have already started to do this in some places. Thus if you
+//                        stumble across objects and/or functions used in the AssetLoadingDemo file that have 
+//                        identical tasks/computations/algorithms implemented both in this file and in the
+//                        files respective to those objects and/or functions, chances are the idea started 
+//                        out in this file and I then moved that functionality to the files of these objects
+//                        so that the functionality can be used beyond the scope of this class]
+//                         
 //
 //Programmer:          Forrest Miller
 //Date Created:        November 14, 2018
@@ -148,6 +159,7 @@ void AssetLoadingDemo::initialize() {
 	frameInstancedDrawingCountLastModified = 0ull;
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
+    frameDepthClampLastToggled = 0ull;
 
 	counter = 0.0f;
 	vao = vbo = 0u;
@@ -163,6 +175,7 @@ void AssetLoadingDemo::initialize() {
 
 	freezeTimeToggle = false;
 	enableBlending = false;
+    enableDepthClamping = false;
 
 	//Set values for screen projection 
 	fov = 56.0f;
@@ -176,7 +189,7 @@ void AssetLoadingDemo::initialize() {
 	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
 
 	//Set values for view matrix
-	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+	cameraPos = glm::vec3(0.0f, 0.0f, 7.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
 	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
 	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -195,11 +208,7 @@ void AssetLoadingDemo::initialize() {
 	//Keep an extra zoom parameter
 	zoom = 1.0f; //Higher number means farther away
 
-
-	//Set initial background color
-	backgroundColor = glm::vec3(0.025f, 0.5f, 0.75f); //Based off some non-exhaustive testing thus far, I
-	//                                                 //have reached the conjecture that these initial values matter
-	//                                                 //not at all. See the function for the background color update
+    backgroundColor = glm::vec3(0.0f, 0.0f, 0.0f); //The values set here have no impact on the actual background color, see the background-color-update function 
 
 }
 
@@ -209,6 +218,7 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 	//Make sure we have a monitor to render to
 	if (!screenInfo || !screenInfo->activeMonitor) {
 		error = true;
+        
 		return;
 	}
 	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
@@ -364,8 +374,8 @@ void AssetLoadingDemo::loadModels() {
 	float blockThing_QuadsScale = 1.2f;
 	float beveledCubeScale = 2.3f;
 	float blockShipScale = 4.5f;
-	float subdivisionCubeScale = 4.9f;
-	float abstractShapeScale = 2.0f;
+	float subdivisionCubeScale = 1.0f;
+	float abstractShapeScale = 1.0f;
 
 	//Load some models
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
@@ -375,16 +385,20 @@ void AssetLoadingDemo::loadModels() {
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
-
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 2.5f));
+    /*   test */
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 6.01f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 5.01f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
+
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
+
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
@@ -440,7 +454,11 @@ void AssetLoadingDemo::renderLoop() {
 		if (checkIfShouldToggleBlending()) {
 			toggleBlending();
 		}
-		
+        if (checkIfShouldToggleDepthClamping()) {
+            toggleDepthClamping();
+        }
+
+
 		//More Input Checking
 		
 		changePrimitiveType();
@@ -497,14 +515,14 @@ void AssetLoadingDemo::renderLoop() {
 
 
 
-bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const {
+inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const {
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
 }
 
-bool AssetLoadingDemo::checkIfShouldPause() const {
+inline bool AssetLoadingDemo::checkIfShouldPause() const {
 	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
 		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
@@ -513,14 +531,14 @@ bool AssetLoadingDemo::checkIfShouldPause() const {
 }
 
 
-bool AssetLoadingDemo::checkIfShouldReset() const {
+inline bool AssetLoadingDemo::checkIfShouldReset() const {
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
 		return true;
 	return false;
 }
 
-bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
-	if ((frameNumber - frameTimeFreezeLastToggled) > 15ull) {
+inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
+	if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS) {
 			return true;
 		}
@@ -528,16 +546,30 @@ bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
 	return false;
 }
 
-
-bool AssetLoadingDemo::checkIfShouldToggleBlending() const {
-
-	if ((frameNumber - frameBlendOperationLastToggled) > 15ull) {
+inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const {
+	if ((frameNumber - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
 			return true;
 		}
 	}
-	return false;
-	
+	return false;	
+}
+
+inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const {
+    //For a detailed discussion on depth clamping that is really useful, check out OpenGL SuperBible 7e pages 379-380.
+    //Essentially, within the fragment shader stage of the OpenGL Pipeline, each fragment has a depth value that is
+    //scaled between 0 to 1, with 0 being the near plane (right in your face) and 1 being the furthest representable depth.
+    //Unfortunately there is no way to represent arbitrarily far away fragments using this scale, so to compensate depth
+    //clamping can be enabled, which will "disable clipping against the near and far planes." I feel this description is
+    //a bit misleading however, because a more accurate description is it will 'clamp' fragments of depth less than 0 to 0 
+    //(causing fragments that should be behind your eye instead map flatly onto your eye) and arbitrarily far away values 
+    //will bet clamped to 1, the furthest representable depth.
+    if ((frameNumber - frameDepthClampLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_C) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void AssetLoadingDemo::pause() {
@@ -586,6 +618,7 @@ void AssetLoadingDemo::reset() {
 	frameInstancedDrawingCountLastModified = 0ull;
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
+    frameDepthClampLastToggled = 0ull;
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
@@ -623,6 +656,48 @@ void AssetLoadingDemo::toggleBlending() {
 	}
 }
 
+void AssetLoadingDemo::toggleDepthClamping() {
+    //See: https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Depth_clamping
+    if (!enableDepthClamping) {
+        fprintf(MSGLOG, "Depth Clamping Enabled!\n");
+        enableDepthClamping = true;
+        glEnable(GL_DEPTH_CLAMP);
+    }
+    else {
+        fprintf(MSGLOG, "Depth Clamping Disabled!\n");
+        enableDepthClamping = false;
+        glDisable(GL_DEPTH_CLAMP);
+    }
+    frameDepthClampLastToggled = frameNumber;
+}
+
+void AssetLoadingDemo::changePrimitiveType() {
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS)
+        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
+
+    else if (glfwGetKey(mainRenderWindow, GLFW_KEY_2) == GLFW_PRESS)
+        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
+
+    else if (glfwGetKey(mainRenderWindow, GLFW_KEY_3) == GLFW_PRESS)
+        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
+        if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
+            frameLineTypeLastSwitched = frameNumber;
+        }
+        else {
+            frameLineTypeLastSwitched = frameNumber;
+            if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
+                currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP;
+            }
+            else {
+                currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE;
+            }
+        }
+    }
+}
+
 void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 	//Only allow toggling to happen every 11 frames
 	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > 11ull) {
@@ -634,8 +709,8 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 		}
 	}
 
-	//Only allow the instance count to be modified every 12 frames (1/5th second)
-	if ((frameNumber - frameInstancedDrawingCountLastModified) > 12ull) {
+	//Only allow the instance count to be modified every 10 frames (1/6th second)
+	if ((frameNumber - frameInstancedDrawingCountLastModified) > 10ull) {
 		if (drawMultipleInstances) {
 			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
@@ -708,34 +783,6 @@ void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
 		}
 	}
 }
-
-void AssetLoadingDemo::changePrimitiveType() {
-	
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS)
-		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
-
-	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_2) == GLFW_PRESS)
-		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
-
-	else if (glfwGetKey(mainRenderWindow, GLFW_KEY_3) == GLFW_PRESS)
-		currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
-
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
-		if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
-			frameLineTypeLastSwitched = frameNumber;
-		}
-		else {
-			frameLineTypeLastSwitched = frameNumber;
-			if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
-				currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP;
-			}
-			else {
-				currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE;
-			}
-		}
-	}	
-}
-
 
 void AssetLoadingDemo::rotate() {
 
@@ -830,7 +877,7 @@ bool AssetLoadingDemo::checkForUpdatedShaders() {
 
 void AssetLoadingDemo::buildNewShader() {
 	std::string shadersRFP = FILEPATH_TO_SHADERS;
-	backupSceneShader = nullptr;
+	//backupSceneShader = nullptr;
 	backupSceneShader = std::make_unique<ShaderProgram>();
 	for (auto shaderIterator = shaderSources.begin(); shaderIterator != shaderSources.end(); shaderIterator++) {
 		
@@ -877,7 +924,7 @@ void AssetLoadingDemo::buildNewShader() {
 				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
-		default:
+		default: // (Default should never happen so the message to be printed is a bit rediculous)
 			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!  What the heck type of shader are you updating?!?!\n");
 			return;
 		}
@@ -1282,7 +1329,7 @@ void AssetLoadingDemo::configureVertexArrayAttributes() {
 	///////////////////////////////////////////////////////////////////////
 	//              //Specify the vertex attribute layout//              //
 	///////////////////////////////////////////////////////////////////////
-
+    
 	//Location 0    Position       4-components 
 	glEnableVertexArrayAttrib(vao, 0); //Requires OpenGl 4.5 or newer, allows VAO to be specified as param (even though that is not necessary here)
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), static_cast<GLvoid*>(0u));
@@ -1295,6 +1342,18 @@ void AssetLoadingDemo::configureVertexArrayAttributes() {
 	glEnableVertexArrayAttrib(vao, 2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), (GLvoid*)(6u * sizeof(GLfloat)));
 
+
+    //Somewhat unrelated note on sending shader's integer values (from OpenGL Insights page 70) 
+    //    "OpenGL is very flexible regarding the data types of the vertex array attributes
+    // [i.e. the data stored in vao], as traditionally all types are cast by the hardware to 
+    // floating-point values when using 'glVertexAttribPointer'. For example, if an array 
+    // buffer stores RGB8 colors [i.e. 3 8-bit integers], the color will be exposed as a
+    // vec3 by the corresponding vertex shader input variable: the buffer actually stores 
+    // unsigned byte data, but at vertex attribute fetching, the values are converted on the
+    // fly. 
+    //     To escape from this flexibility [but performance-hit], we can use glVertexAttribIPointer,
+    // which can only expose vertex arrays that store integers, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT,
+    // GL_UNSIGNED_SHORT, GL_INT, and GL_UNSIGNED_INT, with integer-based vertex input variables"
 }
 
 

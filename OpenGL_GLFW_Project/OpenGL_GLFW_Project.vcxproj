@@ -75,14 +75,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>-std:c++17</AdditionalOptions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
@@ -197,6 +197,7 @@
     <ClCompile Include="PrimaryWindowCallbackFunctions.cpp" />
     <ClCompile Include="PrimaryWindowState.cpp" />
     <ClCompile Include="QuickObj.cpp" />
+    <ClCompile Include="QuickObj_NGonParser.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="JoystickManager.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
+    <ClInclude Include="QuickObj_NGonParser.h" />
     <ClInclude Include="VideoMode.h" />
     <ClInclude Include="WindowCallbackEvent.h" />
     <ClInclude Include="CompiledShader.h" />
@@ -418,11 +420,16 @@
     <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
     <None Include="Shaders\LightsourceTestDemo.frag" />
-    <None Include="Shaders\LightsourceTestDemo.vert" />
+    <None Include="Shaders\LightsourceTestDemo.vert">
+      <DeploymentContent>false</DeploymentContent>
+    </None>
     <None Include="Shaders\Sample\RubyMine.frag" />
     <None Include="Shaders\Sample\RubyMine.vert" />
     <None Include="Shaders\ShaderNoiseFunctions.glsl" />
-    <None Include="Shaders\TeapotExplosion.frag" />
+    <None Include="Shaders\TeapotExplosion.frag">
+      <FileType>Document</FileType>
+      <DeploymentContent>false</DeploymentContent>
+    </None>
     <None Include="Shaders\TeapotExplosion.geom" />
     <None Include="Shaders\TeapotExplosion.vert" />
     <None Include="Shaders\VertMath.vert" />
@@ -558,6 +565,17 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenGL_GLFW_Project.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\DrillThing00.obj">
+      <FileType>Document</FileType>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\RockThing.obj">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

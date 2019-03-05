@@ -240,7 +240,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		glfwIsInitialized = true;
 	}
 
-	return (std::move(generateDetectedMonitorsStruct()));
+	//return (std::move(generateDetectedMonitorsStruct()));  //Don't do this! See comment about return value for function generateDetectedMonitorsStruct() below
+    return generateDetectedMonitorsStruct();
 }
 
 void GLFW_Init::specifyWindowCallbackFunctions() {
@@ -292,7 +293,10 @@ std::shared_ptr<MonitorData> GLFW_Init::generateDetectedMonitorsStruct() {
 
 	detectedDisplayData->validContext = glfwIsInitialized;
 
-	return std::move(detectedDisplayData); //This struct winds up getting moved a lot
+	//return std::move(detectedDisplayData); //This is a terrible thing to do. See Scott Meyer's Effective Modern C++ item 25 (page 174)
+    //                                     //Using a move statement here prevents Return Value Optimization / Copy Elision from being legal. 
+    //Instead, just do
+    return detectedDisplayData;
 }
 
 //Detects the resolution of the active display
