@@ -72,6 +72,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -458,6 +461,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="NewTieFighterNotice.txt" />
+    <Text Include="NoteOnVisualStudioGLSLTextColoring.txt" />
     <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt" />
     <Text Include="NotesAndReferences\Notes_and_ReadMe.txt" />
     <Text Include="NotesAndReferences\TextureWebsiteResources.txt" />

@@ -1146,13 +1146,7 @@
     <None Include="Shaders\LightsourceTestDemo.vert">
       <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
     </None>
-    <None Include="Shaders\TeapotExplosion.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
     <None Include="Shaders\TeapotExplosion.geom">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
-    </None>
-    <None Include="Shaders\TeapotExplosion.vert">
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="Shaders\AssetLoadingDemo.frag">
@@ -1229,6 +1223,12 @@
     </None>
     <None Include="obj\RockThing.obj">
       <Filter>Resource Files\Models\OBJ\Sample\RockThing</Filter>
+    </None>
+    <None Include="Shaders\TeapotExplosion.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+    </None>
+    <None Include="Shaders\TeapotExplosion.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1311,6 +1311,9 @@
     </Text>
     <Text Include="NotesOnUsingMultipleContexts.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="NoteOnVisualStudioGLSLTextColoring.txt">
+      <Filter>Resource Files\Shaders</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

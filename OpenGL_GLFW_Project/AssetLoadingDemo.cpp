@@ -371,9 +371,9 @@ void AssetLoadingDemo::loadModels() {
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
 	//Initial Scale values for the objects
-	float blockThing_QuadsScale = 1.2f;
-	float beveledCubeScale = 2.3f;
-	float blockShipScale = 4.5f;
+	float blockThing_QuadsScale = 1.0f;
+	float beveledCubeScale = 1.0f;
+	float blockShipScale = 1.0f;
 	float subdivisionCubeScale = 1.0f;
 	float abstractShapeScale = 1.0f;
 
@@ -385,7 +385,7 @@ void AssetLoadingDemo::loadModels() {
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 
 	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
     /*   test */
@@ -400,7 +400,7 @@ void AssetLoadingDemo::loadModels() {
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 	
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
 
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)

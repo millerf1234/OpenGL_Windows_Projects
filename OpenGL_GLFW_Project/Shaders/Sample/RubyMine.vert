@@ -4,7 +4,7 @@
 //  SOURCE:   http://shaderfrog.com/view/2843
 //
 // 
-//  Modifications:  Several modificationbs have been made to bring this shader inline with 
+//  Modifications:  Several modifications have been made to bring this shader inline with 
 //                  something that the renderer will compile. Any changes made will be marked.
 //                  These changes will just be variable renaming.
 //

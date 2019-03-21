@@ -7,12 +7,12 @@
 //
 //
 //  IMPORTANT:      GLFW functions are not to be called by code outside of this engine. Attempting
-//                  to bypass this engine by directly modifing the state of a GLFW object can cause
+//                  to bypass this engine by directly modifying the state of a GLFW object can cause
 //                  major issues with the functionality of the FSMRenderEngine
 //
 //
 // Description:     This is it. This is the highest level class in the entire hierarchy of classes 
-//                  that make up the FSMRenderEngine (plus some utility/ui features to boot). Everything
+//                  that make up the FSMRenderEngine (plus some utility/UI features to boot). Everything
 //                  an application needs to get up and running can be achieved by interfacing with this 
 //                  class.
 //
@@ -56,7 +56,7 @@ public:
 
 
     //             /////////////////////////////////////////////////////////////////
-    //             //////////      Static Environment Querry Functions      /////////
+    //             //////////      Static Environment Query Functions      /////////
     //             /////////////////////////////////////////////////////////////////
 
     //Sets parameters to match the version of OpenGL that contexts created through this class will use. This
@@ -83,14 +83,14 @@ public:
     //at runtime (which could be helpful for debugging).
     static void getGLFWCompileTimeVersion(int& compileVersionMajor, int& compileVersionMinor, int& compileVersionRevision);
     //Returns a string that looks like: "Compiled against GLFW 'major'.'minor'.'revision'", with the
-    //'major', 'minor' and 'revision' replaced with their corrosponding integer values. 
+    //'major', 'minor' and 'revision' replaced with their corresponding integer values. 
     static std::string getGLFWCompileTimeVersionString();
-    //Retrieves the Major, Minor and Revision numbers corrosponding to the version of GLFW linked with 
+    //Retrieves the Major, Minor and Revision numbers corresponding to the version of GLFW linked with 
     //during run time. These values can be compared with the compile-time GLFW version (which could be 
     //helpful for debugging purposes).
     static void getGLFWRuntimeVersion(int& runtimeVersionMajor, int& runtimeVersionMinor, int& runtimeVersionRevision);
     //Returns a string that looks like: "Running against GLFW 'major'.'minor'.'revision'", with the
-    //'major', 'minor' and 'revision' replaced with the corrosponding integer values retrieved from
+    //'major', 'minor' and 'revision' replaced with the corresponding integer values retrieved from
     //the GLFW library which gets linked at run-time. 
     static std::string getGLFWRuntimeVersionString();
 

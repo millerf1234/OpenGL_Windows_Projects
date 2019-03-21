@@ -18,7 +18,7 @@
 
 GLFW_Init::GLFW_Init() {
 	width = height = refreshRate = 0;
-	//pixelWidth = pixelHeight = 0; //Since GLFW3, screen coordinates and viewport pixels are seperate concepts
+	//pixelWidth = pixelHeight = 0; //Since GLFW3, screen coordinates and viewport pixels are separate concepts
 	connectedDisplayCount = 0;
 	monitors = nullptr;
 	mWindow = nullptr;
@@ -50,7 +50,7 @@ void GLFW_Init::terminate() {
 
 //Do window setup routines and return a struct representing information on detected monitors
 std::shared_ptr<MonitorData> GLFW_Init::initialize() {
-	glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as seperate from Joystick buttons
+	glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as separate from Joystick buttons
 	fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");

@@ -1,7 +1,84 @@
-//Demo of using shader noise and blending, trying to achieve a halo around
-//a light source effect. See Header for more detail.
+
+//  Original Intention of this RenderDemo:
+//Demo using shader noise and blending, trying to achieve a 'halo' effect like may
+//appear around a lightsource.
+//
+// [PLEASE NOTE]     This is a quick demo that was done in around the span of a weekend so it is lacking some of the basic 
+//                        interactive functionality found in other demos. None the less it is well worth running.  
+
+// Description:      This demo draws a customizable procedural polygon which is drawn centered on the Application window which
+//                        has a number of various fragment shader effects which can be toggled through.
+//                      One of the original ideas for this project was to try to create a customizable polygon procedurally 
+//                        based off some parameters. Each vertex of the polygon has both position and color data, with a 
+//                        single RGB color specified during polygon generation which represents the color at the very center, 
+//                        and then each vertex outwards having its magnitude from the initial color vector gradually reduced 
+//                        to give a fading-to-black appearance. 
+//
 
 #include "LightsourceTestDemo.h"
+
+//
+// Instructions:   There are 2 sets of options for this demo: Compile-time options and Run-time options. 
+//       
+//                                                       RUN TIME CONTROLS
+//                                       While the demo is running, the following controls
+//                                              can be used to interact with the demo
+//    +---------------------------------------------------+---------------------------------------------------------------+      
+//    |                     INPUT                         |                                ACTION                         |     
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//    | (Each of) 'Q','W','E','R','T','Y','U','I','O','P' |      Toggles between each of the various fragment shaders     |   
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//    |                        'G"                        |   Toggles each of the various shader stages between their     |    
+//    |                                                   |              'primary' and 'alternative' modes                |   
+//    +---------------------------------------------------+---------------------------------------------------------------+    
+//    |                       'Tab'                       |                    Resets Time and Space to 0                 |     
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//    |                      'Space'                      |   Pause/Unpause Time  [Most input is disabled while paused]   |    
+//    +---------------------------------------------------+---------------------------------------------------------------+    
+//    |                       'ESC'                       |                               Quit                            |       
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//    |                        'S'                        |                   Toggle Effect "Polygon Smooth"              |    
+//    +---------------------------------------------------+---------------------------------------------------------------+       
+//    |                        'D'                        |                       Toggle Effect "Dither"                  |  //Really hard to tell if this does anything at these resolutions
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//    |                        'B'                        |                   Toggle Alpha-Blending On-Off                |      
+//    +---------------------------------------------------+---------------------------------------------------------------+   
+//    |                    'Z' and 'X'                    |                     Zoom In/Out on Polygon                    |     
+//    +---------------------------------------------------+---------------------------------------------------------------+     
+//                                                                                                            
+//                                                COMPILE TIME CONTROLS                                           
+//                            Change the following constant values to modify the initial                     
+//                            conditions set when this Render Demo loads/generates itself                                    
+//                                                                      
+//    The polygon mesh that is drawn is determined by 4 parameters:
+//                                                          
+//                 1)  Sides  :=    How many sides are to be on the polygon. Value must be an integer 3 or greater.
+//                 2)  Layers :=    How many outwards iterations will exist between the center and the exterior. Value should be integer
+//    Presets to try for Polygon values: 
+//      +=============+=============+====================+====================+=====================================================+    
+//    < |    Sides    |    Layers   |    Base Radius     |    Layer Growth    |                      Description                    | >     
+//      +=============+=============+====================+====================+=====================================================+    
+    //  |     13      |     81      |      0.0015f       |        1.09f       |    Produces a 'nice' gradually expanding polygon    |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |     13      |      1      |       3.0f         |        1.09f       |    Some Cool Results with only 1 layered polygon    |
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |    2000     |     136     |      0.0011f       |        1.13f       |                     Very Circular                   |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |      3      |     81      |      0.0015f       |        1.09f       |                      Triangular                     |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |             |             |                    |                    |                                                     |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |             |             |                    |                    |                                                     |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //  |             |             |                    |                    |                                                     |    
+    //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
+    //      More to come...
+
+static constexpr const long POLYGON_SIDES = 7;
+static constexpr const long POLYGON_LAYERS = 69;// 81;
+static constexpr const float BASE_RADIUS = 0.0025f;  //i.e. radius of inner most layer
+static constexpr const float LAYER_GROWTH_FACTOR = 1.36f;// 1.09f; //Each layer will increase exponentially by this factor
+
 
 void LightsourceTestDemo::initialize() {
 	error = false;
@@ -47,7 +124,7 @@ LightsourceTestDemo::LightsourceTestDemo(std::shared_ptr<MonitorData> screenInfo
 		warning << "\nWARNING!\n" <<
 			"LightsourceTestDemo detected that the GLFW active context was set" <<
 			"\nto a different monitor or different execution-thread then\n" <<
-			"the one passed to LightsourceTestDemo's contructor!\n";
+			"the one passed to LightsourceTestDemo's constructor!\n";
 		warning << "This means that running LightsourceTestDemo will invalidate\n" <<
 			"the previous context by replacing it with this one, which\n" <<
 			"could (probably) lead to errors! Please ensure that the correct context\n" <<
@@ -84,7 +161,7 @@ LightsourceTestDemo::~LightsourceTestDemo() {
 
 void LightsourceTestDemo::run() {
 	if (error) {
-		fprintf(ERRLOG, "An error occured while loading LightsourceTestDemo\n");
+		fprintf(ERRLOG, "An error occurred while loading LightsourceTestDemo\n");
 		return;
 	}
 	fprintf(MSGLOG, "\nLightsourceTestDemo project has loaded and will begin running!\n");
@@ -137,7 +214,7 @@ void LightsourceTestDemo::loadShaders() {
 }
 
 //This function is intended to be called only once during the setup phase. There is a 
-//seperate series of functions for toggling the pipeline state once the render loop is 
+//separate series of functions for toggling the pipeline state once the render loop is 
 //running.
 void LightsourceTestDemo::configureContext() {
 	if (useDither) {
@@ -155,14 +232,20 @@ void LightsourceTestDemo::configureContext() {
 
 void LightsourceTestDemo::loadModels() {
 	
-	std::array<float, 3> pos = { 0.0f, 0.00f, 0.0f };
-	std::array<float, 3> col = { 0.9955f, 0.9975f, 1.0f };
+	std::array<float, 3> pos = { 0.0f, 0.0f, 0.0f }; //Polygon center point
+	std::array<float, 3> col = { 0.9955f, 0.9975f, 1.0f }; //Base RGB color to write as data per each vertex
 
-	size_t lightPolygonSides = 13u;
-	size_t lightPolygonLayers = 81u;
-	float lightPolygonBaseRadius = 0.0015f; //0.65f
-	float lightPolygonLayerGrowth = 1.09f; //1.05f
-
+    size_t lightPolygonSides = static_cast<size_t>(POLYGON_SIDES);
+    size_t lightPolygonLayers = std::max(static_cast<size_t>(1u), static_cast<size_t>(POLYGON_LAYERS));
+    float lightPolygonBaseRadius = BASE_RADIUS;
+    float lightPolygonLayerGrowth = LAYER_GROWTH_FACTOR;
+   
+    /*  //Values are now set using constant globals declared at start of the file
+	size_t lightPolygonSides = 23u;               
+    size_t lightPolygonLayers = 27u;//81u;  
+	float lightPolygonBaseRadius = 0.20015f;
+	float lightPolygonLayerGrowth = 1.09f; 
+    */
 	
 	testLightEmitter = std::make_unique<LightEmitterSource>(pos,
 															col,
@@ -215,101 +298,127 @@ void LightsourceTestDemo::renderLoop() {
 		}
 
 		if (checkIfShouldReset()) {
-			//It is necessary to check for pausing again here to get proper
-			//behavior if both pause and reset are pressed at same time (because
-			//the delay on pause detection is based off frame counter). Note that
-			//the function 'checkIfShouldPause()' is intentionally not used here.
-			if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-				pause();
-				continue;
-			}
-			reset();
-		}
+//It is necessary to check for pausing again here to get proper
+//behavior if both pause and reset are pressed at same time (because
+//the delay on pause detection is based off frame counter). Note that
+//the function 'checkIfShouldPause()' is intentionally not used here.
+if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    pause();
+    continue;
+}
+reset();
+        }
 
-		performRenderDemoSharedInputLogic();
-		
-		changeNoiseType();
-		togglePipelineEffects();
-		toggleColorshift();
+        performRenderDemoSharedInputLogic();
 
-		updateFrameClearColor();
+        updateZoom();
+        changeNoiseType();
+        togglePipelineEffects();
+        toggleColorshift();
 
-		updateUniforms();
+        updateFrameClearColor();
 
-		drawVerts();
+        updateUniforms();
 
-		counter += 0.0125f;
+        drawVerts();
 
-		glfwSwapBuffers(mainRenderWindow);
+        counter += 0.0125f;
 
-		glfwPollEvents();
-		frameNumber++; //Increment the frame counter
-		prepareGLContextForNextFrame();
-	}
+        glfwSwapBuffers(mainRenderWindow);
+
+        glfwPollEvents();
+        frameNumber++; //Increment the frame counter
+        prepareGLContextForNextFrame();
+    }
 
 }
 
 
 bool LightsourceTestDemo::checkToSeeIfShouldCloseWindow() const {
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		return true;
-	}
-	return false;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        return true;
+    }
+    return false;
 }
 
 bool LightsourceTestDemo::checkIfShouldPause() const {
-	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
-		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
-		return true;
-	}
-	return false;
+    if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
+        && (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
+        return true;
+    }
+    return false;
 }
 
 
 bool LightsourceTestDemo::checkIfShouldReset() const {
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_TAB) == GLFW_PRESS)
-		return true;
-	return false;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_TAB) == GLFW_PRESS)
+        return true;
+    return false;
 
 }
 
 void LightsourceTestDemo::pause() {
-	auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
-	auto end = std::chrono::high_resolution_clock::now();
-	fprintf(MSGLOG, "PAUSED!\n");
-	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000) {
-		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000));
-		end = std::chrono::high_resolution_clock::now();
-	}
+    auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
+    auto end = std::chrono::high_resolution_clock::now();
+    fprintf(MSGLOG, "PAUSED!\n");
+    while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000) {
+        std::this_thread::sleep_for(std::chrono::nanoseconds(2000000));
+        end = std::chrono::high_resolution_clock::now();
+    }
 
-	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
-	while (true) {
-		glfwPollEvents();
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			frameUnpaused = frameNumber;
-			fprintf(MSGLOG, "UNPAUSED!\n");
-			return;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
-			return;
-		}
-		else { //wait for a little bit before polling again
-			std::this_thread::sleep_for(std::chrono::nanoseconds(3333333));
-		}
-	}
+    //Enter an infinite loop checking for the unpause key (or exit key) to be pressed
+    while (true) {
+        glfwPollEvents();
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            frameUnpaused = frameNumber;
+            fprintf(MSGLOG, "UNPAUSED!\n");
+            return;
+        }
+        else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
+            return;
+        }
+        else { //wait for a little bit before polling again
+            std::this_thread::sleep_for(std::chrono::nanoseconds(3333333));
+        }
+    }
 }
 
 void LightsourceTestDemo::reset() {
-	fprintf(MSGLOG, "\nReseting Demo...\n");
-	counter = 0.0f; //Reset time to 0
-	frameNumber = 0ull;
-	frameUnpaused = 0ull;
-	frameDitherLastToggled = 0ull;
-	frameBlendLastToggled = 0ull;
-	framePolygonSmoothLastToggled = 0ull;
-	frameColorshiftLastToggled = 0ull;
-	zoom = 1.0f;
+    fprintf(MSGLOG, "\nReseting Demo...\n");
+    counter = 0.0f; //Reset time to 0
+    frameNumber = 0ull;
+    frameUnpaused = 0ull;
+    frameDitherLastToggled = 0ull;
+    frameBlendLastToggled = 0ull;
+    framePolygonSmoothLastToggled = 0ull;
+    frameColorshiftLastToggled = 0ull;
+    zoom = 1.0f;
+}
+
+void LightsourceTestDemo::updateZoom() {
+
+    static constexpr const float MINIMUM_ZOOM = 0.0001f;
+    if (zoom < MINIMUM_ZOOM) {
+        zoom = MINIMUM_ZOOM;
+        fprintf(MSGLOG, "Unable to zoom in any further!\n");
+        return;
+    }
+
+    static constexpr const float LINEAR_ZOOM_MAX = 2.0f;
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
+        if (zoom < LINEAR_ZOOM_MAX)
+            zoom += 0.01f;
+        else
+            zoom *= (1.0f + (LINEAR_ZOOM_MAX / 100.0f));
+    }
+    else if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
+        if (zoom < LINEAR_ZOOM_MAX)
+            zoom -= 0.012f;
+        else 
+            zoom /= (1.005f + (LINEAR_ZOOM_MAX / 100.0f));   
+    }
 }
 
 void LightsourceTestDemo::changeNoiseType() {
@@ -448,7 +557,7 @@ void LightsourceTestDemo::updateFrameClearColor() {
 }
 
 void LightsourceTestDemo::updateUniforms() {
-
+    printf("\nZoom is: %f\n", zoom);
 	lightSourceShader->use();
 										
 	lightSourceShader->uniforms.updateUniform1f("time", 2.0f*counter);

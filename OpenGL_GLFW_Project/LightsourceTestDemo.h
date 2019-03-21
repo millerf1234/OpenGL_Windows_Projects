@@ -1,6 +1,18 @@
+
+//
+//
+//-------------------------------------------------------------------------------------------
+//   Updated and more-complete details on this RenderDemo can be found in the implementation file
+//    "LightsourceTestDemo.cpp". The 
+//    implementation file is also where compile-time settings are defined/declared.
+//-------------------------------------------------------------------------------------------
+//
+//
+
+//            Original (incomplete) Description
 //This file contains the driver for some experimenting I did
 //with rendering a light source. This also is the first time I 
-//use noise() functions in my shaders. I learned quite a bit from
+//use noise() functions in my shader code. I learned quite a bit from
 //this demo, but I plan to do a better version in the near future
 //where I use alpha testing and blending and possibly other features
 //more properly. This demo has some basic blending/alpha testing tacked
@@ -18,7 +30,7 @@
 //          - 'G' to toggle a color shift
 //
 // Programmer:   Forrest Miller
-// Date:         11/2/2018 - 11/12/2018  (or so)
+// Date:         11/2/2018 - 11/12/2018  (or so)  (it works out to about 3-4 days of work implementing then experimenting)
 
 #pragma once
 
@@ -115,6 +127,7 @@ private:
 	void pause();
 	void reset();
 
+    void updateZoom();
 
 	void changeNoiseType();
 	void togglePipelineEffects();

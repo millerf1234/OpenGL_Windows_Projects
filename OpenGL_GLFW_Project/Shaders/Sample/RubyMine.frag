@@ -189,15 +189,10 @@ vec2 worley(vec3 P, float jitter) {
 
 void main() {
 
-#if 0
-    outColor = vec4(1.0, 0.0, 1.0, 1.0);
-
-#else 
-
         vec2 worl = worley(vPosition, vJitter);
         float world = worl.y * worl.x;
 
-        vec3 color = mat3(rotation + rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x) - worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), 0.0), clamp(world * 2.0, 0.0, 1.0));
+        vec3 color = mat3(rotation + rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x) - worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), sin(0.1*time)+0.0), clamp(world * 2.0, 0.0, 1.0));
 
         //color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
 
@@ -223,5 +218,4 @@ void main() {
             outColor.rgb = vec3(1.2) - outColor.rgb;
         }
 
-#endif
 }

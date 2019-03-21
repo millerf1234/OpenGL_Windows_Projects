@@ -11,7 +11,7 @@
 
 #version 450 core
 
-flat in vec3 g2f_pos;  //Position data from geomtry shader
+flat in vec3 g2f_pos;  //Position data from geometry shader
 in vec3 g2f_vel;  //Velocity data from geometry shader
 
 out vec4 Color;

@@ -73,9 +73,9 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 
-	fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	runAssetLoadingDemo();
-	return;
+	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	//runAssetLoadingDemo();
+	//return;
 	
 	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
 	runLightsourceTestDemo();
@@ -89,6 +89,7 @@ void Application::launch() {
 
 bool Application::setupGLFW() {
 	fprintf(MSGLOG, "Loading GLFW...\n");
+   
 	glfwInitializer = std::make_unique<GLFW_Init>();
 	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
 	displayInfo = glfwInitializer->initialize();

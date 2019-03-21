@@ -1,0 +1,16 @@
+
+To make sure GLSL coloring is enabled for each shader file type, go to top of visual studio main IDE and under
+the menu 'Tools', go to the following option:
+          Tools->Options->Text Editor->File Extensions   
+and then make sure that no GLSL file extensions are listed in this dialog option. 
+
+I was for a long time having an issue with several of the file formats because I think Unity was causing a 
+compatibility issue
+
+
+
+Once all '.glsl' files are being recognized correctly:
+
+To change the color of most of the words in each glsl file, the option is not with the 4 main glsl options. 
+The option you will want to change is the 'Identifier' option. Please be aware that option will have a small
+effect on a small number of the C++ syntax words as well...
