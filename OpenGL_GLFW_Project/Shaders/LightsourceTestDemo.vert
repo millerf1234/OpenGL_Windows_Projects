@@ -9,10 +9,9 @@ out vec3 lightPosition;
 out vec3 lightColor;
 
 
-//uniform float distanceToCamera;
-//uniform mat4 projection;
 uniform float time;
 uniform float zoom;
+
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -28,14 +27,19 @@ float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 void main() {
 	//Pass the light's color on to the geometry shader
-	lightColor = color;
-	
+	lightColor = color * clamp(15.0*fbm(color + position), 0.1, 0.98);//abs((sin(color.x + log(time))))*color ;
 
-	//Translate the lights position from world space to camera space
-	//vec4 projectedLightPosition = projection *  vec4((0.035*position), 0.0); // distanceToCamera);
+	//lightPosition = vec3(0.0, 0.0, 0.0);   //Due to an oversight on my part I accidentally wrote most of this code 
+    //lightPosition = position;  //         wrote most of this code with the 'out' variable lightPosition set to 0.0
 	
-	//lightPosition = projectedLightPosition.xyz;
-	//gl_Position = projectedLightPosition;
 	
 	gl_Position = vec4(position, zoom);
 }
+
+
+//Traditional main()
+//void main() {
+//    lightColor = color;
+//    lightPosition = vec3(0.0, 0.0, 0.0);
+//    gl_Position = vec4(position, zoom);
+//}

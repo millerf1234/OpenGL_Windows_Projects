@@ -50,7 +50,7 @@ Application::Application() {
 }
 
 
-Application::~Application() {
+Application::~Application() noexcept {
 	if (glfwInitializer) {
 		glfwInitializer->terminate();  
 	}
@@ -73,16 +73,16 @@ void Application::launch() {
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
 
-	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	//runAssetLoadingDemo();
-	//return;
-	
-	fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
-	runLightsourceTestDemo();
+	fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	runAssetLoadingDemo();
 	return;
 	
-	fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
-	runTeapotExplosionDemo();
+	//fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
+	//runLightsourceTestDemo();
+	//return;
+	
+	//fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
+	//runTeapotExplosionDemo();
 	//return;
 }
 

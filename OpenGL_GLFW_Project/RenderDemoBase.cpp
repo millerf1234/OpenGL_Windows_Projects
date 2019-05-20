@@ -112,15 +112,15 @@ void RenderDemoBase::doJoystickPrinterLoopLogic() {
 				}
 
 				if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON)) {
-					//increment joystick ID to poll
-					joystickPrinter.nextJoystick();
+                    //decrement joystick ID to poll
+					joystickPrinter.previousJoystick();
 					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
 				}
 
 				if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE)) {
-					//derement joystick ID to poll
-					joystickPrinter.previousJoystick();
-					mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+                    //increment joystick ID to poll
+                    joystickPrinter.nextJoystick();
+                    mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
 				}
 			}
 		}

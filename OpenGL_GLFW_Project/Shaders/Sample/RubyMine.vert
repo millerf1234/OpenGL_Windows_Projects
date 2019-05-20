@@ -39,7 +39,13 @@ vec3 permute(vec3 x) {
 }
 
 vec3 dist(vec3 x, vec3 y, vec3 z) {
-	return x * x + y * y + z * z ;
+	return x * x + y * y + z * z ; //Original
+    /*
+    vec3 x2 = x*x;
+    vec3 y2 = y*y;
+    vec3 z2 = z*z;
+    return (gl_InstanceID)*time*(max(x*x,x2*x2) + max(y*y, y2*y2) + max(z*z, z2*z2));
+    */
 }
 
 vec2 worley(vec3 P, float jitter) {
@@ -186,24 +192,51 @@ vec2 worley(vec3 P, float jitter) {
 	return sqrt(d11.xy); // F1, F2
 }
 
+
+//Output:
+//out vec3 vPosition;      ///varying vec3 vPosition;     ///Modified by FSM
+//out float vJitter;       ///varying float vJitter;      ///Modified by FSM
+//out int vInst;
+
 void main() {
+gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)));
+    //vInst will always be this globally for every option
+    //vInst = gl_InstanceID + -9 * gl_InstanceID;
+    vInst = gl_InstanceID + max(-20, (-19 + int(floor(13.0*sin(2.0*time))) * gl_InstanceID));
+
+
+#define CRAZY 1
+#define INSTS_GROW_TO_THE_RIGHT 1
+
+#define ALTERNATIVE_VERT 1
+
+#ifndef  ALTERNATIVE_VERT 
+
 	///FSM updated main implementation
-
-	vInst = gl_InstanceID + 2 * gl_InstanceID;
-
 	///vJitter = 0.0 + 0.00308 * sin(30.*time + gl_VertexID);
-	vJitter =  (float((gl_VertexID % 12) + 1)*(0.0020090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
+
+    #ifdef CRAZY
+    float crazyFactor = (2000.0 + 1000.0*sin(time));
+    #else 
+    float crazyFactor = 1.0f;
+    #endif 
+	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(0.0020090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
 	vPosition = (ModelPosition.xyz * 0.10) + 0.7*vec3(sin(time), cos(time), cos(time + 3.14));
 
 	vec2 worl = worley(vPosition, vJitter);
 	vec3 pos = ModelPosition.xyz - (0.3 + 0.003*vInst)*(length(worl) * ModelNormal * 0.2);
+      
+	float instGrowth =  ( 1.0/(2.0+abs(3.0*sin(time)))*float(floor(gl_InstanceID / 10)*int(pow(float(gl_InstanceID), 1.005)) / 1000));
 
-	float instGrowth = float(floor(gl_InstanceID / 10)*int(pow(float(gl_InstanceID), 1.005)) / 1000);
+    #ifdef  INSTS_GROW_TO_THE_RIGHT
+	gl_Position = (MVP * vec4(pos, ModelPosition.w + 0.0* min((2.0 * length(ModelPosition)*vJitter), 1.0))) + 
+    vec4(2.0 * instGrowth * gl_InstanceID, 10.0 * instGrowth * sin(2.3*gl_InstanceID), -12.0, zoom);
+    #else 
+    gl_Position = (MVP * vec4(pos, ModelPosition.w + (zoom + (-2.0 + 3.*exp(0.03*instGrowth)))));
+    #endif //INSTS_GROW_TO_THE_RIGHT
 
-	gl_Position = (MVP * vec4(pos, ModelPosition.w + vJitter)) + vec4(8.0 * instGrowth * cos( 2.0 * gl_InstanceID), 10.0 * instGrowth * sin(2.3*gl_InstanceID), -12.0, zoom);
 
-
-	///Original Main implementation
+	//Original Main implementation
 	/* 
 	vJitter = 1.0;
 	vPosition = (position * 2.0) + vec3(
@@ -217,4 +250,26 @@ void main() {
 
 	gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 	*/
-}
+
+
+#elif defined  ALTERNATIVE_VERT 
+  #if (ALTERNATIVE_VERT == 1) 
+    vec3 pos = ModelPosition.xzy + ModelPosition.yxz;
+    vPosition = vec3(max(max(ModelPosition.x, ModelPosition.y), ModelPosition.z), ModelPosition.yz);
+    vJitter = 0.0 + 0.1*sin(time);
+  
+    gl_Position = (MVP *  vec4(pos + 0.05*sin(time + vInst)*ModelNormal, ModelPosition.w +(zoom)));
+  #else 
+    vec3 pos = ModelPosition.xyz;
+    vPosition = ModelPosition.xyz;
+    vJitter = 1.0 + 0.1*sin(time);
+    gl_Position = (MVP *  vec4(pos + 0.05*sin(time)*ModelNormal, ModelPosition.w +(zoom)));
+    //gl_Position.x += (0.95 + gl_InstanceID)*sin(time + gl_InstanceID + 0.25*gl_VertexID);
+    //gl_Position.y += (0.95 + gl_InstanceID)*sin(time + gl_InstanceID + 0.25*gl_VertexID);
+    //gl_Position.z += 0.0*float(gl_InstanceID);
+  #endif //ALTERNATIVE_VERT == n
+
+#endif // ALTERNATIVE_VERT 
+
+    gl_Position.xy += (0.15 + ((0.25*gl_InstanceID)*sin(time))+(0.6001 * gl_InstanceID));
+} 

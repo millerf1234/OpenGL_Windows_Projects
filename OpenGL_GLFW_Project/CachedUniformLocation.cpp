@@ -193,7 +193,7 @@ namespace ShaderInterface {
 			std::string errorMsg("ERROR! Unsupported uniform format for the CachedUniformLocation object ");
 			errorMsg.append(mUniformName);
 			errorMsg.append("\n");
-			throw std::logic_error( errorMsg.c_str() );
+            throw std::exception(errorMsg.c_str());//std::logic_error( errorMsg.c_str() );
 		}
 	}
 
@@ -221,14 +221,14 @@ namespace ShaderInterface {
 			return;
 		case UniformType::UNSPECIFIED:
 			fprintf(ERRLOG, "\nERROR Updating Uniform %s!\nThis error occured because this uniforms cached location has not had a type specified!\n", mUniformName);
-			throw std::logic_error("Error! Update called from CachedUniformLocation which does not have a type set!\n");
+			throw std::exception();//std::logic_error("Error! Update called from CachedUniformLocation which does not have a type set!\n");
 		default:
 			fprintf(ERRLOG, "\nERROR! The wrong update function was called by a CachedUniformLocation for the uniform variable %s!\n", mUniformName);
 			fprintf(ERRLOG, "Please make sure enough parameters are provided for the function call!\n");
 			std::string ErrMsg("Wrong update function called for CachedUniformLocation for ");
 			ErrMsg.append(mUniformName);
 			ErrMsg.append("! Uniform is not set to a type that accepts only 2 parameters!\n");
-			throw std::logic_error(ErrMsg.c_str());
+			throw std::exception(ErrMsg.c_str());//std::logic_error(ErrMsg.c_str());
 		}
 	}
 
@@ -237,7 +237,7 @@ namespace ShaderInterface {
 		if (!mWasInitialized) {
 			fprintf(ERRLOG, "\nERROR! updateUniform was called on an uninitialized cached uniform!"
 				"\nPlease make sure all cached uniforms are initialized before being updated!\n");
-			throw std::logic_error("Error! updateUniform called from an unititialized cachedUniformLocation object!\n");
+			throw std::exception /*std::logic_error*/("Error! updateUniform called from an uninitialized cachedUniformLocation object!\n");
 		}
 		if (!mValidLocation) {
 			fprintf(WRNLOG, "\nWarning! updateUniform called on uniform %s, but this uniform's location in the shader is not valid!\n", mUniformName);
@@ -255,15 +255,16 @@ namespace ShaderInterface {
 			glProgramUniform3f(mProgramID, mUniformLocation, *(static_cast<GLfloat *>(xPtr)), *(static_cast<GLfloat *>(yPtr)), *(static_cast<GLfloat *>(zPtr)));
 			return;
 		case UniformType::UNSPECIFIED:
-			fprintf(ERRLOG, "\nERROR Updating Uniform %s!\nThis error occured because this uniforms cached location has not had a type specified!\n", mUniformName);
-			throw std::logic_error("Error! Update called from CachedUniformLocation which does not have a type set!\n");
+			fprintf(ERRLOG, "\nERROR Updating Uniform %s!\nThis error occurred because this uniforms cached location has not had a type specified!\n", mUniformName);
+			throw std::exception/*std::logic_error*/("Error! Update called from CachedUniformLocation which does not have a type set!\n");
 		default:
-			fprintf(ERRLOG, "\nERROR! The wrong update function was called by a CachedUniformLocation for the uniform variable %s!\n", mUniformName);
+			fprintf(ERRLOG, "\nERROR! The wrong update function was called by a CachedUniformLocation for the uniform variable %s!\n", mUniformName);			
+
 			fprintf(ERRLOG, "Please make the proper number of parameters get provided for the function call!\n");
 			std::string ErrMsg("Wrong update function called for CachedUniformLocation for ");
 			ErrMsg.append(mUniformName);
 			ErrMsg.append("! Uniform is not set to a type that accepts only 3 parameters!\n");
-			throw std::logic_error(ErrMsg.c_str());
+			throw std::exception(ErrMsg.c_str()); //std::logic_error(ErrMsg.c_str());
 		}
 	}
 
@@ -280,27 +281,27 @@ namespace ShaderInterface {
 			return;
 		}
 		//else 
-		switch (mUniformType) {
-		case UniformType::INT4:
-			glProgramUniform4i(mProgramID, mUniformLocation, *(static_cast<GLint *>(xPtr)), *(static_cast<GLint *>(yPtr)), *(static_cast<GLint *>(zPtr)), *(static_cast<GLint *>(wPtr)));
-			return;
-		case UniformType::UINT4:
-			glProgramUniform4ui(mProgramID, mUniformLocation, *(static_cast<GLuint *>(xPtr)), *(static_cast<GLuint *>(yPtr)), *(static_cast<GLuint *>(zPtr)), *(static_cast<GLuint *>(wPtr)));
-			return;
-		case UniformType::FLOAT4:
-			glProgramUniform4f(mProgramID, mUniformLocation, *(static_cast<GLfloat *>(xPtr)), *(static_cast<GLfloat *>(yPtr)), *(static_cast<GLfloat *>(zPtr)), *(static_cast<GLfloat *>(wPtr)));
-			return;
-		case UniformType::UNSPECIFIED:
-			fprintf(ERRLOG, "\nERROR Updating Uniform %s!\nThis error occured because this uniforms cached location has not had a type specified!\n", mUniformName);
-			throw std::logic_error("Error! Update called from CachedUniformLocation which does not have a type set!\n");
-		default:
-			fprintf(ERRLOG, "\nERROR! The wrong update function was called by a CachedUniformLocation for the uniform variable %s!\n", mUniformName);
-			fprintf(ERRLOG, "Please make the proper number of parameters get provided for the function call!\n");
-			std::string ErrMsg("Wrong update function called for CachedUniformLocation for ");
-			ErrMsg.append(mUniformName);
-			ErrMsg.append("! Uniform is not set to a type that accepts 4 data parameters!\n");
-			throw std::logic_error(ErrMsg.c_str());
-		}
+        switch (mUniformType) {
+        case UniformType::INT4:
+            glProgramUniform4i(mProgramID, mUniformLocation, *(static_cast<GLint*>(xPtr)), *(static_cast<GLint*>(yPtr)), *(static_cast<GLint*>(zPtr)), *(static_cast<GLint*>(wPtr)));
+            return;
+        case UniformType::UINT4:
+            glProgramUniform4ui(mProgramID, mUniformLocation, *(static_cast<GLuint*>(xPtr)), *(static_cast<GLuint*>(yPtr)), *(static_cast<GLuint*>(zPtr)), *(static_cast<GLuint*>(wPtr)));
+            return;
+        case UniformType::FLOAT4:
+            glProgramUniform4f(mProgramID, mUniformLocation, *(static_cast<GLfloat*>(xPtr)), *(static_cast<GLfloat*>(yPtr)), *(static_cast<GLfloat*>(zPtr)), *(static_cast<GLfloat*>(wPtr)));
+            return;
+        case UniformType::UNSPECIFIED:
+            fprintf(ERRLOG, "\nERROR Updating Uniform %s!\nThis error occurred because this uniforms cached location has not had a type specified!\n", mUniformName);
+            throw std::exception /*::logic_error*/("Error! Update called from CachedUniformLocation which does not have a type set!\n");
+        default:
+            fprintf(ERRLOG, "\nERROR! The wrong update function was called by a CachedUniformLocation for the uniform variable %s!\n", mUniformName);
+            fprintf(ERRLOG, "Please make the proper number of parameters get provided for the function call!\n");
+            std::string ErrMsg("Wrong update function called for CachedUniformLocation for ");
+            ErrMsg.append(mUniformName);
+            ErrMsg.append("! Uniform is not set to a type that accepts 4 data parameters!\n");
+            throw std::exception(ErrMsg.c_str()); //std::logic_error(ErrMsg.c_str());
+        }
 	}
 
 

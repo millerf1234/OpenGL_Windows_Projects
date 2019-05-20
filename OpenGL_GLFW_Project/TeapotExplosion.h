@@ -90,7 +90,7 @@ private:
 	float velocity;
 	glm::vec3 backgroundColor;
 
-	PIPELINE_PRIMATIVE_INPUT_TYPE currentTriangleInputType;
+	PIPELINE_PRIMITIVE_INPUT_TYPE currentTriangleInputType;
 
 	float colorChangeThreshold;
 	GLfloat colorModificationValues[COLOR_MOD_VALUES_COUNT];

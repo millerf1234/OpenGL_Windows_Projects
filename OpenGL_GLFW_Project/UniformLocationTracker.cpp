@@ -17,6 +17,8 @@
 
 #include "UniformLocationTracker.h"
 
+#include <stdexcept>
+
 namespace ShaderInterface {
 
 	static const uint_fast8_t NOT_IN_VECTOR = 255u;

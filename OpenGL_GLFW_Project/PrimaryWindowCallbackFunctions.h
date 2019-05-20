@@ -15,6 +15,7 @@
 
 #include <atomic>
 #include <mutex>
+#include <list>
 
 #include "GlobalIncludes.h"    //To get GLFWwindow*
 #include "LoggingMessageTargets.h"

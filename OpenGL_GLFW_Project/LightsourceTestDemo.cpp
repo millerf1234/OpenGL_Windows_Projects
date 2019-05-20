@@ -74,10 +74,10 @@
     //  |-------------+-------------+--------------------+--------------------+-----------------------------------------------------+    
     //      More to come...
 
-static constexpr const long POLYGON_SIDES = 7;
-static constexpr const long POLYGON_LAYERS = 69;// 81;
-static constexpr const float BASE_RADIUS = 0.0025f;  //i.e. radius of inner most layer
-static constexpr const float LAYER_GROWTH_FACTOR = 1.36f;// 1.09f; //Each layer will increase exponentially by this factor
+static constexpr const long POLYGON_SIDES = 39;
+static constexpr const long POLYGON_LAYERS = 112;// 81;
+static constexpr const float BASE_RADIUS = 0.00195f;  //i.e. radius of inner most layer
+static constexpr const float LAYER_GROWTH_FACTOR = 1.096f;// 1.09f; //Each layer will increase exponentially by this factor
 
 
 void LightsourceTestDemo::initialize() {
@@ -192,13 +192,19 @@ void LightsourceTestDemo::loadShaders() {
 
 	lightSourceShader = std::make_unique<ShaderProgram>();
 
+    std::unique_ptr<ShaderInterface::VertexShader> noiseShaderVert = std::make_unique<ShaderInterface::VertexShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+    noiseShaderVert->makeSecondary();
+
+    lightSourceShader->attachSecondaryVert(noiseShaderVert.get());
+
+
 	lightSourceShader->attachVert(shadersRFP + std::string("LightsourceTestDemo.vert"));
 
 
-	std::unique_ptr<ShaderInterface::FragmentShader> noiseShader = std::make_unique<ShaderInterface::FragmentShader>( shadersRFP + std::string("ShaderNoiseFunctions.glsl") );
-	noiseShader->makeSecondary();
+	std::unique_ptr<ShaderInterface::FragmentShader> noiseShaderFrag = std::make_unique<ShaderInterface::FragmentShader>( shadersRFP + std::string("ShaderNoiseFunctions.glsl") );
+	noiseShaderFrag->makeSecondary();
 
-	lightSourceShader->attachSecondaryFrag(noiseShader.get());
+	lightSourceShader->attachSecondaryFrag(noiseShaderFrag.get());
 
 	lightSourceShader->attachFrag(shadersRFP + std::string("LightsourceTestDemo.frag"));
 
@@ -557,7 +563,7 @@ void LightsourceTestDemo::updateFrameClearColor() {
 }
 
 void LightsourceTestDemo::updateUniforms() {
-    printf("\nZoom is: %f\n", zoom);
+    //printf("\nZoom is: %f\n", zoom);
 	lightSourceShader->use();
 										
 	lightSourceShader->uniforms.updateUniform1f("time", 2.0f*counter);

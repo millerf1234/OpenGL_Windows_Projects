@@ -57,7 +57,7 @@ uniform mat4 MVP;
 
 
 void main() {
-	//Do the cool effect on each vertice's position
+	//Do the cool effect on each vertices position
 	float cool = (sin(2.14*(time - (0.001*vert))));
 	cool *= step(0.25, abs(cool)); //Cut off asymptotic behavior as 'cool' gets close to 0
 	position = ModelPosition + vec4(cos(inst + cool), 1.0 / cool, (3.0*inst) / cool, zoom);

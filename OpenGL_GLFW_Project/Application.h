@@ -54,7 +54,7 @@
 class Application final {
 public:
 	Application();
-	~Application();
+	~Application() noexcept;
 	void launch();
 
 	//No Copying or Moving allowed

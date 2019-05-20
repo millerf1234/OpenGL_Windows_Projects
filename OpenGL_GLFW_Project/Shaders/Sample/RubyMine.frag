@@ -193,13 +193,13 @@ void main() {
         float world = worl.y * worl.x;
 
         vec3 color = mat3(rotation + rotation + rotation) * mix(color1, color2 + vec3(worley(color1.rgb, gl_FragCoord.x) - worley(color1.gbr, gl_FragCoord.x + instanceSpiralPatternPeriod_y), sin(0.1*time)+0.0), clamp(world * 2.0, 0.0, 1.0));
-
+        //color.r = color.r + 1./1.*color.r*sin(time * 500.);
         //color.r += abs(0.15 * cos(instanceSpiralPatternPeriod_y * 1.2));
 
         ///gl_FragColor = vec4((color * 0.1) + (color * world), 1.0);   ///Modified by FSM
         outColor = fwidthFine(vec4((color * 0.1) + 10.0*(color * world * gl_FragCoord.x), 1.0) - vec4(0.0, 0.0, 0.5, 0.0));  ///Added by FSM
 
-        outColor *= (0.9 + 0.35*sin(time)) / length(outColor);
+        outColor *= (2.09 + 0.35*sin(time)) / length(outColor);
 
 
         outColor.a = 0.12 * smoothstep(-90.0, 29.0, length(outColor.rgb + color.grg) + (10.0 + 5.0*abs(sin(15.0*time))));//0.24;
@@ -217,5 +217,7 @@ void main() {
         if (length(outColor.rgb) < 0.5) {
             outColor.rgb = vec3(1.2) - outColor.rgb;
         }
-
+        outColor.r = (outColor.r + 0.25*sin(time + (50000.0*vPosition.x))); 
+        
+       
 }
