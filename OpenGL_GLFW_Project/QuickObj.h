@@ -56,8 +56,8 @@ public:
 	//as-is, with scale being placed as the 'w' component to each loaded position. Use member functions 
 	//hasTexCoords() and hasNormals() to determine what was loaded from the file. Each loaded vertex will
 	//consist of 4 position components plus 2 texture components (if texture coordinates were part of the loaded 
-	//data) and 3 normal components (if normals were loaded). These values are all interlaced. 
-	QuickObj(std::string filepath, float scale = 1.0f);
+	//data) and 3 normal components (if normals were loaded). These values are all interleaved. 
+	QuickObj(std::string filepath, float scale = 1.0f, bool generateMissingComponents = true);
 	//Tries to parse and load the '.obj' resource file into this object's memory. If the object is missing either normal and/or 
 	//texture-coordinate data, appropriate data will be loaded in their place. Normals are computed on a triangle-by-triangle basis. 
 	//Texture coordinates can either be randomly assigned from within the closed interval [0.0, 1.0] or all assigned the same value as 
@@ -148,6 +148,10 @@ private:
 	//Call this function only once it has been verified that only 4-positions
 	//exist for each vertex in mVertices_.
 	void generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t);
+
+    void addParsedLinePrimitivesToEndOfMeshData() noexcept;
+
+    void addLineEndpointToVertexData(Vertex p, size_t expectedVertexComponents) noexcept;
 };
 
 #endif //QUICK_OBJ_H_

@@ -107,6 +107,8 @@ public:
     float& yRef() noexcept { return mComponents_[OFFSET_TO_Y]; }
     float zVal() const noexcept { return mComponents_[OFFSET_TO_Z]; }
     float& zRef() noexcept { return mComponents_[OFFSET_TO_Z]; }
+    float wVal() const noexcept { return mComponents_[OFFSET_TO_W]; }
+    float& wRef() noexcept { return mComponents_[OFFSET_TO_W]; }
 
 	constexpr size_t getSize() const noexcept { return VERTEX_SIZE; }
 	

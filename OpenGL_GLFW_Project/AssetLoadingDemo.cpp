@@ -452,25 +452,25 @@ void AssetLoadingDemo::loadModels() {
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 	
-    
-    for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-        float baseZoom = 1.0f;
-        float amplitude = 1.75f;
-        float zoom = baseZoom + (amplitude * cos(pow(f0, 2.0f / (amplitude))));
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", zoom));
-        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-       
-       /*
-        static float denominator = (1.0f - f0);
-        denominator += (-1.0f * f0);
-        if (abs(denominator < 0.8f))
-           denominator = (std::abs(f0 - denominator)) / (f0 + denominator);
-        if (denominator > 2.0f)
-           denominator = 0.5f;
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", (1.0f + f0) / denominator ));
-        */
-    }
+    //
+    //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
+    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //    float baseZoom = 1.0f;
+    //    float amplitude = 1.75f;
+    //    float zoom = baseZoom + (amplitude * cos(pow(f0, 2.0f / (amplitude))));
+    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", zoom));
+    //    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //   
+    //   /*
+    //    static float denominator = (1.0f - f0);
+    //    denominator += (-1.0f * f0);
+    //    if (abs(denominator < 0.8f))
+    //       denominator = (std::abs(f0 - denominator)) / (f0 + denominator);
+    //    if (denominator > 2.0f)
+    //       denominator = 0.5f;
+    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", (1.0f + f0) / denominator ));
+    //    */
+    //}
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
@@ -482,6 +482,9 @@ void AssetLoadingDemo::loadModels() {
     ////////////
 
     //File is defined in terms of splines instead of triangles. This may not be able to display properly.
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
      sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
 
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
@@ -508,9 +511,9 @@ void AssetLoadingDemo::prepareScene() {
 	fprintf(MSGLOG, "Primary scene creation complete!\n\n");
 
 
-    fprintf(MSGLOG, "Creating the alternativeSceneBuffer for drawing with the TRIANGLE_OUTLINE\n"
-        "pipeline input primitive type.\n");
-    alternativeSceneBuffer = primarySceneBuffer;
+    //fprintf(MSGLOG, "Creating the alternativeSceneBuffer for drawing with the TRIANGLE_OUTLINE\n"
+    //    "pipeline input primitive type.\n");
+    //alternativeSceneBuffer = primarySceneBuffer;
 
     createSceneVBOs();
 
@@ -1349,38 +1352,13 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
 
-#ifndef OLDE
+
 	//Compute the scene size
 	size_t sceneSize = 0u;
-	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {
-		
-        if (((*objIter)->hasNormals())) {
-			if ((*objIter)->hasTexCoords()) 
-				sceneSize += (*objIter)->mVertices_.size();
-			else 
-				sceneSize += (((*objIter)->mVertices_.size() / (4u+3u)) * (4u + 2u + 3u)); //Divide by 'position-normal' vertex size (7u) and then multiply by 'position-texCoord-normal' vertex size (9u)
-		}
-		else if (((*objIter)->hasTexCoords())) {
-			sceneSize += (((*objIter)->mVertices_.size() / (4u+2u)) * (4u + 2u + 3u));  //Divide by 'position-texCoord' vertex size and then multiply by 'position-texCoord-normal' vertex size
-		}
-		else {
-			sceneSize += (((*objIter)->mVertices_.size() / 4u) * (4u + 2u + 3u)); //Divide by 'position' vertex size and then multiply by 'position-texCoord-normal' vertex size
-		}
-	}
-#else 
-    //Compute the scene size 
-    size_t sceneSize;
-    constexpr const size_t NUM_EXPECTED_COMPONENTS_PER_VERTEX_BY_SCENE = NUM_VERTEX_COMPONENTS;
-    for (auto objIter = sceneObjects.cbegin(); objIter != sceneObjects.cend(); objIter++) {
-        
-
-
-
+	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {     
+        sceneSize += (*objIter)->mVertices_.size();             
     }
-
-
-#endif 
-
+	
 	//Reserve that much space
 	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
 	primarySceneBuffer.reserve(sceneSize); 
@@ -1392,22 +1370,7 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		//Objects missing Normal and/or Texture Coordinates will need to have data generated for them
 		//so that all vertices in the scene share the same format
 
-		if ((*sceneObjIter)->hasNormals()) {
-			if ((*sceneObjIter)->hasTexCoords()) {
-				addObject(sceneObjIter, objectPositionOffset);
-			}
-			else { //The object has normals but does not have texture coordinates
-				addObjectWithMissingTexCoords(sceneObjIter, objectPositionOffset);
-			}
-		}
-		else { //Else the object did not come with loaded normals
-			if ((*sceneObjIter)->hasTexCoords()) { 
-			    addObjectWithMissingNormals(sceneObjIter, objectPositionOffset);
-			}
-			else { //The object consisted entirely of position data (no normals or texture coords)
-				addObjectWithMissingTexCoordsAndNormals(sceneObjIter, objectPositionOffset);
-			}
-		}
+		
 
 		//Increment offset to prepare for the next object
 		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x;
@@ -1419,7 +1382,11 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
         fprintf(MSGLOG, "\tAdding Object %d to scene...\n", objectCounter);
         fprintf(MSGLOG, "\t\tPosition of Object %d:   <%3.3f, %3.3f, %3.3f>\n", objectCounter,
             objectPositionOffset.x, objectPositionOffset.y, objectPositionOffset.z);
-	}
+	
+        addObject(sceneObjIter, objectPositionOffset);
+    }
+
+    
 }
 
 
@@ -1453,134 +1420,6 @@ void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_i
 	}
 }
 
-//If the object already has normal data but is missing texture coords, generate some made-up coordinates while 
-//adding the object to the primarySceneBuffer
-void AssetLoadingDemo::addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-	const glm::vec3& objPos) {
-	//Setup the function to generate the texture coordinates	
-	std::function<glm::vec2(void)> genTexCoord;
-	if (ASSIGN_TEXTURE_COORDS_RANDOMLY) {
-		genTexCoord = AssetLoadingDemo::generateRandomTexCoords;
-	}
-	else {
-		genTexCoord = AssetLoadingDemo::generateConstantTexCoords;
-	}
-
-
-	int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
-    glm::vec2 uvCoord(0.0f, 0.0f);
-
-	auto vertsEnd = (*object)->mVertices_.end(); //Create a variable for loop exit condition
-	for (auto vertIter = (*object)->mVertices_.begin(); vertIter != vertsEnd; vertIter++) {
-		vertComponentCounter = ((vertComponentCounter + 1) % 7);
-		if (vertComponentCounter == 0) {
-			//Add x offset then add to vector
-			primarySceneBuffer.push_back(objPos.x + (*vertIter));
-		}
-		else if (vertComponentCounter == 1) {
-			//Add y offset then add to vector
-			primarySceneBuffer.push_back(objPos.y + (*vertIter));
-		}
-		else if (vertComponentCounter == 2) {
-			//Add z offset then add to vector
-			primarySceneBuffer.push_back(objPos.z + (*vertIter));
-		}
-		else if (vertComponentCounter == 3) {
-			//Add the fourth position component to vector
-			primarySceneBuffer.push_back(*vertIter);
-			//Then generate the 2 texture components and add them to vector as well
-			uvCoord = genTexCoord();
-			primarySceneBuffer.push_back(uvCoord.s);
-			primarySceneBuffer.push_back(uvCoord.t);
-		}
-		else { //Add the normal component to the vector
-			primarySceneBuffer.push_back(*vertIter);
-		}
-	}
-}
-
-
-//If the object already has Texture Coords but is missing Vertex Normals, compute a normal for each triangle (note that 
-//computing a triangle's normal will require position data for all 3 corners)
-void AssetLoadingDemo::addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-	const glm::vec3& objPos) { 
-
-    glm::vec3 v0(0.0f, 0.0f, 0.0f);
-    glm::vec3 v1(0.0f, 0.0f, 0.0f);
-    glm::vec3 v2(0.0f, 0.0f, 0.0f);
-    glm::vec3 computedNormal(0.0f, 0.0f, 0.0f);
-
-	//Count the number of triangles for the object
-	const size_t numberOfTriangles = ((*object)->mVertices_.size() / 18u);
-
-	//Loop through the object's data triangle by triangle
-	for (size_t i = 0u; i < numberOfTriangles; i++) {
-		auto triangleStart = ((*object)->mVertices_.begin() + (i * 18u));
-		
-		v0 = glm::vec3(*(triangleStart      ), *(triangleStart +  1u), *(triangleStart +  2u)); 
-		v1 = glm::vec3(*(triangleStart +  6u), *(triangleStart +  7u), *(triangleStart +  8u));
-		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u));
-
-		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
-
-
-		for (size_t j = 0u; j < 3u; j++) {
-			primarySceneBuffer.push_back(objPos.x + *(triangleStart + (j*6u)));         //x
-			primarySceneBuffer.push_back(objPos.y + *(triangleStart + ((j*6u) + 1u)));  //y
-			primarySceneBuffer.push_back(objPos.z + *(triangleStart + ((j*6u) + 2u)));  //z
-			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 3u)));             //w
-			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 4u)));             //s
-			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 5u)));             //t
-			primarySceneBuffer.push_back(computedNormal.x);
-			primarySceneBuffer.push_back(computedNormal.y);
-			primarySceneBuffer.push_back(computedNormal.z);
-		}
-	}
-}
-
-//If both texture coordinates and normals are missing, use this function.
-void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-	const glm::vec3& objPos) {
-
-	//Setup the function to generate the texture coordinates	
-	std::function<glm::vec2(void)> genTexCoord;
-	if (ASSIGN_TEXTURE_COORDS_RANDOMLY) {
-		genTexCoord = AssetLoadingDemo::generateRandomTexCoords;
-	}
-	else {
-		genTexCoord = AssetLoadingDemo::generateConstantTexCoords;
-	}
-
-	glm::vec2 uvCoord;
-	glm::vec3 v0, v1, v2, computedNormal;
-
-	//Count the number of triangles for the object
-	size_t numberOfTriangles = ((*object)->mVertices_.size() / 12u); 
-
-	//Loop through the object's data triangle by triangle
-	for (size_t i = 0u; i < numberOfTriangles; i++) {
-		auto triangleStart = ((*object)->mVertices_.begin() + (i * 12u)); //triangleStart is type iterator for vector<float>
-
-		v0 = glm::vec3(*(triangleStart     ), *(triangleStart + 1u), *(triangleStart +  2u));
-		v1 = glm::vec3(*(triangleStart + 4u), *(triangleStart + 5u), *(triangleStart +  6u));
-		v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u));
-
-		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
-
-		for (size_t j = 0u; j < 3u; j++) {
-			primarySceneBuffer.push_back(objPos.x + *(triangleStart + (j*4u)));        //x
-			primarySceneBuffer.push_back(objPos.y + *(triangleStart + ((j*4u) + 1u)));  //y
-			primarySceneBuffer.push_back(objPos.z + *(triangleStart + ((j*4u) + 2u)));  //z
-			primarySceneBuffer.push_back(*(triangleStart + ((j*4u) + 3u)));             //w
-			uvCoord = genTexCoord();  //Generate the uv Coords on the fly
-			primarySceneBuffer.push_back(uvCoord.s);                               //s
-			primarySceneBuffer.push_back(uvCoord.t);                               //t
-			primarySceneBuffer.push_back(computedNormal.x);
-			primarySceneBuffer.push_back(computedNormal.y);
-			primarySceneBuffer.push_back(computedNormal.z);
-		}
-	}
-}
 
 
 
@@ -1748,9 +1587,6 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
     fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
     fprintf(MSGLOG, "There are %u vertices total in the scene, or %u 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
 
-    auto yeah = sceneBuf.size() * sizeof(sceneBuf.data());
-    auto yeah2 = sizeof(sceneBuf.data());
-    std::cout << yeah << "\n";
 	glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
 
 }

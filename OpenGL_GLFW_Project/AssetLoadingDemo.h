@@ -292,12 +292,6 @@ private:
 	//data into the primarySceneBuffer
 	void addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
-	void addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-		const glm::vec3& objPos);
-	void addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-		const glm::vec3& objPos);
-	void addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-		const glm::vec3& objPos);
 
 	//Helper function for generating random texture coordinates
 	static inline glm::vec2 generateRandomTexCoords() {

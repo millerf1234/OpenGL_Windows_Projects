@@ -23,6 +23,7 @@ namespace { //An anonymous namespace is used to prevent these constants from pol
 	static constexpr const size_t POSITION_TEXCOORD_NORMAL_VERTEX_SIZE = POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS + NORMAL_COMPONENTS;
 
 	static constexpr const size_t VERTICES_IN_A_TRIANGLE = 3u; 
+    static constexpr const size_t TRIANGLES_IN_A_QUAD = 2u;
 
 	//It turns out that the triangles within a Quad have a 0-1-3-2 ordering to them. Thus the following 
 	//constants are defined to attempt to avert additional confusion within the already-pretty-hairy 
@@ -35,7 +36,7 @@ namespace { //An anonymous namespace is used to prevent these constants from pol
 
 
 
-QuickObj::QuickObj(std::string filepath, float scale) {
+QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingComponents) {
 	mError_ = false;
 	mScale_ = scale;
 	mHasTexCoords_ = false;
@@ -51,6 +52,17 @@ QuickObj::QuickObj(std::string filepath, float scale) {
 		mError_ = true;
 		return;
 	}
+
+    if (generateMissingComponents) {
+        if (mVertices_.size() > 0u) { //Only generate components if some data has been loaded
+            addMissingComponents(true, 0.0f, 1.0f);
+        }
+    }
+
+    if (mLines_.size() > 0u)
+        addParsedLinePrimitivesToEndOfMeshData();
+
+    mVertices_.shrink_to_fit();
 }
 
 
@@ -78,7 +90,11 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 			addMissingComponents(randomizeTextureCoords, s, t);
 		}
 	}
-	
+
+    if (mLines_.size() > 0u)
+        addParsedLinePrimitivesToEndOfMeshData();
+
+    mVertices_.shrink_to_fit();
 }
 
 
@@ -216,6 +232,14 @@ void QuickObj::parseFile() {
 
 
 void QuickObj::constructVerticesFromParsedData() {
+
+    static constexpr const size_t SPACE_PER_QUAD_FACE =
+        POSITION_TEXCOORD_NORMAL_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE * TRIANGLES_IN_A_QUAD;
+    static constexpr const size_t SPACE_PER_TRIANGLE_FACE =
+        POSITION_TEXCOORD_NORMAL_VERTEX_SIZE * VERTICES_IN_A_TRIANGLE;
+    static constexpr const size_t SPACE_PER_LINE =
+        POSITION_TEXCOORD_NORMAL_VERTEX_SIZE * 3u; //I cheat and convert lines into triangles, hence the factor of 3u instead of 2u
+
 	int triangleFaces = 0;
 	int quadFaces = 0;
 	int linePrimitives = mLines_.size();
@@ -228,16 +252,18 @@ void QuickObj::constructVerticesFromParsedData() {
 		}
 	}
 
+    const size_t spaceToReserve =
+        (quadFaces * SPACE_PER_QUAD_FACE) +
+        (triangleFaces * SPACE_PER_TRIANGLE_FACE) +
+        (linePrimitives * SPACE_PER_LINE);
+
+    mVertices_.reserve(spaceToReserve);
+
 	fprintf(MSGLOG, "\n*** Model Statistics ***\nPrimitive Counts:  Lines: %d\tTriangles: %d\tQuads: %d\n",
 		linePrimitives, triangleFaces, quadFaces);
 	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(),
 		mTexCoords_.size(), mNormals_.size());
 
-	if (linePrimitives > 0) {
-        //for (auto lineIter)
-        
-
-	}
 
 	//Construct each face from the parsed data into the mVertices_ vector, with positions/textureCoords/Normals interlaced
 	for (auto faceIter = mFaces_.begin(); faceIter != mFaces_.end(); faceIter++) {
@@ -576,97 +602,97 @@ void QuickObj::constructVerticesFromParsedData() {
 					mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
 				}
 
-				else { //Else we have both Texture and Normal data to deal with
-					   //Triangle:
-					auto c0_pos = mPositions_[corner0[POSITION_INDEX]]; //corner 0 _ positions
-					mVertices_.push_back(c0_pos[0]); //corner0 x
-					mVertices_.push_back(c0_pos[1]); //corner0 y
-					mVertices_.push_back(c0_pos[2]); //corner0 z
-					mVertices_.push_back(mScale_);    //zoom / w component of position
-					auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
-					mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
-					mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
-					auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
-					mVertices_.push_back(c0_nrml[0]); //Corner 0 normal x
-					mVertices_.push_back(c0_nrml[1]); //Corner 0 normal y
-					mVertices_.push_back(c0_nrml[2]); //Corner 0 normal z
+                else { //Else we have both Texture and Normal data to deal with
+                       //Triangle:
+                       auto c0_pos = mPositions_[corner0[POSITION_INDEX]]; //corner 0 _ positions
+                       mVertices_.push_back(c0_pos[0]); //corner0 x
+                       mVertices_.push_back(c0_pos[1]); //corner0 y
+                       mVertices_.push_back(c0_pos[2]); //corner0 z
+                       mVertices_.push_back(mScale_);    //zoom / w component of position
+                       auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
+                       mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
+                       mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
+                       auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
+                       mVertices_.push_back(c0_nrml[0]); //Corner 0 normal x
+                       mVertices_.push_back(c0_nrml[1]); //Corner 0 normal y
+                       mVertices_.push_back(c0_nrml[2]); //Corner 0 normal z
 
 
-					auto c1_pos = mPositions_[corner1[POSITION_INDEX]]; //corner 1 _ positions
-					mVertices_.push_back(c1_pos[0]); //corner1 x
-					mVertices_.push_back(c1_pos[1]); //corner1 y
-					mVertices_.push_back(c1_pos[2]); //corner1 z
-					mVertices_.push_back(mScale_);   //zoom
-					auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
-					mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
-					mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
-					auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
-					mVertices_.push_back(c1_nrml[0]); //Corner 1 normal x
-					mVertices_.push_back(c1_nrml[1]); //Corner 1 normal y
-					mVertices_.push_back(c1_nrml[2]); //Corner 1 normal z
+                       auto c1_pos = mPositions_[corner1[POSITION_INDEX]]; //corner 1 _ positions
+                       mVertices_.push_back(c1_pos[0]); //corner1 x
+                       mVertices_.push_back(c1_pos[1]); //corner1 y
+                       mVertices_.push_back(c1_pos[2]); //corner1 z
+                       mVertices_.push_back(mScale_);   //zoom
+                       auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
+                       mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
+                       mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
+                       auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
+                       mVertices_.push_back(c1_nrml[0]); //Corner 1 normal x
+                       mVertices_.push_back(c1_nrml[1]); //Corner 1 normal y
+                       mVertices_.push_back(c1_nrml[2]); //Corner 1 normal z
 
 
-					auto c2_pos = mPositions_[corner2[POSITION_INDEX]]; //corner 2 _ positions
-					mVertices_.push_back(c2_pos[0]); //corner2 x
-					mVertices_.push_back(c2_pos[1]); //corner2 y
-					mVertices_.push_back(c2_pos[2]); //corner2 z
-					mVertices_.push_back(mScale_);    //zoom / w component of position
-					auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
-					mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
-					mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
-					auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal
-					mVertices_.push_back(c2_nrml[0]); //Corner 2 normal x
-					mVertices_.push_back(c2_nrml[1]); //Corner 2 normal y
-					mVertices_.push_back(c2_nrml[2]); //Corner 2 normal z
-				}
-			}
+                       auto c2_pos = mPositions_[corner2[POSITION_INDEX]]; //corner 2 _ positions
+                       mVertices_.push_back(c2_pos[0]); //corner2 x
+                       mVertices_.push_back(c2_pos[1]); //corner2 y
+                       mVertices_.push_back(c2_pos[2]); //corner2 z
+                       mVertices_.push_back(mScale_);    //zoom / w component of position
+                       auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
+                       mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
+                       mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
+                       auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal
+                       mVertices_.push_back(c2_nrml[0]); //Corner 2 normal x
+                       mVertices_.push_back(c2_nrml[1]); //Corner 2 normal y
+                       mVertices_.push_back(c2_nrml[2]); //Corner 2 normal z
+                }
+            }
 
-			//Else there is just Position and normal data to worry about 
-			else {
-				//Triangle:
-				auto c0_pos = mPositions_[corner0[POSITION_INDEX]]; //corner 0 _ positions
-				mVertices_.push_back(c0_pos[0]); //corner0 x
-				mVertices_.push_back(c0_pos[1]); //corner0 y
-				mVertices_.push_back(c0_pos[2]); //corner0 z
-				mVertices_.push_back(mScale_);    //zoom / w component of position
-				//auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
-				//mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
-				//mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
-				auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
-				mVertices_.push_back(c0_nrml[0]); //Corner 0 normal x
-				mVertices_.push_back(c0_nrml[1]); //Corner 0 normal y
-				mVertices_.push_back(c0_nrml[2]); //Corner 0 normal z
-
-
-				auto c1_pos = mPositions_[corner1[POSITION_INDEX]]; //corner 1 _ positions
-				mVertices_.push_back(c1_pos[0]); //corner1 x
-				mVertices_.push_back(c1_pos[1]); //corner1 y
-				mVertices_.push_back(c1_pos[2]); //corner1 z
-				mVertices_.push_back(mScale_);   //zoom
-				//auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
-				//mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
-				//mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
-				auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
-				mVertices_.push_back(c1_nrml[0]); //Corner 1 normal x
-				mVertices_.push_back(c1_nrml[1]); //Corner 1 normal y
-				mVertices_.push_back(c1_nrml[2]); //Corner 1 normal z
+            //Else there is just Position and normal data to worry about 
+            else {
+            //Triangle:
+            auto c0_pos = mPositions_[corner0[POSITION_INDEX]]; //corner 0 _ positions
+            mVertices_.push_back(c0_pos[0]); //corner0 x
+            mVertices_.push_back(c0_pos[1]); //corner0 y
+            mVertices_.push_back(c0_pos[2]); //corner0 z
+            mVertices_.push_back(mScale_);    //zoom / w component of position
+            //auto c0_tex = mTexCoords_[corner0[TEXTURE_COORD_INDEX]]; //corner 0 _ texture coords
+            //mVertices_.push_back(c0_tex[0]); //Corner 0 tex coord s
+            //mVertices_.push_back(c0_tex[1]); //Corner 0 tex coord t
+            auto c0_nrml = mNormals_[corner0[NORMAL_INDEX]]; // corner 0 _ normal
+            mVertices_.push_back(c0_nrml[0]); //Corner 0 normal x
+            mVertices_.push_back(c0_nrml[1]); //Corner 0 normal y
+            mVertices_.push_back(c0_nrml[2]); //Corner 0 normal z
 
 
-				auto c2_pos = mPositions_[corner2[POSITION_INDEX]]; //corner 2 _ positions
-				mVertices_.push_back(c2_pos[0]); //corner2 x
-				mVertices_.push_back(c2_pos[1]); //corner2 y
-				mVertices_.push_back(c2_pos[2]); //corner2 z
-				mVertices_.push_back(mScale_);    //zoom / w component of position
-				//auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
-				//mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
-				//mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
-				auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal
-				mVertices_.push_back(c2_nrml[0]); //Corner 2 normal x
-				mVertices_.push_back(c2_nrml[1]); //Corner 2 normal y
-				mVertices_.push_back(c2_nrml[2]); //Corner 2 normal z
-			}
-		}
-	}
+            auto c1_pos = mPositions_[corner1[POSITION_INDEX]]; //corner 1 _ positions
+            mVertices_.push_back(c1_pos[0]); //corner1 x
+            mVertices_.push_back(c1_pos[1]); //corner1 y
+            mVertices_.push_back(c1_pos[2]); //corner1 z
+            mVertices_.push_back(mScale_);   //zoom
+            //auto c1_tex = mTexCoords_[corner1[TEXTURE_COORD_INDEX]]; //corner 1 _ texture coords
+            //mVertices_.push_back(c1_tex[0]); //Corner 1 tex coord s
+            //mVertices_.push_back(c1_tex[1]); //Corner 1 tex coord t
+            auto c1_nrml = mNormals_[corner1[NORMAL_INDEX]]; // corner 1 _ normal
+            mVertices_.push_back(c1_nrml[0]); //Corner 1 normal x
+            mVertices_.push_back(c1_nrml[1]); //Corner 1 normal y
+            mVertices_.push_back(c1_nrml[2]); //Corner 1 normal z
+
+
+            auto c2_pos = mPositions_[corner2[POSITION_INDEX]]; //corner 2 _ positions
+            mVertices_.push_back(c2_pos[0]); //corner2 x
+            mVertices_.push_back(c2_pos[1]); //corner2 y
+            mVertices_.push_back(c2_pos[2]); //corner2 z
+            mVertices_.push_back(mScale_);    //zoom / w component of position
+            //auto c2_tex = mTexCoords_[corner2[TEXTURE_COORD_INDEX]]; //corner 2 _ texture coords
+            //mVertices_.push_back(c2_tex[0]); //Corner 2 tex coord s
+            //mVertices_.push_back(c2_tex[1]); //Corner 2 tex coord t
+            auto c2_nrml = mNormals_[corner2[NORMAL_INDEX]]; // corner 2 _ normal
+            mVertices_.push_back(c2_nrml[0]); //Corner 2 normal x
+            mVertices_.push_back(c2_nrml[1]); //Corner 2 normal y
+            mVertices_.push_back(c2_nrml[2]); //Corner 2 normal z
+            }
+        }
+    }
 }
 
 //This function handles parsing vertex data by inserting the numerical values it reads into a 'Vertex' object 
@@ -940,4 +966,54 @@ void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoord
 	verticesWithTexCoordAndNormals.swap(mVertices_);
 	mHasNormals_ = true;
 	mHasTexCoords_ = true;
+}
+
+
+void QuickObj::addParsedLinePrimitivesToEndOfMeshData() noexcept {
+
+    size_t expectedVertexSize = 4u;
+    if (mHasTexCoords_)
+        expectedVertexSize += 2u;
+    if (mHasNormals_)
+        expectedVertexSize += 3u;
+
+
+        const size_t MAX_POS_INDEX = mPositions_.size();
+
+        //For each parsed line primitive
+        for (auto lineIter = mLines_.cbegin(); lineIter != mLines_.cend(); lineIter++) {
+            if (lineIter->dataValid()) {
+                auto endpoints = lineIter->get();
+                if ((endpoints[0] < MAX_POS_INDEX) && (endpoints[1] < MAX_POS_INDEX)) {
+                    Vertex p0 = mPositions_[endpoints[0]];
+                    Vertex p1 = mPositions_[endpoints[1]];
+
+                    addLineEndpointToVertexData(p0, expectedVertexSize);
+                    addLineEndpointToVertexData(p1, expectedVertexSize);
+                    addLineEndpointToVertexData(p0, expectedVertexSize);
+
+                }
+            }
+        }
+    
+
+}
+
+void QuickObj::addLineEndpointToVertexData(Vertex p, size_t expectedVertexComponents) noexcept {
+
+    for (size_t i = 0u; i < expectedVertexComponents; i++) {
+        if (i == OFFSET_TO_X)
+            mVertices_.push_back(p.xVal());
+        else if (i == OFFSET_TO_Y)
+            mVertices_.push_back(p.yVal());
+        else if (i == OFFSET_TO_Z)
+            mVertices_.push_back(p.zVal());
+        else if (i == OFFSET_TO_W)
+            mVertices_.push_back(p.wVal());
+        else if (i == OFFSET_TO_NRML_X)
+            mVertices_.push_back(1.0f);
+        else
+            mVertices_.push_back(0.0f);
+    }
+
 }
