@@ -21,6 +21,7 @@ namespace AssetLoadingInternal {
 			else {
 				mValidData_ = false;
 			}
+
 			if (mEndpoints_[1u] != 0u) {
 				mEndpoints_[1u]--;
 			}
@@ -38,9 +39,9 @@ namespace AssetLoadingInternal {
 	//Construct the line from a line of filetext
 	Line::Line(const char * lineLine, bool fixIndexing) {
 		mValidData_ = false;
-		const char * lineIterator = lineLine;
+		const char * lineIterator = &lineLine[0u];
 		//Make sure the line is actually a line
-		if ((*lineIterator != 'l') || (*lineIterator != 'L')) { //Sure, why not accept a capital L as well... close enough
+		if ((*lineIterator != 'l') && (*lineIterator != 'L')) {
 			fprintf(ERRLOG, "\nError parsing line %s!\nLine must begin with the character 'l'!\n", lineLine);
 			mEndpoints_[0] = 0u;
 			mEndpoints_[1] = 0u;
@@ -55,7 +56,7 @@ namespace AssetLoadingInternal {
 		while ((*lineIterator != '\n') && (*lineIterator != '\0')) {
 			if (*lineIterator == ' ') {
 				lineIterator++;
-				break;
+                continue;
 			}
 			else if (isNumber(lineIterator)) {
 				if (isZero(lineIterator)) {
@@ -73,7 +74,7 @@ namespace AssetLoadingInternal {
 					}
 				}
 				else {
-					if (positionsParsed < LINE_VERTICE_COUNT) {
+					if (positionsParsed < LINE_VERTICE_COUNT) { 
 						mEndpoints_[positionsParsed++] = static_cast<Offset>(strtoul(lineIterator, NULL, 0)); //This is a c function, but it works here just as well
 						lineIterator++;
 						while (isNumber(lineIterator)) {

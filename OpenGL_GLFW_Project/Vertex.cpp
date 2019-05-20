@@ -10,47 +10,47 @@
 //-------------------------------------------------------
 //                        VERTEX
 //-------------------------------------------------------
-Vertex::Vertex(float x) {
-	mComponents_[0] = x;
-	mComponents_[1] = 0.0f;
-	mComponents_[2] = 0.0f;
-	mComponents_[3] = 0.0f;
+Vertex::Vertex(float x) noexcept {
+	mComponents_[OFFSET_TO_X] = x;
+	mComponents_[OFFSET_TO_Y] = 0.0f;
+	mComponents_[OFFSET_TO_Z] = 0.0f;
+	mComponents_[OFFSET_TO_W] = 0.0f;
 }
 
-Vertex::Vertex(float x, float y) {
-	mComponents_[0] = x;
-	mComponents_[1] = y;
-	mComponents_[2] = 0.0f;
-	mComponents_[3] = 0.0f;
+Vertex::Vertex(float x, float y) noexcept {
+    mComponents_[OFFSET_TO_X] = x;
+    mComponents_[OFFSET_TO_Y] = y;
+    mComponents_[OFFSET_TO_Z] = 0.0f;
+    mComponents_[OFFSET_TO_W] = 0.0f;
 }
 
-Vertex::Vertex(float x, float y, float z) {
-	mComponents_[0] = x;
-	mComponents_[1] = y;
-	mComponents_[2] = z;
-	mComponents_[3] = 0.0f;
+Vertex::Vertex(float x, float y, float z) noexcept {
+    mComponents_[OFFSET_TO_X] = x;
+    mComponents_[OFFSET_TO_Y] = y;
+    mComponents_[OFFSET_TO_Z] = z;
+    mComponents_[OFFSET_TO_W] = 0.0f;
 }
 
-Vertex::Vertex(float x, float y, float z, float w) {
-	mComponents_[0] = x;
-	mComponents_[1] = y;
-	mComponents_[2] = z;
-	mComponents_[3] = w;
+Vertex::Vertex(float x, float y, float z, float w) noexcept {
+    mComponents_[OFFSET_TO_X] = x;
+    mComponents_[OFFSET_TO_Y] = y;
+    mComponents_[OFFSET_TO_Z] = z;
+    mComponents_[OFFSET_TO_W] = w;
 }
 
-Vertex::Vertex(const Vertex& that)  {
-	mComponents_ = that.mComponents_;
+Vertex::Vertex(const Vertex& that) noexcept {
+	mComponents_ = that.mComponents_; 
 }
 
 Vertex::Vertex(Vertex&& that) noexcept {
 	mComponents_ = std::move(that.mComponents_);
 }
 
-Vertex::~Vertex() {
+Vertex::~Vertex() noexcept {
 
 }
 
-Vertex& Vertex::operator=(const Vertex& that) {
+Vertex& Vertex::operator=(const Vertex& that) noexcept {
 	if (this != &that) {
 		mComponents_ = that.mComponents_;
 	}
@@ -64,11 +64,11 @@ Vertex& Vertex::operator=(Vertex&& that) noexcept {
 	return *this;
 }
 
-bool Vertex::operator==(const Vertex& other) const {
-	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
-		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
-			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
-				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
+bool Vertex::operator==(const Vertex& other) const noexcept {
+	if (abs(mComponents_[OFFSET_TO_X] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+		if (abs(mComponents_[OFFSET_TO_Y] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+			if (abs(mComponents_[OFFSET_TO_Z] - other.mComponents_[OFFSET_TO_Z] < fpTolerance)) {
+				if (abs(mComponents_[OFFSET_TO_W] - other.mComponents_[OFFSET_TO_W]) < fpTolerance) {
 					return true;
 				}
 			}
@@ -77,11 +77,11 @@ bool Vertex::operator==(const Vertex& other) const {
 	return false;
 }
 
-bool Vertex::operator!=(const Vertex& other) const {
-	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
-		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
-			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
-				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
+bool Vertex::operator!=(const Vertex& other) const noexcept {
+    if (abs(mComponents_[OFFSET_TO_X] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+        if (abs(mComponents_[OFFSET_TO_Y] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+            if (abs(mComponents_[OFFSET_TO_Z] - other.mComponents_[OFFSET_TO_Z] < fpTolerance)) {
+                if (abs(mComponents_[OFFSET_TO_W] - other.mComponents_[OFFSET_TO_W]) < fpTolerance) {
 					return false;
 				}
 			}
@@ -96,35 +96,35 @@ bool Vertex::operator!=(const Vertex& other) const {
 
 //      (Position, Texture, Normal) Vertex
 
-PTNVertex::PTNVertex() {
-	mComponents_[0] = 0.0f; //x
-	mComponents_[1] = 0.0f; //y
-	mComponents_[2] = 0.0f; //z
-	mComponents_[3] = 0.0f; //s
-	mComponents_[4] = 0.0f; //t
-	mComponents_[5] = 0.0f; //xn
-	mComponents_[6] = 0.0f; //yn
-	mComponents_[7] = 0.0f; //zn
+PTNVertex::PTNVertex() noexcept {
+    mComponents_[OFFSET_TO_X] = 0.0f;
+    mComponents_[OFFSET_TO_Y] = 0.0f;
+    mComponents_[OFFSET_TO_Z] = 0.0f;
+    mComponents_[OFFSET_TO_S] = 0.0f;
+    mComponents_[OFFSET_TO_T] = 0.0f;
+    mComponents_[OFFSET_TO_NRML_X] = 0.0f;
+    mComponents_[OFFSET_TO_NRML_Y] = 0.0f;
+    mComponents_[OFFSET_TO_NRML_Z] = 0.0f;
 }
 
 
-PTNVertex::~PTNVertex() {
+PTNVertex::~PTNVertex() noexcept {
 
 }
 
-PTNVertex::PTNVertex(float x, float y, float z, float s, float t, float xn, float yn, float zn) {
-	mComponents_[0] = x;
-	mComponents_[1] = y;
-	mComponents_[2] = z;
-	mComponents_[3] = s;
-	mComponents_[4] = t;
-	mComponents_[5] = xn;
-	mComponents_[6] = yn;
-	mComponents_[7] = zn;
+PTNVertex::PTNVertex(float x, float y, float z, float s, float t, float xn, float yn, float zn) noexcept {
+    mComponents_[OFFSET_TO_X] = x;
+    mComponents_[OFFSET_TO_Y] = y;
+    mComponents_[OFFSET_TO_Z] = z;
+    mComponents_[OFFSET_TO_S] = s;
+    mComponents_[OFFSET_TO_T] = t;
+    mComponents_[OFFSET_TO_NRML_X] = xn;
+    mComponents_[OFFSET_TO_NRML_Y] = yn;
+    mComponents_[OFFSET_TO_NRML_Z] = zn;
 }
 
 
-PTNVertex::PTNVertex(const PTNVertex& that) {
+PTNVertex::PTNVertex(const PTNVertex& that) noexcept {
 	mComponents_ = that.mComponents_;
 }
 
@@ -132,7 +132,7 @@ PTNVertex::PTNVertex(PTNVertex&& that) noexcept {
 	mComponents_ = std::move(that.mComponents_);
 }
 
-PTNVertex& PTNVertex::operator=(const PTNVertex& that) {
+PTNVertex& PTNVertex::operator=(const PTNVertex& that) noexcept {
 	if (this != &that) {
 		mComponents_ = that.mComponents_;
 	}
@@ -146,15 +146,15 @@ PTNVertex& PTNVertex::operator=(PTNVertex&& that) noexcept {
 	return *this;
 }
 
-bool PTNVertex::operator==(const PTNVertex& other) const {
-	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
-		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
-			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
-				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
-					if (abs(mComponents_[4] - other.mComponents_[4]) < fpTolerance) {
-						if (abs(mComponents_[5] - other.mComponents_[5]) < fpTolerance) {
-							if (abs(mComponents_[6] - other.mComponents_[6] < fpTolerance)) {
-								if (abs(mComponents_[7] - other.mComponents_[7]) < fpTolerance) {
+bool PTNVertex::operator==(const PTNVertex& other) const noexcept {
+	if (abs(mComponents_[OFFSET_TO_X] - other.mComponents_[OFFSET_TO_X]) < fpTolerance) {
+		if (abs(mComponents_[OFFSET_TO_Y] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+			if (abs(mComponents_[OFFSET_TO_Z] - other.mComponents_[OFFSET_TO_Z] < fpTolerance)) {
+				if (abs(mComponents_[OFFSET_TO_S] - other.mComponents_[OFFSET_TO_S]) < fpTolerance) {
+					if (abs(mComponents_[OFFSET_TO_T] - other.mComponents_[OFFSET_TO_T]) < fpTolerance) {
+						if (abs(mComponents_[OFFSET_TO_NRML_X] - other.mComponents_[OFFSET_TO_NRML_X]) < fpTolerance) {
+							if (abs(mComponents_[OFFSET_TO_NRML_Y] - other.mComponents_[OFFSET_TO_NRML_Y] < fpTolerance)) {
+								if (abs(mComponents_[OFFSET_TO_NRML_Z] - other.mComponents_[OFFSET_TO_NRML_Z]) < fpTolerance) {
 									return true;
 								}
 							}
@@ -167,15 +167,15 @@ bool PTNVertex::operator==(const PTNVertex& other) const {
 	return false;
 }
 
-bool PTNVertex::operator!=(const PTNVertex& other) const {
-	if (abs(mComponents_[0] - other.mComponents_[0]) < fpTolerance) {
-		if (abs(mComponents_[1] - other.mComponents_[1]) < fpTolerance) {
-			if (abs(mComponents_[2] - other.mComponents_[2] < fpTolerance)) {
-				if (abs(mComponents_[3] - other.mComponents_[3]) < fpTolerance) {
-					if (abs(mComponents_[4] - other.mComponents_[4]) < fpTolerance) {
-						if (abs(mComponents_[5] - other.mComponents_[5]) < fpTolerance) {
-							if (abs(mComponents_[6] - other.mComponents_[6] < fpTolerance)) {
-								if (abs(mComponents_[7] - other.mComponents_[7]) < fpTolerance) {
+bool PTNVertex::operator!=(const PTNVertex& other) const noexcept {
+    if (abs(mComponents_[OFFSET_TO_X] - other.mComponents_[OFFSET_TO_X]) < fpTolerance) {
+        if (abs(mComponents_[OFFSET_TO_Y] - other.mComponents_[OFFSET_TO_Y]) < fpTolerance) {
+            if (abs(mComponents_[OFFSET_TO_Z] - other.mComponents_[OFFSET_TO_Z] < fpTolerance)) {
+                if (abs(mComponents_[OFFSET_TO_S] - other.mComponents_[OFFSET_TO_S]) < fpTolerance) {
+                    if (abs(mComponents_[OFFSET_TO_T] - other.mComponents_[OFFSET_TO_T]) < fpTolerance) {
+                        if (abs(mComponents_[OFFSET_TO_NRML_X] - other.mComponents_[OFFSET_TO_NRML_X]) < fpTolerance) {
+                            if (abs(mComponents_[OFFSET_TO_NRML_Y] - other.mComponents_[OFFSET_TO_NRML_Y] < fpTolerance)) {
+                                if (abs(mComponents_[OFFSET_TO_NRML_Z] - other.mComponents_[OFFSET_TO_NRML_Z]) < fpTolerance) {
 									return false;
 								}
 							}
@@ -187,6 +187,7 @@ bool PTNVertex::operator!=(const PTNVertex& other) const {
 	}
 	return true;
 }
+
 
 //-------------------------------------------------------
 //                     FULL VERTEX

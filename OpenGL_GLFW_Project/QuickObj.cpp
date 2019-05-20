@@ -69,7 +69,7 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 		parseFile();
 	}
 	else {
-		fprintf(ERRLOG, "\nERROR aquiring file!\n");
+		fprintf(ERRLOG, "\nERROR acquiring the file: \"%s\"\n", filepath.c_str());
 		mError_ = true;
 		return;
 	}
@@ -166,10 +166,12 @@ void QuickObj::parseFile() {
 				fprintf(ERRLOG, "\nERROR parsing line %s\n", line.c_str());
 			}
 			break;
-		case 'f':
+        case 'f': [[fallthrough]]; //If not c++17 then just comment out the '[[fallthrough]]' statement
+        case 'F':
             mFaces_.emplace_back(AssetLoadingInternal::Face{ lineIter, true });
 			break;
-		case 'l':
+        case 'l': [[fallthrough]]; //If not c++17 then just comment out the '[[fallthrough]]' statement
+        case 'L':
 			mLines_.emplace_back(AssetLoadingInternal::Line(lineIter, true));
 			break;
 		case 'm':
@@ -216,7 +218,7 @@ void QuickObj::parseFile() {
 void QuickObj::constructVerticesFromParsedData() {
 	int triangleFaces = 0;
 	int quadFaces = 0;
-	int lines = mLines_.size();
+	int linePrimitives = mLines_.size();
 	for (auto faceIter = mFaces_.begin(); faceIter != mFaces_.end(); faceIter++) {
 		if (faceIter->isQuad()) {
 			quadFaces++;
@@ -227,13 +229,14 @@ void QuickObj::constructVerticesFromParsedData() {
 	}
 
 	fprintf(MSGLOG, "\n*** Model Statistics ***\nPrimitive Counts:  Lines: %d\tTriangles: %d\tQuads: %d\n",
-		lines, triangleFaces, quadFaces);
+		linePrimitives, triangleFaces, quadFaces);
 	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(),
 		mTexCoords_.size(), mNormals_.size());
 
-	if (lines > 0) {
-        //TODO 
-		fprintf(MSGLOG, "\n  [TODO: Implement the converting of parsed 'line' primitive data to GPU-ready data...]\n");
+	if (linePrimitives > 0) {
+        //for (auto lineIter)
+        
+
 	}
 
 	//Construct each face from the parsed data into the mVertices_ vector, with positions/textureCoords/Normals interlaced

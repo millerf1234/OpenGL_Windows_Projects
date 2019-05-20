@@ -47,19 +47,31 @@
 
 #include "FloatingPointTolerance.h"
 
-static constexpr size_t VERTEX_SIZE = 4u; 
-static constexpr size_t PTN_VERTEX_SIZE = 3u + 2u + 3u;
-static constexpr size_t FULL_VERTEX_SIZE = 3u*VERTEX_SIZE;
-static constexpr size_t EXTENDED_VERTEX_SIZE = 6u*VERTEX_SIZE; 
+static constexpr const size_t OFFSET_TO_X = 0ULL;
+static constexpr const size_t OFFSET_TO_Y = 1ULL;
+static constexpr const size_t OFFSET_TO_Z = 2ULL;
+static constexpr const size_t OFFSET_TO_W = 3ULL; //Note: Offset to W and S are intended to be same value
+static constexpr const size_t OFFSET_TO_S = 3ULL;
+static constexpr const size_t OFFSET_TO_T = 4ULL;
+static constexpr const size_t OFFSET_TO_NRML_X = 5ULL;
+static constexpr const size_t OFFSET_TO_NRML_Y = 6ULL;
+static constexpr const size_t OFFSET_TO_NRML_Z = 7ULL;
 
+static constexpr const size_t VERTEX_SIZE = 4u; 
+static constexpr const size_t PTN_VERTEX_SIZE = 3u + 2u + 3u;
+static constexpr const size_t FULL_VERTEX_SIZE = 3u*VERTEX_SIZE;
+static constexpr const size_t EXTENDED_VERTEX_SIZE = 6u*VERTEX_SIZE; 
 
+//fpTolerance is set 
 static float fpTolerance = FP_TOLERANCE; //Floating point tolerance (used in comparing equality)
 
-//To simplify logic and reduce unnecessary copying, the following three classes are 
-//forward declared so that they can be made friends of the Vertex class.
+//Forward declare all four Vertex classes to allow them to reference each-other
+class Vertex;
 class PTNVertex;
 class FullVertex;
 class ExtendedVertex;
+
+
 
 //Basic 4-component vertex. Construct with 1-4 floats, any components not specified will 
 //be initialized to 0.0f
@@ -67,39 +79,48 @@ class Vertex {
 public:
 	//No default constructors
 	Vertex() = delete;
-	~Vertex();
+	~Vertex() noexcept;
 	//But a ton of other constructors 
-	Vertex(float);
-	Vertex(float, float);
-	Vertex(float, float, float);
-	Vertex(float, float, float, float);
+	Vertex(float) noexcept;
+	Vertex(float, float) noexcept;
+	Vertex(float, float, float) noexcept;
+	Vertex(float, float, float, float) noexcept;
 	
-	Vertex(const Vertex&);
+	Vertex(const Vertex&) noexcept;
 	/* Vertex(const Vert&, const Vert&);
 	Vertex(const Vert&, const Vert&, const Vert&);*/
 
 	Vertex(Vertex&&) noexcept;
 
-	Vertex& operator=(const Vertex&);
+	Vertex& operator=(const Vertex&) noexcept;
 	Vertex& operator=(Vertex&&) noexcept;
 
-	bool operator==(const Vertex& other) const;
-	bool operator!=(const Vertex& other) const;
+	bool operator==(const Vertex& other) const noexcept;
+	bool operator!=(const Vertex& other) const noexcept;
 
-	float& operator[] (int indx) { return mComponents_[indx]; }
+    
+	float& operator[] (size_t indx) { return mComponents_[indx]; }
+    
+    float xVal() const noexcept { return mComponents_[OFFSET_TO_X]; }
+    float& xRef() noexcept { return mComponents_[OFFSET_TO_X]; }
+    float yVal() const noexcept { return mComponents_[OFFSET_TO_Y]; }
+    float& yRef() noexcept { return mComponents_[OFFSET_TO_Y]; }
+    float zVal() const noexcept { return mComponents_[OFFSET_TO_Z]; }
+    float& zRef() noexcept { return mComponents_[OFFSET_TO_Z]; }
 
-	constexpr size_t getSize() { return VERTEX_SIZE; }
+	constexpr size_t getSize() const noexcept { return VERTEX_SIZE; }
 	
 	//Returns a reference to this object's stored data. Reference will be 
 	//invalidated if object is destoryed.
-	std::array<float, VERTEX_SIZE>& data() { return mComponents_; }
+	std::array<float, VERTEX_SIZE>& data() noexcept { return mComponents_; }
 
-	static bool setFloatingPointTolerance(float tolerance) { fpTolerance = tolerance; }
-	static float getFloatingPointTolerance() { return fpTolerance; }
+	static bool setFloatingPointTolerance(float tolerance) noexcept { fpTolerance = tolerance; }
+	static float getFloatingPointTolerance() noexcept { return fpTolerance; }
 
 private:
 	std::array<float, VERTEX_SIZE> mComponents_; 
-	friend class PTNVertex;
+    
+    friend class PTNVertex;
 	friend class FullVertex;
 	friend class ExtendedVertex;
 
@@ -113,45 +134,65 @@ private:
 class PTNVertex {
 public:
 	//Default constructor. Sets all components to 0.0f
-	PTNVertex();
+	PTNVertex() noexcept;
 
-	~PTNVertex();
+	~PTNVertex() noexcept;
 	//But a ton of other constructors 
 
 	//Intended to construct a vertex from 3 Position datapoints (x, y, z), two texture coordinate datapoints 
 	//(t, n), and 3 normal-vector datapoints (xn, yn, zn)
-	PTNVertex(float x, float y, float z, float s, float t,  float xn, float yn, float zn);
+	PTNVertex(float x, float y, float z, float s, float t,  float xn, float yn, float zn) noexcept;
 	
 
-	PTNVertex(const PTNVertex&);
+	PTNVertex(const PTNVertex&) noexcept;
 	/* Vertex(const Vert&, const Vert&);
 	Vertex(const Vert&, const Vert&, const Vert&);*/
 
 	PTNVertex(PTNVertex&&) noexcept;
 
-	PTNVertex& operator=(const PTNVertex&);
+	PTNVertex& operator=(const PTNVertex&) noexcept;
 	PTNVertex& operator=(PTNVertex&&) noexcept;
 
-	bool operator==(const PTNVertex& other) const;
-	bool operator!=(const PTNVertex& other) const;
+	bool operator==(const PTNVertex& other) const noexcept;
+	bool operator!=(const PTNVertex& other) const noexcept;
 
-	float& operator[] (int indx) { return mComponents_[indx]; }
 
-	constexpr size_t getSize() { return VERTEX_SIZE; }
+	float& operator[] (size_t indx) { return mComponents_[indx]; }
+
+
+    float xVal() const noexcept { return mComponents_[OFFSET_TO_X]; }
+    float& xRef() noexcept { return mComponents_[OFFSET_TO_X]; }
+    float yVal() const noexcept { return mComponents_[OFFSET_TO_Y]; }
+    float& yRef() noexcept { return mComponents_[OFFSET_TO_Y]; }
+    float zVal() const noexcept { return mComponents_[OFFSET_TO_Z]; }
+    float& zRef() noexcept { return mComponents_[OFFSET_TO_Z]; }
+    float sVal() const noexcept { return mComponents_[OFFSET_TO_S]; }
+    float& sRef() noexcept { return mComponents_[OFFSET_TO_S]; }
+    float tVal() const noexcept { return mComponents_[OFFSET_TO_T]; }
+    float& tRef() noexcept { return mComponents_[OFFSET_TO_T]; }
+    float nxVal() const noexcept { return mComponents_[OFFSET_TO_NRML_X]; }
+    float& nxRef() noexcept { return mComponents_[OFFSET_TO_NRML_X]; }
+    float nyVal() const noexcept { return mComponents_[OFFSET_TO_NRML_Y]; }
+    float& nyRef() noexcept { return mComponents_[OFFSET_TO_NRML_Y]; }
+    float nzVal() const noexcept { return mComponents_[OFFSET_TO_NRML_Z]; }
+    float& nzRef() noexcept { return mComponents_[OFFSET_TO_NRML_Z]; }
+
+
+    constexpr size_t getSize() const noexcept { return VERTEX_SIZE; }
 
 	//Returns a reference to this object's stored data. Reference will be 
 	//invalidated if object is destoryed.
-	std::array<float, PTN_VERTEX_SIZE>& data() { return mComponents_; }
+	std::array<float, PTN_VERTEX_SIZE>& data() noexcept { return mComponents_; }
 	
 	//Returns a copy of this PTNVertex's 3 positions as an array
-	std::array<float, 3> position() const { return { mComponents_[0], mComponents_[1], mComponents_[2] }; }
+	std::array<float, 3> position() const noexcept { return { mComponents_[OFFSET_TO_X], mComponents_[OFFSET_TO_Y], mComponents_[OFFSET_TO_Z] }; }
 	//Returns a copy of this PTNVertex's 2 texture coordiantes as an array
-	std::array<float, 2> texCoord() const { return { mComponents_[3], mComponents_[4] }; }
+	std::array<float, 2> texCoord() const noexcept { return { mComponents_[OFFSET_TO_S], mComponents_[OFFSET_TO_T] }; }
 	//Returns a copy of this PTNVertex's 3 normal components as an array
-	std::array<float, 3> normal() const { return { mComponents_[5], mComponents_[6], mComponents_[7] }; }
+	std::array<float, 3> normal() const noexcept { return { mComponents_[OFFSET_TO_NRML_X], mComponents_[OFFSET_TO_NRML_Y], mComponents_[OFFSET_TO_NRML_Z] }; }
 
-	static bool setFloatingPointTolerance(float tolerance) { fpTolerance = tolerance; }
-	static float getFloatingPointTolerance() { return fpTolerance; }
+	static bool setFloatingPointTolerance(float tolerance) noexcept { fpTolerance = tolerance; }
+	static float getFloatingPointTolerance() noexcept { return fpTolerance; }
 
 private:
 	std::array<float, PTN_VERTEX_SIZE> mComponents_;
@@ -187,7 +228,7 @@ public:
 
 	bool operator==(const FullVertex& other) const;
 
-	float& operator[] (int indx) { return mComponents_[indx]; }
+	float& operator[] (size_t indx) { return mComponents_[indx]; }
 
 	constexpr size_t getSize() { return FULL_VERTEX_SIZE; }
 
@@ -226,7 +267,7 @@ public:
 
 	bool operator==(const ExtendedVertex& other) const;
 
-	float& operator[] (int indx) { return mExtendedComponents_[indx]; }
+	float& operator[] (size_t indx) { return mExtendedComponents_[indx]; }
 	
 	constexpr size_t getSize() const { return EXTENDED_VERTEX_SIZE; }
 

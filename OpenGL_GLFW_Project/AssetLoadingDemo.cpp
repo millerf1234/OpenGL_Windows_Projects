@@ -83,12 +83,20 @@
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
+//  |              'y'                |                             Decrease Rate of Time                              |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              'u'                |                             Increase Rate of Time                              |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
 //  |              'r'                |                                  Reset Demo                                    |
 //  |                                 | [see member function reset();  should set time to 0 and reset rotations/zoom]  |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |              'i'                |                           Toggle Instanced Rendering**                         |      **Note: Vertex shader must use gl_InstanceID in some way
-//  |           '+' and '-'           |  (Requires Instanced Rendering Activated) Increment/Decrement instance count   |              or else all instances will be drawn in the same place.
+//  |          '+' and '-'            |  (Requires Instanced Rendering Activated) Increment/Decrement instance count   |              or else all instances will be drawn in the same place.
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |     'w', 'a', 's', 'd'          |                      Translates all models in the scene                        |
@@ -104,6 +112,10 @@
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
 //  |              'c'                |                              Toggle Depth Clamp                                |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |           '9' & '0'             |                            Increase/Decrease FOV                               |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //
@@ -135,16 +147,27 @@
 //Date Completed:      tbd...
 
 
+//#include <cfloat>  //Possibly unused, try commenting out this include statement and building 
+//#include <future>
 #include "AssetLoadingDemo.h"
+
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
-constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-0.0f, -0.0f, -0.0f);
+constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-13.0f, -13.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
-constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(3.0f, 3.0f);
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(1.39599f, 2.439995f);
 
-
+//Camera Parameters
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, -11.0f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
+constexpr const float CAMERA_DEFAULT_FOV = 50.0f;
+constexpr const float CAMERA_MAXIMUM_FOV = 52.0f;
+constexpr const float CAMERA_MINIMUM_FOV = 48.0f;
+constexpr const float CAMERA_Z_CLIP_PLANE_NEAR = 0.005f;
+constexpr const float CAMERA_Z_CLIP_PLANE_FAR = 100.0f;
 
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
@@ -162,10 +185,14 @@ void AssetLoadingDemo::initialize() {
     frameDepthClampLastToggled = 0ull;
 
 	counter = 0.0f;
-	vao = vbo = 0u;
+    timeTickRateModifier = 0.0f;
+    vao = 0u;
+    primarySceneBufferVBO = 0u;
+    alternateSceneBufferVBO = 0u;
+
 
 	//Set the starting input primitive type
-	currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
+	currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
 	//Set the variables regarding instanced drawing
 	drawMultipleInstances = false;
@@ -178,20 +205,17 @@ void AssetLoadingDemo::initialize() {
     enableDepthClamping = false;
 
 	//Set values for screen projection 
-	fov = 56.0f;
+    fov = CAMERA_DEFAULT_FOV;
 	screenHeight = 2160.0f;
 	screenWidth = 3840.0f;
-	zNear = 0.05f;
-	zFar = 10000.0f;
-	//Compute the screen -projection matrix
-	//perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
-	//see: https://gamedev.stackexchange.com/questions/98226/how-can-i-set-up-an-intuitive-perspective-projection-view-matrix-combination-in
-	perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar);
+	zNear = CAMERA_Z_CLIP_PLANE_NEAR;
+	zFar = CAMERA_Z_CLIP_PLANE_FAR;
+    recomputeProjectionMatrix(); //Well really compute it for the first time...
 
 	//Set values for view matrix
-	cameraPos = glm::vec3(0.0f, 0.0f, 7.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
-	lookAtOrgin = glm::vec3(0.0f, 0.0f, -1.0f);
-	upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+    cameraPos = CAMERA_POSITION; //glm::vec3(0.0f, -11.0f, 0.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+    lookAtOrgin = CAMERA_LOOK_DIRECTION; //glm::vec3(0.0f, 0.0f, 1.0f);
+    upDirection = CAMERA_UP_DIRECTION; //glm::normalize(glm::vec3(0.0f, 1.0f,  0.0f));
 
 	xTranslation = 0.0f;
 	yTranslation = 0.0f;
@@ -209,6 +233,8 @@ void AssetLoadingDemo::initialize() {
 	zoom = 1.0f; //Higher number means farther away
 
     backgroundColor = glm::vec3(0.0f, 0.0f, 0.0f); //The values set here have no impact on the actual background color, see the background-color-update function 
+
+    glEnable(GL_PROGRAM_POINT_SIZE);
 
 }
 
@@ -241,9 +267,33 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 
 
 
-//AssetLoadingDemo::~AssetLoadingDemo() {
-//
-//}
+AssetLoadingDemo::~AssetLoadingDemo() noexcept {
+
+    //Release the VertexArrayObject from the context if was allocated
+    if (vao != 0u) {
+        glDeleteVertexArrays(1, &vao);
+        vao = 0u;
+    }
+
+    //Release either/both of the VertexBufferObjects from the context if either was
+    //allocated
+    if (primarySceneBufferVBO != 0u) {
+        if (alternateSceneBufferVBO != 0u) {
+            GLuint VBOs[2] = { primarySceneBufferVBO, alternateSceneBufferVBO };
+            glDeleteBuffers(2, &(VBOs[0]));
+            primarySceneBufferVBO = alternateSceneBufferVBO = 0u;
+        }
+        else {
+            glDeleteBuffers(1, &primarySceneBufferVBO);
+            primarySceneBufferVBO = 0u;
+        }
+    }
+    else if (alternateSceneBufferVBO != 0u) {
+        glDeleteBuffers(1, &alternateSceneBufferVBO);
+        alternateSceneBufferVBO = 0u;
+    }
+
+}
 
 
 void AssetLoadingDemo::run() {
@@ -351,13 +401,11 @@ void AssetLoadingDemo::loadShaders() {
 		return;
 	}
 
-
-
 	fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
 }
 
 
-GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer() const {
+GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>& sceneBuffer) const {
 	static constexpr const GLsizei vertexSize = 4u + 2u + 3u;  //Since each vertex is {x,y,z,w, s,t, nx,ny,nz}  (i.e. 9 components total)
 	return (sceneBuffer.size() / vertexSize);
 }
@@ -377,20 +425,24 @@ void AssetLoadingDemo::loadModels() {
 	float subdivisionCubeScale = 1.0f;
 	float abstractShapeScale = 1.0f;
 
-	//Load some models
+    ///////////////////////////////////////////////////////////////////////////////////////////// 
+	//                             Load one or more models                                     //  
+    ///////////////////////////////////////////////////////////////////////////////////////////// 
+
+    /////////////////////
+    //  Well-Behaved models
+    /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
-
-	//This one is abstract enough (with enough distinct triangle faces) to serve as a good example of how the shading calculations work
+	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
-    /*   test */
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 4.5f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
@@ -400,15 +452,46 @@ void AssetLoadingDemo::loadModels() {
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 	
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 2.0f));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 3.2f));
+    
+    for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+        float baseZoom = 1.0f;
+        float amplitude = 1.75f;
+        float zoom = baseZoom + (amplitude * cos(pow(f0, 2.0f / (amplitude))));
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", zoom));
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+       
+       /*
+        static float denominator = (1.0f - f0);
+        denominator += (-1.0f * f0);
+        if (abs(denominator < 0.8f))
+           denominator = (std::abs(f0 - denominator)) / (f0 + denominator);
+        if (denominator > 2.0f)
+           denominator = 0.5f;
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", (1.0f + f0) / denominator ));
+        */
+    }
+
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+
+    //Several different objects were given a parent-child relationship in blender and then saved into the same file
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
+
+    //////////////////////
+    //  Less-Well-Behaved models\
+    ////////////
+
+    //File is defined in terms of splines instead of triangles. This may not be able to display properly.
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
 
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
-	size_t loadedModlCount = sceneObjects.size();
+
+
+	const size_t loadedModlCount = sceneObjects.size();
 	if (loadedModlCount == 0u) {
-		fprintf(MSGLOG, "\nNo Models were loaded!\n");
+		fprintf(MSGLOG, "\nNo models were loaded!\n");
 	}
 	else if (loadedModlCount == 1u) {
 		fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
@@ -420,12 +503,19 @@ void AssetLoadingDemo::loadModels() {
 }
 
 void AssetLoadingDemo::prepareScene() {
-	fprintf(MSGLOG, "\nCreating the scene from loaded assets...\n");
+	fprintf(MSGLOG, "\nCreating the primary scene from loaded assets...\n");
 	buildSceneBufferFromLoadedSceneObjects();
-	fprintf(MSGLOG, "Scene creation complete!\n");
+	fprintf(MSGLOG, "Primary scene creation complete!\n\n");
 
-	fprintf(MSGLOG, "Uploading scene to GPU...\n");
-	uploadSceneBufferToGPU();
+
+    fprintf(MSGLOG, "Creating the alternativeSceneBuffer for drawing with the TRIANGLE_OUTLINE\n"
+        "pipeline input primitive type.\n");
+    alternativeSceneBuffer = primarySceneBuffer;
+
+    createSceneVBOs();
+
+	fprintf(MSGLOG, "Uploading primary scene buffer to GPU...\n");
+	uploadSceneBufferToGPU(primarySceneBufferVBO, primarySceneBuffer);
 	configureVertexArrayAttributes(); 
 }
 
@@ -451,13 +541,27 @@ void AssetLoadingDemo::renderLoop() {
 		if (checkIfShouldFreezeTime()) { //'checkIfShouldFreezeTime()' relies on 'toggleFreezeTime()' to 
 			toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
 		}
-		if (checkIfShouldToggleBlending()) {
-			toggleBlending();
-		}
-        if (checkIfShouldToggleDepthClamping()) {
-            toggleDepthClamping();
-        }
+        
+        /* 
+        zNear += 0.000025f;
+        if (zNear >= 0.02f)
+            zNear = 0.00008f;
+        recomputeProjectionMatrix(); */
 
+        if (checkIfShouldIncreasePassageOfTime())
+            increasePassageOfTime();
+
+        if (checkIfShouldDecreasePassageOfTime())
+            decreasePassageToTime();
+
+		if (checkIfShouldToggleBlending()) 
+			toggleBlending();
+		
+        if (checkIfShouldToggleDepthClamping()) 
+            toggleDepthClamping();
+        
+        if (checkIfShouldUpdateFieldOfView())
+            updateFieldOfView();
 
 		//More Input Checking
 		
@@ -474,7 +578,7 @@ void AssetLoadingDemo::renderLoop() {
 		performRenderDemoSharedInputLogic(); 
 
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
-			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame for updated shaders
+			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
 			if (checkForUpdatedShaders()) {
 				buildNewShader();
 			}
@@ -489,7 +593,7 @@ void AssetLoadingDemo::renderLoop() {
 		drawVerts();
 
 		if (!freezeTimeToggle) { //if time is not frozen
-			counter += 0.0125f; //Increment time 
+			counter += (0.0125f * (1.0f + timeTickRateModifier)); //Increment time 
 		}
 
 		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
@@ -515,14 +619,14 @@ void AssetLoadingDemo::renderLoop() {
 
 
 
-inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const {
+inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const  noexcept {
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		return true;
 	}
 	return false;
 }
 
-inline bool AssetLoadingDemo::checkIfShouldPause() const {
+inline bool AssetLoadingDemo::checkIfShouldPause() const noexcept {
 	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
 		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
@@ -531,13 +635,13 @@ inline bool AssetLoadingDemo::checkIfShouldPause() const {
 }
 
 
-inline bool AssetLoadingDemo::checkIfShouldReset() const {
+inline bool AssetLoadingDemo::checkIfShouldReset() const noexcept {
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
 		return true;
 	return false;
 }
 
-inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
+inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
 	if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS) {
 			return true;
@@ -546,7 +650,21 @@ inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const {
 	return false;
 }
 
-inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const {
+inline bool AssetLoadingDemo::checkIfShouldIncreasePassageOfTime() const noexcept {
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_U) == GLFW_PRESS) {
+        return true;
+    }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldDecreasePassageOfTime() const noexcept {
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_Y) == GLFW_PRESS) {
+        return true;
+    }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const  noexcept {
 	if ((frameNumber - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
 			return true;
@@ -555,7 +673,7 @@ inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const {
 	return false;	
 }
 
-inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const {
+inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept {
     //For a detailed discussion on depth clamping that is really useful, check out OpenGL SuperBible 7e pages 379-380.
     //Essentially, within the fragment shader stage of the OpenGL Pipeline, each fragment has a depth value that is
     //scaled between 0 to 1, with 0 being the near plane (right in your face) and 1 being the furthest representable depth.
@@ -572,14 +690,24 @@ inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const {
     return false;
 }
 
+inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_9) == GLFW_PRESS) 
+        return true;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_0) == GLFW_PRESS) 
+        return true;
+    return false;
+
+}
+
 void AssetLoadingDemo::pause() {
-	auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
+	const auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
 	auto end = std::chrono::high_resolution_clock::now();
 	fprintf(MSGLOG, "PAUSED!\n");
 	//Upon first pausing, enter into the following loop for a short period of time before moving on to
 	//the full pause loop. This will prevent unpausing from occuring directly after a pause is initiated. 
-	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000ll) {
-		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000ll));
+	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000LL) {
+		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000LL));
 		end = std::chrono::high_resolution_clock::now();
 	}
 
@@ -602,9 +730,11 @@ void AssetLoadingDemo::pause() {
 }
 
 
-void AssetLoadingDemo::reset() {
+void AssetLoadingDemo::reset() noexcept {
 	fprintf(MSGLOG, "\nReseting Demo...\n");
 	counter = 0.0f; //Reset time to 0
+    timeTickRateModifier = 0.0f;
+    fov = CAMERA_DEFAULT_FOV;
 	head = 0.0f; //Reset rotation
 	pitch = 0.0f;
 	roll = 0.0f;
@@ -625,9 +755,11 @@ void AssetLoadingDemo::reset() {
 		instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
 		instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 	}
+    
+    recomputeProjectionMatrix();
 }
 
-void AssetLoadingDemo::toggleTimeFreeze() {
+void AssetLoadingDemo::toggleTimeFreeze() noexcept {
 	//Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
 	frameTimeFreezeLastToggled = frameNumber;
 	freezeTimeToggle = !freezeTimeToggle;
@@ -639,7 +771,32 @@ void AssetLoadingDemo::toggleTimeFreeze() {
 	}
 }
 
-void AssetLoadingDemo::toggleBlending() {
+void AssetLoadingDemo::increasePassageOfTime() noexcept {
+    timeTickRateModifier += 0.005f;
+    static auto frameUpdateMessageWasLastPrinted = frameNumber;
+    if (frameNumber < frameUpdateMessageWasLastPrinted) //
+        frameUpdateMessageWasLastPrinted = frameNumber;
+    else if (frameNumber >= (15ull + frameUpdateMessageWasLastPrinted))
+        frameUpdateMessageWasLastPrinted = frameNumber;
+    else
+        return;
+    fprintf(MSGLOG, "Time now operating at %%%f speed\n", (1.0f+timeTickRateModifier) * 100.0f);
+}
+
+void AssetLoadingDemo::decreasePassageToTime() noexcept {
+    timeTickRateModifier -= 0.005f;
+    static auto frameUpdateMessageWasLastPrinted = frameNumber;
+    if (frameNumber < frameUpdateMessageWasLastPrinted) //
+        frameUpdateMessageWasLastPrinted = frameNumber;
+    else if (frameNumber >= (15ull + frameUpdateMessageWasLastPrinted))
+        frameUpdateMessageWasLastPrinted = frameNumber;
+    else
+        return;
+    fprintf(MSGLOG, "Time now operating at %%%f speed\n", (1.0f+timeTickRateModifier) * 100.0f);
+}
+
+
+void AssetLoadingDemo::toggleBlending() noexcept {
 	//Note that it is vitally important that 'frameBlendOperationLastToggled' is updated to match the current 'frameNumber'
 	frameBlendOperationLastToggled = frameNumber;
 
@@ -656,7 +813,7 @@ void AssetLoadingDemo::toggleBlending() {
 	}
 }
 
-void AssetLoadingDemo::toggleDepthClamping() {
+void AssetLoadingDemo::toggleDepthClamping() noexcept {
     //See: https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Depth_clamping
     if (!enableDepthClamping) {
         fprintf(MSGLOG, "Depth Clamping Enabled!\n");
@@ -671,34 +828,83 @@ void AssetLoadingDemo::toggleDepthClamping() {
     frameDepthClampLastToggled = frameNumber;
 }
 
-void AssetLoadingDemo::changePrimitiveType() {
+void AssetLoadingDemo::updateFieldOfView() noexcept {
+    
+    
+    static constexpr const float FOV_DELTA_PER_FRAME = 0.00831f;
+
+    static float lastPrintedFOVUpdate = fov; 
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_9) == GLFW_PRESS)
+        fov += FOV_DELTA_PER_FRAME;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_0) == GLFW_PRESS)
+        fov -= FOV_DELTA_PER_FRAME;
+
+    if (fov > CAMERA_MAXIMUM_FOV)
+        fov = CAMERA_MAXIMUM_FOV;
+    if (fov < CAMERA_MINIMUM_FOV)
+        fov = CAMERA_MINIMUM_FOV;
+
+    //This logs fov updates whenever there is a change 
+    if ( abs(lastPrintedFOVUpdate - fov) >= 0.04f ) {
+            lastPrintedFOVUpdate = fov;
+            fprintf(MSGLOG, "FOV is now %f\n", fov);
+        
+    }
+
+    //Need to update the projection matrix with the new fov value
+    recomputeProjectionMatrix();
+}
+
+void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
+
+    //Compute the screen -projection matrix
+    //perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
+    //see: https://gamedev.stackexchange.com/questions/98226/how-can-i-set-up-an-intuitive-perspective-projection-view-matrix-combination-in
+    perspective = glm::perspectiveFov(fov, screenWidth, screenHeight, zNear, zFar );
+
+}
+
+
+void AssetLoadingDemo::changePrimitiveType() noexcept {
+    static PIPELINE_PRIMITIVE_INPUT_TYPE previousPrimitiveInputType = currentPrimitiveInputType;
 
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS)
-        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
+        currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
     else if (glfwGetKey(mainRenderWindow, GLFW_KEY_2) == GLFW_PRESS)
-        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP;
+        currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP;
 
     else if (glfwGetKey(mainRenderWindow, GLFW_KEY_3) == GLFW_PRESS)
-        currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN;
+        currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN;
 
+    else if (glfwGetKey(mainRenderWindow, GLFW_KEY_4) == GLFW_PRESS)
+        currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS;
+    
+    //Pressing the '`' key will toggle between the 3 options for drawing line primatives
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
         if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
             frameLineTypeLastSwitched = frameNumber;
         }
         else {
             frameLineTypeLastSwitched = frameNumber;
-            if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
-                currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP;
-            }
-            else {
-                currentPrimativeInputType = PIPELINE_PRIMATIVE_INPUT_TYPE::LINE;
-            }
+            if (PIPELINE_PRIMITIVE_INPUT_TYPE::LINE == currentPrimitiveInputType)
+                currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE;
+            else if (PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE == currentPrimitiveInputType)
+                currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP;
+            else 
+                currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::LINE;
         }
+    }
+
+    //Here we determine if we have changed primitive types 
+    if (currentPrimitiveInputType != previousPrimitiveInputType) {
+        previousPrimitiveInputType = currentPrimitiveInputType;
+        printNameOfTheCurrentlyActivePrimitive();
     }
 }
 
-void AssetLoadingDemo::changeInstancedDrawingBehavior() {
+void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 	//Only allow toggling to happen every 11 frames
 	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > 11ull) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
@@ -715,24 +921,24 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() {
 			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
 				instanceCount++;
-				fprintf(MSGLOG, "Rendered Instances increased to: %u\n", instanceCount);
+				fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
 			}
 			else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
 				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
 					frameInstancedDrawingBehaviorLastToggled = frameNumber;
 					instanceCount--;
-					fprintf(MSGLOG, "Rendered Instances decreased to: %u\n", instanceCount);
+					fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
 				}
 			}
 		}
 	}
 }
 
-void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
-	GLfloat xChangeRate = 0.015f;
-	GLfloat yChangeRate = 0.015f;
-	GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
-	GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
+void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() noexcept {
+	const GLfloat xChangeRate = 0.015f;
+	const GLfloat yChangeRate = 0.015f;
+	const GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
+	const GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
 
 	//Check for updates to X period
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
@@ -784,7 +990,7 @@ void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() {
 	}
 }
 
-void AssetLoadingDemo::rotate() {
+void AssetLoadingDemo::rotate() noexcept {
 
 	if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
 		(glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
@@ -835,10 +1041,10 @@ void AssetLoadingDemo::rotate() {
 	}
 }
 
-void AssetLoadingDemo::translate() {
+void AssetLoadingDemo::translate() noexcept {
 	float turbo = 1.0f;
-	float xSpeed = 0.1f;
-	float ySpeed = 0.1f;
+	const float xSpeed = 0.1f;
+	const float ySpeed = 0.1f;
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 		turbo = 5.0f;
 	}
@@ -864,6 +1070,9 @@ void AssetLoadingDemo::translate() {
 	}
 
 }
+
+
+
 
 bool AssetLoadingDemo::checkForUpdatedShaders() {
 	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
@@ -947,11 +1156,11 @@ void AssetLoadingDemo::buildNewShader() {
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
-	if (true) {
+	if constexpr (true) {
 		glClearColor(0.0132f, 0.024f, 0.0135f, 1.0f);
 		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
 	}
-	else if (false) {
+	else if constexpr (false) {
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
 		backgroundColor.x = abs(sin(counter + backgroundColor.x));
 		backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
@@ -996,11 +1205,11 @@ void AssetLoadingDemo::updateUniforms() {
 
 	glm::mat4 MVP; //Model-View-Projection matrix 
 	MVP = perspective * (view * (rotation));
-	glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-			                              0.0f, 1.0f, 0.0f, 0.0f,
-			                              0.0f, 0.0f, 1.0f, 0.0f,
-			                              xTranslation, yTranslation, 0.0f, 1.0f);
-	MVP *= userTranslation;
+	const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+			                                    0.0f, 1.0f, 0.0f, 0.0f,
+			                                    0.0f, 0.0f, 1.0f, 0.0f,
+			                                    xTranslation, yTranslation, 0.0f, 1.0f);
+    MVP *= userTranslation;//* MVP;
 
 	
 	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
@@ -1017,66 +1226,117 @@ void AssetLoadingDemo::updateUniforms() {
 
 
 void AssetLoadingDemo::drawVerts() {
+    
+    static const GLsizei PRIMARY_BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(primarySceneBuffer);
+    static const GLsizei ALT_BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(alternativeSceneBuffer);
+
 
 	if (sceneShader)
 		sceneShader->use();
 
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    //The same VAO is used for both VBOs
+    glBindVertexArray(vao);
 
 
-	if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
-		if (drawMultipleInstances) {
-			glDrawArraysInstanced(GL_TRIANGLES, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
-		}
-		else {
-			glDrawArrays(GL_TRIANGLES, 0, computeNumberOfVerticesInSceneBuffer());
-		}
+    //Drawing in the format TRIANGLE_OUTLINE requires a seperate VAO/VBO from the rest of the  
+    //primitive types, so we check for it early to handle it as a seperate case.
+    if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
+        glBindBuffer(GL_ARRAY_BUFFER, alternateSceneBufferVBO);
+
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_LINES, 0, ALT_BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_LINES, 0, ALT_BUFFER_SIZE);
+        return;
+    }
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, primarySceneBufferVBO);
+
+	if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
+		if (drawMultipleInstances) 
+			glDrawArraysInstanced(GL_TRIANGLES, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+		else 
+			glDrawArrays(GL_TRIANGLES, 0, PRIMARY_BUFFER_SIZE);
 	}
 
-	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_STRIP) {
-		if (drawMultipleInstances) {
-			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
-		}
-		else {
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
-		}
+	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP) {
+		if (drawMultipleInstances) 
+			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+		else 
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, PRIMARY_BUFFER_SIZE);
 	}
-	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::TRIANGLE_FAN) {
-		if (drawMultipleInstances) {
-			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
-		}
-		else {
-			glDrawArrays(GL_TRIANGLE_FAN, 0, computeNumberOfVerticesInSceneBuffer());
-		}
+
+	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN) {
+		if (drawMultipleInstances) 
+			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+		else 
+			glDrawArrays(GL_TRIANGLE_FAN, 0, PRIMARY_BUFFER_SIZE);
 	}
-	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE) {
-		if (drawMultipleInstances) {
-			glDrawArraysInstanced(GL_LINES, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
-		}
-		else {
-			glDrawArrays(GL_LINES, 0, computeNumberOfVerticesInSceneBuffer());
-		}
+
+	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) {
+		if (drawMultipleInstances) 
+			glDrawArraysInstanced(GL_LINES, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+		else 
+			glDrawArrays(GL_LINES, 0, PRIMARY_BUFFER_SIZE);
 	}
-	else if (currentPrimativeInputType == PIPELINE_PRIMATIVE_INPUT_TYPE::LINE_STRIP) {
-		if (drawMultipleInstances) {
-			glDrawArraysInstanced(GL_LINE_STRIP, 0, computeNumberOfVerticesInSceneBuffer(), instanceCount);
-		}
-		else {
-			glDrawArrays(GL_LINE_STRIP, 0, computeNumberOfVerticesInSceneBuffer());
-		}
+
+	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) {
+		if (drawMultipleInstances) 
+			glDrawArraysInstanced(GL_LINE_STRIP, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+		else 
+			glDrawArrays(GL_LINE_STRIP, 0, PRIMARY_BUFFER_SIZE);
 	}
+
+    else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_POINTS, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_POINTS, 0, PRIMARY_BUFFER_SIZE);
+    }
 }
 
 
-void AssetLoadingDemo::prepareGLContextForNextFrame() {
+void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
+void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const noexcept {
+    fprintf(MSGLOG, "Active Primitive Type Set To:  ");
+    std::string primitiveType;
+    switch (currentPrimitiveInputType) {
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS):
+        primitiveType = "POINT\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::LINE):
+        primitiveType = "LINE\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE):
+        primitiveType = "TRIANGLE OUTLINE\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP):
+        primitiveType = "LINE STRIP\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES):
+        primitiveType = "TRIANGLES\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP):
+        primitiveType = "TRIANGLE STRIP\n";
+        break;
+    case (PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN):
+        primitiveType = "TRIANGLE FAN\n";
+        break;
+    default:
+        primitiveType = "[UNIDENTIFIED]\n";
+        break;
+    }
 
+    fprintf(MSGLOG, "%s", primitiveType.c_str());
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////    The remaining functions are utility functions that are called by the setup functions   ////
@@ -1089,16 +1349,16 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
 
+#ifndef OLDE
 	//Compute the scene size
 	size_t sceneSize = 0u;
 	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {
-		if (((*objIter)->hasNormals())) {
-			if ((*objIter)->hasTexCoords()) {
+		
+        if (((*objIter)->hasNormals())) {
+			if ((*objIter)->hasTexCoords()) 
 				sceneSize += (*objIter)->mVertices_.size();
-			}
-			else {
+			else 
 				sceneSize += (((*objIter)->mVertices_.size() / (4u+3u)) * (4u + 2u + 3u)); //Divide by 'position-normal' vertex size (7u) and then multiply by 'position-texCoord-normal' vertex size (9u)
-			}
 		}
 		else if (((*objIter)->hasTexCoords())) {
 			sceneSize += (((*objIter)->mVertices_.size() / (4u+2u)) * (4u + 2u + 3u));  //Divide by 'position-texCoord' vertex size and then multiply by 'position-texCoord-normal' vertex size
@@ -1107,17 +1367,27 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 			sceneSize += (((*objIter)->mVertices_.size() / 4u) * (4u + 2u + 3u)); //Divide by 'position' vertex size and then multiply by 'position-texCoord-normal' vertex size
 		}
 	}
+#else 
+    //Compute the scene size 
+    size_t sceneSize;
+    constexpr const size_t NUM_EXPECTED_COMPONENTS_PER_VERTEX_BY_SCENE = NUM_VERTEX_COMPONENTS;
+    for (auto objIter = sceneObjects.cbegin(); objIter != sceneObjects.cend(); objIter++) {
+        
+
+
+
+    }
+
+
+#endif 
 
 	//Reserve that much space
 	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
-	sceneBuffer.reserve(sceneSize); 
+	primarySceneBuffer.reserve(sceneSize); 
 
 	//Iterate through each object in the sceneObjects vector
-	for (auto sceneObjIter = sceneObjects.begin(); sceneObjIter != sceneObjects.end(); sceneObjIter++) {
+	for (auto sceneObjIter = sceneObjects.cbegin(); sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
 		objectCounter++;
-		fprintf(MSGLOG, "\tAdding Object %d to scene...\n", objectCounter);
-		fprintf(MSGLOG, "\t\tPosition of Object %d:   <%3.3f, %3.3f, %3.3f>\n", objectCounter,
-			objectPositionOffset.x, objectPositionOffset.y, objectPositionOffset.z);
 
 		//Objects missing Normal and/or Texture Coordinates will need to have data generated for them
 		//so that all vertices in the scene share the same format
@@ -1142,6 +1412,13 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		//Increment offset to prepare for the next object
 		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x;
 		objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y;
+        objectPositionOffset.z += MathFunc::getRandomInRangef(0.05f, 0.85f);
+
+        //objectPositionOffset = glm::normalize(objectPositionOffset);
+
+        fprintf(MSGLOG, "\tAdding Object %d to scene...\n", objectCounter);
+        fprintf(MSGLOG, "\t\tPosition of Object %d:   <%3.3f, %3.3f, %3.3f>\n", objectCounter,
+            objectPositionOffset.x, objectPositionOffset.y, objectPositionOffset.z);
 	}
 }
 
@@ -1149,36 +1426,36 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 
 //If the object already has both normals and texCoords, then all that is needed to be modified is 
 //the object's position
-void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 	const glm::vec3& objPos) {
 
 	int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
 
-	auto vertsEnd = (*object)->mVertices_.end(); //Create a variable for loop exit condition
-	for (auto vertIter = (*object)->mVertices_.begin(); vertIter != vertsEnd; vertIter++) {
+	auto vertsEnd = (*object)->mVertices_.cend(); //Create a variable for loop exit condition
+	for (auto vertIter = (*object)->mVertices_.cbegin(); vertIter != vertsEnd; vertIter++) {
 		vertComponentCounter = ((vertComponentCounter + 1) % 9);
 		if (vertComponentCounter == 0) {
 			//Add x offset then add to vector
-			sceneBuffer.push_back(objPos.x + (*vertIter));
+			primarySceneBuffer.push_back(objPos.x + (*vertIter));
 		}
 		else if (vertComponentCounter == 1) {
 			//Add y offset then add to vector
-			sceneBuffer.push_back(objPos.y + (*vertIter));
+			primarySceneBuffer.push_back(objPos.y + (*vertIter));
 		}
 		else if (vertComponentCounter == 2) {
 			//Add z offset then add to vector
-			sceneBuffer.push_back(objPos.z + (*vertIter));
+			primarySceneBuffer.push_back(objPos.z + (*vertIter));
 		}
 		else {
 			//add the vertex data straight to vector
-			sceneBuffer.push_back(*vertIter);
+			primarySceneBuffer.push_back(*vertIter);
 		}
 	}
 }
 
 //If the object already has normal data but is missing texture coords, generate some made-up coordinates while 
-//adding the object to the sceneBuffer
-void AssetLoadingDemo::addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+//adding the object to the primarySceneBuffer
+void AssetLoadingDemo::addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 	const glm::vec3& objPos) {
 	//Setup the function to generate the texture coordinates	
 	std::function<glm::vec2(void)> genTexCoord;
@@ -1191,33 +1468,33 @@ void AssetLoadingDemo::addObjectWithMissingTexCoords(std::vector<std::unique_ptr
 
 
 	int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
-	glm::vec2 uvCoord;
+    glm::vec2 uvCoord(0.0f, 0.0f);
 
 	auto vertsEnd = (*object)->mVertices_.end(); //Create a variable for loop exit condition
 	for (auto vertIter = (*object)->mVertices_.begin(); vertIter != vertsEnd; vertIter++) {
 		vertComponentCounter = ((vertComponentCounter + 1) % 7);
 		if (vertComponentCounter == 0) {
 			//Add x offset then add to vector
-			sceneBuffer.push_back(objPos.x + (*vertIter));
+			primarySceneBuffer.push_back(objPos.x + (*vertIter));
 		}
 		else if (vertComponentCounter == 1) {
 			//Add y offset then add to vector
-			sceneBuffer.push_back(objPos.y + (*vertIter));
+			primarySceneBuffer.push_back(objPos.y + (*vertIter));
 		}
 		else if (vertComponentCounter == 2) {
 			//Add z offset then add to vector
-			sceneBuffer.push_back(objPos.z + (*vertIter));
+			primarySceneBuffer.push_back(objPos.z + (*vertIter));
 		}
 		else if (vertComponentCounter == 3) {
 			//Add the fourth position component to vector
-			sceneBuffer.push_back(*vertIter);
+			primarySceneBuffer.push_back(*vertIter);
 			//Then generate the 2 texture components and add them to vector as well
 			uvCoord = genTexCoord();
-			sceneBuffer.push_back(uvCoord.s);
-			sceneBuffer.push_back(uvCoord.t);
+			primarySceneBuffer.push_back(uvCoord.s);
+			primarySceneBuffer.push_back(uvCoord.t);
 		}
 		else { //Add the normal component to the vector
-			sceneBuffer.push_back(*vertIter);
+			primarySceneBuffer.push_back(*vertIter);
 		}
 	}
 }
@@ -1225,41 +1502,44 @@ void AssetLoadingDemo::addObjectWithMissingTexCoords(std::vector<std::unique_ptr
 
 //If the object already has Texture Coords but is missing Vertex Normals, compute a normal for each triangle (note that 
 //computing a triangle's normal will require position data for all 3 corners)
-void AssetLoadingDemo::addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+void AssetLoadingDemo::addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 	const glm::vec3& objPos) { 
 
-	glm::vec3 v0, v1, v2, computedNormal;
+    glm::vec3 v0(0.0f, 0.0f, 0.0f);
+    glm::vec3 v1(0.0f, 0.0f, 0.0f);
+    glm::vec3 v2(0.0f, 0.0f, 0.0f);
+    glm::vec3 computedNormal(0.0f, 0.0f, 0.0f);
 
 	//Count the number of triangles for the object
-	size_t numberOfTriangles = ((*object)->mVertices_.size() / 18u);
+	const size_t numberOfTriangles = ((*object)->mVertices_.size() / 18u);
 
 	//Loop through the object's data triangle by triangle
 	for (size_t i = 0u; i < numberOfTriangles; i++) {
 		auto triangleStart = ((*object)->mVertices_.begin() + (i * 18u));
 		
-		v0 = glm::vec3(*(triangleStart      ), *(triangleStart +  1u), *(triangleStart +  2u));
+		v0 = glm::vec3(*(triangleStart      ), *(triangleStart +  1u), *(triangleStart +  2u)); 
 		v1 = glm::vec3(*(triangleStart +  6u), *(triangleStart +  7u), *(triangleStart +  8u));
 		v2 = glm::vec3(*(triangleStart + 12u), *(triangleStart + 13u), *(triangleStart + 14u));
 
 		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
 
-		for (size_t i = 0u; i < 3u; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i*6u)));         //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i*6u) + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i*6u) + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 3u)));             //w
-			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 4u)));             //s
-			sceneBuffer.push_back(*(triangleStart + ((i*6u) + 5u)));             //t
-			sceneBuffer.push_back(computedNormal.x);
-			sceneBuffer.push_back(computedNormal.y);
-			sceneBuffer.push_back(computedNormal.z);
+		for (size_t j = 0u; j < 3u; j++) {
+			primarySceneBuffer.push_back(objPos.x + *(triangleStart + (j*6u)));         //x
+			primarySceneBuffer.push_back(objPos.y + *(triangleStart + ((j*6u) + 1u)));  //y
+			primarySceneBuffer.push_back(objPos.z + *(triangleStart + ((j*6u) + 2u)));  //z
+			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 3u)));             //w
+			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 4u)));             //s
+			primarySceneBuffer.push_back(*(triangleStart + ((j*6u) + 5u)));             //t
+			primarySceneBuffer.push_back(computedNormal.x);
+			primarySceneBuffer.push_back(computedNormal.y);
+			primarySceneBuffer.push_back(computedNormal.z);
 		}
 	}
 }
 
-//If both texture coordinates and normals are missing, use this funciton.
-void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+//If both texture coordinates and normals are missing, use this function.
+void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 	const glm::vec3& objPos) {
 
 	//Setup the function to generate the texture coordinates	
@@ -1287,43 +1567,201 @@ void AssetLoadingDemo::addObjectWithMissingTexCoordsAndNormals(std::vector<std::
 
 		computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 
-		for (size_t i = 0u; i < 3u; i++) {
-			sceneBuffer.push_back(objPos.x + *(triangleStart + (i*4u)));        //x
-			sceneBuffer.push_back(objPos.y + *(triangleStart + ((i*4u) + 1u)));  //y
-			sceneBuffer.push_back(objPos.z + *(triangleStart + ((i*4u) + 2u)));  //z
-			sceneBuffer.push_back(*(triangleStart + ((i*4u) + 3u)));             //w
+		for (size_t j = 0u; j < 3u; j++) {
+			primarySceneBuffer.push_back(objPos.x + *(triangleStart + (j*4u)));        //x
+			primarySceneBuffer.push_back(objPos.y + *(triangleStart + ((j*4u) + 1u)));  //y
+			primarySceneBuffer.push_back(objPos.z + *(triangleStart + ((j*4u) + 2u)));  //z
+			primarySceneBuffer.push_back(*(triangleStart + ((j*4u) + 3u)));             //w
 			uvCoord = genTexCoord();  //Generate the uv Coords on the fly
-			sceneBuffer.push_back(uvCoord.s);                               //s
-			sceneBuffer.push_back(uvCoord.t);                               //t
-			sceneBuffer.push_back(computedNormal.x);
-			sceneBuffer.push_back(computedNormal.y);
-			sceneBuffer.push_back(computedNormal.z);
+			primarySceneBuffer.push_back(uvCoord.s);                               //s
+			primarySceneBuffer.push_back(uvCoord.t);                               //t
+			primarySceneBuffer.push_back(computedNormal.x);
+			primarySceneBuffer.push_back(computedNormal.y);
+			primarySceneBuffer.push_back(computedNormal.z);
 		}
 	}
 }
 
 
 
+///Update: It turns out that converting from triangle to triangle-outline 
+///        data layout can be done using the same vertex buffer and just 
+///        introducing the alternate layout with an ebo [element array buffer].
+// Idea behind this function:
+//   Take the primary scene buffer that has the following data layout:
+//       { x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,
+//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
+//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2, //End T0
+//         x3, y3, z3, w3, s3, t3, nx3, ny3, nz3, 
+//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
+//         x5, y5, z5, w5, s5, t5, nx5, ny5, nz5, //End T1
+//         x6, ... }                       
+//   And transfer the data over to the alternative scene buffer but under a slightly modified layout:
+//       { x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,
+//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
+//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
+//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2,
+//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2,
+//         x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,   //End T0 
+//         x3, y3, z3, w3, s3, t3, nx3, ny3, nz3, 
+//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
+//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
+//         x5, ... }
+//
+void AssetLoadingDemo::constructAlternateSceneBufferForDrawingTriangleOutline() noexcept {
+    
+    constexpr const size_t TRIANGLE_SIDES = 3u;
+    constexpr const size_t ALT_SCENE_BUFFER_SIZE_INCREASE = 2;
+    constexpr const size_t OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER = (NUM_VERTEX_COMPONENTS * TRIANGLE_SIDES); //27 floating-point data values per triangle
+    constexpr const ptrdiff_t X_OFFSET = 0;
+    constexpr const ptrdiff_t Y_OFFSET = 1;
+    constexpr const ptrdiff_t Z_OFFSET = 2;
+    constexpr const ptrdiff_t W_OFFSET = 3;
+    constexpr const ptrdiff_t S_OFFSET = 4;
+    constexpr const ptrdiff_t T_OFFSET = 5;
+    constexpr const ptrdiff_t NX_OFFSET = 6;
+    constexpr const ptrdiff_t NY_OFFSET = 7;
+    constexpr const ptrdiff_t NZ_OFFSET = 8;
 
-void AssetLoadingDemo::uploadSceneBufferToGPU() {
+    if (primarySceneBuffer.size() == 0u)
+        return;
 
-	auto vertexCount = computeNumberOfVerticesInSceneBuffer();
+    alternativeSceneBuffer.clear();
+    alternativeSceneBuffer.shrink_to_fit();
 
-	glCreateBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    //The alternativeSceneBuffer we are constructing will require twice as much space as the primarySceneBuffer
+    const size_t altBufSize = primarySceneBuffer.size() * 2u;
+    alternativeSceneBuffer.reserve(altBufSize);
 
-	fprintf(MSGLOG, "\nGPU Buffer Created with ID %u. Uploading data to GPU Buffer!\n", vbo);
-	fprintf(MSGLOG, "There are %u vertices total in the scene, or %u floating-point values\n", vertexCount, vertexCount * 9u);
+    const size_t TRIANGLES_IN_PRIMARY_SCENE_BUFFER = primarySceneBuffer.size() / (NUM_VERTEX_COMPONENTS * TRIANGLE_SIDES);
 
-	glBufferData(GL_ARRAY_BUFFER, sceneBuffer.size() * sizeof(sceneBuffer.data()), sceneBuffer.data(), GL_STATIC_DRAW);
+
+    ////////////////////////////////////////////
+    /////   Option Z  --  BRUTE FORCE!!!   /////
+    ////////////////////////////////////////////
+    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
+        size_t primaryBaseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
+        size_t altIndx = primaryBaseIndx * ALT_SCENE_BUFFER_SIZE_INCREASE;
+
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + X_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + Y_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + Z_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + W_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + S_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + T_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NX_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NY_OFFSET];
+        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NZ_OFFSET];
+
+
+    }
+
+
+    /////////////////////////////////////////
+    /////   Option A  --  Single Pass   /////
+    /////////////////////////////////////////
+
+    double optionAStartTime = glfwGetTime();
+
+    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
+    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
+    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
+        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
+        
+
+
+    }
+
+
+    ////////////////////////////////////////////////////
+    /////    Option B  --  Two Passes In Sequence  /////
+    ////////////////////////////////////////////////////
+
+    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
+    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
+    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
+        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
+        
+
+
+    }
+
+    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
+        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
+
+
+
+    }
+
+    ///////////////////////////////////////////////////
+    /////   Option C  --  Two Passes In Parallel  /////
+    ///////////////////////////////////////////////////
+
+    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
+    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
+    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
+        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
+        
+
+
+    }
+
+}
+
+
+void AssetLoadingDemo::createSceneVBOs() noexcept {
+    GLuint vbos[2] = { 0u, 0u };
+    glCreateBuffers(2, vbos);
+    primarySceneBufferVBO = vbos[0];
+    alternateSceneBufferVBO = vbos[1];
+}
+
+
+void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept {
+
+    //if (sceneBuf.size() == 0u)
+    //    return;
+    if (0u == targetVBO) {
+        fprintf(WRNLOG, "\nWARNING! An issue has occured while uploading a sceneBuffer\n"
+            "to its Vertex Buffer Object because it appears as though the target VBO was never\n"
+            "allocated from the context!\n");
+        fprintf(WRNLOG, "\nThis function here will try to allocate a VBO to use instead...\n");
+        glCreateBuffers(1, &targetVBO);
+        if (0u == targetVBO) {
+            fprintf(ERRLOG, "\n\n\nThe attempt to allocate a VBO to use has failed...\n");
+            fprintf(ERRLOG, "         Press [ENTER] to crash...\n");
+            std::cin.get();
+            std::exit(EXIT_FAILURE);
+        }
+        else
+            fprintf(WRNLOG, "A Vertex Buffer Object with ID=%u has been created!\n\n", targetVBO);
+    }
+
+	const GLsizei vertexCount = computeNumberOfVerticesInSceneBuffer(sceneBuf);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, targetVBO);
+
+	fprintf(MSGLOG, "\nInitiating transfer of the sceneBuffer data from the Application to the GPU.\n"
+        "Target destination on GPU is set to use Array Buffer ID %u.\n", targetVBO);
+
+    fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
+    fprintf(MSGLOG, "There are %u vertices total in the scene, or %u 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
+
+    auto yeah = sceneBuf.size() * sizeof(sceneBuf.data());
+    auto yeah2 = sizeof(sceneBuf.data());
+    std::cout << yeah << "\n";
+	glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
 
 }
 
 
 
 
-void AssetLoadingDemo::configureVertexArrayAttributes() {
-	glCreateVertexArrays(1, &vao);
+void AssetLoadingDemo::configureVertexArrayAttributes() noexcept {
+
+    if (vao == 0u)
+	    glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
 	///////////////////////////////////////////////////////////////////////

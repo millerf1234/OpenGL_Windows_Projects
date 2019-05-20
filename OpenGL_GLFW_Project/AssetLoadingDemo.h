@@ -37,28 +37,57 @@
 #include "QuickObj.h" //For loading '.obj' files
 
 
+using ParsedModelData_Iter = std::vector<std::unique_ptr<QuickObj>>::iterator;
+using ParsedModelData_CIter = std::vector<std::unique_ptr<QuickObj>>::const_iterator;
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////  
+//////    AssetLoadingDemo Settings   [Modify These Values to Affect Compiled Behavior]   ////// 
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 //The following variable dictates whether assets missing texture coordinates should have random coordinates assigned.
 //Setting this variable to false will cause all generated texture coordinates to be the same point 
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
-static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5u;
+static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5U;
 static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X = 3.0f;
 static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
 
 
-static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ull;
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
 //RenderDemo and try to change settings
-static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ull;
+static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ULL;
+
+
+
+
+
+
+//////////////////////////////////////////////////////
+//////    Global Invariants  [Do Not Modify]    //////
+//////////////////////////////////////////////////////
+
+static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ULL;
+static constexpr const size_t NUM_VERTEX_COMPONENTS = 9u;
+
+
+
+
+
+
+
+
+
+
 
 
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
 	AssetLoadingDemo() = delete;
 	AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo);
-	virtual ~AssetLoadingDemo() override = default;
+    virtual ~AssetLoadingDemo() noexcept override;// = default;
 
 	virtual void loadAssets() override;
 	virtual void run() override;
@@ -66,6 +95,7 @@ public:
 private:
 	bool error;
 	float counter;
+    float timeTickRateModifier;
 	unsigned long long frameNumber;
     unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
@@ -73,10 +103,11 @@ private:
 
 	glm::vec3 backgroundColor;
 
-	GLuint vao, vbo; 
+    GLuint vao; //Only 1 VertexArrayObject is required because all buffers share a common data layout.
+    GLuint primarySceneBufferVBO, alternateSceneBufferVBO; 
 
 	//Variables that are modifiable by input from the user
-	PIPELINE_PRIMATIVE_INPUT_TYPE currentPrimativeInputType;
+	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
 	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
@@ -88,7 +119,7 @@ private:
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
-	std::vector<GLfloat> sceneBuffer;
+	std::vector<GLfloat> primarySceneBuffer, alternativeSceneBuffer;
 
 	//For dynamic shader recompilation
 	struct DynamicShaderSet {
@@ -125,8 +156,9 @@ private:
 	void initialize(); //Called by constructor(s)
 	
 
-	//This function expects each vertex in sceneBuffer to be exactly 9 components
-	GLsizei computeNumberOfVerticesInSceneBuffer() const;
+	//This function expects each vertex in the passed-in sceneBuffer to be exactly
+    //9 components.
+	GLsizei computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>&) const;
 
 
 	void loadShaders(); //Sets up the sceneShader
@@ -150,12 +182,15 @@ private:
 								|   (1)  Input Detection   |
 								+~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
 	
-	bool checkToSeeIfShouldCloseWindow() const; //Probably 'esc'
-	bool checkIfShouldPause() const; //Probably 'space'
-	bool checkIfShouldReset() const;
-	bool checkIfShouldFreezeTime() const;
-	bool checkIfShouldToggleBlending() const;
-    bool checkIfShouldToggleDepthClamping() const;
+	bool checkToSeeIfShouldCloseWindow() const noexcept; //check 'esc'
+	bool checkIfShouldPause() const noexcept; //Probably 'space'
+	bool checkIfShouldReset() const noexcept;
+	bool checkIfShouldFreezeTime() const noexcept;
+    bool checkIfShouldIncreasePassageOfTime() const noexcept;
+    bool checkIfShouldDecreasePassageOfTime() const noexcept;
+	bool checkIfShouldToggleBlending() const noexcept;
+    bool checkIfShouldToggleDepthClamping() const noexcept;
+    bool checkIfShouldUpdateFieldOfView() const noexcept;
 
 
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -163,15 +198,20 @@ private:
 							   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
 
 	void pause();
-	void reset();
-	void toggleTimeFreeze();
-	void toggleBlending();
-    void toggleDepthClamping();
-	void changePrimitiveType();
-	void changeInstancedDrawingBehavior();
-	void modifyInstancedDrawingSpiralPattern();
-	void rotate();
-	void translate();
+	void reset() noexcept;
+	void toggleTimeFreeze() noexcept;
+    void increasePassageOfTime() noexcept;
+    void decreasePassageToTime() noexcept;
+	void toggleBlending() noexcept;
+    void toggleDepthClamping() noexcept;
+    void updateFieldOfView() noexcept;
+    void recomputeProjectionMatrix() noexcept;
+    void changePrimitiveType() noexcept;
+	void changeInstancedDrawingBehavior() noexcept;
+	void modifyInstancedDrawingSpiralPattern() noexcept;
+	void rotate() noexcept;
+	void translate() noexcept;
+   
 
 
 	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -208,6 +248,7 @@ private:
 	///  (4c)  Update Buffers    ///
 	////////////////////////////////
 
+    /*      Maybe one day           */
 
 
 
@@ -223,7 +264,7 @@ private:
 							|	(5) Clean-up and Prepare for Next Frame     |
 							+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			   			     */
 	
-	void prepareGLContextForNextFrame();
+	void prepareGLContextForNextFrame() noexcept;
 
 
 
@@ -235,20 +276,27 @@ private:
 	////  The following are utility functions called by the setup and renderloop functions   ////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
-	//as needed to give every vertex in the sceneBuffer the same format. 
+    glm::vec3 computePositionOffsetForNextObject(const glm::vec3& posOffset = glm::vec3(0.0f, 0.0f, 0.0f)) const noexcept;
+
+    //Prints out the name of the currently active primitive type 
+    void printNameOfTheCurrentlyActivePrimitive() const noexcept;
+
+	//Sets up the primarySceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
+	//as needed to give every vertex in the primarySceneBuffer the same format. 
 	void buildSceneBufferFromLoadedSceneObjects();
+
+    //size_t computeSizeRequiredByFinalSceneBuffer()
 
 	//The following 4 functions are intended for use within the function
 	//buildSceneBufferFromLoadedSceneObjects() to handle 
-	//data into the sceneBuffer
-	void addObject(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+	//data into the primarySceneBuffer
+	void addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
-	void addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+	void addObjectWithMissingNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
-	void addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+	void addObjectWithMissingTexCoords(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
-	void addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::iterator object,
+	void addObjectWithMissingTexCoordsAndNormals(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
 
 	//Helper function for generating random texture coordinates
@@ -256,15 +304,19 @@ private:
 		return glm::vec2(MathFunc::getRandomInRangef(0.0f, 1.0f), MathFunc::getRandomInRangef(0.0f, 1.0f));
 	}
 	//Helper function for generating constant texture coords
-	static inline glm::vec2 generateConstantTexCoords() {
+	static inline glm::vec2 generateConstantTexCoords() noexcept {
 		return glm::vec2(0.5f, 0.5f);
 	}
 	
+    void constructAlternateSceneBufferForDrawingTriangleOutline() noexcept;
+
+    void createSceneVBOs() noexcept;
 
 	//Does exactly what you think [creates buffers within the GL Context, uploads vertices to buffer]
-	void uploadSceneBufferToGPU();
+	void uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept;
 	//Sets up the VAO [which describes how the vertex data is arranged in the VertexArrayBuffer]
-	void configureVertexArrayAttributes(); 
+	void configureVertexArrayAttributes() noexcept; 
+
 
 };
 
