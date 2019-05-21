@@ -158,7 +158,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 				fprintf(ERRLOG, "\nError detecting display resolution!\n");
                 fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
                 std::cin.get();
-                //glfwTerminate();
+                glfwTerminate();
+                std::exit(EXIT_FAILURE);
 				return nullptr;
 			}
 			//Otherwise log the display information

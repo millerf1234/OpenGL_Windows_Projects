@@ -76,13 +76,6 @@ static constexpr const size_t NUM_VERTEX_COMPONENTS = 9u;
 
 
 
-
-
-
-
-
-
-
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
 	AssetLoadingDemo() = delete;
@@ -140,7 +133,7 @@ private:
 	float xTranslation;
 	float yTranslation;
 	//Projection parameters
-	float fov, screenHeight, screenWidth, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
+	float fov, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
 	//Shader Uniforms
 	glm::mat4 rotation;
 	glm::mat4 view;
@@ -154,7 +147,6 @@ private:
 	///////////////////////////////////////////////////////
 	
 	void initialize(); //Called by constructor(s)
-	
 
 	//This function expects each vertex in the passed-in sceneBuffer to be exactly
     //9 components.

@@ -387,6 +387,7 @@
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="WavefrontMtl.h" />
     <ClInclude Include="WavefrontObj.h" />
+    <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="WindowCurserState.h" />
   </ItemGroup>
   <ItemGroup>

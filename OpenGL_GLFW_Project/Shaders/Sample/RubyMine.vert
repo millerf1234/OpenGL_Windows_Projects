@@ -218,7 +218,7 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
     #ifdef CRAZY
     float crazyFactor = (2000.0 + 1000.0*sin(time));
     #else 
-    float crazyFactor = 1.0f;
+    float crazyFactor = 100.0f;
     #endif 
 	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(0.0020090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
 	vPosition = (ModelPosition.xyz * 0.10) + 0.7*vec3(sin(time), cos(time), cos(time + 3.14));
@@ -269,7 +269,30 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
     //gl_Position.z += 0.0*float(gl_InstanceID);
   #endif //ALTERNATIVE_VERT == n
 
-#endif // ALTERNATIVE_VERT 
 
-    gl_Position.xy += (0.15 + ((0.25*gl_InstanceID)*sin(time))+(0.6001 * gl_InstanceID));
+#endif // ALTERNATIVE_VERT 
+    
+//    //Scale the position back a bit to allow room for growth
+//    gl_Position.xyz *= 0.8;
+//    gl_Position.z *= 0.9;
+//
+//    if (true || gl_InstanceID > 12) {
+//       float scale = 1.0 + (0.01 * float(gl_Position));
+//       gl_Position.xy /= (scale * worley(ModelNormal, pow(scale, float(gl_InstanceID))));
+//       //gl_Position.xz *= (scale * worley(ModelPosition.xyz, pow(scale, float(gl_InstanceID))));
+//       //gl_Position.yz *= (scale * worley(vec3(MVP[0][0], MVP[1][0], MVP[2][2]), 15.0 + 4.0*sin(time)));
+//    }
+
+    //gl_Position.xyz *= (1.0 / gl_Position.z);
+    
+    //gl_Position.xy += (0.15 + ((0.25*gl_InstanceID)*sin(time))+(0.6001 * gl_InstanceID));
+    //gl_Position.xy += float(gl_InstanceID)* worley(vec3(float(gl_InstanceID), float(gl_VertexID % gl_InstanceID), 5.0*cos(3.915*time)), 15.0 + 15.0*sin(time));
+
+
+
+    float scale = 1.0 + (0.1 * float(gl_Position));
+    vec2 noise = worley(vec3(sin(time), cos(time), sin(cos(time))), pow(scale, float(gl_InstanceID)));
+    gl_Position.x += abs(noise.x)*sin(float(gl_InstanceID) * (3.14159 / 12.0));
+    gl_Position.y += abs(noise.x)*sin(float(gl_InstanceID) * (3.14159 / 12.0));
+
 } 

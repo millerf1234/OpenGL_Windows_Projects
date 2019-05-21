@@ -17,16 +17,9 @@
 #include "GlobalConstants.h"
 #include "PrimaryWindowCallbackFunctions.h"
 
-
+#include "WindowConfiguration.h"
 #include "ApplicationConstantSettings.h"
 
-static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
-
-static constexpr const bool USE_FULLSCREEN = false;
-
-static constexpr const bool USE_VSYNC = true;
-
-static constexpr int DEFAULT_AA_SAMPLES = 8;
 
 
 

@@ -1042,6 +1042,9 @@
     <ClInclude Include="QuickObj_NGonParser.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClInclude>
+    <ClInclude Include="WindowConfiguration.h">
+      <Filter>SetupAndConfiguration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">

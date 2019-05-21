@@ -154,20 +154,20 @@
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
-constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(-13.0f, -13.0f, 0.0f);
+constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
 constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(1.39599f, 2.439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, -11.0f);
-const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.0f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, -1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
-constexpr const float CAMERA_DEFAULT_FOV = 50.0f;
-constexpr const float CAMERA_MAXIMUM_FOV = 52.0f;
-constexpr const float CAMERA_MINIMUM_FOV = 48.0f;
-constexpr const float CAMERA_Z_CLIP_PLANE_NEAR = 0.005f;
-constexpr const float CAMERA_Z_CLIP_PLANE_FAR = 100.0f;
+constexpr const float CAMERA_DEFAULT_FOV = 62.0f;
+constexpr const float CAMERA_MAXIMUM_FOV = 65.0f;
+constexpr const float CAMERA_MINIMUM_FOV = 59.0f;
+constexpr const float CAMERA_Z_PLANE_NEAR = 0.25f;
+constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
 
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
@@ -206,21 +206,18 @@ void AssetLoadingDemo::initialize() {
 
 	//Set values for screen projection 
     fov = CAMERA_DEFAULT_FOV;
-	screenHeight = 2160.0f;
-	screenWidth = 3840.0f;
-	zNear = CAMERA_Z_CLIP_PLANE_NEAR;
-	zFar = CAMERA_Z_CLIP_PLANE_FAR;
-    recomputeProjectionMatrix(); //Well really compute it for the first time...
+	zNear = CAMERA_Z_PLANE_NEAR;
+	zFar = CAMERA_Z_PLANE_FAR;
 
 	//Set values for view matrix
-    cameraPos = CAMERA_POSITION; //glm::vec3(0.0f, -11.0f, 0.0f); //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
-    lookAtOrgin = CAMERA_LOOK_DIRECTION; //glm::vec3(0.0f, 0.0f, 1.0f);
-    upDirection = CAMERA_UP_DIRECTION; //glm::normalize(glm::vec3(0.0f, 1.0f,  0.0f));
+    cameraPos = CAMERA_POSITION; //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
+    lookAtOrgin = CAMERA_LOOK_DIRECTION; 
+    upDirection = CAMERA_UP_DIRECTION; 
+    //Compute view matrix
+    view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
 
 	xTranslation = 0.0f;
 	yTranslation = 0.0f;
-	//Compute view matrix
-	view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
 
 	//Set values for Rotation Uniforms
 	head = 0.0f;
@@ -244,7 +241,6 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 	//Make sure we have a monitor to render to
 	if (!screenInfo || !screenInfo->activeMonitor) {
 		error = true;
-        
 		return;
 	}
 	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
@@ -262,7 +258,9 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 		fprintf(WRNLOG, warning.str().c_str());
 		glfwMakeContextCurrent(screenInfo->activeMonitor);
 	}
+
 	mainRenderWindow = screenInfo->activeMonitor;
+    recomputeProjectionMatrix(); //Well really we compute it here for the first time
 }
 
 
@@ -434,13 +432,13 @@ void AssetLoadingDemo::loadModels() {
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 5.0f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
@@ -482,26 +480,23 @@ void AssetLoadingDemo::loadModels() {
     ////////////
 
     //File is defined in terms of splines instead of triangles. This may not be able to display properly.
-     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
-     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
-     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
-     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
+     //for (int i = 0; i < 2; i++)
+     //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
+     
 
 	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
 
-
+    //Report to console how many models were loaded
 	const size_t loadedModlCount = sceneObjects.size();
-	if (loadedModlCount == 0u) {
+	if (loadedModlCount == 0u) 
 		fprintf(MSGLOG, "\nNo models were loaded!\n");
-	}
-	else if (loadedModlCount == 1u) {
+	else if (loadedModlCount == 1u) 
 		fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
-	}
-	else {
+	else 
 		fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
-	}
+	
 
 }
 
@@ -833,7 +828,6 @@ void AssetLoadingDemo::toggleDepthClamping() noexcept {
 
 void AssetLoadingDemo::updateFieldOfView() noexcept {
     
-    
     static constexpr const float FOV_DELTA_PER_FRAME = 0.00831f;
 
     static float lastPrintedFOVUpdate = fov; 
@@ -860,6 +854,18 @@ void AssetLoadingDemo::updateFieldOfView() noexcept {
 }
 
 void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
+    
+    //Must get value of the window's width and height
+    float screenWidth = 1.0f;
+    float screenHeight = 1.0f;
+    if (mainRenderWindow) {
+        int width = 1;
+        int height = 1;
+        glfwGetWindowSize(mainRenderWindow, &width, &height);
+        screenWidth = static_cast<float>(width);
+        screenHeight = static_cast<float>(height);
+    }
+
 
     //Compute the screen -projection matrix
     //perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
