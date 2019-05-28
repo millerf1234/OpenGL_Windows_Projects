@@ -291,8 +291,9 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 
 
     float scale = 1.0 + (0.1 * float(gl_Position));
+    float factor = sin(float(gl_InstanceID) * (3.14159 / 12.0));
     vec2 noise = worley(vec3(sin(time), cos(time), sin(cos(time))), pow(scale, float(gl_InstanceID)));
-    gl_Position.x += abs(noise.x)*sin(float(gl_InstanceID) * (3.14159 / 12.0));
-    gl_Position.y += abs(noise.x)*sin(float(gl_InstanceID) * (3.14159 / 12.0));
+    gl_Position.x += abs(abs(noise.x)* factor) - abs(abs(noise.y)*factor);
+    gl_Position.y += abs(abs(noise.y)* factor) - abs(abs(noise.x)*factor);
 
 } 

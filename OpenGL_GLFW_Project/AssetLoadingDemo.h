@@ -71,7 +71,7 @@ static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 1
 
 static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ULL;
 static constexpr const size_t NUM_VERTEX_COMPONENTS = 9u;
-
+static constexpr const size_t TRIANGLE_SIDES_AMOUNTAGE = 3u;
 
 
 
@@ -97,7 +97,8 @@ private:
 	glm::vec3 backgroundColor;
 
     GLuint vao; //Only 1 VertexArrayObject is required because all buffers share a common data layout.
-    GLuint primarySceneBufferVBO, alternateSceneBufferVBO; 
+    GLuint triangleOutlineEBO;
+    GLuint sceneBufferVBO;//primarySceneBufferVBO, alternateSceneBufferVBO; 
 
 	//Variables that are modifiable by input from the user
 	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
@@ -112,7 +113,8 @@ private:
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
-	std::vector<GLfloat> primarySceneBuffer, alternativeSceneBuffer;
+    std::vector<GLfloat> sceneBuffer;// , alternativeSceneBuffer;
+    std::vector<GLuint> triangleOutlineElementOrdering;
 
 	//For dynamic shader recompilation
 	struct DynamicShaderSet {
@@ -147,10 +149,6 @@ private:
 	///////////////////////////////////////////////////////
 	
 	void initialize(); //Called by constructor(s)
-
-	//This function expects each vertex in the passed-in sceneBuffer to be exactly
-    //9 components.
-	GLsizei computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>&) const;
 
 
 	void loadShaders(); //Sets up the sceneShader
@@ -268,20 +266,24 @@ private:
 	////  The following are utility functions called by the setup and renderloop functions   ////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+    //This function expects each vertex in the passed-in sceneBuffer to be exactly
+    //9 components.
+    GLsizei computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>&) const noexcept;
+
+    void generateTriangleOutlineElementOrdering() noexcept;
+
     glm::vec3 computePositionOffsetForNextObject(const glm::vec3& posOffset = glm::vec3(0.0f, 0.0f, 0.0f)) const noexcept;
 
     //Prints out the name of the currently active primitive type 
     void printNameOfTheCurrentlyActivePrimitive() const noexcept;
 
-	//Sets up the primarySceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
-	//as needed to give every vertex in the primarySceneBuffer the same format. 
+	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
+	//as needed to give every vertex in the sceneBuffer the same format. 
 	void buildSceneBufferFromLoadedSceneObjects();
-
-    //size_t computeSizeRequiredByFinalSceneBuffer()
 
 	//The following 4 functions are intended for use within the function
 	//buildSceneBufferFromLoadedSceneObjects() to handle 
-	//data into the primarySceneBuffer
+	//data into the sceneBuffer
 	void addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 		const glm::vec3& objPos);
 
@@ -296,10 +298,12 @@ private:
 	
     void constructAlternateSceneBufferForDrawingTriangleOutline() noexcept;
 
-    void createSceneVBOs() noexcept;
+    void createSceneVBO() noexcept;
+    void createTriangleOutlineEBO() noexcept;
 
 	//Does exactly what you think [creates buffers within the GL Context, uploads vertices to buffer]
 	void uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept;
+    void uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& ebo, const std::vector<GLuint>& eboData) noexcept;
 	//Sets up the VAO [which describes how the vertex data is arranged in the VertexArrayBuffer]
 	void configureVertexArrayAttributes() noexcept; 
 

@@ -16,7 +16,7 @@ static constexpr const bool USE_FULLSCREEN = true;
 
 static constexpr const bool USE_VSYNC = true;
 
-static constexpr int DEFAULT_AA_SAMPLES = 8;
+static constexpr int DEFAULT_AA_SAMPLES = 2;
 
 
 //Screen resolutions  (see: https://en.wikipedia.org/wiki/Graphics_display_resolution#QHD_(2560%C3%971440)  )

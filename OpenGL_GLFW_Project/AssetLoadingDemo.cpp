@@ -161,78 +161,84 @@ constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(1.39599f, 2.439995f);
 
 //Camera Parameters
 const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.0f);
-const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, -1.0f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 62.0f;
-constexpr const float CAMERA_MAXIMUM_FOV = 65.0f;
-constexpr const float CAMERA_MINIMUM_FOV = 59.0f;
-constexpr const float CAMERA_Z_PLANE_NEAR = 0.25f;
-constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
+constexpr const float CAMERA_MAXIMUM_FOV = 90.0f;
+constexpr const float CAMERA_MINIMUM_FOV = 40.0f;
+constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
+constexpr const float CAMERA_Z_PLANE_FAR = 10000.0f;
 
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
 void AssetLoadingDemo::initialize() {
-	//Set error flag
-	error = false;
-	//Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
-	frameNumber = 0ull;
-	frameUnpaused = 0ull;
-	frameLineTypeLastSwitched = 0ull;
-	frameInstancedDrawingBehaviorLastToggled = 0ull;
-	frameInstancedDrawingCountLastModified = 0ull;
-	frameTimeFreezeLastToggled = 0ull;
-	frameBlendOperationLastToggled = 0ull;
+    //Set error flag
+    error = false;
+    //Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
+    frameNumber = 0ull;
+    frameUnpaused = 0ull;
+    frameLineTypeLastSwitched = 0ull;
+    frameInstancedDrawingBehaviorLastToggled = 0ull;
+    frameInstancedDrawingCountLastModified = 0ull;
+    frameTimeFreezeLastToggled = 0ull;
+    frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
 
-	counter = 0.0f;
+    counter = 0.0f;
     timeTickRateModifier = 0.0f;
     vao = 0u;
-    primarySceneBufferVBO = 0u;
-    alternateSceneBufferVBO = 0u;
+    sceneBufferVBO = 0u;
+    triangleOutlineEBO = 0u;
 
 
-	//Set the starting input primitive type
-	currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
+    //Set the starting input primitive type
+    currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
 
-	//Set the variables regarding instanced drawing
-	drawMultipleInstances = false;
-	instanceCount = STARTING_INSTANCE_COUNT;
-	instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
-	instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
+    //Set the variables regarding instanced drawing
+    drawMultipleInstances = false;
+    instanceCount = STARTING_INSTANCE_COUNT;
+    instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
+    instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 
-	freezeTimeToggle = false;
-	enableBlending = false;
+    freezeTimeToggle = false;
+    enableBlending = false;
     enableDepthClamping = false;
 
-	//Set values for screen projection 
+    //Set values for screen projection 
     fov = CAMERA_DEFAULT_FOV;
-	zNear = CAMERA_Z_PLANE_NEAR;
-	zFar = CAMERA_Z_PLANE_FAR;
+    zNear = CAMERA_Z_PLANE_NEAR;
+    zFar = CAMERA_Z_PLANE_FAR;
 
-	//Set values for view matrix
+    //Set values for view matrix
     cameraPos = CAMERA_POSITION; //3.0f * 0.5f / tan(glm::radians(fov / 2.f)));
-    lookAtOrgin = CAMERA_LOOK_DIRECTION; 
-    upDirection = CAMERA_UP_DIRECTION; 
+    lookAtOrgin = CAMERA_LOOK_DIRECTION;
+    upDirection = CAMERA_UP_DIRECTION;
     //Compute view matrix
     view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
 
-	xTranslation = 0.0f;
-	yTranslation = 0.0f;
+    xTranslation = 0.0f;
+    yTranslation = 0.0f;
 
-	//Set values for Rotation Uniforms
-	head = 0.0f;
-	pitch = 0.0f;
-	roll = 0.0f;
-	//Calculate rotation matrix
-	rotation = glm::mat4(1.0f);    //Initialize the rotation matrix to 4x4 identity matrix (it will be set to a real rotation matrix later)
+    //Set values for Rotation Uniforms
+    head = 0.0f;
+    pitch = 0.0f;
+    roll = 0.0f;
+    //Calculate rotation matrix
+    rotation = glm::mat4(1.0f);    //Initialize the rotation matrix to 4x4 identity matrix (it will be set to a real rotation matrix later)
 
-	//Keep an extra zoom parameter
-	zoom = 1.0f; //Higher number means farther away
+    //Keep an extra zoom parameter
+    zoom = 1.0f; //Higher number means farther away
 
     backgroundColor = glm::vec3(0.0f, 0.0f, 0.0f); //The values set here have no impact on the actual background color, see the background-color-update function 
 
     glEnable(GL_PROGRAM_POINT_SIZE);
 
+    //test
+    if (glIsEnabled(GL_MULTISAMPLE))
+        fprintf(MSGLOG, "\nMULTISAMPLING IS ENABLED!\n");
+    else
+        fprintf(MSGLOG, "\nMULTISAMPLING IS DISABLED!\n");
+    glDisable(GL_MULTISAMPLE);
 }
 
 
@@ -267,29 +273,14 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 
 AssetLoadingDemo::~AssetLoadingDemo() noexcept {
 
-    //Release the VertexArrayObject from the context if was allocated
-    if (vao != 0u) {
+    if (vao != 0u) 
         glDeleteVertexArrays(1, &vao);
-        vao = 0u;
-    }
+   
+    if (sceneBufferVBO != 0)
+        glDeleteBuffers(1, &sceneBufferVBO);
 
-    //Release either/both of the VertexBufferObjects from the context if either was
-    //allocated
-    if (primarySceneBufferVBO != 0u) {
-        if (alternateSceneBufferVBO != 0u) {
-            GLuint VBOs[2] = { primarySceneBufferVBO, alternateSceneBufferVBO };
-            glDeleteBuffers(2, &(VBOs[0]));
-            primarySceneBufferVBO = alternateSceneBufferVBO = 0u;
-        }
-        else {
-            glDeleteBuffers(1, &primarySceneBufferVBO);
-            primarySceneBufferVBO = 0u;
-        }
-    }
-    else if (alternateSceneBufferVBO != 0u) {
-        glDeleteBuffers(1, &alternateSceneBufferVBO);
-        alternateSceneBufferVBO = 0u;
-    }
+    if (triangleOutlineEBO != 0u)
+        glDeleteBuffers(1, &triangleOutlineEBO);
 
 }
 
@@ -403,10 +394,46 @@ void AssetLoadingDemo::loadShaders() {
 }
 
 
-GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>& sceneBuffer) const {
+GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>& sceneBuffer) const noexcept{
 	static constexpr const GLsizei vertexSize = 4u + 2u + 3u;  //Since each vertex is {x,y,z,w, s,t, nx,ny,nz}  (i.e. 9 components total)
 	return (sceneBuffer.size() / vertexSize);
 }
+
+void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
+
+    //Start with a completely empty order
+    std::vector<GLuint> emptyOrder;
+    
+
+    const size_t numberOfVerticesInSceneBuffer = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
+
+    //The number of elements required is always twice the number of vertices in the sceneBuffer
+    const size_t elementsToGenerate = 2u * numberOfVerticesInSceneBuffer;
+    try {
+        emptyOrder.reserve(elementsToGenerate);
+        for (size_t i = 0u; i < elementsToGenerate; i += 3) {//numberOfVerticesInSceneBuffer; i += TRIANGLE_SIDES_AMOUNTAGE) {
+
+            //Triangle side 1
+            emptyOrder.push_back(i);
+            emptyOrder.push_back(i + 1);
+
+            //Triangle side 2
+            emptyOrder.push_back(i + 1);
+            emptyOrder.push_back(i + 2);
+
+            //Triangle side 3
+            emptyOrder.push_back(i + 2);
+            emptyOrder.push_back(i);
+        }
+    }
+    catch (const std::exception& e) {
+        fprintf(ERRLOG, "\nCaught Exception: %s!\n", e.what());
+    }
+
+    //Once generated, swap order out with AssetLoadingDemo's member
+    triangleOutlineElementOrdering.swap(emptyOrder);
+}
+
 
 
 void AssetLoadingDemo::loadModels() {
@@ -428,13 +455,18 @@ void AssetLoadingDemo::loadModels() {
     ///////////////////////////////////////////////////////////////////////////////////////////// 
 
     /////////////////////
+    //  TEST!
+    /////////////
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Test01_Pos.obj", 1.0f));  //Single triangle test file
+
+    /////////////////////
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
@@ -503,18 +535,16 @@ void AssetLoadingDemo::loadModels() {
 void AssetLoadingDemo::prepareScene() {
 	fprintf(MSGLOG, "\nCreating the primary scene from loaded assets...\n");
 	buildSceneBufferFromLoadedSceneObjects();
+    generateTriangleOutlineElementOrdering();
 	fprintf(MSGLOG, "Primary scene creation complete!\n\n");
 
+    createSceneVBO();
+    createTriangleOutlineEBO();
 
-    //fprintf(MSGLOG, "Creating the alternativeSceneBuffer for drawing with the TRIANGLE_OUTLINE\n"
-    //    "pipeline input primitive type.\n");
-    //alternativeSceneBuffer = primarySceneBuffer;
-
-    createSceneVBOs();
-
-	fprintf(MSGLOG, "Uploading primary scene buffer to GPU...\n");
-	uploadSceneBufferToGPU(primarySceneBufferVBO, primarySceneBuffer);
+	fprintf(MSGLOG, "Uploading scene buffer to GPU...\n");
+	uploadSceneBufferToGPU(sceneBufferVBO, sceneBuffer);
 	configureVertexArrayAttributes(); 
+    uploadTriangleOutlineElementOrderingBufferToGPU(triangleOutlineEBO, triangleOutlineElementOrdering);
 }
 
 
@@ -1236,73 +1266,79 @@ void AssetLoadingDemo::updateUniforms() {
 
 void AssetLoadingDemo::drawVerts() {
     
-    static const GLsizei PRIMARY_BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(primarySceneBuffer);
-    static const GLsizei ALT_BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(alternativeSceneBuffer);
-
+    const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
 	if (sceneShader)
 		sceneShader->use();
 
-
-    //The same VAO is used for both VBOs
     glBindVertexArray(vao);
 
+    glBindBuffer(GL_ARRAY_BUFFER, sceneBufferVBO);
 
-    //Drawing in the format TRIANGLE_OUTLINE requires a seperate VAO/VBO from the rest of the  
-    //primitive types, so we check for it early to handle it as a seperate case.
+    //The OpenGL draw commands used to draw in mode TRIANGLE_OUTLINE are different from 
+    //the other draw modes in that an element array buffer is required. Thus we check for 
+    //this draw mode first as a special case.
+
+    /*
+    
+void glDrawElementsInstanced(	GLenum mode,
+ 	GLsizei count,
+ 	GLenum type,
+ 	const void * indices,
+ 	GLsizei instancecount);
+    */
     if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
-        glBindBuffer(GL_ARRAY_BUFFER, alternateSceneBufferVBO);
-
-        if (drawMultipleInstances) 
-            glDrawArraysInstanced(GL_LINES, 0, ALT_BUFFER_SIZE, instanceCount);
-        else 
-            glDrawArrays(GL_LINES, 0, ALT_BUFFER_SIZE);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleOutlineEBO);
+        if (drawMultipleInstances)
+            glDrawElementsInstanced(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, 0, instanceCount);
+        else
+            glDrawElements(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, 0); //Last param is offset into ebo to start with
         return;
     }
 
 
-	glBindBuffer(GL_ARRAY_BUFFER, primarySceneBufferVBO);
+
 
 	if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
 		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLES, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, BUFFER_SIZE, instanceCount);
 		else 
-			glDrawArrays(GL_TRIANGLES, 0, PRIMARY_BUFFER_SIZE);
+			glDrawArrays(GL_TRIANGLES, 0, BUFFER_SIZE);
 	}
 
 	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP) {
 		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE, instanceCount);
 		else 
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, PRIMARY_BUFFER_SIZE);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE);
 	}
 
 	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN) {
 		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, BUFFER_SIZE, instanceCount);
 		else 
-			glDrawArrays(GL_TRIANGLE_FAN, 0, PRIMARY_BUFFER_SIZE);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, BUFFER_SIZE);
 	}
 
 	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) {
 		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_LINES, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+			glDrawArraysInstanced(GL_LINES, 0, BUFFER_SIZE, instanceCount);
 		else 
-			glDrawArrays(GL_LINES, 0, PRIMARY_BUFFER_SIZE);
+			glDrawArrays(GL_LINES, 0, BUFFER_SIZE);
 	}
 
 	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) {
 		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_LINE_STRIP, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+			glDrawArraysInstanced(GL_LINE_STRIP, 0, BUFFER_SIZE, instanceCount);
 		else 
-			glDrawArrays(GL_LINE_STRIP, 0, PRIMARY_BUFFER_SIZE);
+			glDrawArrays(GL_LINE_STRIP, 0, BUFFER_SIZE);
 	}
 
     else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS) {
         if (drawMultipleInstances) 
-            glDrawArraysInstanced(GL_POINTS, 0, PRIMARY_BUFFER_SIZE, instanceCount);
+            glDrawArraysInstanced(GL_POINTS, 0, BUFFER_SIZE, instanceCount);
         else 
-            glDrawArrays(GL_POINTS, 0, PRIMARY_BUFFER_SIZE);
+            glDrawArrays(GL_POINTS, 0, BUFFER_SIZE);
     }
 }
 
@@ -1367,7 +1403,7 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 	
 	//Reserve that much space
 	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
-	primarySceneBuffer.reserve(sceneSize); 
+	sceneBuffer.reserve(sceneSize); 
 
 	//Iterate through each object in the sceneObjects vector
 	for (auto sceneObjIter = sceneObjects.cbegin(); sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
@@ -1409,156 +1445,35 @@ void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_i
 		vertComponentCounter = ((vertComponentCounter + 1) % 9);
 		if (vertComponentCounter == 0) {
 			//Add x offset then add to vector
-			primarySceneBuffer.push_back(objPos.x + (*vertIter));
+			sceneBuffer.push_back(objPos.x + (*vertIter));
 		}
 		else if (vertComponentCounter == 1) {
 			//Add y offset then add to vector
-			primarySceneBuffer.push_back(objPos.y + (*vertIter));
+			sceneBuffer.push_back(objPos.y + (*vertIter));
 		}
 		else if (vertComponentCounter == 2) {
 			//Add z offset then add to vector
-			primarySceneBuffer.push_back(objPos.z + (*vertIter));
+			sceneBuffer.push_back(objPos.z + (*vertIter));
 		}
 		else {
 			//add the vertex data straight to vector
-			primarySceneBuffer.push_back(*vertIter);
+			sceneBuffer.push_back(*vertIter);
 		}
 	}
 }
 
 
+void AssetLoadingDemo::createSceneVBO() noexcept {
 
-
-///Update: It turns out that converting from triangle to triangle-outline 
-///        data layout can be done using the same vertex buffer and just 
-///        introducing the alternate layout with an ebo [element array buffer].
-// Idea behind this function:
-//   Take the primary scene buffer that has the following data layout:
-//       { x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,
-//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
-//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2, //End T0
-//         x3, y3, z3, w3, s3, t3, nx3, ny3, nz3, 
-//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
-//         x5, y5, z5, w5, s5, t5, nx5, ny5, nz5, //End T1
-//         x6, ... }                       
-//   And transfer the data over to the alternative scene buffer but under a slightly modified layout:
-//       { x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,
-//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
-//         x1, y1, z1, w1, s1, t1, nx1, ny1, nz1,
-//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2,
-//         x2, y2, z2, w2, s2, t2, nx2, ny2, nz2,
-//         x0, y0, z0, w0, s0, t0, nx0, ny0, nz0,   //End T0 
-//         x3, y3, z3, w3, s3, t3, nx3, ny3, nz3, 
-//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
-//         x4, y4, z4, w4, s4, t4, nx4, ny4, nz4,
-//         x5, ... }
-//
-void AssetLoadingDemo::constructAlternateSceneBufferForDrawingTriangleOutline() noexcept {
-    
-    constexpr const size_t TRIANGLE_SIDES = 3u;
-    constexpr const size_t ALT_SCENE_BUFFER_SIZE_INCREASE = 2;
-    constexpr const size_t OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER = (NUM_VERTEX_COMPONENTS * TRIANGLE_SIDES); //27 floating-point data values per triangle
-    constexpr const ptrdiff_t X_OFFSET = 0;
-    constexpr const ptrdiff_t Y_OFFSET = 1;
-    constexpr const ptrdiff_t Z_OFFSET = 2;
-    constexpr const ptrdiff_t W_OFFSET = 3;
-    constexpr const ptrdiff_t S_OFFSET = 4;
-    constexpr const ptrdiff_t T_OFFSET = 5;
-    constexpr const ptrdiff_t NX_OFFSET = 6;
-    constexpr const ptrdiff_t NY_OFFSET = 7;
-    constexpr const ptrdiff_t NZ_OFFSET = 8;
-
-    if (primarySceneBuffer.size() == 0u)
-        return;
-
-    alternativeSceneBuffer.clear();
-    alternativeSceneBuffer.shrink_to_fit();
-
-    //The alternativeSceneBuffer we are constructing will require twice as much space as the primarySceneBuffer
-    const size_t altBufSize = primarySceneBuffer.size() * 2u;
-    alternativeSceneBuffer.reserve(altBufSize);
-
-    const size_t TRIANGLES_IN_PRIMARY_SCENE_BUFFER = primarySceneBuffer.size() / (NUM_VERTEX_COMPONENTS * TRIANGLE_SIDES);
-
-
-    ////////////////////////////////////////////
-    /////   Option Z  --  BRUTE FORCE!!!   /////
-    ////////////////////////////////////////////
-    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
-        size_t primaryBaseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
-        size_t altIndx = primaryBaseIndx * ALT_SCENE_BUFFER_SIZE_INCREASE;
-
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + X_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + Y_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + Z_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + W_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + S_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + T_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NX_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NY_OFFSET];
-        alternativeSceneBuffer[altIndx++] = primarySceneBuffer[primaryBaseIndx + NZ_OFFSET];
-
-
-    }
-
-
-    /////////////////////////////////////////
-    /////   Option A  --  Single Pass   /////
-    /////////////////////////////////////////
-
-    double optionAStartTime = glfwGetTime();
-
-    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
-    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
-    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
-        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
-        
-
-
-    }
-
-
-    ////////////////////////////////////////////////////
-    /////    Option B  --  Two Passes In Sequence  /////
-    ////////////////////////////////////////////////////
-
-    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
-    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
-    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
-        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
-        
-
-
-    }
-
-    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
-        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
-
-
-
-    }
-
-    ///////////////////////////////////////////////////
-    /////   Option C  --  Two Passes In Parallel  /////
-    ///////////////////////////////////////////////////
-
-    //Since the additional vertices being replicated to create the alternativeSceneBuffer are independent
-    //from triangle to triangle, it makes the most sense to have loop iteratation be triangle by triangle. 
-    for (size_t triIter = 0; triIter < TRIANGLES_IN_PRIMARY_SCENE_BUFFER; triIter++) {
-        size_t baseIndx = triIter * OFFSET_BETWEEN_TRIANGLES_IN_PRIMARY_SCENE_BUFFER;
-        
-
-
-    }
+    glGenBuffers(1, &sceneBufferVBO);
 
 }
 
 
-void AssetLoadingDemo::createSceneVBOs() noexcept {
-    GLuint vbos[2] = { 0u, 0u };
-    glCreateBuffers(2, vbos);
-    primarySceneBufferVBO = vbos[0];
-    alternateSceneBufferVBO = vbos[1];
+void AssetLoadingDemo::createTriangleOutlineEBO() noexcept {
+
+    glGenBuffers(1, &triangleOutlineEBO);
+
 }
 
 
@@ -1597,6 +1512,28 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
 
 }
 
+void AssetLoadingDemo::uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& ebo, const std::vector<GLuint>& eboData) noexcept {
+
+    if (0u == ebo) {
+        fprintf(WRNLOG, "\n\tWARNING!\nUnable to Upload Element Ordering Buffer to GPU because EBO was\n"
+            "never created with GL context!\n");
+        return;
+    }
+
+    const GLsizei elementBufferSize = eboData.size();
+
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    fprintf(MSGLOG, "\nTransfering Additional Data from the Application to the GPU.\n"
+        "Target destination on GPU is set to use Element Array Buffer ID %u.\n", ebo);
+
+    fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
+    fprintf(MSGLOG, "There are %u indices total in the scene, or %u GL_UNSIGNED_INT values\n\n", elementBufferSize, elementBufferSize);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * elementBufferSize, eboData.data(), GL_STATIC_DRAW);
+
+}
 
 
 

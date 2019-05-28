@@ -189,6 +189,8 @@ vec2 worley(vec3 P, float jitter) {
 
 void main() {
 
+#if 1
+
         vec2 worl = worley(vPosition, vJitter);
         float world = worl.y * worl.x;
 
@@ -219,5 +221,8 @@ void main() {
         }
         outColor.r = (outColor.r + 0.25*sin(time + (50000.0*vPosition.x))); 
         
+#else 
+outColor = vec4(1.0, 0.47, 0.0, 1.0);
+#endif 
        
 }

@@ -18,6 +18,8 @@ namespace { //An anonymous namespace is used to prevent these constants from pol
 	static constexpr const size_t POSITION_COMPONENTS = 4u;
 	static constexpr const size_t TEXTURE_COORDINATE_COMPONENTS = 2u;
 	static constexpr const size_t NORMAL_COMPONENTS = 3u;
+
+    static constexpr const size_t POSITION_VERTEX_SIZE = POSITION_COMPONENTS;
 	static constexpr const size_t POSITION_TEXCOORD_VERTEX_SIZE = POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS;
 	static constexpr const size_t POSITION_NORMAL_VERTEX_SIZE = POSITION_COMPONENTS + NORMAL_COMPONENTS;
 	static constexpr const size_t POSITION_TEXCOORD_NORMAL_VERTEX_SIZE = POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS + NORMAL_COMPONENTS;
@@ -909,7 +911,7 @@ void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoord
     //Count the number of triangles for the object              //4 position-components per vertex * 3 Vertices per triangle => 12 position-components per triangle
 	size_t numberOfTriangles = (mVertices_.size() / (POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)); 
 
-	if (!randomizeTextureCoords) {
+	if (!randomizeTextureCoords ) {
 		//Loop through the object's data triangle by triangle
 		for (size_t i = 0u; i < numberOfTriangles; i++) {
 			auto triangleStart = (mVertices_.begin() + (i * (POSITION_COMPONENTS * VERTICES_IN_A_TRIANGLE)));
@@ -919,12 +921,12 @@ void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoord
 			v2 = glm::vec3(*(triangleStart + 8u), *(triangleStart + 9u), *(triangleStart + 10u)); //skip w (located at index 11)
 
 			computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
-			for (size_t i = 0u; i < VERTICES_IN_A_TRIANGLE; i++) { //For each of the 3 vertices of the triangle
+			for (size_t j = 0u; j < VERTICES_IN_A_TRIANGLE; j++) { //For each of the 3 vertices of the triangle
 				//Copy over the existing Position data 
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (i *  POSITION_TEXCOORD_VERTEX_SIZE)));            //x
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 1u)));     //y
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 2u)));     //z
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (j *  POSITION_VERTEX_SIZE)));            //x
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((j *  POSITION_VERTEX_SIZE) + 1u)));     //y
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((j *  POSITION_VERTEX_SIZE) + 2u)));     //z
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((j *  POSITION_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
 				//Add the 2 texture coordinates
 				verticesWithTexCoordAndNormals.push_back(s);                                                                  //s
 				verticesWithTexCoordAndNormals.push_back(t);                                                                  //t
@@ -948,10 +950,10 @@ void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoord
 			computedNormal = MeshFunc::computeNormalizedVertexNormalsForTriangle(v0, v1, v2);
 			for (size_t i = 0u; i < VERTICES_IN_A_TRIANGLE; i++) { //For each of the 3 vertices of the triangle
 			    //Copy over the existing Position data 
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (i *  POSITION_TEXCOORD_VERTEX_SIZE)));            //x
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 1u)));     //y
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 2u)));     //z
-				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_TEXCOORD_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + (i *  POSITION_VERTEX_SIZE)));            //x
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_VERTEX_SIZE) + 1u)));     //y
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_VERTEX_SIZE) + 2u)));     //z
+				verticesWithTexCoordAndNormals.push_back(*(triangleStart + ((i *  POSITION_VERTEX_SIZE) + 3u)));     //w (aka 'scale')
 				//Generate random values for then add the 2 texture coordinates
 				verticesWithTexCoordAndNormals.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));                            //Randomized s
 				verticesWithTexCoordAndNormals.push_back(MathFunc::getRandomInRangef(0.0f, 1.0f));                            //Randomized t
