@@ -206,6 +206,7 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 
 
 #define CRAZY 1
+const float CRAZY_SURFACE_EFFECT_STRENGTH = 1.0;
 #define INSTS_GROW_TO_THE_RIGHT 1
 
 //#define ALTERNATIVE_VERT 1
@@ -216,11 +217,11 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 	///vJitter = 0.0 + 0.00308 * sin(30.*time + gl_VertexID);
 
     #ifdef CRAZY
-    float crazyFactor = (900.0 + 600.0*sin(0.1*time + 3.14159));
+    float crazyFactor = (300.0 + 1.45*float(gl_InstanceID+1))*sin(0.1*time + 3.14159);
     #else 
     float crazyFactor = 100.0f;
     #endif 
-	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(0.00180090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*0.25*time)));
+	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(00.000380090308 * sin((2.10 + 0.01*float(gl_InstanceID + 1))*time + float(gl_VertexID) + float(gl_VertexID%7)*0.25*time)));
 	vPosition = (ModelPosition.xyz * 0.10);// + 0.7*vec3(sin(time), cos(time), 0.0);
 
 	vec2 worl = worley(vPosition, vJitter);

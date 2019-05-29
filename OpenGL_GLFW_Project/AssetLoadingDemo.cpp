@@ -161,10 +161,10 @@
 constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
-constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 1.439995f);
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 1.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.0f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 15.0f);
 const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 62.0f;
