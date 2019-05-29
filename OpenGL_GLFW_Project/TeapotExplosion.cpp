@@ -19,7 +19,7 @@ void TeapotExplosion::initialize() {
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
 	frameOfMostRecentColorRecording = 0ull;
-	counter = 0.0f;
+	//counter = 0.0f; //Moved to be part of parent class RenderDemoBase
 	xRotation = 90.0f;
 	yRotation = 120.0f;
 	zRotation = 0.0f;
@@ -46,15 +46,15 @@ void TeapotExplosion::initialize() {
 
 
 
-TeapotExplosion::TeapotExplosion(std::shared_ptr<MonitorData> screenInfo) : RenderDemoBase() {
+TeapotExplosion::TeapotExplosion(InitReport* initReport) : RenderDemoBase() {
 	initialize();
 	//Make sure we have a monitor to render to
-	if (!screenInfo || !screenInfo->activeMonitor) {
+    if (!initReport || !initReport->windowContext.window.window) {
 		error = true;
 		return;
 	}
 	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
-	if (glfwGetCurrentContext() != screenInfo->activeMonitor) {
+	if (glfwGetCurrentContext() != initReport->windowContext.window.window) {
 		std::ostringstream warning;
 		warning << "\nWARNING!\n[In TeapotExplosions's constructor]\n" <<
 			"TeapotExplosion detected that the GLFW active context was set" <<
@@ -66,14 +66,14 @@ TeapotExplosion::TeapotExplosion(std::shared_ptr<MonitorData> screenInfo) : Rend
 			"is being passed to TeapotExplosion in the application code!\n";
 
 		fprintf(WRNLOG, warning.str().c_str());
-		glfwMakeContextCurrent(screenInfo->activeMonitor);
+		glfwMakeContextCurrent(initReport->windowContext.window.window);
 	}
-	mainRenderWindow = screenInfo->activeMonitor;
+	mainRenderWindow = initReport->windowContext.window.window;
 }
 
 
 
-TeapotExplosion::~TeapotExplosion() {
+TeapotExplosion::~TeapotExplosion() noexcept {
 
 }
 

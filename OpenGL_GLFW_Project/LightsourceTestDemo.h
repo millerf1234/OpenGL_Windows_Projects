@@ -54,15 +54,15 @@
 class LightsourceTestDemo : public RenderDemoBase { 
 public:
 	LightsourceTestDemo() = delete;
-	LightsourceTestDemo(std::shared_ptr<MonitorData> screenInfo);
-	virtual ~LightsourceTestDemo() override;
+	LightsourceTestDemo(InitReport*);
+	virtual ~LightsourceTestDemo() noexcept override;
 
 	virtual void loadAssets() override;
 	virtual void run() override;
 	
 private:
 	bool error;
-	float counter;
+    //float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
 	unsigned long long frameNumber, frameUnpaused;
 	unsigned long long frameDitherLastToggled, frameBlendLastToggled, framePolygonSmoothLastToggled;
 	unsigned long long frameColorshiftLastToggled;

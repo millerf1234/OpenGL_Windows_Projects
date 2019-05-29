@@ -17,13 +17,26 @@
 
 uniform float time;
 
-uniform float instanceSpiralPatternPeriod_x;
-uniform float instanceSpiralPatternPeriod_y;
+const float instanceSpiralPatternPeriod_x = 0.0f;
+const float instanceSpiralPatternPeriod_y = 0.0f;
 
 uniform mat4 rotation;
 
-vec3 color1 = vec3(abs(cos(instanceSpiralPatternPeriod_x)), 0.25 + abs(0.75*cos(0.923*instanceSpiralPatternPeriod_x)), 0.800 - 0.37 * abs(cos(instanceSpiralPatternPeriod_x)));   ///uniform vec3 color1;     ///Modified by FSM
-vec3 color2 = vec3(0.095, 0.09972, 0.9975);   ///uniform vec3 color2;     ///Modified by FSM 
+float sinePartialSummation(float x, int intervalsToCompute, float intervalSpacing) {
+    float summation = sin(x);
+    for (int i = 1; i <= max(1, intervalsToCompute); i++) {
+        summation += (1.0 / pow(intervalSpacing, i)) * sin( intervalSpacing * x);
+    }
+    return summation;
+}
+
+float cosinePartialSummation(float x, int intervalsToCompute, float intervalSpacing) {
+    float summation = cos(x);
+    for (int i = 1; i <= max(1, intervalsToCompute); i++) {
+        summation += (1.0 / pow(intervalSpacing, i)) * sin( intervalSpacing * x);
+    }
+    return summation;
+}
 
 
 in vec3 vPosition;      ///varying vec3 vPosition;     ///Modified by FSM
@@ -31,6 +44,15 @@ in float vJitter;       ///varying float vJitter;      ///Modified by FSM
 in flat int vInst;
 
 out vec4 outColor;   ///Added by FSM
+
+
+vec3 color1 = vec3(0.5+0.5*sin(0.05*time + 0.005*gl_FragCoord.x * cos(gl_FragCoord.y)),
+                   abs(sinePartialSummation(0.1*time, 3, (0.18 + gl_FragCoord.y) + 20.025*float(vInst+1))),//partialSummationSin(time, 20, 1.15),//-2000.95,
+                   0.5);   ///uniform vec3 color1;     ///Modified by FSM
+
+vec3 color2 = vec3(cosinePartialSummation(90.01*time+gl_FragCoord.x+gl_FragCoord.y, 3, 1.1 + 0.1*float(vInst)),
+                   0.009972,
+                   0.9975);   ///uniform vec3 color2;     ///Modified by FSM 
 
 //#define time time*5.0
 
@@ -225,4 +247,10 @@ void main() {
 outColor = vec4(1.0, 0.47, 0.0, 1.0);
 #endif 
        
-}
+       if (outColor.length() > 0.15 &&
+           outColor.length() < 01.52) 
+       discard;
+       //float tmp00 = outColor.r;
+       //outColor.rgba = outColor.gbra;
+
+      }

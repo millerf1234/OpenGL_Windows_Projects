@@ -23,6 +23,7 @@ GLFW_Init::GLFW_Init() {
 	monitors = nullptr;
 	mWindow = nullptr;
 	decoratedBorder = resizeable = forwardCompatible =  true;
+    contextResetStrategy = GLFW_NO_RESET_NOTIFICATION;
 	contextVersionMajor = DEFAULT_OPENGL_VERSION_MAJOR;
 	contextVersionMinor = DEFAULT_OPENGL_VERSION_MINOR; 
 	aaSamples = DEFAULT_AA_SAMPLES;
@@ -34,32 +35,41 @@ GLFW_Init::GLFW_Init() {
 	}
 	openFullScreen = USE_FULLSCREEN; 
 	defaultMonitor = MONITOR_TO_USE;
-	glfwIsInitialized = false;
+    GLFW_IS_INIT = false;
+
+    assignAtExitTerminationFunction();
 }
 
-GLFW_Init::~GLFW_Init() {
-	
+GLFW_Init::~GLFW_Init() noexcept {
+    if (GLFW_IS_INIT) {
+        GLFW_IS_INIT = false;
+        glfwTerminate();
+    }
 }
 
 void GLFW_Init::terminate() {
+    if (!GLFW_IS_INIT) { return; }
 	if (mWindow)
 		glfwDestroyWindow(mWindow); //This function should be called for each window created by this application!
 	glfwTerminate(); //Terminating is quite a bit easier than setting up, as you can see
+    GLFW_IS_INIT = false;
 }
 
 
 //Do window setup routines and return a struct representing information on detected monitors
-std::shared_ptr<MonitorData> GLFW_Init::initialize() {
+std::unique_ptr<InitReport> GLFW_Init::initialize() {
 	glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as separate from Joystick buttons
 	fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");
-		glfwIsInitialized = false;
+		GLFW_IS_INIT = false;
+
 		return nullptr;
 	}
-	else {
-		glfwIsInitialized = true;
-	}
+
+	else 
+		GLFW_IS_INIT = true;
+	
 	fprintf(MSGLOG, "DONE!  GLFW version: %s\n", glfwGetVersionString()); 
 
 
@@ -82,9 +92,25 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
 	}
 	
+    
+        
 	fprintf(MSGLOG, "\t  Setting Context Robustness / Reset Strategy:  "); 
-	glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, GLFW_LOSE_CONTEXT_ON_RESET); //Can be set to either GLFW_NO_RESET_NOTIFICATION or GLFW_LOSE_CONTEXT_ON_RESET
-	fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
+    //Can be set to either GLFW_NO_RESET_NOTIFICATION or GLFW_LOSE_CONTEXT_ON_RESET
+    switch (contextResetStrategy) {
+    default:
+        contextResetStrategy = GLFW_NO_RESET_NOTIFICATION;
+        [[fallthrough]] ;
+    case GLFW_NO_RESET_NOTIFICATION:
+        fprintf(MSGLOG, "NO_NOTIFICATION_ON_RESET\n");
+        break;
+    case GLFW_LOSE_CONTEXT_ON_RESET:
+        fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
+        break;
+    }
+    fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
+    contextResetStrategy = GLFW_LOSE_CONTEXT_ON_RESET;
+	glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, contextResetStrategy);
+
 
 
 	fprintf(MSGLOG, "\t  FORWARD COMPATIBILITY: ");
@@ -144,7 +170,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
         fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
         std::cin.get();
         glfwTerminate();
-		glfwIsInitialized = false;
+		//glfwIsInitialized = false;
+        GLFW_IS_INIT = false;
 		return nullptr;
 	}
 	fprintf(MSGLOG, "\t%d connected displays are detected!\n", connectedDisplayCount);
@@ -154,7 +181,7 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	if (openFullScreen) {
 		if (connectedDisplayCount >= (defaultMonitor + 1)) { //Check to make sure there is at least enough connected displays for defaultMonitor to exist
 			detectDisplayResolution(defaultMonitor, width, height, refreshRate);
-			if (!glfwIsInitialized) {
+			if (!GLFW_IS_INIT) {
 				fprintf(ERRLOG, "\nError detecting display resolution!\n");
                 fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
                 std::cin.get();
@@ -178,7 +205,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 			}
 			else {
 				fprintf(ERRLOG, "Error occured creating GLFW window in fullscreen mode on monitor!\n");
-				glfwIsInitialized = false;
+                GLFW_IS_INIT = false;
+                glfwTerminate();
 			}
 		}
 		//Re-Implement more robust window checking later... 
@@ -225,7 +253,8 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 		}
 		else {
 			fprintf(ERRLOG, "Error opening a GLFW window in windowed mode (i.e. not fullscreen)!\n");
-			glfwIsInitialized = false;
+            GLFW_IS_INIT = false;
+            glfwTerminate();
 			return nullptr;
 		}
 	}
@@ -233,16 +262,18 @@ std::shared_ptr<MonitorData> GLFW_Init::initialize() {
 	//I do one additional check to make sure mWindow definitly is not nullptr (this check is surpurfulous but doesn't hurt)
 	if (mWindow == nullptr) {
 		fprintf(ERRLOG, "Failed Creating OpenGL Context and Window\n");
-		glfwIsInitialized = false;
+        GLFW_IS_INIT = false;
+        glfwTerminate();
 		return nullptr;
 	}
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
-		glfwIsInitialized = true;
+        GLFW_IS_INIT = true;
 	}
 
 	//return (std::move(generateDetectedMonitorsStruct()));  //Don't do this! See comment about return value for function generateDetectedMonitorsStruct() below
-    return generateDetectedMonitorsStruct();
+    std::unique_ptr<InitReport> initReport = generateDetectedMonitorsStruct();
+    return std::move(initReport);
 }
 
 void GLFW_Init::specifyWindowCallbackFunctions() {
@@ -279,26 +310,103 @@ void GLFW_Init::setWindowUserPointer(void * userPointer) {
 	}
 }
 
-//Creates a struct from the members of this class
-std::shared_ptr<MonitorData> GLFW_Init::generateDetectedMonitorsStruct() {
-	std::shared_ptr<MonitorData> detectedDisplayData = std::make_shared<MonitorData>();
-	
-	detectedDisplayData->numDetected = connectedDisplayCount;
-	detectedDisplayData->activeMonitorNum = defaultMonitor;
-	detectedDisplayData->width = this->width;
-	detectedDisplayData->height = this->height;
-	detectedDisplayData->refreshRate = this->refreshRate;
-	//Set monitor pointers
-	detectedDisplayData->monitorArray = monitors;
-	detectedDisplayData->activeMonitor = mWindow;
 
-	detectedDisplayData->validContext = glfwIsInitialized;
-
-	//return std::move(detectedDisplayData); //This is a terrible thing to do. See Scott Meyer's Effective Modern C++ item 25 (page 174)
-    //                                     //Using a move statement here prevents Return Value Optimization / Copy Elision from being legal. 
-    //Instead, just do
-    return detectedDisplayData;
+void GLFW_Init::assignAtExitTerminationFunction() noexcept {
+    const int success = std::atexit(atExitFuncToEnsureGLFWTerminateIsCalled);
+    if (success != 0)
+        fprintf(ERRLOG, "\nError Setting atexit GLFW Termination Function!\n");
 }
+
+//Save warning state 
+#pragma warning( push )
+//4102 is for unused labels 
+#pragma warning (disable : 4102)
+
+//Creates a struct from the members of this class
+std::unique_ptr<InitReport> GLFW_Init::generateDetectedMonitorsStruct() {
+
+    if (!GLFW_IS_INIT) {
+        fprintf(ERRLOG, "\n\n\nAn Irrecoverable Issue Has Occured With GLFW Initialization!\n"
+            "        [Press ENTER to crash]\n\n");
+        std::cin.get();
+        std::exit(EXIT_FAILURE);
+    }
+
+    assert(mWindow != nullptr);
+
+    try {
+        //Generate the struct
+        std::unique_ptr<InitReport> report = std::make_unique<InitReport>();
+
+    ReportEnumeratedMonitors:
+        //Record Details on Enumerated Monitors
+        report->monitors.enumeratedMonitors.count = connectedDisplayCount;
+        report->monitors.enumeratedMonitors.enumeratedHandles = monitors;
+
+        //Record Details on the target active Monitor
+        report->monitors.activeMonitor.activeMonitorArrayIndex = defaultMonitor;
+        report->monitors.activeMonitor.activeMonitor = monitors[defaultMonitor];
+        report->monitors.activeMonitor.nativeWidth = width;
+        report->monitors.activeMonitor.nativeHeight = height;
+        assert(defaultMonitor < connectedDisplayCount);
+        report->monitors.activeMonitor.nativeRefreshRate = glfwGetVideoMode(monitors[defaultMonitor])->refreshRate;
+        
+    ReportWindowContext:
+        //Report On Context
+        report->windowContext.context.contextValid = GLFW_IS_INIT;
+        report->windowContext.context.versionMajor = contextVersionMajor;
+        report->windowContext.context.versionMinor = contextVersionMinor;
+        report->windowContext.context.forwardCompat = forwardCompatible;
+        report->windowContext.context.isDebug = USE_DEBUG;
+        //report->windowContext.context.forceContextAppSync = ? ? ? ; //Not set during GLFW init
+        report->windowContext.context.loseOnReset =
+            (glfwGetWindowAttrib(mWindow, GLFW_CONTEXT_ROBUSTNESS) == GLFW_LOSE_CONTEXT_ON_RESET);
+
+        //Report on Window
+        report->windowContext.window.window = mWindow;
+        report->windowContext.window.fullscreen = openFullScreen;
+        glfwGetFramebufferSize(mWindow,
+            &(report->windowContext.window.framebufferWidth),
+            &(report->windowContext.window.framebufferHeight));
+        report->windowContext.window.samples = aaSamples;
+
+        //Set the variant part of Window based on if in Fullscreen or Windowed mode
+
+        if (openFullScreen) {
+            report->windowContext.window.conditionalInfo = WindowContext::WindowInfo::FullscreenInfo();
+            WindowContext::WindowInfo::FullscreenInfo* fullscrInfo =
+                &(std::get<WindowContext::WindowInfo::FullscreenInfo>(report->windowContext.window.conditionalInfo));
+
+            fullscrInfo->vsync = USE_VSYNC;
+            fullscrInfo->refreshRate = glfwGetVideoMode(monitors[defaultMonitor])->refreshRate; //Will always be set to monitor's default refresh rate (for now)
+        }
+        else {
+            report->windowContext.window.conditionalInfo = WindowContext::WindowInfo::WindowedInfo();
+            WindowContext::WindowInfo::WindowedInfo* windowedInfo =
+                &(std::get<WindowContext::WindowInfo::WindowedInfo>(report->windowContext.window.conditionalInfo));
+            windowedInfo->decorated = decoratedBorder;
+            windowedInfo->resizeable = resizeable;
+        }
+
+        return std::move(report);
+    } 
+    catch (const std::bad_alloc& e) {
+        (void)e;
+        fprintf(ERRLOG, "\nBad Allocation!\nTime To Crash!!!\n");
+        std::exit(EXIT_FAILURE);
+    }
+    catch (const std::bad_variant_access& e) {
+        (void)e;
+        fprintf(ERRLOG, "\n\n\nOH NO! There is a bug in the GLFW init code!\n"
+            "A Bad Variant Access has occured at:\n%s\n\n     [Press ENTER to crash]\n\n",
+            __FUNCTION__);
+        std::cin.get();
+        std::exit(EXIT_FAILURE);
+    }
+}
+
+//Restore warning state
+#pragma warning(pop)
 
 //Detects the resolution of the active display
 void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height, int& refreshRate) {
@@ -324,7 +432,7 @@ void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height,
 			"\tUNABLE TO RETRIEVE MONITOR VIDEO MODE INFORMATION. PERHAPS TRY A DIFFERENT MONITOR? OR REBOOT? OR CALL I.T.\n"
 			"[If you are IT and you are reading this message, then chances are something is funky with the monitor since\n"
 			"it is not communicating nicely with this program]\n\n");
-		this->glfwIsInitialized = false;
+		//this->glfwIsInitialized = false;
 	}
 }
 

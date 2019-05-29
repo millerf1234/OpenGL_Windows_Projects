@@ -51,9 +51,6 @@ using ParsedModelData_CIter = std::vector<std::unique_ptr<QuickObj>>::const_iter
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
 static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5U;
-static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X = 3.0f;
-static constexpr const GLfloat STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y = 3.0f;
-
 
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
@@ -75,11 +72,10 @@ static constexpr const size_t TRIANGLE_SIDES_AMOUNTAGE = 3u;
 
 
 
-
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
 	AssetLoadingDemo() = delete;
-	AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo);
+	AssetLoadingDemo(InitReport*);
     virtual ~AssetLoadingDemo() noexcept override;// = default;
 
 	virtual void loadAssets() override;
@@ -87,7 +83,7 @@ public:
 	
 private:
 	bool error;
-	float counter;
+	//float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
     float timeTickRateModifier;
 	unsigned long long frameNumber;
     unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
@@ -104,9 +100,10 @@ private:
 	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
-	GLfloat instanceSpiralPatternPeriod_x, instanceSpiralPatternPeriod_y;
+	
 
 	bool freezeTimeToggle; 
+    bool reverseTimePropogation;
 	bool enableBlending;
     bool enableDepthClamping;
 
@@ -176,6 +173,7 @@ private:
 	bool checkIfShouldPause() const noexcept; //Probably 'space'
 	bool checkIfShouldReset() const noexcept;
 	bool checkIfShouldFreezeTime() const noexcept;
+    bool checkIfShouldReverseDirectionOfTime() const noexcept;
     bool checkIfShouldIncreasePassageOfTime() const noexcept;
     bool checkIfShouldDecreasePassageOfTime() const noexcept;
 	bool checkIfShouldToggleBlending() const noexcept;
@@ -190,6 +188,7 @@ private:
 	void pause();
 	void reset() noexcept;
 	void toggleTimeFreeze() noexcept;
+    void reverseTime() noexcept;
     void increasePassageOfTime() noexcept;
     void decreasePassageToTime() noexcept;
 	void toggleBlending() noexcept;
@@ -198,7 +197,7 @@ private:
     void recomputeProjectionMatrix() noexcept;
     void changePrimitiveType() noexcept;
 	void changeInstancedDrawingBehavior() noexcept;
-	void modifyInstancedDrawingSpiralPattern() noexcept;
+	//void modifyInstancedDrawingSpiralPattern() noexcept;
 	void rotate() noexcept;
 	void translate() noexcept;
    

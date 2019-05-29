@@ -75,8 +75,8 @@ static constexpr float COLOR_MOD_VALUE_CHANGE_SPEED = 0.15f;
 class TeapotExplosion : public RenderDemoBase {
 public:
 	TeapotExplosion() = delete;
-	TeapotExplosion(std::shared_ptr<MonitorData> screenInfo);
-	virtual ~TeapotExplosion() override;
+    TeapotExplosion(InitReport*);
+	virtual ~TeapotExplosion() noexcept override;
 
 	virtual void loadAssets() override;
 	virtual void run() override;
@@ -84,7 +84,7 @@ public:
 private:
 	bool error;
 	unsigned long long frameNumber, frameUnpaused, frameOfMostRecentColorRecording;
-	float counter;
+    //float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
 	float xRotation, yRotation, zRotation;
 	float redRotationTheta, greenRotationTheta, blueRotationTheta;
 	float velocity;

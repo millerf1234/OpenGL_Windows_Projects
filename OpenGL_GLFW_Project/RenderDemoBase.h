@@ -57,7 +57,7 @@ public:
 
 	//Constructor and Destructor
 	//RenderDemoBase(GLFWwindow * renderWindow);
-	virtual ~RenderDemoBase();
+	virtual ~RenderDemoBase() noexcept;
 	
 
 	//-----------------------------------
@@ -101,6 +101,8 @@ public:
 	*/
 
 protected:
+
+    float counter;
 
 	//std::vector<MissingAsset> missingAssets;
 	/*

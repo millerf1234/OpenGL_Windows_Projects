@@ -111,16 +111,16 @@ void LightsourceTestDemo::initialize() {
 	
 }
 
-LightsourceTestDemo::LightsourceTestDemo(std::shared_ptr<MonitorData> screenInfo) : RenderDemoBase() {
+LightsourceTestDemo::LightsourceTestDemo(InitReport* initReport) : RenderDemoBase() {
 	initialize();
-	//Make sure we have a monitor to render to
-	if (!screenInfo || !screenInfo->activeMonitor) {
-		error = true;
-		return;
-	}
-	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
-	if (glfwGetCurrentContext() != screenInfo->activeMonitor) {
-		std::ostringstream warning;
+    //Make sure we have a monitor to render to
+    if (!initReport || !initReport->monitors.activeMonitor.activeMonitor) {
+        error = true;
+        return;
+    }
+    //Make sure the context is set to this monitor (and this thread [see glfw documentation])
+    if (glfwGetCurrentContext() != initReport->windowContext.window.window) {
+        std::ostringstream warning;
 		warning << "\nWARNING!\n" <<
 			"LightsourceTestDemo detected that the GLFW active context was set" <<
 			"\nto a different monitor or different execution-thread then\n" <<
@@ -131,9 +131,9 @@ LightsourceTestDemo::LightsourceTestDemo(std::shared_ptr<MonitorData> screenInfo
 			"is being passed to LightsourceTestDemo in the application code!\n";
 
 		fprintf(WRNLOG, warning.str().c_str());
-		glfwMakeContextCurrent(screenInfo->activeMonitor);
-	}
-	mainRenderWindow = screenInfo->activeMonitor;
+        glfwMakeContextCurrent(initReport->windowContext.window.window);
+    }
+    mainRenderWindow = initReport->windowContext.window.window;
 }
 
 void LightsourceTestDemo::cleanup() {

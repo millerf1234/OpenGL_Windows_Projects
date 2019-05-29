@@ -10,10 +10,12 @@ RenderDemoBase::RenderDemoBase() {
 	mainRenderWindow = nullptr;
 	mJoystickStatePrintingEnabled_ = false;
 	mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
+
+    counter = 0.0f; //Time starts at 0 in each RenderDemo
 }
 
 
-RenderDemoBase::~RenderDemoBase() {
+RenderDemoBase::~RenderDemoBase() noexcept {
 
 }
 

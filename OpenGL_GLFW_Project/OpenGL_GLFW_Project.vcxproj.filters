@@ -25,9 +25,6 @@
     <Filter Include="NotesAndReferences">
       <UniqueIdentifier>{7e929138-11ce-4b48-bf47-c2e4623f992d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SetupAndConfiguration">
-      <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
       <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions">
       <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\Debug">
-      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects">
       <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
@@ -147,12 +141,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
       <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\ApplicationConstantSettings">
-      <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SetupAndConfiguration\FilepathsToAssetDirectories">
-      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework">
       <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
@@ -381,6 +369,18 @@
     </Filter>
     <Filter Include="Source Files\Unfinished\Audio">
       <UniqueIdentifier>{8509665d-7627-442d-aee1-e5c02c778924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration">
+      <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\Debug">
+      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\ApplicationConstantSettings">
+      <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\FilepathsToAssetDirectories">
+      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -755,10 +755,10 @@
       <Filter>Third Party\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="LoggingMessageTargets.h">
-      <Filter>SetupAndConfiguration</Filter>
+      <Filter>Header Files\SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
-      <Filter>SetupAndConfiguration\Debug</Filter>
+      <Filter>Header Files\SetupAndConfiguration\Debug</Filter>
     </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
@@ -920,7 +920,7 @@
       <Filter>Source Files\Unfinished\EntityComponents\Phong Shading Parameters</Filter>
     </ClInclude>
     <ClInclude Include="RelativeFilepathsToResources.h">
-      <Filter>SetupAndConfiguration\FilepathsToAssetDirectories</Filter>
+      <Filter>Header Files\SetupAndConfiguration\FilepathsToAssetDirectories</Filter>
     </ClInclude>
     <ClInclude Include="QuickObj.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
@@ -959,7 +959,7 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationConstantSettings.h">
-      <Filter>SetupAndConfiguration\ApplicationConstantSettings</Filter>
+      <Filter>Header Files\SetupAndConfiguration\ApplicationConstantSettings</Filter>
     </ClInclude>
     <ClInclude Include="WindowCallbackEvent.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
@@ -986,10 +986,10 @@
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
     </ClInclude>
     <ClInclude Include="GlobalConstants.h">
-      <Filter>SetupAndConfiguration</Filter>
+      <Filter>Header Files\SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="GlobalIncludes.h">
-      <Filter>SetupAndConfiguration</Filter>
+      <Filter>Header Files\SetupAndConfiguration</Filter>
     </ClInclude>
     <ClInclude Include="FSMMonitor.h">
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
@@ -1010,7 +1010,7 @@
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback</Filter>
     </ClInclude>
     <ClInclude Include="DebugSettings.h">
-      <Filter>SetupAndConfiguration\Debug</Filter>
+      <Filter>Header Files\SetupAndConfiguration\Debug</Filter>
     </ClInclude>
     <ClInclude Include="glad\release\glad.h">
       <Filter>Third Party\glad\release</Filter>
@@ -1043,7 +1043,10 @@
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClInclude>
     <ClInclude Include="WindowConfiguration.h">
-      <Filter>SetupAndConfiguration</Filter>
+      <Filter>Header Files\SetupAndConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFW_Init_Report.h">
+      <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

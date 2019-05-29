@@ -208,7 +208,7 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 #define CRAZY 1
 #define INSTS_GROW_TO_THE_RIGHT 1
 
-#define ALTERNATIVE_VERT 1
+//#define ALTERNATIVE_VERT 1
 
 #ifndef  ALTERNATIVE_VERT 
 
@@ -216,17 +216,17 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 	///vJitter = 0.0 + 0.00308 * sin(30.*time + gl_VertexID);
 
     #ifdef CRAZY
-    float crazyFactor = (2000.0 + 1000.0*sin(time));
+    float crazyFactor = (900.0 + 600.0*sin(0.1*time + 3.14159));
     #else 
     float crazyFactor = 100.0f;
     #endif 
-	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(0.0020090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*time)));
-	vPosition = (ModelPosition.xyz * 0.10) + 0.7*vec3(sin(time), cos(time), cos(time + 3.14));
+	vJitter =  crazyFactor * (float((gl_VertexID % 12) + 1)*(0.00180090308 * sin(3.*time + float(gl_VertexID) + float(gl_VertexID%7)*0.25*time)));
+	vPosition = (ModelPosition.xyz * 0.10);// + 0.7*vec3(sin(time), cos(time), 0.0);
 
 	vec2 worl = worley(vPosition, vJitter);
 	vec3 pos = ModelPosition.xyz - (0.3 + 0.003*vInst)*(length(worl) * ModelNormal * 0.2);
       
-	float instGrowth =  ( 1.0/(2.0+abs(3.0*sin(time)))*float(floor(gl_InstanceID / 10)*int(pow(float(gl_InstanceID), 1.005)) / 1000));
+	float instGrowth =  ( 0.04/(2.0+abs(3.0*sin(time)))*float(floor(gl_InstanceID / 10)*int(pow(float(gl_InstanceID), 1.005)) / 1000));
 
     #ifdef  INSTS_GROW_TO_THE_RIGHT
 	gl_Position = (MVP * vec4(pos, ModelPosition.w + 0.0* min((2.0 * length(ModelPosition)*vJitter), 1.0))) + 
@@ -290,10 +290,10 @@ gl_PointSize = 14.0 + 16.0*sin(0.1*time + (22203.14159 / float(1+34*gl_VertexID)
 
 
 
-    float scale = 1.0 + (0.1 * float(gl_Position));
-    float factor = sin(float(gl_InstanceID) * (3.14159 / 12.0));
-    vec2 noise = worley(vec3(sin(time), cos(time), sin(cos(time))), pow(scale, float(gl_InstanceID)));
-    gl_Position.x += abs(abs(noise.x)* factor) - abs(abs(noise.y)*factor);
-    gl_Position.y += abs(abs(noise.y)* factor) - abs(abs(noise.x)*factor);
+    //float scale = 1.0 + (0.1 * float(gl_Position));
+    //float factor = sin(float(gl_InstanceID) * (3.14159 / 12.0));
+    //vec2 noise = worley(vec3(sin(time), cos(time), sin(cos(time))), pow(scale, float(gl_InstanceID)));
+    //gl_Position.x += abs(abs(noise.x)* factor) - abs(abs(noise.y)*factor);
+    //gl_Position.y += abs(abs(noise.y)* factor) - abs(abs(noise.x)*factor);
 
 } 

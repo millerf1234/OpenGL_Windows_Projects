@@ -65,7 +65,7 @@ public:
 
 private:
 	bool mApplicationValid;
-	std::shared_ptr<MonitorData> displayInfo;
+	std::unique_ptr<InitReport> initReport;
 	std::unique_ptr<GLFW_Init> glfwInitializer;
 	
 

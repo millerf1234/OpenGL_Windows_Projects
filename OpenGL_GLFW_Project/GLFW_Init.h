@@ -14,31 +14,34 @@
 #include <iostream>
 #include <sstream>
 
+#include <cstdlib>  //For a std::atexit function that ensures glfwTerminate is called
+
+#include "GLFW_Init_Report.h"
+
 #include "GlobalConstants.h"
 #include "PrimaryWindowCallbackFunctions.h"
 
 #include "WindowConfiguration.h"
 #include "ApplicationConstantSettings.h"
 
+static bool GLFW_IS_INIT = false;
+inline void atExitFuncToEnsureGLFWTerminateIsCalled() noexcept {
+    if (GLFW_IS_INIT) {
+        glfwTerminate();
+        GLFW_IS_INIT = false;
+    }
+}
 
-
-
-typedef struct MonitorData {
-	int numDetected, activeMonitorNum, width, height, refreshRate;
-	GLFWmonitor** monitorArray; 
-	GLFWwindow * activeMonitor;
-	bool validContext;
-} MonitorData;
 
 class GLFW_Init {
 public:
 	GLFW_Init(); 
-	~GLFW_Init();
+	~GLFW_Init() noexcept ;
 
 	void openWindowed() { this->openFullScreen = false; }
 	void setDefaultMonitor(int monitorNumber) { this->defaultMonitor = monitorNumber; }
 
-	std::shared_ptr<MonitorData> initialize(); //Sets up the window
+	std::unique_ptr<InitReport> initialize(); //Sets up the window
 	void specifyWindowCallbackFunctions(); //Sets up callback functions for the window
 	void setWindowUserPointer(void * userPointer); //Sets a custom user pointer for the window
 
@@ -53,8 +56,8 @@ private:
 	GLFWmonitor** monitors;  //Array of pointers to connected displays
 	GLFWwindow * mWindow; //The display to be rendering to (might add ability to change displays in the future
 	bool decoratedBorder, resizeable, forwardCompatible; //Configuration option booleans
+    int contextResetStrategy;
 	int contextVersionMajor, contextVersionMinor, aaSamples, vSyncInterval; //Configuration option integers
-	bool glfwIsInitialized; //Will be false if an initialization step fails
 	bool openFullScreen; 
 	int defaultMonitor;
 	int width, height, refreshRate; 
@@ -63,7 +66,9 @@ private:
 	//Window attachment is created and has its allocation owned by this class
 	//std::unique_ptr<WindowCallbackInternal::CallbackStreamBuffer> windowAttachment;
 
-	std::shared_ptr<MonitorData> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of monitor data at the end of initialize().
+    void assignAtExitTerminationFunction() noexcept;
+
+	std::unique_ptr<InitReport> generateDetectedMonitorsStruct();  //Private function to be called to generate the return struct of system data at the end of initialize().
 
 };
 

@@ -8,7 +8,7 @@
 
 void Application::initialize() {
 	mApplicationValid = true;
-	displayInfo = nullptr;
+	initReport = nullptr;
 	glfwInitializer = nullptr;
 
 	fprintf(MSGLOG, "Application is loading...\n");
@@ -92,16 +92,16 @@ bool Application::setupGLFW() {
    
 	glfwInitializer = std::make_unique<GLFW_Init>();
 	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
-	displayInfo = glfwInitializer->initialize();
+	initReport = glfwInitializer->initialize();
 	
-	if (!displayInfo) {
+	if (!initReport) {
 		fprintf(ERRLOG, "\nAn Error Occurred Setting Up The GLFW Window!\n");
 		mApplicationValid = false;
 		return false;
 	}
 	else {
 		glfwInitializer->specifyWindowCallbackFunctions();
-		glfwInitializer->setWindowUserPointer(static_cast<void *>(displayInfo.get())); 
+		//glfwInitializer->setWindowUserPointer(static_cast<void *>(initReport.get())); 
 		return true;
 	}
 }
@@ -205,7 +205,7 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 		std::cin.get(); //Require acknowledgment from programmer that he/she/they messed up big time before crashing 
 	}
 	//Perform a second error check
-	else if ( !(displayInfo && mApplicationValid) ) {
+	else if ( !(initReport && mApplicationValid) ) {
 		fprintf(ERRLOG, "\nError launching RenderDemo!\n"
 			"The Application is invalid or the detected display information is null!\n");
 	}
@@ -221,16 +221,16 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 
 
 void Application::runAssetLoadingDemo() {
-	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(displayInfo);
-	runRenderDemo(assetLoadingDemo, "AssetLoadingDemo");
+	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(initReport.get());
+	runRenderDemo(assetLoadingDemo, "Asset Loading Demo");
 }
 
 void Application::runLightsourceTestDemo() {
-	std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(displayInfo);
+	std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(initReport.get());
 	runRenderDemo(lightsourceTestDemo, "Lightsource Test Demo");
 }
 
 void Application::runTeapotExplosionDemo() {
-	std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(displayInfo);
+	std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(initReport.get());
 	runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
 }

@@ -83,6 +83,10 @@
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
+//  |              'g'                |                           Reverse Time Propogation                             |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
 //  |              'y'                |                             Decrease Rate of Time                              |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
@@ -157,7 +161,7 @@
 constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
-constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(1.39599f, 2.439995f);
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 1.439995f);
 
 //Camera Parameters
 const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.0f);
@@ -197,10 +201,10 @@ void AssetLoadingDemo::initialize() {
     //Set the variables regarding instanced drawing
     drawMultipleInstances = false;
     instanceCount = STARTING_INSTANCE_COUNT;
-    instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
-    instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
+    
 
     freezeTimeToggle = false;
+    reverseTimePropogation = false;
     enableBlending = false;
     enableDepthClamping = false;
 
@@ -242,16 +246,16 @@ void AssetLoadingDemo::initialize() {
 }
 
 
-AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : RenderDemoBase() {
+AssetLoadingDemo::AssetLoadingDemo(InitReport* initReport) : RenderDemoBase() {
 	initialize();
-	//Make sure we have a monitor to render to
-	if (!screenInfo || !screenInfo->activeMonitor) {
-		error = true;
-		return;
-	}
-	//Make sure the context is set to this monitor (and this thread [see glfw documentation])
-	if (glfwGetCurrentContext() != screenInfo->activeMonitor) {
-		std::ostringstream warning;
+    //Make sure we have a monitor to render to
+    if (!initReport || !initReport->monitors.activeMonitor.activeMonitor) {
+        error = true;
+        return;
+    }
+    //Make sure the context is set to this monitor (and this thread [see glfw documentation])
+    if (glfwGetCurrentContext() != initReport->windowContext.window.window) {
+        std::ostringstream warning;
 		warning << "\nWARNING!\n[In AssetLoadingDemo's constructor]\n" <<
 			"AssetLoadingDemo detected that the GLFW active context was set" <<
 			"\nto a different monitor or different execution-thread then\n" <<
@@ -262,10 +266,9 @@ AssetLoadingDemo::AssetLoadingDemo(std::shared_ptr<MonitorData> screenInfo) : Re
 			"is being passed to AssetLoadingDemo in the application code!\n";
 
 		fprintf(WRNLOG, warning.str().c_str());
-		glfwMakeContextCurrent(screenInfo->activeMonitor);
-	}
-
-	mainRenderWindow = screenInfo->activeMonitor;
+        glfwMakeContextCurrent(initReport->windowContext.window.window);
+    }
+    mainRenderWindow = initReport->windowContext.window.window;
     recomputeProjectionMatrix(); //Well really we compute it here for the first time
 }
 
@@ -570,6 +573,9 @@ void AssetLoadingDemo::renderLoop() {
 			toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
 		}
         
+        if (checkIfShouldReverseDirectionOfTime())
+            reverseTime();
+
         /* 
         zNear += 0.000025f;
         if (zNear >= 0.02f)
@@ -597,13 +603,10 @@ void AssetLoadingDemo::renderLoop() {
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
 		translate();
-		//if (drawMultipleInstances) {  //If drawing instances
-			modifyInstancedDrawingSpiralPattern();  //Change the parameters for how the instances are drawn
-		//}
 
 		//Perform logic 
 
-		performRenderDemoSharedInputLogic(); 
+		performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
 			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
@@ -621,7 +624,8 @@ void AssetLoadingDemo::renderLoop() {
 		drawVerts();
 
 		if (!freezeTimeToggle) { //if time is not frozen
-			counter += (0.0125f * (1.0f + timeTickRateModifier)); //Increment time 
+            float delta = (0.0125f * (1.0f + timeTickRateModifier));
+            ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propogation 
 		}
 
 		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
@@ -676,6 +680,22 @@ inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
 		}
 	}
 	return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldReverseDirectionOfTime() const noexcept {
+    static bool keyWasPressedOnPreviousFrame = false;
+
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) {
+        if (!keyWasPressedOnPreviousFrame) {
+            keyWasPressedOnPreviousFrame = true; //setup for the next frame
+            return true;
+        }
+    }
+
+    else
+        keyWasPressedOnPreviousFrame = false;
+
+    return false;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldIncreasePassageOfTime() const noexcept {
@@ -780,8 +800,6 @@ void AssetLoadingDemo::reset() noexcept {
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
-		instanceSpiralPatternPeriod_x = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_X;
-		instanceSpiralPatternPeriod_y = STARTING_INSTANCE_SPIRAL_PATTERN_PERIOD_Y;
 	}
     
     recomputeProjectionMatrix();
@@ -799,6 +817,12 @@ void AssetLoadingDemo::toggleTimeFreeze() noexcept {
 	}
 }
 
+void AssetLoadingDemo::reverseTime() noexcept {
+    reverseTimePropogation = !reverseTimePropogation;
+    fprintf(MSGLOG, "Time is now propogating %s\n",
+        reverseTimePropogation ? "Backwards" : "Forwards");
+}
+
 void AssetLoadingDemo::increasePassageOfTime() noexcept {
     timeTickRateModifier += 0.005f;
     static auto frameUpdateMessageWasLastPrinted = frameNumber;
@@ -808,7 +832,11 @@ void AssetLoadingDemo::increasePassageOfTime() noexcept {
         frameUpdateMessageWasLastPrinted = frameNumber;
     else
         return;
-    fprintf(MSGLOG, "Time now operating at %%%f speed\n", (1.0f+timeTickRateModifier) * 100.0f);
+
+    float delta = (1.0f + timeTickRateModifier) * 100.0f;
+    if (reverseTimePropogation)
+        delta *= -1.0f;
+    fprintf(MSGLOG, "Time now operating at %%%f speed\n", delta);
 }
 
 void AssetLoadingDemo::decreasePassageToTime() noexcept {
@@ -969,62 +997,6 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 					fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
 				}
 			}
-		}
-	}
-}
-
-void AssetLoadingDemo::modifyInstancedDrawingSpiralPattern() noexcept {
-	const GLfloat xChangeRate = 0.015f;
-	const GLfloat yChangeRate = 0.015f;
-	const GLfloat leftShiftFactor = 5.0f; //Holding down left shift will cause value to change leftShiftFactor times faster
-	const GLfloat rightShiftFactor = 25.0f; //Holding down right shift will cause values to change rightShiftFactor times faster
-
-	//Check for updates to X period
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_x -= xChangeRate * rightShiftFactor;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_x -= xChangeRate * leftShiftFactor;
-		}
-		else {
-			instanceSpiralPatternPeriod_x -= xChangeRate;
-		}
-	}
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_x += xChangeRate * rightShiftFactor;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_x += xChangeRate * leftShiftFactor;
-		}
-		else {
-			instanceSpiralPatternPeriod_x += xChangeRate;
-		}
-	}
-
-
-	//Check for updates to Y period
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_y -= yChangeRate * rightShiftFactor;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_y -= yChangeRate * leftShiftFactor;
-		}
-		else {
-			instanceSpiralPatternPeriod_y -= yChangeRate;
-		}
-	}
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_y += yChangeRate * rightShiftFactor;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-			instanceSpiralPatternPeriod_y += yChangeRate * leftShiftFactor;
-		}
-		else {
-			instanceSpiralPatternPeriod_y += yChangeRate;
 		}
 	}
 }
@@ -1254,10 +1226,6 @@ void AssetLoadingDemo::updateUniforms() {
 	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
 	
 
-	//if (drawMultipleInstances) {
-		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_x", instanceSpiralPatternPeriod_x);
-		sceneShader->uniforms.updateUniform1f("instanceSpiralPatternPeriod_y", instanceSpiralPatternPeriod_y);
-	//}
 
 }
 
