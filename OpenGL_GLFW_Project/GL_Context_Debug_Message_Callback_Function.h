@@ -55,7 +55,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	//       appear in the middle of an Application message that is written over multiple 'fprintf' calls.
 
 
-	static constexpr const size_t BUFFER_SIZE_TOTAL = 4096u; //This should be big enough to cover all cases [hopefully]
+	static constexpr const size_t BUFFER_SIZE_TOTAL = 3*4096u; //This should be big enough to cover all cases [hopefully]
 
 	static constexpr const size_t BUFFER_SPACE_REQUIRED_FOR_FORMATTING = 320u;
 
@@ -63,17 +63,18 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 #define BUFFER_SIZE (BUFFER_SIZE_TOTAL-bufferIter)
 
 	size_t bufferIter = 0u;
-	char msgBuff[BUFFER_SIZE_TOTAL];
+    char msgBuff[BUFFER_SIZE_TOTAL] = { '\0' };
+
+    const GLsizei MAX_MESSAGE_LENGTH = (BUFFER_SIZE - BUFFER_SPACE_REQUIRED_FOR_FORMATTING);
 
 	//Just in case the callback message is too large for the buffer 
-	if (static_cast<size_t>(length) > (BUFFER_SIZE - BUFFER_SPACE_REQUIRED_FOR_FORMATTING)) {
+	if (length > MAX_MESSAGE_LENGTH) {
 		fprintf(ERRLOG, "\nGL Callback Error But The Message is too long for formatting!\nMsg: %s", message);
 		return;
 	}
 
 	//Print a message based off severity 
 	if ((severity == GL_DEBUG_SEVERITY_HIGH) || (severity == GL_DEBUG_SEVERITY_MEDIUM)) {
-
 
 		//Message Format depends on the message's source
 		
@@ -83,49 +84,49 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		if (source == GL_DEBUG_SOURCE_THIRD_PARTY) {
 			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
 				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"Third Party CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
 			}
 			else {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
 			}
 			switch (type) {   //The intention here is to have 'type' be right justified on same line
 			case (GL_DEBUG_TYPE_ERROR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
 				break;
 			default:
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
-			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", message);
+			snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
 		
 		} //The fprintf call is made at the end of all the MEDIUM/HIGH priority source cases
@@ -137,49 +138,49 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		else if (source == GL_DEBUG_SOURCE_APPLICATION) {
 			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
 				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"Application CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 44
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "HIGH! ) "); //total strlen now is 52
 			}
 			else {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "MEDIUM )"); //total strlen now is 52
 			}
 			switch (type) {   //The intention here is to have 'type' be right justified on same line 
 			case (GL_DEBUG_TYPE_ERROR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = UNKNOWN]\n");
 				break;
 			default:
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
-			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", message);
+			snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); //__ characters
 
 		}
@@ -191,69 +192,69 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		//-------------------------------------------------------------
 
 		else if (source != GL_DEBUG_SOURCE_OTHER) {
-			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
+			bufferIter += snprintf(&msgBuff[0], BUFFER_SIZE,
 				"\n*******************************************************************************\n"); //80 characters
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"GL Context CALLBACK ( ID = 0x%05X,  Severity = ", id); //strlen is 43
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 					"HIGH! )  "); //total strlen now is 52  (extra spaces at end of string are intentional)
 			}
 			else {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 					"MEDIUM ) "); //total strlen now is 52
 			}
 
 			switch (type) {   //The intention here is to have 'type' be right justified on same line 
 			case (GL_DEBUG_TYPE_ERROR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = ERROR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%23s", "[type = ERROR]\n");
 				break;
 			case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = DEPRECATED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%13s", "[type = DEPRECATED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = UNDEFINED BEHAVIOR]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%13s", "[type = UNDEFINED BEHAVIOR]\n");
 				break;
 			case (GL_DEBUG_TYPE_PERFORMANCE):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PERFORMANCE]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%17s", "[type = PERFORMANCE]\n");
 				break;
 			case (GL_DEBUG_TYPE_PORTABILITY):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PORTABILITY]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%17s", "[type = PORTABILITY]\n");
 				break;
 			case (GL_DEBUG_TYPE_MARKER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = MARKER]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%22s", "[type = MARKER]\n");
 				break;
 			case (GL_DEBUG_TYPE_PUSH_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = PUSH GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%18s", "[type = PUSH GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_POP_GROUP):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = POP GROUP]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%19s", "[type = POP GROUP]\n");
 				break;
 			case (GL_DEBUG_TYPE_OTHER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = OTHER]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%23s", "[type = OTHER]\n");
 				break;
 			default:
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%28s", "[type = INVALID_ENUM]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%16s", "[type = INVALID_ENUM]\n");
 				break;
 			}
 
 			switch (source) {
 			case (GL_DEBUG_SOURCE_API):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: GL API]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "[Source: GL API]\n");
 				break;
 			case (GL_DEBUG_SOURCE_WINDOW_SYSTEM):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: WINDOW SYSTEM]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "[Source: WINDOW SYSTEM]\n");
 				break;
 			case (GL_DEBUG_SOURCE_SHADER_COMPILER):
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: SHADER COMPILER]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "[Source: SHADER COMPILER]\n");
 				break;
 			default:
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[Source: UNKNOWN ENUM]\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "[Source: UNKNOWN ENUM]\n");
 				break;
 			}
 
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
-			snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", message);
+			snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 				"\n*******************************************************************************\n"); //80 characters
 		}
 
@@ -264,16 +265,16 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 		else {
 			bufferIter += snprintf(msgBuff, BUFFER_SIZE,
 				"\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNKNOWN SOURCE CALLBACK!!! PRIORITY IS ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "UNKNOWN SOURCE CALLBACK!!! PRIORITY IS ");
 			if (GL_DEBUG_SEVERITY_HIGH) {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "HIGH!\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "HIGH!\n");
 			}
 			else {
-				bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MEDIUM\n");
+				bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "MEDIUM\n");
 			}
 
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\nMessage is: %s", message);
-			snprintf(msgBuff + bufferIter, BUFFER_SIZE, 
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "\nMessage is: %s", message);
+			snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, 
 				"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		}
 
@@ -291,70 +292,70 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 		bufferIter += snprintf(msgBuff, BUFFER_SIZE,
 			"\n-------------------------------------------------------------------------------\n");
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+		bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 			"\n[LOW PRIORITY] GL CALLBACK (Source = ");
 
 		switch (source) {
 		case GL_DEBUG_SOURCE_API:   //The source is from direct usage of OpenGL API
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OpenGL API, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "OpenGL API, ");
 			break;
 		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Window System, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "Window System, ");
 			break;
 		case GL_DEBUG_SOURCE_SHADER_COMPILER:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Shader Compiler, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "Shader Compiler, ");
 			break;
 		case GL_DEBUG_SOURCE_THIRD_PARTY:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Third Party, ");    //Message originated from a third-party source 
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "Third Party, ");    //Message originated from a third-party source 
 			break;
 		case GL_DEBUG_SOURCE_APPLICATION:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "Application, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "Application, ");
 			break;
 		case GL_DEBUG_SOURCE_OTHER:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OTHER, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "OTHER, ");
 			break;
 		default:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNKNOWN, ");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "UNKNOWN, ");
 			break;
 		}
 
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "ID = 0x%05X, Type = ", id);
+		bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "ID = 0x%05X, Type = ", id);
 
 
 		switch (type) {   //The intention here is to have 'type' be right justified on same line 
 		case (GL_DEBUG_TYPE_ERROR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "ERROR)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "ERROR)\n");
 			break;
 		case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "DEPRECATED BEHAVIOR)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "DEPRECATED BEHAVIOR)\n");
 			break;
 		case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "UNDEFINED BEHAVIOR)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "UNDEFINED BEHAVIOR)\n");
 			break;
 		case (GL_DEBUG_TYPE_PERFORMANCE):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PERFORMANCE)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "PERFORMANCE)\n");
 			break;
 		case (GL_DEBUG_TYPE_PORTABILITY):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PORTABILITY)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "PORTABILITY)\n");
 			break;
 		case (GL_DEBUG_TYPE_MARKER):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "MARKER)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "MARKER)\n");
 			break;
 		case (GL_DEBUG_TYPE_PUSH_GROUP):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "PUSH GROUP)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "PUSH GROUP)\n");
 			break;
 		case (GL_DEBUG_TYPE_POP_GROUP):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "POP GROUP)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "POP GROUP)\n");
 			break;
 		case (GL_DEBUG_TYPE_OTHER):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "OTHER)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "OTHER)\n");
 			break;
 		default:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", "INVALID_ENUM)\n");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", "INVALID_ENUM)\n");
 			break;
 		}
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "%s", message);
-		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+		bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "%s", message);
+		snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 			"\n-------------------------------------------------------------------------------\n");
 	}
 
@@ -368,42 +369,42 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	else {
 		bufferIter += snprintf(msgBuff, BUFFER_SIZE,
 			"\n*******************   GL Context Notification    *******************\n");
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "[ID = 0x%05X, Type = ", id);
+		bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "[ID = 0x%05X, Type = ", id);
 		switch (type) {
 		case (GL_DEBUG_TYPE_ERROR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "ERROR]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "ERROR]");
 			break;
 		case (GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "DEPRECATED_BEHAVIOR]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "DEPRECATED_BEHAVIOR]");
 			break;
 		case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "UNDEFINED_BEHAVIOR]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "UNDEFINED_BEHAVIOR]");
 			break;
 		case (GL_DEBUG_TYPE_PERFORMANCE):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PERFORMANCE]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "PERFORMANCE]");
 			break;
 		case (GL_DEBUG_TYPE_PORTABILITY):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PORTABILITY]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "PORTABILITY]");
 			break;
 		case (GL_DEBUG_TYPE_MARKER):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "MARKER]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "MARKER]");
 			break;
 		case (GL_DEBUG_TYPE_PUSH_GROUP):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "PUSH_GROUP]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "PUSH_GROUP]");
 			break;
 		case (GL_DEBUG_TYPE_POP_GROUP):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "POP_GROUP]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "POP_GROUP]");
 			break;
 		case (GL_DEBUG_TYPE_OTHER):
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "OTHER]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "OTHER]");
 			break;
 		default:
-			bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "INVALID TYPE ENUM!!!]");
+			bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "INVALID TYPE ENUM!!!]");
 			break;
 		}
 
-		bufferIter += snprintf(msgBuff + bufferIter, BUFFER_SIZE, "\n%s", message);
-		snprintf(msgBuff + bufferIter, BUFFER_SIZE,
+		bufferIter += snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE, "\n%s", message);
+		snprintf(&(msgBuff[bufferIter]), BUFFER_SIZE,
 			"\n********************************************************************\n");
 	}
 
@@ -417,7 +418,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 
 
-//Extra formatting for just in case:
+//Extra copy of the switch statement for possible future use:
 			//switch (type) {
 			//case (GL_DEBUG_TYPE_ERROR):
 	        //

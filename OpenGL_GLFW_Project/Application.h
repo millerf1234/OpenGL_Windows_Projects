@@ -92,6 +92,7 @@ private:
 	//The following functions are for setting up and running different demo programs. These functions rely on
 	//the runRenderDemo() function above for polymorphically calling their overridden virtual functions. 
 	
+    void runFlyingCameraDemo();
 	void runAssetLoadingDemo();
 	void runLightsourceTestDemo();
 	void runTeapotExplosionDemo();

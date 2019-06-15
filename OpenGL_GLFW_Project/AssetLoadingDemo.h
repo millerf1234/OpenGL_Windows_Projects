@@ -54,7 +54,8 @@ static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5U;
 
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
-//RenderDemo and try to change settings
+//RenderDemo and try to change settings  [unfortunatly this constant has not yet been 
+//universally implemented for all controlls]
 static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ULL;
 
 
@@ -81,7 +82,7 @@ public:
 	virtual void loadAssets() override;
 	virtual void run() override;
 	
-private:
+protected: //private:
 	bool error;
 	//float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
     float timeTickRateModifier;
@@ -271,7 +272,8 @@ private:
 
     void generateTriangleOutlineElementOrdering() noexcept;
 
-    glm::vec3 computePositionOffsetForNextObject(const glm::vec3& posOffset = glm::vec3(0.0f, 0.0f, 0.0f)) const noexcept;
+    //NOT_IMPLEMENTED:
+    //glm::vec3 computePositionOffsetForNextObject(const glm::vec3& posOffset = glm::vec3(0.0f, 0.0f, 0.0f)) const noexcept;
 
     //Prints out the name of the currently active primitive type 
     void printNameOfTheCurrentlyActivePrimitive() const noexcept;
@@ -291,11 +293,9 @@ private:
 		return glm::vec2(MathFunc::getRandomInRangef(0.0f, 1.0f), MathFunc::getRandomInRangef(0.0f, 1.0f));
 	}
 	//Helper function for generating constant texture coords
-	static inline glm::vec2 generateConstantTexCoords() noexcept {
-		return glm::vec2(0.5f, 0.5f);
-	}
-	
-    void constructAlternateSceneBufferForDrawingTriangleOutline() noexcept;
+    static inline glm::vec2 generateConstantTexCoords() noexcept {
+        return glm::vec2(0.5f, 0.5f);
+    }
 
     void createSceneVBO() noexcept;
     void createTriangleOutlineEBO() noexcept;

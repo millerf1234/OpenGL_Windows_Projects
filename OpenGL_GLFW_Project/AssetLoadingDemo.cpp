@@ -161,17 +161,17 @@
 constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
-constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 1.0439995f);
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 15.0f);
-const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, -8.5f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.2f, 1.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
-constexpr const float CAMERA_DEFAULT_FOV = 62.0f;
-constexpr const float CAMERA_MAXIMUM_FOV = 90.0f;
-constexpr const float CAMERA_MINIMUM_FOV = 40.0f;
+constexpr const float CAMERA_DEFAULT_FOV = 1.5f;
+constexpr const float CAMERA_MAXIMUM_FOV = 3.14159f;
+constexpr const float CAMERA_MINIMUM_FOV = -3.14159f;
 constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
-constexpr const float CAMERA_Z_PLANE_FAR = 10000.0f;
+constexpr const float CAMERA_Z_PLANE_FAR = 100.0f;
 
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
@@ -296,13 +296,16 @@ void AssetLoadingDemo::run() {
 	fprintf(MSGLOG, "\nAsset Loading Demo project has loaded and will begin running!\n");
 
 
-	fprintf(MSGLOG, "\n\tDemo Starting...!\n");
+	fprintf(MSGLOG, "\nDemo Starting...!\n");
 
 
 	fprintf(MSGLOG, "\nEntering Render Loop...\n");
 
 
 	renderLoop();
+
+
+    fprintf(MSGLOG, "\nExited Render Loop!\n");
 
 }
 
@@ -319,8 +322,10 @@ void AssetLoadingDemo::loadAssets() {
 
 
 void AssetLoadingDemo::loadShaders() { 
-	std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
+	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
+#define USE_RUBYMINE
+#ifdef USE_RUBYMINE
 	/////////////////////////
 	////    RubyMine Shader   (from the internet)
 	/////////////////////////
@@ -348,7 +353,7 @@ void AssetLoadingDemo::loadShaders() {
 	}
 
 
-
+#else 
 
 	/////////////////////////
 	////    Normal Shader
@@ -387,13 +392,16 @@ void AssetLoadingDemo::loadShaders() {
 	}
 	else {
 		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+        //This next line is to give the user false hope
 		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
 		std::cin.get(); //Hold the mainRenderWindow open if there was an error
 		markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
 		return;
 	}
 
+
 	fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
+#endif //ifdef USE_RUBYMINE
 }
 
 
@@ -483,8 +491,7 @@ void AssetLoadingDemo::loadModels() {
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-	
+
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
     //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -609,7 +616,7 @@ void AssetLoadingDemo::renderLoop() {
 		performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
-			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ull)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
+			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
 			if (checkForUpdatedShaders()) {
 				buildNewShader();
 			}
@@ -842,7 +849,7 @@ void AssetLoadingDemo::increasePassageOfTime() noexcept {
 void AssetLoadingDemo::decreasePassageToTime() noexcept {
     timeTickRateModifier -= 0.005f;
     static auto frameUpdateMessageWasLastPrinted = frameNumber;
-    if (frameNumber < frameUpdateMessageWasLastPrinted) //
+    if (frameNumber < frameUpdateMessageWasLastPrinted) 
         frameUpdateMessageWasLastPrinted = frameNumber;
     else if (frameNumber >= (15ull + frameUpdateMessageWasLastPrinted))
         frameUpdateMessageWasLastPrinted = frameNumber;
@@ -858,7 +865,7 @@ void AssetLoadingDemo::toggleBlending() noexcept {
 
 	enableBlending = !enableBlending;
 	if (enableBlending) {
-		fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to 'ONE_MINUS_SOURCE_ALPHA' \n");
+		fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to \'ONE_MINUS_SOURCE_ALPHA\' \n");
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -900,6 +907,8 @@ void AssetLoadingDemo::updateFieldOfView() noexcept {
     if (fov < CAMERA_MINIMUM_FOV)
         fov = CAMERA_MINIMUM_FOV;
 
+    if (fabs(fov) < 0.01f)
+        fov = 0.01f;
     //This logs fov updates whenever there is a change 
     if ( abs(lastPrintedFOVUpdate - fov) >= 0.04f ) {
             lastPrintedFOVUpdate = fov;
@@ -1383,9 +1392,9 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		
 
 		//Increment offset to prepare for the next object
-		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x;
-		objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y;
-        objectPositionOffset.z += MathFunc::getRandomInRangef(0.05f, 0.85f);
+		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-12.0f, 12.0f);
+        objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-6.0f, 6.0f);
+        objectPositionOffset.z += MathFunc::getRandomInRangef(1.0f, 1.0f);
 
         //objectPositionOffset = glm::normalize(objectPositionOffset);
 
@@ -1434,6 +1443,7 @@ void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_i
 void AssetLoadingDemo::createSceneVBO() noexcept {
 
     glGenBuffers(1, &sceneBufferVBO);
+    fprintf(MSGLOG, "\nCreated a vertex buffer object to store scene vertices. (BufferID = %u)\n\n", sceneBufferVBO);
 
 }
 
@@ -1441,7 +1451,9 @@ void AssetLoadingDemo::createSceneVBO() noexcept {
 void AssetLoadingDemo::createTriangleOutlineEBO() noexcept {
 
     glGenBuffers(1, &triangleOutlineEBO);
-
+    fprintf(MSGLOG, "\nCreated an element buffer object to store the alternative\n"
+        "vertice ordering required to properly draw lines. (BufferID = %u)\n\n",
+        triangleOutlineEBO);
 }
 
 

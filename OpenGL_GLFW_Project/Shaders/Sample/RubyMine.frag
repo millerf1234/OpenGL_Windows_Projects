@@ -211,8 +211,6 @@ vec2 worley(vec3 P, float jitter) {
 
 void main() {
 
-#if 1
-
         vec2 worl = worley(vPosition, vJitter);
         float world = worl.y * worl.x;
 
@@ -241,16 +239,21 @@ void main() {
         if (length(outColor.rgb) < 0.5) {
             outColor.rgb = vec3(1.2) - outColor.rgb;
         }
-        outColor.r = (outColor.r + 0.25*sin(time + (50000.0*vPosition.x))); 
+        outColor.r = 2.0*(outColor.r + 0.25*sin(time + (50000.0*vPosition.x))); 
         
-#else 
-outColor = vec4(1.0, 0.47, 0.0, 1.0);
-#endif 
-       
-       if (outColor.length() > 0.15 &&
-           outColor.length() < 01.52) 
-       discard;
-       //float tmp00 = outColor.r;
-       //outColor.rgba = outColor.gbra;
 
-      }
+       
+       //float tmp00 = outColor.r;
+       outColor.rgb = outColor.brg;
+       
+       float alphaSineFactor = (time / max(0.1, abs(worl.x))) + (time / max(0.1, abs(worl.y)));
+       outColor.a *= (1.0 + 0.51 * sin( alphaSineFactor * cos(alphaSineFactor) * (float(vInst) * 3.14159 / 3.0)));
+
+       if (vInst == -10 || vInst == -11)
+           outColor.a *= 2.7;
+       else 
+           outColor.a *= (0.99 - 0.00025*float(10+vInst));
+           
+
+           
+}

@@ -37,6 +37,9 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <UseOfMfc>Static</UseOfMfc>
+    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -166,6 +169,7 @@
     <ClCompile Include="ConnectedMonitors.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
+    <ClCompile Include="FlyingCameraDemo.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="FSMCallbackInitializer.cpp" />
     <ClCompile Include="FSMMonitorEventCallback.cpp" />
@@ -194,6 +198,7 @@
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
+    <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
     <ClCompile Include="PrimaryRenderWindow.cpp" />
@@ -230,6 +235,7 @@
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="ConnectedMonitors.h" />
     <ClInclude Include="DebugSettings.h" />
+    <ClInclude Include="FlyingCameraDemo.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
     <ClInclude Include="FSMMonitorEventCallback.h" />
     <ClInclude Include="FSMRenderEngine.h" />
@@ -255,6 +261,9 @@
     <ClInclude Include="Joystick.h" />
     <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="JoystickManager.h" />
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h" />
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h" />
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
     <ClInclude Include="VideoMode.h" />
@@ -397,6 +406,7 @@
     <None Include="freetype.dll" />
     <None Include="glfw3.dll" />
     <None Include="glfw3dll.exp" />
+    <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html" />
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
@@ -424,6 +434,8 @@
     <None Include="Shaders\AssetLoadingDemo.frag" />
     <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
+    <None Include="Shaders\FlyingCameraDemo.frag" />
+    <None Include="Shaders\FlyingCameraDemo.vert" />
     <None Include="Shaders\LightsourceTestDemo.frag" />
     <None Include="Shaders\LightsourceTestDemo.vert">
       <DeploymentContent>false</DeploymentContent>

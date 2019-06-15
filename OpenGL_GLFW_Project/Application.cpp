@@ -6,6 +6,8 @@
 
 #include "Application.h"
 
+#include "FlyingCameraDemo.h"
+
 void Application::initialize() {
 	mApplicationValid = true;
 	initReport = nullptr;
@@ -72,10 +74,13 @@ void Application::launch() {
 
 	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
+    fprintf(MSGLOG, "\nSelected FlyingCameraDemo.\n");
+    runFlyingCameraDemo();
+    return;
 
-	fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	runAssetLoadingDemo();
-	return;
+	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+	//runAssetLoadingDemo();
+	//return;
 	
 	//fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
 	//runLightsourceTestDemo();
@@ -203,6 +208,7 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 			"Only reasonable thing to do here is crash and exit gracefully...\n  Demo is exiting!\n");
 		fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
 		std::cin.get(); //Require acknowledgment from programmer that he/she/they messed up big time before crashing 
+        std::exit(EXIT_FAILURE);
 	}
 	//Perform a second error check
 	else if ( !(initReport && mApplicationValid) ) {
@@ -210,15 +216,28 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 			"The Application is invalid or the detected display information is null!\n");
 	}
 	//Else proceed with loading and launching the RenderDemo
-	else {
-		if (demoHasNameProvided) {
-			fprintf(MSGLOG, "Loading %s... \n", name);
-		}
-		renderDemo->loadAssets();
-		renderDemo->run();
-	}
+    else {
+
+        if (demoHasNameProvided) {
+            fprintf(MSGLOG, "Loading %s... \n", name);
+        }
+        try {
+            renderDemo->loadAssets();
+            renderDemo->run();
+        }
+        catch (const std::exception& e) {
+            fprintf(ERRLOG, "\nThe following exception was thrown inside the render demo!\n");
+            fprintf(ERRLOG, "%s\n", e.what());
+            fprintf(ERRLOG, "\n\t[Program will now crash...]\n");
+            std::exit(EXIT_FAILURE);
+        }
+    }
 }
 
+void Application::runFlyingCameraDemo() {
+    std::unique_ptr<RenderDemoBase> flyingCameraDemo = std::make_unique<FlyingCameraDemo>(initReport.get());
+    runRenderDemo(flyingCameraDemo, "Asset Loading Demo");
+}
 
 void Application::runAssetLoadingDemo() {
 	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(initReport.get());

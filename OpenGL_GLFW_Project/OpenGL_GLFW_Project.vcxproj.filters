@@ -382,6 +382,18 @@
     <Filter Include="Header Files\SetupAndConfiguration\FilepathsToAssetDirectories">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\FlyingCameraDemo">
+      <UniqueIdentifier>{b4fb4891-f386-46ee-a470-4887f9aa3313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\Temp">
+      <UniqueIdentifier>{25bc1157-0e20-40a5-944b-1acd3b537ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\Temp\CameraClass_FromNonEuclidean">
+      <UniqueIdentifier>{8feb3188-06f1-4f58-970b-eccc2a4e6954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo">
+      <UniqueIdentifier>{735dc162-5caf-4c95-8e65-d531798050e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -551,6 +563,12 @@
     </ClCompile>
     <ClCompile Include="QuickObj_NGonParser.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyingCameraDemo.cpp">
+      <Filter>Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo</Filter>
+    </ClCompile>
+    <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp">
+      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1048,6 +1066,18 @@
     <ClInclude Include="GLFW_Init_Report.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
     </ClInclude>
+    <ClInclude Include="FlyingCameraDemo.h">
+      <Filter>Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo</Filter>
+    </ClInclude>
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h">
+      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h">
+      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h">
+      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1241,6 +1271,15 @@
     </None>
     <None Include="Shaders\TeapotExplosion.frag">
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+    </None>
+    <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html">
+      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </None>
+    <None Include="Shaders\FlyingCameraDemo.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+    </None>
+    <None Include="Shaders\FlyingCameraDemo.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
