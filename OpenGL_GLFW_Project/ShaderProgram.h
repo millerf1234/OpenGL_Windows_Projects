@@ -1,5 +1,5 @@
-//File:    CompiledShader.h
-//Class:   CompiledShader
+//File:    ShaderProgram.h
+//Class:   ShaderProgram
 //Programmer: Forrest Miller
 //Date(s): 7/24/2018 - 8/1/2018  
 //
@@ -42,7 +42,7 @@
 //
 //           December 3-5 (or so)  2018  -- (MAYBE) Add support for having each shader program's shaders query the operating system [using C++17/C++20's  
 //                                          std::filesystem::last_write_time()] to determine if the files containing their source code
-//                                          has been modified from the version they were built with, and then having them rebuild themselves from
+//                                          have been modified from the version they were built with, and then having them rebuild themselves from
 //                                          the updated source. Note that this functionality will be disabled for both unlinked/incomplete shader programs
 //                                          and for shader programs that have been released from the context (by having their member function 'released()' 
 //                                          called). 
@@ -112,15 +112,15 @@
 			//Creates an object-local Vertex shader and attaches it to this program
 			inline bool attachVert(std::string vert) {   return (attachVert(vert.c_str()));   }
 			//Creates an object-local Vertex shader and attaches it to this program
-			bool attachVert(const char * vert);
+			bool attachVert(const char* vert);
 			//Uses an already-created Vertex shader and attachs it to this program. This object does
 			//not assume control/ownership of the vertex shader
-			void attachVert(const ShaderInterface::VertexShader * vert);
+			void attachVert(const ShaderInterface::VertexShader* vert);
 			//Uses an already created vertex shader that does not contain a 'main' function and has 
 			//been marked as secondary using the 'makeSecondary()' function and attaches it to this
 			//shader. It is possible to attach as many secondarys as are available, though it is an
-			//error to attach the same secondary twice 
-			void attachSecondaryVert(const ShaderInterface::VertexShader * vert);
+			//error to attach the same secondary twice. 
+			void attachSecondaryVert(const ShaderInterface::VertexShader* vert);
 
 
 			//Creates an object-local Geometry shader and attaches it to this program
@@ -214,7 +214,7 @@
 
 
 			//Checks to see if this ShaderProgram is linked
-			bool checkIfLinked() const { return mState.mLinked; }
+			bool checkIfLinked() const noexcept { return mState.mLinked; }
 
 			//Links this shader program object. This shader program must have either solely a Compute
 			//shader or both a Vertex and Fragment shader attached before linking. Additionally,
