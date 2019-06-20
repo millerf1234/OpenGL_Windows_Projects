@@ -1,0 +1,61 @@
+#Based off the "SimpleSkyDome.obj" file. The intent of this file is to
+#isolate various sections of the full "SimpleSkyDome.obj" file to try to
+#determine why the QuickObj parser is failing.
+mtllib SimpleSkyDome.mtl
+o Roundcube
+v 144.337 -144.337 -144.337
+v 115.47 -156.791 -156.791
+v 86.6 -165.83124 -165.831
+v 57.735 -171.998 -171.9981
+v 28.8675 -175.594 -175.594
+v 0.0 -176.777 -176.777
+v -28.8675 -175.594 -175.5941
+v -57.735 -171.9981 -171.99811
+v -86.603 -165.8313 -165.8312
+v -115.47 -156.791 -156.791
+v 156.791 -115.4701 -156.791
+v 125.4326 -125.4326 -176.163
+#Optionally include the following line [13] to draw 2 quads
+v 94.0744 -132.665 -189.8684
+#Optionally include the following line [14] to draw 3 quads
+v 62.7163 -137.59845 -199.081223
+#Optionally include the following line [15] to draw 4 quads
+v 31.358 -140.4754 -204.410
+#Optionally include the following line [16] to draw 5 quads
+v 0.0 -141.421 -206.1553
+#Optionally include the following line [17] to draw 6 quads
+v -31.358 -140.4754 -204.41
+#Optionally include the following line [18] to draw 7 quads
+v -62.72 -137.5985 -199.081
+#Optionally include the following line [19] to draw 8 quads
+v -94.07444 -132.665 -189.868
+#Optionally include the following line [20] to draw 9 quads
+v -125.432587 -125.432587 -176.162796
+#The first 15 normals are as follows
+vn 0.5414 -0.5414 -0.6432
+vn 0.4202 -0.5819 -0.6963
+vn 0.2997 -0.6101 -0.7334
+vn 0.1797 -0.6281 -0.7571
+vn 0.0599 -0.6368 -0.7687
+vn -0.0599 -0.6368 -0.7687
+vn -0.1797 -0.6281 -0.7571
+vn -0.2997 -0.6101 -0.7334
+vn -0.4202 -0.5819 -0.6963
+vn -0.5414 -0.5414 -0.6432
+vn 0.5819 -0.4202 -0.6963
+vn 0.4519 -0.4519 -0.7691
+vn 0.3225 -0.4739 -0.8194
+vn 0.1934 -0.4879 -0.8512
+vn 0.0645 -0.4947 -0.8667
+usemtl None
+s off
+f 1//1 2//1 12//1 11//1
+f 2//2 3//2 13//2 12//2
+f 3//3 4//3 14//3 13//3
+f 4//4 5//4 15//4 14//4
+f 5//5 6//5 16//5 15//5
+f 6//6 7//6 17//6 16//6
+f 7//7 8//7 18//7 17//7
+f 8//8 9//8 19//8 18//8
+f 9//9 10//9 20//9 19//9
+ 
