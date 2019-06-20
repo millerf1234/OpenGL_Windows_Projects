@@ -21,8 +21,9 @@ namespace ShaderInterface {
 		activateUniformLocationTracker(programID);
 	}
 
-	UniformLocationInterface::~UniformLocationInterface() {
-
+	UniformLocationInterface::~UniformLocationInterface() noexcept {
+        //If Cached Uniform Location Functionality is in use, perhaps this destructor should signal
+        //that the UniformLocationInterface [UniformLocationTracker] will soon no longer exist. 
 	}
 
 

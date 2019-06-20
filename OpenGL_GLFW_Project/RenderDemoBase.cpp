@@ -73,6 +73,9 @@ void RenderDemoBase::performRenderDemoSharedInputLogic() {
 	doJoystickPrinterLoopLogic();
 }
 
+void RenderDemoBase::markMainRenderWindowAsReadyToClose() const noexcept {
+    glfwSetWindowShouldClose(mainRenderWindow, true); 
+}
 
 void RenderDemoBase::doJoystickPrinterLoopLogic() {
 	mIterationsSinceLastJoystickStatePrintingLastModified_++;

@@ -35,10 +35,9 @@ namespace ShaderInterface {
 		initializeListLocations();
 	}
 
-	UniformLocationTracker::~UniformLocationTracker() {
+	UniformLocationTracker::~UniformLocationTracker() noexcept {
 
 	}
-
 
 
 	//Update uniform  //see: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUniform.xhtml
@@ -759,14 +758,32 @@ namespace ShaderInterface {
 
 
 	bool UniformLocationTracker::seeIfUniformLocationHasAlreadyBeenCached(const GLchar * uniformName) {
-		std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
-		//Important Note: This function's implementation relies on the behavior of 'operator[]' of an unordered_map. When using
-		//'operator[]' on an unordered_map, the map is searched using the provided key. If an element exists at that key, then
-		//the unordered_map returns a reference to that element. However, if an element is not found associated with the key, the 
-		//unordered_map creates a new element of that type using the elements' default constructor (in this case shared_ptr's default
-		//constructor is called, which in turn calls the default CachedUniformLocation constructor). Thus in the following code,
-		//beacuse the default constructor of CachedUniformLocation constructs an invalid object, to tell if a CachedUniformLocation
-		//already exists, it suffices to just see if the object has been properly initialized.
+		
+        std::shared_ptr<CachedUniformLocation> cachedLocation = mCachedUniformLocations[uniformName];
+
+		//Note: This function's implementation is built upon the behavior of 
+        //the STL container 'std::unordered_map' (i.e. hash table) and its member
+        //'operator[]'. Thus if the behavior of this operator can be understood, the
+        //implementation of this function follows naturally. 
+        //
+        //Specifically, when using 'operator[]' on a 'std::unordered_map', 
+        //a unique value which serves as each element's 'key' is used as the
+        //parameter between the square braces. The unorderedmap is then searched
+        //using this provided key. If it finds an element existing with a matching
+        //key, the unordered_map returns a reference to that element. However, if
+        //an element is not found associated with the key, the unordered_map creates
+        //a new element of that type using the elements' default constructor (in this
+        //case shared_ptr's default constructor is called, which in turn calls the 
+        //default CachedUniformLocation constructor). Thus in the following code,
+		//beacuse the default constructor of CachedUniformLocation constructs an
+        //invalid object, to tell if a CachedUniformLocation already exists, it 
+        //suffices to simply see if the object has been properly initialized. No 
+        //initialization must imply that no object yet exists with this key. 
+        
+        //Since we always get back a reference from the hash table, to insert new
+        //elements we simply look up their key, and if an uninitialized object is 
+        //returned we simply can initialize it and the changes will be reflected 
+        //within the 'std::unordered_map'.  
 
 		if (cachedLocation->mWasInitialized) { //I am able to access the CachedUniformLocation's private parts directly because this class is friends with the CachedUniformLocation class.
 			return true;

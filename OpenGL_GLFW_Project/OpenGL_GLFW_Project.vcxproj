@@ -207,7 +207,9 @@
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="QuickObj_NGonParser.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
+    <ClCompile Include="ScreenCaptureAssistant.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="ShaderProgram2.cpp" />
     <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp" />
     <ClCompile Include="TeapotExplosion.cpp" />
     <ClCompile Include="TessellationControlShader.cpp" />
@@ -266,6 +268,10 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
+    <ClInclude Include="ScreenCaptureAssistant.h" />
+    <ClInclude Include="ShaderProgram2.h" />
+    <ClInclude Include="SupportedWindowResolutions.h" />
+    <ClInclude Include="TGA_Image_File_Format_Header.h" />
     <ClInclude Include="VideoMode.h" />
     <ClInclude Include="WindowCallbackEvent.h" />
     <ClInclude Include="CompiledShader.h" />
@@ -417,13 +423,18 @@
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
     <None Include="obj\BlockThing_Triangulated.mtl" />
+    <None Include="obj\box_cutter.mtl" />
+    <None Include="obj\CargoSpaceshipIdeaThing02.mtl" />
     <None Include="obj\CrazyJetEngine.mtl" />
+    <None Include="obj\DemoSceneInsideABox00.mtl" />
     <None Include="obj\ExperimentalEngine.mtl" />
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
       <SubType>Designer</SubType>
     </None>
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
+    <None Include="obj\SimpleSkyDome.mtl" />
+    <None Include="obj\SimpleSkyDome_ReExport.mtl" />
     <None Include="obj\Splines.mtl" />
     <None Include="obj\SubdivisionCube.mtl" />
     <None Include="obj\Thing.mtl" />
@@ -440,6 +451,7 @@
     <None Include="Shaders\LightsourceTestDemo.vert">
       <DeploymentContent>false</DeploymentContent>
     </None>
+    <None Include="Shaders\PracticeNoise.glsl" />
     <None Include="Shaders\Sample\RubyMine.frag" />
     <None Include="Shaders\Sample\RubyMine.vert" />
     <None Include="Shaders\ShaderNoiseFunctions.glsl" />
@@ -592,6 +604,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\RockThing.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\DemoSceneInsideABox00.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\SimpleSkyDome.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\SimpleSkyDome_ReExport.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\box_cutter.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\CargoSpaceshipIdeaThing02.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

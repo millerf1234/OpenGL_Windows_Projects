@@ -49,8 +49,27 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
     sceneShader = std::make_unique<ShaderProgram>();
 
     sceneShader->attachVert(filepathToShaders + "FlyingCameraDemo.vert");
-    sceneShader->attachFrag(filepathToShaders + "FlyingCameraDemo.frag");
+    ShaderInterface::VertexShader vertNoise(filepathToShaders + "ShaderNoiseFunctions.glsl");
+    vertNoise.makeSecondary();
+    if (!vertNoise.readyToBeAttached()) {
+        fprintf(ERRLOG, "\nError attaching secondary noise shader as vertex shader!\n");
+        std::exit(EXIT_FAILURE);
+    }
+    else {
+        sceneShader->attachSecondaryVert(&vertNoise);
+    }
 
+    sceneShader->attachFrag(filepathToShaders + "FlyingCameraDemo.frag");
+    ShaderInterface::FragmentShader fragNoise(filepathToShaders + "ShaderNoiseFunctions.glsl");
+    fragNoise.makeSecondary();
+
+    if (!fragNoise.readyToBeAttached()) {
+        fprintf(ERRLOG, "\nError attaching secondary noise shader as fragment shader!\n");
+        std::exit(EXIT_FAILURE);
+    } 
+    else {
+        sceneShader->attachSecondaryFrag(&fragNoise);
+    }
     sceneShader->link();
 
     if (sceneShader->checkIfLinked()) {
@@ -69,7 +88,18 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
 void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
 
     const std::string filepathToModels = FILEPATH_TO_MODELS;
-    std::string modelName;
+    std::string modelName, modelName2;
+    //modelName = "DemoSceneInsideABox00.obj";
+   // modelName = "SimpleSkyDome_ReExport.obj";
+    //modelName = "DebugSimpleSkyDomeTest.obj";
+   // modelName2 = "DebugSimpleSkyDomeTest_Triangulated.obj";
+    //modelName = "SubdivisionCube.obj";
+
+    //modelName = "box_cutter.obj";
+
+    modelName = "CargoSpaceshipIdeaThing02.obj";
+
+#if 0 
     for (int i = 0; i < 35; i++) {
         int modelToLoad = MathFunc::getRandomInRangei(0, 8);
         switch (modelToLoad) {
@@ -104,17 +134,20 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
             modelName = "2DTexturedQuadPlane.obj";
             break;
         }
+#else
         sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName, 1.0));
-
-        //Report to console how many models were loaded
-        const size_t loadedModlCount = sceneObjects.size();
-        if (loadedModlCount == 0u)
-            fprintf(MSGLOG, "\nNo models were loaded!\n");
-        else if (loadedModlCount == 1u)
-            fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
-        else
-            fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
-
-
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName2, 1.0));
+#endif 
+#if 0 
     }
+#endif 
+    //Report to console how many models were loaded
+    const size_t loadedModlCount = sceneObjects.size();
+    if (loadedModlCount == 0u)
+        fprintf(MSGLOG, "\nNo models were loaded!\n");
+    else if (loadedModlCount == 1u)
+        fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
+    else
+        fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
+
 }

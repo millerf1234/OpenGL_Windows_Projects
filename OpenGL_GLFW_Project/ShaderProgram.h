@@ -220,7 +220,7 @@
 			//shader or both a Vertex and Fragment shader attached before linking. Additionally,
 			//using the tesselation shaders requires both a tesselation control and tesselation 
 			//evaluation shader to be attached.
-			void link(bool cacheLocalShaders = false);
+			void link();
 
 			//Binds this ShaderProgram to the active program spot in the GL Context. This ShaderProgram
 			//must be linked before this function call will work correctly.

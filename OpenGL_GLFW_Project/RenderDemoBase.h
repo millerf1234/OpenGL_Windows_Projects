@@ -39,10 +39,13 @@
 
 #include <iostream>  //fprintf 
 
+
 #include "GlobalIncludes.h"         //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
 //#include "MissingAsset.h"         //For assets that are missing
 
+//Global RenderDemo utilities
+#include "ScreenCaptureAssistant.h"
 #include "JoystickStatePrinter.h"
 
 enum class PIPELINE_PRIMITIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, TRIANGLE_OUTLINE, LINE_STRIP }; 
@@ -110,7 +113,11 @@ protected:
 	bool mRenderDemoLoaded;
 	*/
 
-	GLFWwindow * mainRenderWindow; //Pointer to target renderable window (Application must provide this)
+	GLFWwindow* mainRenderWindow; //Pointer to target renderable window (Application must provide this)
+
+    //Is able to take screenshots of the current render window output. Only call from a
+    //thread that has the active context first.
+    ScreenCaptureAssistant screenshotAssistant;
 
 	//Performs input-handling and logic configuration on the shared members of every RenderDemo object.
 	//This function should be called as part of the render loop.
@@ -124,15 +131,16 @@ protected:
 	//       reached. Otherwise, if this function is called from within a
 	//       render loop iteration, the remaining parts of the current
 	//       iteration will be performed.
-	void markMainRenderWindowAsReadyToClose() const { glfwSetWindowShouldClose(mainRenderWindow, true); }
-
+    void markMainRenderWindowAsReadyToClose() const noexcept; 
 
 private:
+
 	bool mJoystickStatePrintingEnabled_;
 	unsigned long long mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
 	JoystickStatePrinter joystickPrinter;
 
 	void doJoystickPrinterLoopLogic();
+
 };
 
 

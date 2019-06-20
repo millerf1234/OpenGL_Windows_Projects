@@ -18,7 +18,7 @@
 //#include "ProjectSetup.h" //To get access to GL types
 
 ///////////////////////////////
-//  Settings                      [i.e. Parameters For Initialization] 
+/////  Settings                      [i.e. Parameters For Initialization] 
 ///////////////////////////////
 static const char * FILEPATH_TO_SETTINGS = R"(Settings\)";  //Raw String
 
@@ -26,7 +26,7 @@ static const char * FILEPATH_TO_SETTINGS = R"(Settings\)";  //Raw String
 
 
 ///////////////////////////////
-//  MODELS 
+/////  MODELS 
 ///////////////////////////////
 static const char * FILEPATH_TO_MODELS = R"(obj\)";  //Raw String
 
@@ -34,7 +34,7 @@ static const char * FILEPATH_TO_MODELS = R"(obj\)";  //Raw String
 
 
 ///////////////////////////////
-//  FONTS
+/////  FONTS
 ///////////////////////////////
 static const char * FILEPATH_TO_FONTS = R"(Fonts\)";  //Raw String
 
@@ -52,13 +52,16 @@ static const char * FILEPATH_TO_SHADERS = R"(Shaders\)";  //Raw String
 
 
 ///////////////////////////////
-/////  Images
+/////  Renderable Images
 ///////////////////////////////
+static constexpr const char* FILEPATH_TO_RENDERABLE_IMAGES = R"(RenderableImages\)"; //Raw String
 
 
 
-
-
+///////////////////////////////
+/////  Screenshots
+///////////////////////////////
+static constexpr const char* FILEPATH_TO_SCREENSHOTS= R"(Screenshots\)";  //Raw String
 
 
 

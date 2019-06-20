@@ -67,12 +67,6 @@
     <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
       <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Common\Lightsource">
-      <UniqueIdentifier>{f2596a4f-036e-477a-ad7f-32283bd83f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions">
-      <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects">
       <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
     </Filter>
@@ -126,12 +120,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
       <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise">
-      <UniqueIdentifier>{536b2386-9d8a-4848-906d-41e81e76fad9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial">
-      <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
       <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
@@ -373,15 +361,6 @@
     <Filter Include="Header Files\SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\SetupAndConfiguration\Debug">
-      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SetupAndConfiguration\ApplicationConstantSettings">
-      <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SetupAndConfiguration\FilepathsToAssetDirectories">
-      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\FlyingCameraDemo">
       <UniqueIdentifier>{b4fb4891-f386-46ee-a470-4887f9aa3313}</UniqueIdentifier>
     </Filter>
@@ -391,8 +370,56 @@
     <Filter Include="Third Party\Temp\CameraClass_FromNonEuclidean">
       <UniqueIdentifier>{8feb3188-06f1-4f58-970b-eccc2a4e6954}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo">
+    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes">
+      <UniqueIdentifier>{306b8a4c-eda1-46c8-9467-23cca3cbf6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox">
+      <UniqueIdentifier>{3520e70f-fc97-4a6e-a52b-1fb302b4178c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere">
+      <UniqueIdentifier>{0caa7e57-4edd-4777-8f8c-4fe9825215df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions">
+      <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise">
+      <UniqueIdentifier>{536b2386-9d8a-4848-906d-41e81e76fad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial">
+      <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\MyOwnPracticeNoiseFunctions">
+      <UniqueIdentifier>{7bd79499-60bb-4c43-a183-96116ca38aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\BoxCutter">
+      <UniqueIdentifier>{02181657-b21b-48c2-9ca7-3be565066401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\CargoSpaceship">
+      <UniqueIdentifier>{a9a0ace4-1a71-43ab-a4da-2d9866b19cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\UnfinishedProjects">
+      <UniqueIdentifier>{af4261d5-ca00-4ea2-802a-10c5fb5293c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\Modifiable">
+      <UniqueIdentifier>{e4b915c6-4921-4a47-bf85-e1c593c2102d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY">
+      <UniqueIdentifier>{b8dc715d-e61a-4c9d-b536-d300877cfb01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\ApplicationConstantSettings">
+      <UniqueIdentifier>{204d0438-6a93-44e7-ba81-4de4889819ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo">
       <UniqueIdentifier>{735dc162-5caf-4c95-8e65-d531798050e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
+      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\FilepathsToAssetDirectories">
+      <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SetupAndConfiguration\Modifiable\DebugBehavior">
+      <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -565,10 +592,16 @@
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClCompile>
     <ClCompile Include="FlyingCameraDemo.cpp">
-      <Filter>Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo</Filter>
+      <Filter>Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo</Filter>
     </ClCompile>
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram2.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenCaptureAssistant.cpp">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -772,12 +805,6 @@
     <ClInclude Include="stb_image.h">
       <Filter>Third Party\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="LoggingMessageTargets.h">
-      <Filter>Header Files\SetupAndConfiguration</Filter>
-    </ClInclude>
-    <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
-      <Filter>Header Files\SetupAndConfiguration\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="teapot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -938,7 +965,7 @@
       <Filter>Source Files\Unfinished\EntityComponents\Phong Shading Parameters</Filter>
     </ClInclude>
     <ClInclude Include="RelativeFilepathsToResources.h">
-      <Filter>Header Files\SetupAndConfiguration\FilepathsToAssetDirectories</Filter>
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\FilepathsToAssetDirectories</Filter>
     </ClInclude>
     <ClInclude Include="QuickObj.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
@@ -977,7 +1004,7 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationConstantSettings.h">
-      <Filter>Header Files\SetupAndConfiguration\ApplicationConstantSettings</Filter>
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\ApplicationConstantSettings</Filter>
     </ClInclude>
     <ClInclude Include="WindowCallbackEvent.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
@@ -1003,12 +1030,6 @@
     <ClInclude Include="ConnectedMonitors.h">
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalConstants.h">
-      <Filter>Header Files\SetupAndConfiguration</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalIncludes.h">
-      <Filter>Header Files\SetupAndConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="FSMMonitor.h">
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClInclude>
@@ -1028,7 +1049,7 @@
       <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback</Filter>
     </ClInclude>
     <ClInclude Include="DebugSettings.h">
-      <Filter>Header Files\SetupAndConfiguration\Debug</Filter>
+      <Filter>Header Files\SetupAndConfiguration\Modifiable\DebugBehavior</Filter>
     </ClInclude>
     <ClInclude Include="glad\release\glad.h">
       <Filter>Third Party\glad\release</Filter>
@@ -1060,14 +1081,11 @@
     <ClInclude Include="QuickObj_NGonParser.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClInclude>
-    <ClInclude Include="WindowConfiguration.h">
-      <Filter>Header Files\SetupAndConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="GLFW_Init_Report.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
     </ClInclude>
     <ClInclude Include="FlyingCameraDemo.h">
-      <Filter>Source Files\Projects\RenderDemos\[WorkInProgress]FlyingCameraDemo</Filter>
+      <Filter>Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo</Filter>
     </ClInclude>
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
@@ -1077,6 +1095,33 @@
     </ClInclude>
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram2.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalConstants.h">
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalIncludes.h">
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
+    </ClInclude>
+    <ClInclude Include="SupportedWindowResolutions.h">
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingMessageTargets.h">
+      <Filter>Header Files\SetupAndConfiguration\Modifiable</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenCaptureAssistant.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
+    <ClInclude Include="TGA_Image_File_Format_Header.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowConfiguration.h">
+      <Filter>Header Files\SetupAndConfiguration\Modifiable</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
+      <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1207,10 +1252,10 @@
       <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility</Filter>
     </None>
     <None Include="Shaders\ShaderNoiseFunctions.glsl">
-      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions</Filter>
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions</Filter>
     </None>
     <None Include="Shaders\VoronoiNoise.glsl">
-      <Filter>Resource Files\Shaders\Common\ShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
     </None>
     <None Include="obj\2DTexturedQuadPlane.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
@@ -1280,6 +1325,39 @@
     </None>
     <None Include="Shaders\FlyingCameraDemo.vert">
       <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+    </None>
+    <None Include="obj\DemoSceneInsideABox00.mtl">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
+    </None>
+    <None Include="obj\SimpleSkyDome.mtl">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+    </None>
+    <None Include="obj\SimpleSkyDome_ReExport.mtl">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+    </None>
+    <None Include="Shaders\PracticeNoise.glsl">
+      <Filter>Resource Files\Shaders\Common\MyOwnPracticeNoiseFunctions</Filter>
+    </None>
+    <None Include="obj\box_cutter.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\BoxCutter</Filter>
+    </None>
+    <None Include="obj\DemoSceneInsideABox00.obj">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
+    </None>
+    <None Include="obj\SimpleSkyDome.obj">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+    </None>
+    <None Include="obj\SimpleSkyDome_ReExport.obj">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+    </None>
+    <None Include="obj\CargoSpaceshipIdeaThing02.mtl">
+      <Filter>Resource Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
+    </None>
+    <None Include="obj\CargoSpaceshipIdeaThing02.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
+    </None>
+    <None Include="obj\box_cutter.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\BoxCutter</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

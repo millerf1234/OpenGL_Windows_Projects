@@ -47,7 +47,7 @@ namespace ShaderInterface {
 	public:
 		UniformLocationInterface();
 		UniformLocationInterface(const GLuint programID);
-		~UniformLocationInterface();
+		~UniformLocationInterface() noexcept;
 		UniformLocationInterface(const UniformLocationInterface&) = delete;
 		UniformLocationInterface(UniformLocationInterface&&) noexcept;
 		UniformLocationInterface& operator=(const UniformLocationInterface&) = delete;
@@ -121,8 +121,23 @@ namespace ShaderInterface {
 		void updateUniformMat4x4(const GLchar * uniformName, const glm::mat4 * matrix, GLsizei count = 1) { fptr_UpdateUniformMat4_(uniformName, matrix, count); }
 		void updateUniformMat4x4(const GLchar * uniformName, const GLfloat * matrix, GLsizei count = 1) { fptr_UpdateUniformMat4Array_(uniformName, matrix, count); }
 
-		/*  //I am going to disable Uniform Cacheing for now...
-		//Get CachedUniformLocation functions
+
+        //                UNIFORM LOCATION CACHEING FUNCTIONALITY
+        //   Allows for client code to request a 'cachedUniformLocation' object that
+        //   can be used to save several pointer dereferences and a hash-table look up
+        //   operation which otherwise are required internally for each of the 
+        //  'updateUniform__##()' member functions of this object. The downside 
+        //   ShaderProgram's UniformTracker class when updating uniform values.
+        //                                               
+		/*  Uniform Cacheing is disabled for now... 
+        //       ( I have not actually done tests to verify this for myself, but my hunch is that the performance  
+        //         benefits of using CachedUniformLocations are minimal, since really all that these functions do 
+        //         is pass along to the GL Context a request to update the Uniform. Thus the speed at which uniforms 
+        //         will be updated between draw calls will be almost entirely dependent on the GL Context
+        //         
+        //       ( Also having these functions return std::weak_ptr types may be unecessary or even improper usage 
+        //        of std::weak_ptr )
+        //
 
 		std::weak_ptr<CachedUniformLocation> getCachedUniform1i(const GLchar * uniformName);
 		std::weak_ptr<CachedUniformLocation> getCachedUniform1u(const GLchar * uniformName);

@@ -132,6 +132,7 @@ protected: //private:
 	glm::vec3 upDirection;
 	float xTranslation;
 	float yTranslation;
+    float zTranslation;
 	//Projection parameters
 	float fov, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
 	//Shader Uniforms
@@ -277,6 +278,11 @@ protected: //private:
 
     //Prints out the name of the currently active primitive type 
     void printNameOfTheCurrentlyActivePrimitive() const noexcept;
+
+    //Checks to see if either left or right shift (or both) are pressed and
+    //uses the results to compute a 'boost' value. This is used in some 
+    //of the input logic to allow for faster input rates.
+    float getShiftBoost() const noexcept;
 
 	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
 	//as needed to give every vertex in the sceneBuffer the same format. 

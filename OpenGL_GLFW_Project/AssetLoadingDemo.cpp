@@ -164,14 +164,14 @@ constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, -8.5f);
-const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.2f, 1.0f, 1.0f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.5f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
-constexpr const float CAMERA_DEFAULT_FOV = 1.5f;
+constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
 constexpr const float CAMERA_MAXIMUM_FOV = 3.14159f;
 constexpr const float CAMERA_MINIMUM_FOV = -3.14159f;
 constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
-constexpr const float CAMERA_Z_PLANE_FAR = 100.0f;
+constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
 
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
@@ -222,6 +222,7 @@ void AssetLoadingDemo::initialize() {
 
     xTranslation = 0.0f;
     yTranslation = 0.0f;
+    zTranslation = 0.0f;
 
     //Set values for Rotation Uniforms
     head = 0.0f;
@@ -558,6 +559,10 @@ void AssetLoadingDemo::prepareScene() {
 }
 
 
+
+
+
+
 void AssetLoadingDemo::renderLoop() {
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
 		//Check Input
@@ -582,6 +587,17 @@ void AssetLoadingDemo::renderLoop() {
         
         if (checkIfShouldReverseDirectionOfTime())
             reverseTime();
+        
+        //This is purely for debug purposes at this time and is not yet functional.
+        if (frameNumber == 145ULL) {
+            auto outcome = screenshotAssistant.takeScreenshotAndBlockCurrentThreadUntilAllDataSavedInFile();
+            if (outcome.success) 
+                printf("\nSUCCESSFULLY SAVED A FILE!\n");
+            else
+                printf("\nUnable to save the file because:\n%s\n", outcome.msg.c_str());
+        }
+        //End of Debug Code 
+
 
         /* 
         zNear += 0.000025f;
@@ -610,6 +626,8 @@ void AssetLoadingDemo::renderLoop() {
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
 		translate();
+
+
 
 		//Perform logic 
 
@@ -654,6 +672,9 @@ void AssetLoadingDemo::renderLoop() {
 	}
 
 }
+
+
+
 
 
 
@@ -760,7 +781,7 @@ void AssetLoadingDemo::pause() {
 	auto end = std::chrono::high_resolution_clock::now();
 	fprintf(MSGLOG, "PAUSED!\n");
 	//Upon first pausing, enter into the following loop for a short period of time before moving on to
-	//the full pause loop. This will prevent unpausing from occuring directly after a pause is initiated. 
+	//the full pause loop. This will prevent unpausing from occurring directly after a pause is initiated. 
 	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000LL) {
 		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000LL));
 		end = std::chrono::high_resolution_clock::now();
@@ -795,6 +816,7 @@ void AssetLoadingDemo::reset() noexcept {
 	roll = 0.0f;
 	xTranslation = 0.0f;
 	yTranslation = 0.0f;
+    zTranslation = 0.0f;
 	backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
 	frameNumber = 0ull;
 	frameUnpaused = 0ull;
@@ -826,12 +848,12 @@ void AssetLoadingDemo::toggleTimeFreeze() noexcept {
 
 void AssetLoadingDemo::reverseTime() noexcept {
     reverseTimePropogation = !reverseTimePropogation;
-    fprintf(MSGLOG, "Time is now propogating %s\n",
+    fprintf(MSGLOG, "Time is now propagating %s\n",
         reverseTimePropogation ? "Backwards" : "Forwards");
 }
 
 void AssetLoadingDemo::increasePassageOfTime() noexcept {
-    timeTickRateModifier += 0.005f;
+    timeTickRateModifier += (0.005f * getShiftBoost());
     static auto frameUpdateMessageWasLastPrinted = frameNumber;
     if (frameNumber < frameUpdateMessageWasLastPrinted) //
         frameUpdateMessageWasLastPrinted = frameNumber;
@@ -839,7 +861,7 @@ void AssetLoadingDemo::increasePassageOfTime() noexcept {
         frameUpdateMessageWasLastPrinted = frameNumber;
     else
         return;
-
+    
     float delta = (1.0f + timeTickRateModifier) * 100.0f;
     if (reverseTimePropogation)
         delta *= -1.0f;
@@ -847,7 +869,7 @@ void AssetLoadingDemo::increasePassageOfTime() noexcept {
 }
 
 void AssetLoadingDemo::decreasePassageToTime() noexcept {
-    timeTickRateModifier -= 0.005f;
+    timeTickRateModifier -= (0.005f * getShiftBoost());
     static auto frameUpdateMessageWasLastPrinted = frameNumber;
     if (frameNumber < frameUpdateMessageWasLastPrinted) 
         frameUpdateMessageWasLastPrinted = frameNumber;
@@ -957,9 +979,9 @@ void AssetLoadingDemo::changePrimitiveType() noexcept {
     else if (glfwGetKey(mainRenderWindow, GLFW_KEY_4) == GLFW_PRESS)
         currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS;
     
-    //Pressing the '`' key will toggle between the 3 options for drawing line primatives
+    //Pressing the '`' key will toggle between the 3 options for drawing line primitives
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
-        if ((frameNumber - frameLineTypeLastSwitched) < 15ull) {
+        if ((frameNumber - frameLineTypeLastSwitched) < FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
             frameLineTypeLastSwitched = frameNumber;
         }
         else {
@@ -996,18 +1018,21 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 		if (drawMultipleInstances) {
 			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
 				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
-				instanceCount++;
+                instanceCount += static_cast<GLsizei>(1.0f * getShiftBoost());
 				fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
 			}
 			else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
 				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
 					frameInstancedDrawingBehaviorLastToggled = frameNumber;
-					instanceCount--;
+                    instanceCount -= static_cast<GLsizei>(1.0f * getShiftBoost());
 					fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
 				}
 			}
 		}
 	}
+
+    if (instanceCount < 0)
+        instanceCount = 0;
 }
 
 void AssetLoadingDemo::rotate() noexcept {
@@ -1058,6 +1083,9 @@ void AssetLoadingDemo::rotate() noexcept {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
 			zoom -= 0.025f;
 		}
+
+        if (zoom < 0.2f)
+            zoom = 0.2f;
 	}
 }
 
@@ -1065,6 +1093,7 @@ void AssetLoadingDemo::translate() noexcept {
 	float turbo = 1.0f;
 	const float xSpeed = 0.1f;
 	const float ySpeed = 0.1f;
+    const float zSpeed = 0.08f;
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 		turbo = 5.0f;
 	}
@@ -1088,6 +1117,14 @@ void AssetLoadingDemo::translate() noexcept {
 	if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
 		xTranslation -= turbo * xSpeed;
 	}
+
+    //Forward and backwards
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_KP_ADD) == GLFW_PRESS) {
+        zTranslation += turbo * zSpeed;
+    }
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS) {
+        zTranslation -= turbo * zSpeed;
+    }
 
 }
 
@@ -1153,7 +1190,7 @@ void AssetLoadingDemo::buildNewShader() {
 				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
 			break;
 
-		default: // (Default should never happen so the message to be printed is a bit rediculous)
+		default: // (Default should never happen so the message to be printed is a bit ridiculous)
 			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!  What the heck type of shader are you updating?!?!\n");
 			return;
 		}
@@ -1177,10 +1214,10 @@ void AssetLoadingDemo::buildNewShader() {
 
 void AssetLoadingDemo::updateFrameClearColor() {
 	if constexpr (true) {
-		glClearColor(0.0132f, 0.024f, 0.0135f, 1.0f);
+		glClearColor(0.0932f, 0.0924f, 0.09135f, 1.0f);
 		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
 	}
-	else if constexpr (false) {
+	else /*if constexpr (false)*/ {
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
 		backgroundColor.x = abs(sin(counter + backgroundColor.x));
 		backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
@@ -1228,7 +1265,7 @@ void AssetLoadingDemo::updateUniforms() {
 	const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
 			                                    0.0f, 1.0f, 0.0f, 0.0f,
 			                                    0.0f, 0.0f, 1.0f, 0.0f,
-			                                    xTranslation, yTranslation, 0.0f, 1.0f);
+			                                    xTranslation, yTranslation, zTranslation, 1.0f);
     MVP *= userTranslation;//* MVP;
 
 	
@@ -1360,6 +1397,19 @@ void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const noexcept {
     fprintf(MSGLOG, "%s", primitiveType.c_str());
 }
 
+
+//Checks to see if either of the shift keys are pressed and returns a 
+//value for a 'boost' to be used for increasing input rate of changes. 
+float AssetLoadingDemo::getShiftBoost() const noexcept {
+    float boost = 1.0f;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+        boost *= 4.0f;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        boost *= 3.0f;
+    return boost;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////    The remaining functions are utility functions that are called by the setup functions   ////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1452,7 +1502,7 @@ void AssetLoadingDemo::createTriangleOutlineEBO() noexcept {
 
     glGenBuffers(1, &triangleOutlineEBO);
     fprintf(MSGLOG, "\nCreated an element buffer object to store the alternative\n"
-        "vertice ordering required to properly draw lines. (BufferID = %u)\n\n",
+        "vertex ordering required to properly draw lines. (BufferID = %u)\n\n",
         triangleOutlineEBO);
 }
 
@@ -1462,7 +1512,7 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
     //if (sceneBuf.size() == 0u)
     //    return;
     if (0u == targetVBO) {
-        fprintf(WRNLOG, "\nWARNING! An issue has occured while uploading a sceneBuffer\n"
+        fprintf(WRNLOG, "\nWARNING! An issue has occurred while uploading a sceneBuffer\n"
             "to its Vertex Buffer Object because it appears as though the target VBO was never\n"
             "allocated from the context!\n");
         fprintf(WRNLOG, "\nThis function here will try to allocate a VBO to use instead...\n");
@@ -1505,7 +1555,7 @@ void AssetLoadingDemo::uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& e
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    fprintf(MSGLOG, "\nTransfering Additional Data from the Application to the GPU.\n"
+    fprintf(MSGLOG, "\nTransferring Additional Data from the Application to the GPU.\n"
         "Target destination on GPU is set to use Element Array Buffer ID %u.\n", ebo);
 
     fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");

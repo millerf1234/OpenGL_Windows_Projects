@@ -2,6 +2,17 @@
 //
 //  See Header file for more details
 //
+//  Known Issues:      Currently a face must be either 3 or 4 vertices. Any more than this 
+//                     will not parse correctly. I have tried to implement a work-around class
+//                     for n-gons, but I have been unable to complete this class due to needing
+//                     to pay my rent rather than writing the code to fix the issue. 
+//                   
+//                    In a file with multiple objects, it is possible for some to have texture coordinates/normals
+//                     and others to not. The way this class is currently implmented did not account for this possibility,
+//                     and at this point there does not seem to me to be an easy way to remedy this. I really really want
+//                     to but alas I do not make money yet from this project so have not been able to find enough time
+//                     to fix it. 
+//
 // Programmer:          Forrest Miller
 // Date:                November 2018
 
@@ -244,7 +255,7 @@ void QuickObj::constructVerticesFromParsedData() {
 
 	int triangleFaces = 0;
 	int quadFaces = 0;
-	int linePrimitives = mLines_.size();
+	const size_t linePrimitives = mLines_.size();
 	for (auto faceIter = mFaces_.begin(); faceIter != mFaces_.end(); faceIter++) {
 		if (faceIter->isQuad()) {
 			quadFaces++;
@@ -261,7 +272,7 @@ void QuickObj::constructVerticesFromParsedData() {
 
     mVertices_.reserve(spaceToReserve);
 
-	fprintf(MSGLOG, "\n*** Model Statistics ***\nPrimitive Counts:  Lines: %d\tTriangles: %d\tQuads: %d\n",
+	fprintf(MSGLOG, "\n*** Model Statistics ***\nPrimitive Counts:  Lines: %u\tTriangles: %d\tQuads: %d\n",
 		linePrimitives, triangleFaces, quadFaces);
 	fprintf(MSGLOG, "Parsed  Positions: %d\tTexCoords: %d\tNormals: %d\n", mPositions_.size(),
 		mTexCoords_.size(), mNormals_.size());
@@ -980,25 +991,23 @@ void QuickObj::addParsedLinePrimitivesToEndOfMeshData() noexcept {
         expectedVertexSize += 3u;
 
 
-        const size_t MAX_POS_INDEX = mPositions_.size();
+    const size_t MAX_POS_INDEX = mPositions_.size();
 
-        //For each parsed line primitive
-        for (auto lineIter = mLines_.cbegin(); lineIter != mLines_.cend(); lineIter++) {
-            if (lineIter->dataValid()) {
-                auto endpoints = lineIter->get();
-                if ((endpoints[0] < MAX_POS_INDEX) && (endpoints[1] < MAX_POS_INDEX)) {
-                    Vertex p0 = mPositions_[endpoints[0]];
-                    Vertex p1 = mPositions_[endpoints[1]];
+    //For each parsed line primitive
+    for (auto lineIter = mLines_.cbegin(); lineIter != mLines_.cend(); lineIter++) {
+        if (lineIter->dataValid()) { //Only add if data is valid
+            auto endpoints = lineIter->get();
+            if ((endpoints[0] < MAX_POS_INDEX) && (endpoints[1] < MAX_POS_INDEX)) {
+                Vertex p0 = mPositions_[endpoints[0]];
+                Vertex p1 = mPositions_[endpoints[1]];
 
-                    addLineEndpointToVertexData(p0, expectedVertexSize);
-                    addLineEndpointToVertexData(p1, expectedVertexSize);
-                    addLineEndpointToVertexData(p0, expectedVertexSize);
+                addLineEndpointToVertexData(p0, expectedVertexSize);
+                addLineEndpointToVertexData(p1, expectedVertexSize);
+                addLineEndpointToVertexData(p0, expectedVertexSize);
 
-                }
             }
         }
-    
-
+    }
 }
 
 void QuickObj::addLineEndpointToVertexData(Vertex p, size_t expectedVertexComponents) noexcept {
@@ -1017,5 +1026,4 @@ void QuickObj::addLineEndpointToVertexData(Vertex p, size_t expectedVertexCompon
         else
             mVertices_.push_back(0.0f);
     }
-
 }

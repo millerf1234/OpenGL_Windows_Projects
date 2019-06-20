@@ -867,7 +867,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 
 
 
-	void ShaderProgram::link(bool cacheLocalShaders) {
+	void ShaderProgram::link() {
 		if (mState.mLinked) {
 			fprintf(WRNLOG, "\nWARNING! Unable to link this shader program because this shader program has already been linked!\n");
 			return;

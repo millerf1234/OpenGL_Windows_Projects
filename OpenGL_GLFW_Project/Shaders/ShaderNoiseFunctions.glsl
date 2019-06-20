@@ -44,7 +44,7 @@
 //	 +-------------------------------------+------------------------------------------+---------------------------------+
 //	 |   	       Noise Type              |            Function Signature(s)         |    Attibution (if available)    |
 //   +-------------------------------------+------------------------------------------+---------------------------------+
-//	 |              Generic                |           float noise(float p)           |                                 |
+//	 |              Generic                |           float noise(float p)           |                                 | [This one doesn't exist]
 //   |                                     |           float noise(vec2 n)            |                                 |
 //   |                                     |           float noise(vec3 P)            |                                 |
 //   |                                     |                                          |                                 |

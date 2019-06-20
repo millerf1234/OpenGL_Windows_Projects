@@ -91,8 +91,11 @@
 |                                                                                              |
 |            */ out SHADED_VERTEX_DATA {  /*                                                   |
 |            */     vec4 position;        /*                                                   |
+|            */     vec3 pretransform_normal;          /*                                                   |
 |            */     vec3 normal;          /*                                                   |
 |            */     vec2 textureCoord;    /*                                                   |
+|            */     float instanceID;     /*                                                   |
+|            */     float vertexID;       /*                                                   |
 |            */ } shaded_vertex;          /*                                                   |
 |                                                                                              |
 |                                                                                              |
@@ -106,23 +109,41 @@
 
 
 
-
+//Function to call for fun and profit
+float cosinePartialSummation(float x, int intervalsToCompute, float intervalSpacing) {
+    float summation = cos(x);
+    for (int i = 1; i <= max(1, intervalsToCompute); i++) {
+        summation += (1.0 / pow(intervalSpacing, i)) * sin( intervalSpacing * x);
+    }
+    return summation;
+}
 
 
 //  BEGIN       Shader Logic Implementation Description
 
 void main() {
     
+    shaded_vertex.pretransform_normal = VertNormal;
+
     vec4 positionInWorldMesh = WorldPosition;
+    
 
     vec4 positionInScreenSpace = MVP * positionInWorldMesh;
 
-    gl_Position = positionInScreenSpace + vec4(float(gl_InstanceID) * cos(time), 0.0, 0.0, zoom);
+    gl_Position = positionInScreenSpace + 
+                                          0.05*vec4(float((gl_InstanceID / 18))*((0.001 + (0.0019*float(gl_InstanceID % 5)) + 0.19*float(gl_InstanceID % 25))*float(gl_InstanceID)*cos(time + gl_InstanceID)),
+                                               float((gl_InstanceID / 18))*0.05*float(gl_InstanceID)*sin(time + gl_InstanceID),
+                                               float((gl_InstanceID / 18))*300.*(clamp(TextureCoord.s - 0.5, -0.5, 0.5) - clamp(TextureCoord.t, 0.3, 1.0)),
+                                               17.0*zoom) + vec4(0.0, 0.0, 0.0, 17.0*zoom);
 
-    shaded_vertex.position = positionInScreenSpace + vec4(0.0, 0.0, 0.0, zoom);
+    //shaded_vertex.position = positionInScreenSpace + vec4(0.0, 0.0, 0.0, zoom);
+    shaded_vertex.position = positionInWorldMesh;
     shaded_vertex.normal = mat3(rotation) * VertNormal;
     shaded_vertex.textureCoord = TextureCoord;
+    shaded_vertex.instanceID = float(gl_InstanceID + 1);
+    shaded_vertex.vertexID = float(gl_VertexID);
 
+    gl_PointSize = 1.0 + 0.325*(float((gl_InstanceID + gl_VertexID) % 47));
 }
 
 //  END         Shader Logic Implementation Description

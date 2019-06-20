@@ -20,7 +20,7 @@
 
 //Useful Constants
 static constexpr size_t INDEX_SHIFT = 1u; //Useful for array indexing
-static constexpr GLfloat PI = 3.14159265f;
+static constexpr GLfloat PI = 3.14159f; /* = 3.14159265f; //Too Many */
 
 static constexpr const double MILLIMETERS_PER_INCH = 25.4; //Used in screen DPI computations 
 static constexpr const double INCHES_PER_MILLIMETER = 0.0393701;

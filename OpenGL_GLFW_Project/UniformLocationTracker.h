@@ -39,7 +39,7 @@ namespace ShaderInterface {
 	public:
 		UniformLocationTracker() = delete;
 		UniformLocationTracker(const GLuint& programID);
-		~UniformLocationTracker();
+		~UniformLocationTracker() noexcept;
 
 		//Copying
 		UniformLocationTracker(const UniformLocationTracker&) = default; //Nothing fancy required
