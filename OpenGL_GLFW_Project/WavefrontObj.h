@@ -54,7 +54,7 @@ public:
 	WavefrontObj(const char * filepath);
 	WavefrontObj(std::string filepath);
 
-	//   Eventually      (or maybe make a seperate class for tieing Wavefront file-collections together):
+	//   Eventually      (or maybe make a separate class for tying Wavefront file-collections together):
 	//WavefrontObj(std::vector<std::string> filepaths); //Will parse extensions on filepaths 
 
 
@@ -135,7 +135,7 @@ private:
 		std::string objectName;
 	};
 
-	//A struct is used to hold group info. Groups are deliminated in '.obj' file by the letter 'g'
+	//A struct is used to hold group info. Groups are delineated in '.obj' file by the letter 'g'
 	//Objects without any grouping are placed in a default group.
 	struct Group {
 		ObjectID objectID;
@@ -158,7 +158,7 @@ private:
 	//Attempts to load the filepath as a string into this object's AsciiAsset member. 
 	bool aquireFile(std::string filepath);
 
-	void logError(const char * message) const;
+	void logError(const char* message) const;
 
 	//Function to parse the '.obj' file
 	//void parseFile(); 

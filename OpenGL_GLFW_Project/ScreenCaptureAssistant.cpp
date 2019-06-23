@@ -2,14 +2,23 @@
 //#include <memory>
 #include <vector>
 #include <filesystem>
+#include <set>   //Used to store the existing names while generating a unique filename
 #include <string>
 #include "ScreenCaptureAssistant.h"
 #include "RelativeFilepathsToResources.h"
 #include "ForceBeginAsyncTask.h"
 
 
-//Implementation-File-Only Function Prototypes [See definitions at bottom]
+//Note on using std::set
+//   http://lafstern.org/matt/col1.pdf
+// My usage case here though checks off 2 of his listed when-to-use-std::set
+// conditions. Here there will be a potentially very random and potentially large
+// number of insertion operations, will at most one look-up operation at the end.
+// This could grow into the 1000's of insertions if there becomes a large number
+// of screenshots over time.
 
+
+//Implementation-File-Only Function Prototypes [See definitions at bottom]
 void defaultScreenshotResultCallbackFunction(ScreenshotOutcome result);
    
 
@@ -65,13 +74,28 @@ void ScreenCaptureAssistant::takeScreenshot(IMAGE_FILE_FORMAT format) noexcept {
 #endif //TGA_ONLY
 
     try {
-
+        assert(glfwGetCurrentContext());
         /////////////////////////////////////////////////////////////////
         //   Verify That A Framebuffer Exists That Can Be Read From   // 
         ///////////////////////////////////////////////////////////////
         const auto spaceRequired = determineRequiredSpaceToHoldData();
         if (spaceRequired.bytesOfStorageRequired == 0) { //Make sure there is a framebuffer available to read from
-             activeScreenshotTasks.emplace_back(forceBeginAsyncTask(&(ScreenCaptureAssistant::reportEmptyFramebuffer)), *this);
+            fprintf(MSGLOG, "\n"
+                "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+                "\n;                  Error -- Screenshot Request Denied!!!                     ;"
+                "\n; Explanation: Upon Querying the Resolution of the Display Framebuffer To    ;"
+                "\n               Get Its Most Recent Height And Width, the Strangest Of Things ;"
+                "\n               Happened... Both The Height And Width Came Back Each As 0     ;"
+                "\n               Pixels.                                                       ;"
+                "\n               It Must Be Assumed That Surely A Request For A Screenshot     ;"
+                "\n               Placed While This Application's OS-Leased Screen Real Estate  ;"
+                "\n               Resides In An Abstract State Such That It Perhaps May Be Best ;"
+                "\n               Described As A Subset Of The Null Set Would Have To Have Been ;"
+                "\n               Enacted By Accident... I Mean, Common... How The Heck Is A    ;"
+                "\n               0x0 Screenshot Even Possible! Try Rendering Something First!  ;"
+                "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+                "\n\n");
+            // activeScreenshotTasks.emplace_back(forceBeginAsyncTask(&(ScreenCaptureAssistant::reportEmptyFramebuffer)), *this);
              return;
         }
 
@@ -80,7 +104,7 @@ void ScreenCaptureAssistant::takeScreenshot(IMAGE_FILE_FORMAT format) noexcept {
         //   Get a Unique Name to be Used For New Screenshot File   // 
         /////////////////////////////////////////////////////////////
         //Name will not yet include a file extension
-        std::string screenshotName = getNextSequentialFilename(); 
+        std::string screenshotName = getNextScreencaptureFilename(); 
 
 
         //////////////////////////////////////////////////////////////////////////////////////
@@ -113,8 +137,8 @@ void ScreenCaptureAssistant::takeScreenshot(IMAGE_FILE_FORMAT format) noexcept {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         //   Verify filesystem directory exists for screenshots and get a unique name for the file  //
         /////////////////////////////////////////////////////////////////////////////////////////////
-        auto pathToScreenshots = ensureThatADirectoryForScreenshotsExists();
-
+        auto assignedFileName = getNextScreencaptureFilename();
+        
 
 
 
@@ -123,16 +147,16 @@ void ScreenCaptureAssistant::takeScreenshot(IMAGE_FILE_FORMAT format) noexcept {
         
 
         //Determine which image format will be used for storage
-        switch (format) {
-        case IMAGE_FILE_FORMAT::TGA:
-            std::unique_ptr<DataForTGA> tgaData = std::make_unique<DataForTGA>();
+        //switch (format) {
+        //case IMAGE_FILE_FORMAT::TGA:
+            //std::unique_ptr<DataForTGA> tgaData = std::make_unique<DataForTGA>();
 
-            break;
-        default:
-            throw std::exception("Not a supported image format!\n");
-        }
+      //      break;
+        //default:
+       //     throw std::exception("Not a supported image format!\n");
+      //  }
 
-
+#if 0
         //Create the header for the '.tga' file
         DataForTGAHeader dataForHeader;
         dataForHeader.imageRequirements = spaceRequired;
@@ -145,9 +169,32 @@ void ScreenCaptureAssistant::takeScreenshot(IMAGE_FILE_FORMAT format) noexcept {
         //returned at the end of this function. It turns out that we 
         //can do this all in one step.
         //return writeToFile(header, dataForHeader);
+#endif 
+    }
+    catch (const std::filesystem::filesystem_error& e) {
+        fprintf(ERRLOG, "\n"
+            "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+            "\n;                  Error -- Screenshot Request Denied!!!                     ;"
+            "\n; Explanation: Now This Can Be Simply Chalked Up To Plain Old Rotten Luck!   ;"
+            "\n;              Everything Was Going Swimingly Until We Tried To Access The   ;"
+            "\n;              OS's Filesystem. Yup. The Screenshot Failed Due To A Quite    ;"
+            "\n               Unexpected \'std::filesystem::filesystem_error\' exception.   ;"
+            "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+            "\n Filesystem Exception Message:___.             [This Probably Just Some Lame  "
+            "\n  __________                     |              Excuse From The OS On Why It  "
+            "\n /          \\;-------------------*              Failed At Such A Mundane Task]"
+            "\n \\->  \"%s\"\n\n\n", e.what());
     }
     catch (const std::exception& e) {
-        activeScreenshotTasks.emplace_back(forceBeginAsyncTask(&(ScreenCaptureAssistant::reportExceptionCaught)), *this, e.what());
+        fprintf(ERRLOG, "\n"
+            "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+            "\n;                  Error -- Screenshot Request Denied!!!                     ;"
+            "\n; Explanation: Well It Turns Out That An Exception Was Thrown, Which Means   ;"
+            "\n;              You May Have Just Found A Bug! Please Report The Following    ;"
+            "\n;              Exception Message To Your Nearest Local Developer!            ;"
+            "\n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;"
+            "\nException Message: %s\n\n\n", e.what());
+        //activeScreenshotTasks.emplace_back(forceBeginAsyncTask(&(ScreenCaptureAssistant::reportExceptionCaught)), *this, e.what());
         return;
     }
 }
@@ -173,7 +220,17 @@ ScreenCaptureRequirements ScreenCaptureAssistant::determineRequiredSpaceToHoldDa
     glfwGetFramebufferSize(const_cast<GLFWwindow*>(mWindowContext_),
                            &screenshotRequirements.fbWidth,
                            &screenshotRequirements.fbHeight);
-    
+
+    //////////////////////////////////////////////////////////
+    ////  To Query The Default Framebuffer, We Can Use any of:
+    ////    -- glGetFramebufferAttachmentParameteriv()          
+    ////    --
+    ////
+    ////
+    //// [  see: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetFramebufferAttachmentParameter.xhtml  ]
+    //// [       https://www.glfw.org/docs/latest/window_guide.html#window_attribs_fb                                ]
+
+
     int rowSize = ((screenshotRequirements.fbWidth * 3 + 3) & ~3);  //The final '& ~3' ensures there will always be alignment
     //                                       //by setting the smallest two bits always to 0
     screenshotRequirements.bytesOfStorageRequired = rowSize * screenshotRequirements.fbHeight;
@@ -215,19 +272,144 @@ std::filesystem::path ScreenCaptureAssistant::ensureThatADirectoryForScreenshots
             "directory for storing screenshots. A directory for screenshots\n"
             "is being created at filepath:\n\t%s\n", pathToScreenshotsDirectory.lexically_normal().string().c_str());
         std::filesystem::create_directory(pathToScreenshotsDirectory);
-
-       // std::filesystem::path fileName = pathToScreenshotsDirectory.string() + baseFileName + std::to_string(greatestScreenshotID++);
-       // printf("\n\nScreenshot File's name will be: %s\n", fileName.string().c_str());
     }
+    return pathToScreenshotsDirectory;
 }
 
 
-std::string ScreenCaptureAssistant::getNextSequentialFilename() noexcept {
-    //Iterate through every file in the directory whose name matches the prototype format to
-    //get the largest number among files. Then, once found, increment it by one then assign this
-    //number to the next screen shot and increment again and so on. Then all screenshots will get
-    //a unique filename.
+std::string ScreenCaptureAssistant::getNextScreencaptureFilename() {
 
+    const auto DefaultScreenshotDirectory = ensureThatADirectoryForScreenshotsExists();
+    //When taking a screenshot for the first time within a single lifetime of the process, the value of
+    //nextCaptureID is checked. If this value is 0, then the entire screenshot directory is examined by
+    //one of the following 2 ways:
+    //   [(A) the highest trailing ID number among screenshots matching the default name pattern is found
+    //        and that number + 1 is where our name-numbering scheme continues from]
+    // or 
+    //   [(B) the number of files present is counted, and then the resulting number + 1 is used as the
+    //        next unique name ]
+    constexpr const bool USE_METHOD_A = true;
+    constexpr const bool USE_METHOD_B = !USE_METHOD_A;
+    //Then for all subsequent screenshot attempts, this number will not be 0, so to create a new file
+    //name for a screenshot all that is needed to be done is to increment this variable by 1 then 
+    //append it to the end of the filename. 
+
+    constexpr const char* BASE_SCREENSHOT_NAME = "ScreenCapture_";
+    std::string assignedFilename = DefaultScreenshotDirectory.string() + BASE_SCREENSHOT_NAME;
+    
+    if (0ull == nextCaptureID) {
+        glfwSetTimer(0.0);
+        std::set<size_t> inUseFileNumbers;
+        for (auto entry : std::filesystem::directory_iterator(DefaultScreenshotDirectory)) {
+
+            bool skip = false;
+            if (!(entry.is_regular_file())) {
+                fprintf(WRNLOG, "\nDetected A \'Not-Regular-File\' in ScreenCaptures Directory by\n"
+                    "the name of: \"%s\"\n", entry.path().filename().string().c_str());
+                skip = true;
+            }
+            if (!(entry.path().has_filename())) {
+                fprintf(WRNLOG, "\nDetected An Entry That Does Not Contain a File Name!\n"
+                    "This Entry Is: \"%s\"\n", entry.path().string().c_str());
+                skip = true;
+            }
+            if (skip) { continue; }
+
+            if constexpr (USE_METHOD_A) {
+                //Get the filename for our current directory entry
+                auto filename = entry.path().filename();
+                //Remove its extension 
+                if (filename.has_extension())
+                    filename.replace_extension();
+                //Convert it into a string
+                std::string filenameStr = filename.string();
+                //Get an iterator to the end of the string
+                auto strIter = filenameStr.crend();
+
+                //These 2 variables are used to compute the files ID number
+                size_t value = 0ULL;
+                size_t decimalPlaceFactor = 1ULL;
+                constexpr const size_t decimalPlaceGrowthFactor = 10ULL;
+
+                //Iterate backwards until hit a backspace, recording each numerical value
+                //along the way
+                while ((*strIter) != '_') {
+                    if (std::isdigit(*strIter)) {
+                        value += static_cast<size_t>((*strIter) - '0') * decimalPlaceFactor;
+                        decimalPlaceFactor *= decimalPlaceGrowthFactor;
+                    }
+                    else { //This means the file we are examining failed to conform 
+                        //to the expected filename rules, so we can skip tracking it. 
+                        goto SKIP_TO_NEXT_FILE;
+                    }
+                    strIter--;
+                    if (strIter == filenameStr.crbegin())
+                        goto SKIP_TO_NEXT_FILE;
+                }
+
+                //So we hit the underscore, which means we can stop recording numbers and 
+                //instead now verify our base name string. We do this by comparing our iterator
+                //with each character in BASE_SCREENSHOT_NAME.
+                const char* baseNameIter = BASE_SCREENSHOT_NAME;
+                size_t charactersToCompare = 0ULL;
+                while (baseNameIter != '\0') {
+                    charactersToCompare++;
+                    baseNameIter++;
+                }
+
+                //Finally we are ready to do our comparison
+                for (size_t i = 0ULL; i < charactersToCompare; i++) {
+                    if ((*baseNameIter--) != (*strIter--))
+                        goto SKIP_TO_NEXT_FILE;
+                    else if (strIter == filenameStr.crbegin())
+                        goto SKIP_TO_NEXT_FILE;
+                }
+
+                //At last, we have verified that we have a match. All that remains is to add the
+                //captured value to the std::set
+                if (inUseFileNumbers.insert(value).second || true) { //This line deserves some explanation. Calling
+                    //'insert()' on a std::set will return as std::pair<iterator, bool>, with the bool 
+                    //representing whether an element was found existing with the specified value or not.
+                    //Thus our if statement here is checking this second value to determine if this file
+                    //that passed all of the other tests is indeed unique truly unique.
+                    fprintf(ERRLOG, "\nError generating a name for the screenshot! Found duplicate \n"
+                        "files using ID %u . This means something somewhere got pretty messed up!\n"
+                        "In fact I would like to know how this happened, so the program has\n"
+                        "just now entered into a frozen state right at the instruction that found\n"
+                        "the issue. Please investigate if able, and if not, then just simply:\n"
+                        "                 [PRESS ENTER TO CONTINUE]\n", value);
+                    std::cin.get();
+
+                    nextCaptureID++;
+                }
+            }
+            else if constexpr (USE_METHOD_B) {
+                //Method B has a much simpler implementation
+                nextCaptureID++;
+            }
+        SKIP_TO_NEXT_FILE:
+            continue;
+        }
+
+        if constexpr (USE_METHOD_B) {
+            if (nextCaptureID > 1ull)
+                inUseFileNumbers.insert(nextCaptureID - 1ull);
+            else
+                inUseFileNumbers.insert(0u);
+        }
+
+        //Set the value to start writing new screenshot names from
+        if (inUseFileNumbers.empty())
+            nextCaptureID = 1ULL;
+        else
+            nextCaptureID = nextCaptureID + (*inUseFileNumbers.crend());
+
+        assignedFilename += std::to_string(nextCaptureID++);
+    }
+    else {
+        assignedFilename += std::to_string(nextCaptureID++);
+    } 
+    return assignedFilename;
 }
 
 #if 0
@@ -256,7 +438,7 @@ ScreenshotOutcome ScreenCaptureAssistant::reportEmptyFramebuffer() const noexcep
     return outcome;
 }
 
-
+#if 0
 ScreenshotOutcome ScreenCaptureAssistant::reportExceptionCaught(std::string exceptionMsg) const noexcept {
     ScreenshotOutcome outcome;
     outcome.success = false;
@@ -264,7 +446,7 @@ ScreenshotOutcome ScreenCaptureAssistant::reportExceptionCaught(std::string exce
     outcome.msg += exceptionMsg;
     return outcome;
 }
-
+#endif 
 
 #ifdef THIS_IS_FINISHED
 ScreenshotOutcome ScreenCaptureAssistant::writeDataToFileAsTGA(const TGA_INTERNAL::TGA_HEADER& header,   //OUTCOME -> T.B.D.
@@ -312,13 +494,13 @@ ScreenshotOutcome ScreenCaptureAssistant::writeDataToFileAsTGA(const TGA_INTERNA
 #endif //THIS_IS_FINISHED
 
 
-int ScreenCaptureAssistant::greatestScreenshotID = 0;
+size_t ScreenCaptureAssistant::nextCaptureID = 0ull;
 
 
 
 
 //See https://www.techiedelight.com/remove-elements-vector-inside-loop-cpp/
-inline void ScreenCaptureAssistant::upkeepFunctionToBeCalledByRenderDemoBase() noexcept {
+void ScreenCaptureAssistant::upkeepFunctionToBeCalledByRenderDemoBase() noexcept {
 
     //if (activeScreenshotTasks.size() > 0) {
         
@@ -335,7 +517,7 @@ void defaultScreenshotResultCallbackFunction(ScreenshotOutcome result) {
             fprintf(MSGLOG, "\nScreenshot successfully saved as %s", result.msg.c_str());
     else {
         fprintf(ERRLOG, "\nAn Issue Occurred While Trying To Take Screenshot.\n"
-            "The reason for this error is:\n\t\t\"%\"", result.msg.c_str());
+            "The reason for this error is:\n\t\t\"%s\"\n\n", result.msg.c_str());
     }
 }
 

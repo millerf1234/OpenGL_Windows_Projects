@@ -11,7 +11,7 @@
 
 #pragma once
 
-#ifndef ASSET_INTERFACE_H_
+#ifdef ASSET_INTERFACE_H_
 #define ASSET_INTERFACE_H_
 
 #include "GlobalIncludes.h"

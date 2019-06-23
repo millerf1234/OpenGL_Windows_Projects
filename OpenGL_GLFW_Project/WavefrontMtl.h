@@ -36,7 +36,7 @@ Tr 0.4300
 
 #pragma once
 
-#ifndef WAVEFRONT_MTL_H_
+#ifdef WAVEFRONT_MTL_H_
 #define WAVEFRONT_MTL_H_
 
 //#include "LoggingMessageTargets.h"

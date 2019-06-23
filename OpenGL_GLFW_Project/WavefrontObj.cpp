@@ -1,6 +1,6 @@
 //File:  WavefrontObj.cpp
 //Description:    This file contains the implementation for the WavefrontObj class. See the 
-//                header file 'WavefrontObj.h' for mor details.
+//                header file 'WavefrontObj.h' for more details.
 //
 //Programmer:     Forrest Miller
 //Date:           October 15, 2018
@@ -18,7 +18,7 @@ void WavefrontObj::initialize() {
 WavefrontObj::WavefrontObj(const char * filepath) : AssetInterface() {
 	initialize();
 	if (!aquireFile(filepath)) {
-		logError("Unable to aquire parsable filetext!");
+		logError("Unable to acquire parse-able filetext!");
 		mLoaded_ = false;
 		mValid_ = false;
 		return;
@@ -29,7 +29,7 @@ WavefrontObj::WavefrontObj(const char * filepath) : AssetInterface() {
 WavefrontObj::WavefrontObj(std::string filepath) : AssetInterface() {
 	initialize();
 	if (!aquireFile(filepath)) {
-		logError("Unable to aquire parsable filepath!");
+		logError("Unable to acquire parse-able filepath!");
 		mLoaded_ = false;
 		mValid_ = false; 
 		return;
@@ -41,18 +41,19 @@ WavefrontObj::WavefrontObj(std::string filepath) : AssetInterface() {
 
 //Private helper function definitions 
 
-void WavefrontObj::logError(const char * errorDescription) const {
+void WavefrontObj::logError(const char* errorDescription) const {
 	if (mFile_) {
 		fprintf(ERRLOG, "\nError encountered with Wavefront Obj \"%s.\"\nError reason:\n\t%s\n", mFile_->getFilepath().c_str(), errorDescription);
 	}
 	else {
 		if (errorDescription != nullptr) {
 			fprintf(ERRLOG, "\nError encountered while trying to load a Wavefront Obj file.\n"
-				"Unfortunatly the filewrapper is null, so no information on file name can be provided!\n"
+				"Unfortunately the Filewrapper is null, so no information on file name can be provided!\n"
 				"The error message is: %s", errorDescription);
 		}
 		else {
-			fprintf(ERRLOG, "\nERROR within WavefrontObj class! Both filewrapper object and error message are NULL!\n");
+			fprintf(ERRLOG, "\nERROR within WavefrontObj class!\n"
+                "Both Filewrapper object and error message are NULL!\n");
 		}
 	}
 }
@@ -70,7 +71,7 @@ bool WavefrontObj::aquireFile(std::string filepath) {
 		}
 		return false;
 	}
-	return true; //File was successfully aquired
+	return true; //File was successfully acquired
 }
 
 #endif //WAVEFRONT_OBJ_INCOMPLETE_

@@ -25,9 +25,6 @@
 //                               
 //
 //
-//
-//
-//
 //       References on std::async and std::future:
 //                      Scott Meyers on being aware that a std::future will block until it's task
 //                      is completed if it's destructor was called. He also says Microsoft breaks
@@ -44,8 +41,8 @@
 #include <fstream>
 #include <future>
 
-#include "GlobalIncludes.h"
-#include "TGA_Image_File_Format_Header.h"
+#include "GlobalIncludes.h"                 //For OpenGL and GLFW functions
+#include "TGA_Image_File_Format_Header.h"   //
 
 
 //Struct that serves as the return value for the ScreenCaptureAssistant's high level "Capture-and-
@@ -102,8 +99,8 @@ public:
                               ||     Constructor/Destructor/Copy/Move/etc.     ||
     \*                        \\===============================================//                        */
 
-    //Will throw an exception if called from a thread that does not contain an 
-    //active OpenGL context (as determined by GLFW)
+    //Will throw an exception if called from a thread which does not contain an active 
+    //OpenGL context [this is determined by calling GLFW's function 'glfwGetCurrentContext()'] 
     ScreenCaptureAssistant();
 
     //Destructor is responsible for making sure all screenshot tasks are complete
@@ -162,11 +159,16 @@ public:
    
 private:
     //When taking a screenshot for the first time within a single lifetime of the process, this value
-    //is checked. If this value is 0, then the entire screenshot directory is examined and the highest
-    //trailing ID number among screenshots is saved. Then for all subsequent screenshot attempts, this
-    //number will not be 0, so to create a new file name for the screenshot all that is needed to be 
-    //done is increment this variable by 1 and then append it to the end of the filename. 
-    static int greatestScreenshotID;
+    //is checked. If this value is 0, then the entire screenshot directory is examined by one of the
+    //following 2 ways:
+    //   [(A) the highest trailing ID number among screenshots is found and that number + 1 is where
+    //        counting starts] or 
+    //   [(B) the number of files present is counted, and then the resulting number + 1 is used as the
+    //        next unique name].
+    //Then for all subsequent screenshot attempts, this number will not be 0, so to create a new file
+    //name for a screenshot all that is needed to be done is to increment this variable by 1 then 
+    //appending it to the end of the filename. 
+    static size_t nextCaptureID;
     const GLFWwindow* mWindowContext_;
     std::list<std::future<ScreenshotOutcome>> activeScreenshotTasks;
 
@@ -197,26 +199,28 @@ private:
     //Make sure that the filesystem is prepared for a new screenshot file
     std::filesystem::path ensureThatADirectoryForScreenshotsExists() const;
     //Note that the file name will not yet contain a file extension
-    std::string getNextSequentialFilename() noexcept;
+    std::string getNextScreencaptureFilename();
     
 
 
-
+#if 0
     TGA_INTERNAL::TGA_HEADER createTGAHeader(const DataForTGA& dftgah) const;
-
+#endif //0
     
 
     //PHASE 2 ACTIONS  --  [Asynchronous]
     //These will run asynchronously in the background while the rest of the
     //Application continues to run  
 
+
     ScreenshotOutcome reportEmptyFramebuffer() const noexcept;  //OUTCOME -> FAILURE
 
+#if 0
     ScreenshotOutcome reportExceptionCaught(std::string exceptionMsg) const noexcept;  //OUTCOME -> FAILURE
 
     ScreenshotOutcome writeDataToFileAsTGA(const TGA_INTERNAL::TGA_HEADER& header,   //OUTCOME -> T.B.D.
                                            const DataForTGA& dftgah) const;
-
+#endif 
 
     //////////////////////////////////////
     ////////  UTILITY FUNCTIONS  /////////
@@ -224,6 +228,7 @@ private:
 
    
     friend class RenderDemoBase;
+    //This function is needed to check in on active asynchronous screenshot tasks
     void upkeepFunctionToBeCalledByRenderDemoBase() noexcept;
 };
 

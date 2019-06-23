@@ -24,13 +24,15 @@
 #include "WindowConfiguration.h"
 #include "ApplicationConstantSettings.h"
 
-static bool GLFW_IS_INIT = false;
-inline void atExitFuncToEnsureGLFWTerminateIsCalled() noexcept {
-    if (GLFW_IS_INIT) {
-        glfwTerminate();
-        GLFW_IS_INIT = false;
+namespace GLFW_INIT_INTERNAL {
+    static bool GLFW_IS_INIT = false;
+    inline void atExitFuncToEnsureGLFWTerminateIsCalled() noexcept {
+        if (GLFW_IS_INIT) {
+            glfwTerminate();
+            GLFW_IS_INIT = false;
+        }
     }
-}
+} //namespace GLFW_INIT_INTERNAL
 
 
 class GLFW_Init {

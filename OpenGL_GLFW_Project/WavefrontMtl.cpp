@@ -8,13 +8,15 @@
 
 #include "WavefrontMtl.h"
 
+#if 0
+
+WavefrontMtl::WavefrontMtl() : AssetInterface() {
+
+}
 
 
-//WavefrontMtl::WavefrontMtl() : AssetInterface() {
+WavefrontMtl::~WavefrontMtl() {
 
-//}
+}
 
-
-//WavefrontMtl::~WavefrontMtl() {
-
-//}
+#endif 

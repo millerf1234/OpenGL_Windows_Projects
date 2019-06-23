@@ -121,6 +121,10 @@
 //                              itemsRemaining -= MAXIMUM_ALLOWED_PER_BATCH;                                                                                          
 //                          } while (itemsRemaining > MAXIMUM_ALLOWED_PER_BATCH);                                                                                     
 //                                                                                                                                                                    
+//                          //Process Batch                                                                                                                           
+//                                                                                                                                                                    
+//                          ...                                                                                                                                       
+//                                                                                                                                                                    
 //                      }                                                                                                                                             
 //                                                                                                                                                                    
 //                                                                                                                                                                    
@@ -134,11 +138,6 @@
 //                                 http://www.cplusplus.com/reference/cstdio/stderr/
 //                   //Change a FILE* buffering properties
 //                                 http://www.cplusplus.com/reference/cstdio/setvbuf/ 
-//
-//
-//
-//
-//
 //
 //July and August 2018          Forrest Miller
 

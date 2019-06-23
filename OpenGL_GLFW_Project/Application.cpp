@@ -28,6 +28,13 @@ void Application::initialize() {
 	configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in "ProjectParameters.h"
 	setInitialGLState();
 
+    //Check to see if GLFW supports Raw Mouse Motion Input
+    //  (see: https://www.glfw.org/docs/latest/group__input.html#gae4ee0dbd0d256183e1ea4026d897e1c2 )
+    if (glfwRawMouseMotionSupported())
+        fprintf(MSGLOG, "\n    [Detected that raw mouse input is supported on this platform!\n");
+    else 
+        fprintf(MSGLOG, "\n    [Detected that raw mouse input is unsupported on this platform!\n");
+
 	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
 	//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
 	//checkMSAA(); //See if MSAA is being used as expected
