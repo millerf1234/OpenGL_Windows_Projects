@@ -421,6 +421,12 @@
     <Filter Include="Header Files\SetupAndConfiguration\Modifiable\DebugBehavior">
       <UniqueIdentifier>{60084513-da46-497b-95f3-bf5631e9f4f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\MultiThreading">
+      <UniqueIdentifier>{3e435b03-2296-4f34-b68b-c3589c018f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection">
+      <UniqueIdentifier>{464263ab-ffe3-4bfc-93db-4d66ffbec93a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1123,6 +1129,9 @@
     <ClInclude Include="GL_Context_Debug_Message_Callback_Function.h">
       <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
     </ClInclude>
+    <ClInclude Include="ForceBeginAsyncTask.h">
+      <Filter>Source Files\Utility\MultiThreading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1359,6 +1368,42 @@
     <None Include="obj\box_cutter.obj">
       <Filter>Resource Files\Models\OBJ\Sample\BoxCutter</Filter>
     </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2x2.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular3D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise2D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise3D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise4D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise2D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise3D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise3Dgrad.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise4D.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="Shaders\AshimaArts_NoiseCollection\psrdnoise.glsl">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1443,6 +1488,9 @@
     </Text>
     <Text Include="NoteOnVisualStudioGLSLTextColoring.txt">
       <Filter>Resource Files\Shaders</Filter>
+    </Text>
+    <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt">
+      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

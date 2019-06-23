@@ -55,9 +55,8 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
         fprintf(ERRLOG, "\nError attaching secondary noise shader as vertex shader!\n");
         std::exit(EXIT_FAILURE);
     }
-    else {
+    else 
         sceneShader->attachSecondaryVert(&vertNoise);
-    }
 
     sceneShader->attachFrag(filepathToShaders + "FlyingCameraDemo.frag");
     ShaderInterface::FragmentShader fragNoise(filepathToShaders + "ShaderNoiseFunctions.glsl");
@@ -67,9 +66,8 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
         fprintf(ERRLOG, "\nError attaching secondary noise shader as fragment shader!\n");
         std::exit(EXIT_FAILURE);
     } 
-    else {
+    else 
         sceneShader->attachSecondaryFrag(&fragNoise);
-    }
     sceneShader->link();
 
     if (sceneShader->checkIfLinked()) {

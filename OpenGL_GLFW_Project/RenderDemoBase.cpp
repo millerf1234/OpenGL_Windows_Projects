@@ -29,10 +29,10 @@ bool RenderDemoBase::checkForContextReset() {
 
 	fprintf(MSGLOG, "\nReset Strategy is %d\n", resetStrategy);
 	if (resetStrategy == GL_NO_RESET_NOTIFICATION) {
-		fprintf(MSGLOG, "This corrosponds to NO_RESET_NOTIFICATION\n");
+		fprintf(MSGLOG, "This corresponds to NO_RESET_NOTIFICATION\n");
 	}
 	else if (resetStrategy == GL_LOSE_CONTEXT_ON_RESET) {
-		fprintf(MSGLOG, "This corrosponds to LOSE_CONTEXT_ON_RESET\n");
+		fprintf(MSGLOG, "This corresponds to LOSE_CONTEXT_ON_RESET\n");
 	}
 	else {
 		fprintf(MSGLOG, "This is an unexpected return value for this function call!\n");
@@ -70,7 +70,11 @@ bool RenderDemoBase::checkForContextReset() {
 
 
 void RenderDemoBase::performRenderDemoSharedInputLogic() {
-	doJoystickPrinterLoopLogic();
+	
+    screenshotAssistant.upkeepFunctionToBeCalledByRenderDemoBase();
+
+    doJoystickPrinterLoopLogic();
+
 }
 
 void RenderDemoBase::markMainRenderWindowAsReadyToClose() const noexcept {

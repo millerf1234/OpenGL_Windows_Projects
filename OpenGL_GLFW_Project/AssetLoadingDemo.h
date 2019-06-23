@@ -4,8 +4,8 @@
 //                  RenderDemoBase, thus making this class represent a RenderDemo. 
 //                  The point of this RenderDemo is to demonstrate basic object parsing/loading
 //                  from '.obj' 3D model files. In order to ensure model loading is done properly,
-//                  this renderdemo uses its own utility class classed QuickObject. Note that 
-//                  the 'Quick' in QuickObject is refering to the amount of time I spent implementing
+//                  this RenderDemo uses its own utility class classed QuickObject. Note that 
+//                  the 'Quick' in QuickObject is referring to the amount of time I spent implementing
 //                  the parser/loader rather than the speed at which it parses. Since the parsing is 
 //                  simpler though there is a good chance it runs faster than a more robust parser. 
 //
@@ -54,8 +54,8 @@ static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5U;
 
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
-//RenderDemo and try to change settings  [unfortunatly this constant has not yet been 
-//universally implemented for all controlls]
+//RenderDemo and try to change settings  [unfortunately this constant has not yet been 
+//universally implemented for all controls]
 static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ULL;
 
 

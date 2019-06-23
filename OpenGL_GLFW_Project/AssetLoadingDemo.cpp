@@ -10,23 +10,23 @@
 //                        requiring for the project to be closed, re-opened and re-loaded (just save
 //                        any changes to the shader to attempt rebuild*).                                   *Note: Only a few of the shaders are currently supported 
 //                    -Texturing is not yet supported, but it wouldn't take much                                 and they won't rebuild if they contain errors
-//                        preperatory work to add, since uv-coordinates are loaded 
+//                        preparatory work to add, since uv-coordinates are loaded 
 //                        for models that have them available. Models without UV coords 
 //                        will have randomly generated texture coordinates, which could 
-//                        be interesting if used to sample from one of the availble noise
+//                        be interesting if used to sample from one of the available noise
 //                        functions. 
 //                     -Models that do not contain normal data will have it generated for them on a 
 //                        triangle-by-triangle basis (i.e. all 3 vertices of each triangle are assigned
 //                        the same normal). This is (I think) less-than-ideal compared with per-vertex
 //                        normals, but it gets the job done just fine.
-//                     -The load times can get pretty long for larger models, there is definitly
+//                     -The load times can get pretty long for larger models, there is definitely
 //                        work needed still for object loading. The current implementation is entirely
 //                        single threaded and my algorithm performs several iterations over the data to 
 //                        change it from its '.obj' storage (with Positions, Texture Coordinates and 
-//                        Normals stored in seperate sections of the file) to interlaced vertices (in the 
+//                        Normals stored in separate sections of the file) to interlaced vertices (in the 
 //                        9-component ordering of {x,y,z,w,s,t,nx,ny,nz}  [with nx, ny, nz as the normal's
 //                        xyz components]). With some rewriting the number of steps (i.e. copies and  
-//                        allocations) performed should be reducable. I have also been investigating
+//                        allocations) performed should be reducible. I have also been investigating
 //                        potential Task-based solutions for breaking up loading to be performed concurrently.
 //                        To speed up the loading of multiple models, wrapping each model's loader object
 //                        in a 'std::packaged_task' looks promising... 
@@ -83,7 +83,7 @@
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
-//  |              'g'                |                           Reverse Time Propogation                             |
+//  |              'g'                |                           Reverse Time Propagation                             |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
@@ -587,23 +587,6 @@ void AssetLoadingDemo::renderLoop() {
         
         if (checkIfShouldReverseDirectionOfTime())
             reverseTime();
-        
-        //This is purely for debug purposes at this time and is not yet functional.
-        if (frameNumber == 145ULL) {
-            auto outcome = screenshotAssistant.takeScreenshotAndBlockCurrentThreadUntilAllDataSavedInFile();
-            if (outcome.success) 
-                printf("\nSUCCESSFULLY SAVED A FILE!\n");
-            else
-                printf("\nUnable to save the file because:\n%s\n", outcome.msg.c_str());
-        }
-        //End of Debug Code 
-
-
-        /* 
-        zNear += 0.000025f;
-        if (zNear >= 0.02f)
-            zNear = 0.00008f;
-        recomputeProjectionMatrix(); */
 
         if (checkIfShouldIncreasePassageOfTime())
             increasePassageOfTime();
@@ -620,8 +603,8 @@ void AssetLoadingDemo::renderLoop() {
         if (checkIfShouldUpdateFieldOfView())
             updateFieldOfView();
 
+
 		//More Input Checking
-		
 		changePrimitiveType();
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
@@ -633,12 +616,23 @@ void AssetLoadingDemo::renderLoop() {
 
 		performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
+
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
 			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
 			if (checkForUpdatedShaders()) {
 				buildNewShader();
 			}
 		}
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //This is purely for debug purposes at this time and is not yet functional.
+       //Take a screenshot on frame 145
+        if (frameNumber == 145ULL) {
+            screenshotAssistant.takeScreenshot();
+        }
+        //End of Debug Code 
+        ////////////////////////////////////////////////////////////////////////////////////
 
 
 		//Set up to draw frame
@@ -650,7 +644,7 @@ void AssetLoadingDemo::renderLoop() {
 
 		if (!freezeTimeToggle) { //if time is not frozen
             float delta = (0.0125f * (1.0f + timeTickRateModifier));
-            ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propogation 
+            ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
 		}
 
 		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor

@@ -75,7 +75,7 @@ public:
 	//------------------------------------
 
 	//(Based off advice in OpenGL Super Bible 7e Chapter 15: Debugging and Stability) [Pages 737-740]
-	//Current GPUs and graphics drivers are not yet at the level of robustness comapred with
+	//Current GPUs and graphics drivers are not yet at the level of robustness compared with
 	//modern CPUs and operating systems when it comes to dealing with rouge/misbehaving processes.
 	//In the event that an errant task begins hogging all of the GPUs resources, about the best that
 	//can be done is to kick everything off the GPU and reset everything. Since the GPU is a shared-resource,
@@ -94,8 +94,8 @@ public:
 	//-----------------------------------
 	//		Some utility functions
 	//-----------------------------------
-	//Checks to see if an error has occured within the RenderDemo object. Returns true
-	//if an error has occured and false otherwise.
+	//Checks to see if an error has occurred within the RenderDemo object. Returns true
+	//if an error has occurred and false otherwise.
 	inline bool checkIfRenderDemoError() const { return mRenderDemoError; }
 
 	//Checks to see if the Render Demo object has successfully loaded all of the 
@@ -113,11 +113,14 @@ protected:
 	bool mRenderDemoLoaded;
 	*/
 
-	GLFWwindow* mainRenderWindow; //Pointer to target renderable window (Application must provide this)
+	GLFWwindow* mainRenderWindow; //Pointer to target rendering window (Application's running this demo
+    //                              must provide this)
 
     //Is able to take screenshots of the current render window output. Only call from a
     //thread that has the active context first.
     ScreenCaptureAssistant screenshotAssistant;
+
+
 
 	//Performs input-handling and logic configuration on the shared members of every RenderDemo object.
 	//This function should be called as part of the render loop.

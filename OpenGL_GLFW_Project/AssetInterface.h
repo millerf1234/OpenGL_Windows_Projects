@@ -3,7 +3,7 @@
 //Description:
 //			   This file just contains a virtual abstract base class called AssetInterface that provides an 
 //			   interface for asset files. This may potentially lead to a more portable asset-loading capability
-//			   once multiple asset types are introduced. (At the time I am writing this, I haven't even completly
+//			   once multiple asset types are introduced. (At the time I am writing this, I haven't even completely
 //			   implemented Wavefront obj/mtl assets yet)
 
 //Programmer:  Forrest Miller

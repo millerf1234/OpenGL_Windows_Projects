@@ -238,6 +238,7 @@
     <ClInclude Include="ConnectedMonitors.h" />
     <ClInclude Include="DebugSettings.h" />
     <ClInclude Include="FlyingCameraDemo.h" />
+    <ClInclude Include="ForceBeginAsyncTask.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
     <ClInclude Include="FSMMonitorEventCallback.h" />
     <ClInclude Include="FSMRenderEngine.h" />
@@ -442,6 +443,18 @@
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2x2.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\cellular3D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise2D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise3D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise4D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise2D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise3D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise3Dgrad.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\noise4D.glsl" />
+    <None Include="Shaders\AshimaArts_NoiseCollection\psrdnoise.glsl" />
     <None Include="Shaders\AssetLoadingDemo.frag" />
     <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
@@ -494,6 +507,7 @@
     <Text Include="NotesAndReferences\VirtualDesctructors.txt" />
     <Text Include="NotesOnTexturing.txt" />
     <Text Include="NotesOnUsingMultipleContexts.txt" />
+    <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,7 @@
 #include "GlobalIncludes.h"
 #include "TGA_Image_File_Format_Header.h"
 
+
 //Struct that serves as the return value for the ScreenCaptureAssistant's high level "Capture-and-
 //Write-to-File-All-In-One-Function" functions. This struct consists of the two members, a boolean
 //and a std::string. 
@@ -70,32 +71,42 @@ typedef struct TakeScreenshotOutcome {
 } ScreenshotOutcome;
 
 
+
 typedef struct ScreenCaptureStorageRequirements {
     int fbWidth, fbHeight; //Frame Buffer Width and Height
     int bytesOfStorageRequired;
 } ScreenCaptureRequirements;
 
 
+
 typedef struct Data_For_TGA_Header {
     ScreenCaptureRequirements imageRequirements;
     std::vector<unsigned char> capturedData;
-} DataForTGAHeader;
+} DataForTGA;   
+
+
 
 //Chances are pretty good that TGA will be the only supported file
 //format for the foreseeable future.
-enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF};
+enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF };
+
+
+
+typedef void(*ProcessScreenshotResultCallback)(ScreenshotOutcome);
+
 
 
 class ScreenCaptureAssistant {
 public:
     /*                        //===============================================\\                        *\
-                              ||     Constructor/Destructor/Copy/Move/etc.      ||
+                              ||     Constructor/Destructor/Copy/Move/etc.     ||
     \*                        \\===============================================//                        */
 
-    //Will throw an exception if called from a thread that does not contain an active OpenGL context.
+    //Will throw an exception if called from a thread that does not contain an 
+    //active OpenGL context (as determined by GLFW)
     ScreenCaptureAssistant();
 
-    //Must have a way to figure out how best to deal with any files that may still be open and writing.
+    //Destructor is responsible for making sure all screenshot tasks are complete
     ~ScreenCaptureAssistant() noexcept;
 
 
@@ -113,14 +124,14 @@ public:
 
 
     /*                        //===============================================\\                        *\
-                              ||          ScreenCapture Functionality           ||
+                              ||          ScreenCapture Functionality          ||
     \*                        \\===============================================//                        */
 
 
 
-    //------------------------//
-    //  High Level Functions  //
-    //------------------------//
+    //--------------------------//
+    //  High Level Function(s)  //
+    //--------------------------//
 
     //    This function can be called to take screen captures of the currently rendered frame. 
     //Due to the potential for this operation to last up to several seconds when writing data
@@ -135,50 +146,20 @@ public:
     //a future which will eventually contain the Screenshot's success or failure outcome. It is 
     //up to code calling this function to handle determining when the future is complete and what
     //to do with the result.
-    [[nodiscard]] std::future<ScreenshotOutcome> takeScreenshot(IMAGE_FILE_FORMAT format = IMAGE_FILE_FORMAT::TGA) const noexcept;
-
-    /*//These were replaced with the above function which changes format based off a parameter. 
-    //Operation not supported yet
-#ifdef JPEG_WRITE_SUPPORT_AVAILABLE
-    std::future<ScreenshotOutcome> takeScreenshotAndSaveItAsJPEG() const noexcept { }
-#endif 
-
-    //Operation not supported yet
-#ifdef PNG_WRITE_SUPPORT_AVAILABLE
-    std::future<ScreenshotOutcome> takeScreenshotAndSaveItAsPNG() const noexcept { }
-#endif 
-    */
+    void takeScreenshot(IMAGE_FILE_FORMAT format = IMAGE_FILE_FORMAT::TGA) noexcept;
 
 
-
-    //-----------------------//
-    //  LOW Level Functions  //
-    //-----------------------//
-
-    /*Until I have things more in order, only expose the high level functions to the general public.*/
-private:  /* (The plan is to enable these lower level functions one by one as this class matures) */
-        
-    ScreenCaptureRequirements determineRequiredSpaceToHoldData() const;
-
-    TGA_INTERNAL::TGA_HEADER createTGAHeader(const DataForTGAHeader& dftgah) const;
-
-    std::string getNextSequentialFilename() noexcept;
+    //Once a screenshot has completed processing, a ProcessScreenResultCallback function is called
+    //by this class's internals. This class provides its own default version of this function that
+    //just simply uses 'printf()' to output basic information to the console. This function here
+    //though can be used to provide a custom behavior for reporting the outcome of screenshot 
+    //operations. 
+    void setScreenshotOutcomeCallback(ProcessScreenshotResultCallback psrc) noexcept;
 
 
-
-    //Here are possible asynchronous actions that can be used for part 2 based off 
-    //how things are proceeding in part 1.
-
-    ScreenshotOutcome reportEmptyFramebuffer() const noexcept ;
-    ScreenshotOutcome writeToFile(const TGA_INTERNAL::TGA_HEADER& header, const DataForTGAHeader& dftgah) const;
-
-
-
-
-
-
-
-
+    //Eventually there may be other options here, such as capturing screenshot data from a
+    //Framebuffer other than the primary one [i.e. depth/stencil/attachment/etc] 
+   
 private:
     //When taking a screenshot for the first time within a single lifetime of the process, this value
     //is checked. If this value is 0, then the entire screenshot directory is examined and the highest
@@ -187,25 +168,63 @@ private:
     //done is increment this variable by 1 and then append it to the end of the filename. 
     static int greatestScreenshotID;
     const GLFWwindow* mWindowContext_;
+    std::list<std::future<ScreenshotOutcome>> activeScreenshotTasks;
 
-    //Helper function to launch an asynchronous task with the launch policy that ensures the task
-    //begins executing right away. The default behavior of std::async allows the task scheduler to
-    //optionally delay launching the task until a request is made using 'get' or 'wait' on the future.
-    //This default behavior means if the returned future never has 'get' or 'wait' called on it, it
-    //could be that it is possible that the task never launches at all. Seeing as this class is perhaps 
-    //going to be saving data to files asynchronously, it is very desirable to be able to guarantee that
-    //every 'save data' task is carried out without delay. 
-    //This example is based directly from Scott Meyer's Effective Modern C++ Item 36
-   template<typename F, typename ... Ts>
-   inline auto forceBeginAsyncTask(F&& f, Ts&&... parameters) {
-       return std::async(std::launch::async, 
-                         std::forward<F>(f),
-                         std::forward<Ts>(parameters)...);
-   }
+    ProcessScreenshotResultCallback screenshotOutcomeReportCallback;
 
-
+    //-----------------------//
+    //  LOW Level Functions  //
+    //-----------------------//
+    //   All low level Functions have been permanently moved to 'private' to keep the UI 
+    //   of this class from going completely insane
    
 
+    //PHASE 1 ACTIONS  --  [Synchronous]
+    //These actions will process as required when the 'takeScreenshot()' public member 
+    //function gets called. These functions must all complete before control will be 
+    //returned to the Application.
+
+    //Expects a valid OpenGL context
+    ScreenCaptureRequirements determineRequiredSpaceToHoldData() const noexcept; 
+
+    //Will return the value of the currently bound buffer to binding GL_PIXEL_PACK_BUFFER.
+    //A returned value of 0u means that there was no buffer bound on calling this function.
+    GLuint makeSureThereIsNoPixelPackBufferBound() const noexcept;
+    
+    void restoreToPixelPackBufferBinding(const GLuint previouslyBoundBuffer) const noexcept;
+
+
+    //Make sure that the filesystem is prepared for a new screenshot file
+    std::filesystem::path ensureThatADirectoryForScreenshotsExists() const;
+    //Note that the file name will not yet contain a file extension
+    std::string getNextSequentialFilename() noexcept;
+    
+
+
+
+    TGA_INTERNAL::TGA_HEADER createTGAHeader(const DataForTGA& dftgah) const;
+
+    
+
+    //PHASE 2 ACTIONS  --  [Asynchronous]
+    //These will run asynchronously in the background while the rest of the
+    //Application continues to run  
+
+    ScreenshotOutcome reportEmptyFramebuffer() const noexcept;  //OUTCOME -> FAILURE
+
+    ScreenshotOutcome reportExceptionCaught(std::string exceptionMsg) const noexcept;  //OUTCOME -> FAILURE
+
+    ScreenshotOutcome writeDataToFileAsTGA(const TGA_INTERNAL::TGA_HEADER& header,   //OUTCOME -> T.B.D.
+                                           const DataForTGA& dftgah) const;
+
+
+    //////////////////////////////////////
+    ////////  UTILITY FUNCTIONS  /////////
+    //////////////////////////////////////
+
+   
+    friend class RenderDemoBase;
+    void upkeepFunctionToBeCalledByRenderDemoBase() noexcept;
 };
 
 
