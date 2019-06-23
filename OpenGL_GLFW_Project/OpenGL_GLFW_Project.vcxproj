@@ -72,9 +72,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -95,10 +93,14 @@
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <LinkStatus>true</LinkStatus>
     </Link>
     <Xdcmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Xdcmake>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -135,6 +137,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <LinkStatus>true</LinkStatus>
     </Link>
     <Xdcmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -254,6 +257,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="glfw3.h">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="GLFW_Init_Report.h" />
     <ClInclude Include="JoystickStatePrinter.h" />
     <ClInclude Include="MappedGamepad.h" />
@@ -337,9 +343,7 @@
     <ClInclude Include="freetype\ttunpat.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="GeometryShader.h" />
-    <ClInclude Include="glfw3.h" />
     <ClInclude Include="PrimaryWindowCallbackFunctions.h" />
-    <ClInclude Include="glfw_config.h" />
     <ClInclude Include="GLFW_Init.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\exponential.hpp" />
@@ -414,6 +418,8 @@
     <None Include="AssetLoadingDemo_CoolEffect.vert" />
     <None Include="freetype.dll" />
     <None Include="glfw3.dll" />
+    <None Include="glfw3.ilk" />
+    <None Include="glfw3.pdb" />
     <None Include="glfw3dll.exp" />
     <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html" />
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />

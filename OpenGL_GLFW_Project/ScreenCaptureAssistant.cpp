@@ -278,7 +278,7 @@ std::filesystem::path ScreenCaptureAssistant::ensureThatADirectoryForScreenshots
 
 
 std::string ScreenCaptureAssistant::getNextScreencaptureFilename() {
-
+    const auto timeStart = glfwGetTime();
     const auto DefaultScreenshotDirectory = ensureThatADirectoryForScreenshotsExists();
     //When taking a screenshot for the first time within a single lifetime of the process, the value of
     //nextCaptureID is checked. If this value is 0, then the entire screenshot directory is examined by
@@ -298,7 +298,6 @@ std::string ScreenCaptureAssistant::getNextScreencaptureFilename() {
     std::string assignedFilename = DefaultScreenshotDirectory.string() + BASE_SCREENSHOT_NAME;
     
     if (0ull == nextCaptureID) {
-        glfwSetTimer(0.0);
         std::set<size_t> inUseFileNumbers;
         for (auto entry : std::filesystem::directory_iterator(DefaultScreenshotDirectory)) {
 
@@ -409,6 +408,10 @@ std::string ScreenCaptureAssistant::getNextScreencaptureFilename() {
     else {
         assignedFilename += std::to_string(nextCaptureID++);
     } 
+    
+    const auto timeEnd = glfwGetTime();
+    fprintf(MSGLOG, "\nTime elapsed while determining a new unique filename:  %f nanoseconds\n",
+        timeEnd - timeStart);
     return assignedFilename;
 }
 

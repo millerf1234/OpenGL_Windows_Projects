@@ -241,9 +241,6 @@
     <Filter Include="Third Party">
       <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\GLFW">
-      <UniqueIdentifier>{e782214c-c2e8-461a-a25e-6cc7a83430b0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party\glad">
       <UniqueIdentifier>{45bb8ff9-3654-450b-ba3c-fe8007c262fd}</UniqueIdentifier>
     </Filter>
@@ -426,6 +423,9 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection">
       <UniqueIdentifier>{464263ab-ffe3-4bfc-93db-4d66ffbec93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\GLFW">
+      <UniqueIdentifier>{652b198b-6eec-4ad7-9eaf-11d20c4a7f18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -617,20 +617,14 @@
     <Library Include="freetype.lib">
       <Filter>Third Party\FreeType</Filter>
     </Library>
-    <Library Include="glfw3dll.lib">
-      <Filter>Third Party\GLFW</Filter>
-    </Library>
     <Library Include="OpenAL\OpenAL32.lib">
       <Filter>Third Party\OpenAL</Filter>
     </Library>
+    <Library Include="glfw3dll.lib">
+      <Filter>Third Party\GLFW</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="glfw_config.h">
-      <Filter>Third Party\GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="glfw3.h">
-      <Filter>Third Party\GLFW</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -1138,16 +1132,13 @@
     <ClInclude Include="ScreenCapture.h">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
+    <ClInclude Include="glfw3.h">
+      <Filter>Third Party\GLFW</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
       <Filter>Third Party\FreeType</Filter>
-    </None>
-    <None Include="glfw3.dll">
-      <Filter>Third Party\GLFW</Filter>
-    </None>
-    <None Include="glfw3dll.exp">
-      <Filter>Third Party\GLFW</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
       <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
@@ -1409,6 +1400,18 @@
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\psrdnoise.glsl">
       <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+    </None>
+    <None Include="glfw3.dll">
+      <Filter>Third Party\GLFW</Filter>
+    </None>
+    <None Include="glfw3.ilk">
+      <Filter>Third Party\GLFW</Filter>
+    </None>
+    <None Include="glfw3.pdb">
+      <Filter>Third Party\GLFW</Filter>
+    </None>
+    <None Include="glfw3dll.exp">
+      <Filter>Third Party\GLFW</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
