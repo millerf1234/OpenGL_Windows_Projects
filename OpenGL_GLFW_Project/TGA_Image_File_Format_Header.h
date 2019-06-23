@@ -13,7 +13,7 @@ namespace TGA_INTERNAL {
 
 #pragma pack (push, 1)
 
-    //Basec off listing 9.37 of the OpenGL Super Bible 7e textbook
+    //Based off listing 9.37 of the OpenGL Super Bible 7e textbook
     struct TGA_HEADER {
         unsigned char identsize;     //  Size of the following ID field  
         unsigned char cmaptype;      //  Color map type 0 = none
@@ -31,6 +31,6 @@ namespace TGA_INTERNAL {
 
 #pragma pack (pop)
 
-} //namespace TFA_INTERNAL
+} //namespace TGA_INTERNAL
 
 #endif //TGA_IMAGE_FILE_FORMAT_HEADER_H_

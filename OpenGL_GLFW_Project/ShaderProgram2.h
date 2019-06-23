@@ -15,7 +15,7 @@
 
 #pragma once
 
-#ifndef SHADER_PROGRAM_2_H_
+#ifdef SHADER_PROGRAM_2_H_
 #define SHADER_PROGRAM_2_H_
 
 #include <filesystem>
@@ -118,13 +118,13 @@ public:
     void attachSecondaryFrag(std::filesystem::path) noexcept;
 
 
-#if 0
     //Creates an object-local Compute shader and attaches it to this program.  This function should
     //only be called if no other Shaders have been attached to this object, and after calling
     //this function [no additional shaders may be attached / only additional compute shaders
     //may be attached] (I can't remember which behavior I implemented. Test this out and delete this 
     //comment).
     bool attachCompute(std::string_view) noexcept;
+#if 0
     //Creates an object-local Fragment shader from specified file and attaches it to this program
     bool attachFrag(std::filesystem::path) noexcept;
     //Creates an object-local secondary Fragment shader from the specified file and attaches it to
@@ -164,7 +164,7 @@ public:
 
     //Links this shader program object. This shader program must have either solely a Compute
     //shader or both a Vertex and Fragment shader attached before linking. Additionally,
-    //using the tesselation shaders requires both a tesselation control and tesselation 
+    //using the tessellation shaders requires both a tessellation control and tessellation 
     //evaluation shader to be attached.
     void link();
 

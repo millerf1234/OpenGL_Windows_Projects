@@ -58,20 +58,27 @@ void GLFW_Init::terminate() {
 
 //Do window setup routines and return a struct representing information on detected monitors
 std::unique_ptr<InitReport> GLFW_Init::initialize() {
-	glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as separate from Joystick buttons
-	fprintf(MSGLOG, "Initializing GLFW..."); 
+    
+    //There are a handful of hints for GLFW that must be set before 'glfwInit()' 
+    //is called. As of GLFW 3.3, the only hint that matters for non-MacOS-platforms 
+    //this JoystickHatHint
+    glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as separate from Joystick buttons
+	
+
+    fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");
 		GLFW_IS_INIT = false;
-
 		return nullptr;
 	}
-
-	else 
-		GLFW_IS_INIT = true;
-	
+    GLFW_IS_INIT = true;
 	fprintf(MSGLOG, "DONE!  GLFW version: %s\n", glfwGetVersionString()); 
 
+
+
+    //Now that GLFW is initialized, we begin configuring it by providing it 'hints'.
+    //The vast majority of these hints are of the 'WindowHint' variety, each of which 
+    //sets a component of GLFW's global state affecting the creation of the next window.
 
 	fprintf(MSGLOG, "\tWindow Context Rendering provided through OpenGL %d.%d\n", contextVersionMajor, contextVersionMinor);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
@@ -144,6 +151,17 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 		fprintf(MSGLOG, "FALSE\n");
 	}
 
+    fprintf(MSGLOG, "\t  WINDOW AUTO_ICONIFY: ");
+    if constexpr (true) {
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_TRUE);
+        fprintf(MSGLOG, "TRUE\n");
+    }
+    else {
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+        fprintf(MSGLOG, "FALSE\n");
+    }
+    
+    //Deprecated? maybe...
 	//glfwWindowHint(GLFW_SRGB_CAPABLE, GL_TRUE); //NOT SURE IF THIS IS NEEDED
 
 	fprintf(MSGLOG, "\t  Full-Screen MSAA Samples: %d\n", aaSamples);
@@ -312,9 +330,14 @@ void GLFW_Init::setWindowUserPointer(void * userPointer) {
 
 
 void GLFW_Init::assignAtExitTerminationFunction() noexcept {
+    constexpr const int VALUE_ATEXIT_RETURNS_ON_SUCCESS = 0;
     const int success = std::atexit(atExitFuncToEnsureGLFWTerminateIsCalled);
-    if (success != 0)
-        fprintf(ERRLOG, "\nError Setting atexit GLFW Termination Function!\n");
+    if (success != VALUE_ATEXIT_RETURNS_ON_SUCCESS) {
+        fprintf(WRNLOG, "\n\n\nWARNING! Unable to set the 'atexit' GLFW Termination Function!\n");
+        fprintf(WRNLOG, "This is not a fatal error luckily but deserves closer attention\n"
+            "non-the-less. Please contact a developer!\n");
+        fprintf(WRNLOG, "")
+    }
 }
 
 //Save warning state 

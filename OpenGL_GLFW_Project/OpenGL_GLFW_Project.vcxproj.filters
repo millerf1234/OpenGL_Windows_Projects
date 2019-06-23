@@ -609,6 +609,9 @@
     <ClCompile Include="ScreenCaptureAssistant.cpp">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClCompile>
+    <ClCompile Include="ScreenCapture.cpp">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib">
@@ -1131,6 +1134,9 @@
     </ClInclude>
     <ClInclude Include="ForceBeginAsyncTask.h">
       <Filter>Source Files\Utility\MultiThreading</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenCapture.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

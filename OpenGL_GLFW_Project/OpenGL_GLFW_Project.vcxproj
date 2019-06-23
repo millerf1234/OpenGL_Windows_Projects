@@ -207,6 +207,7 @@
     <ClCompile Include="QuickObj.cpp" />
     <ClCompile Include="QuickObj_NGonParser.cpp" />
     <ClCompile Include="RenderDemoBase.cpp" />
+    <ClCompile Include="ScreenCapture.cpp" />
     <ClCompile Include="ScreenCaptureAssistant.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgram2.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
+    <ClInclude Include="ScreenCapture.h" />
     <ClInclude Include="ScreenCaptureAssistant.h" />
     <ClInclude Include="ShaderProgram2.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
