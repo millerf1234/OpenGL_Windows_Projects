@@ -40,6 +40,7 @@
 #include "RestrictedOperationViolation.h"
 #include "GlobalIncludes.h"
 #include "ScreenCapture.h"
+#include "FramebufferPreferredUsage.h"
 
 
 
@@ -81,15 +82,15 @@ public:
                               ||          ScreenCapture Functionality          ||
     \*                        \\===============================================//                        */
 
-    std::unique_ptr<ScreenCapture> getScreenCapture();
+   // std::unique_ptr<ScreenCapture> getScreenCapture();
 
     
 
 
 private:
     static size_t nextScreenCaptureID;
-
-
+    const GLFWwindow* mWindowContext_;
+    FramebufferPreferredUsage* mDefaultFramebufferInfo_;
 
 
 

@@ -72,8 +72,23 @@ bool RenderDemoBase::checkForContextReset() {
 void RenderDemoBase::performRenderDemoSharedInputLogic() {
 	
     //screenshotAssistant.upkeepFunctionToBeCalledByRenderDemoBase();
-
-    doJoystickPrinterLoopLogic();
+    static int counter = 0;
+    counter++;
+    
+    if (counter == 25) {
+        try {
+            mFBInfo_ = std::make_unique<FramebufferPreferredUsage>(0u);
+        }
+        catch (const std::bad_alloc& e) {
+            fprintf(ERRLOG, "Failure to allocate memory. We are all going to die!\n");
+            std::exit(EXIT_FAILURE);
+        }
+    }
+    if (counter % 200 == 0)
+        Timepoint t("Timepoint created..." + std::to_string(counter));
+    if (counter == 1200) 
+        printf( "\n%s\n", Timepoint::getAllTimepoints().c_str());
+     doJoystickPrinterLoopLogic();
 
 }
 

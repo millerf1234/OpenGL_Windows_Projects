@@ -3,6 +3,7 @@
 
 #include "ScreenCapture.h"
 
+#if 0
 
 
 ScreenCapture::ScreenCapture(const GLFWwindow* context,
@@ -30,3 +31,7 @@ const struct ScreenCapture::ScreenshotOutcome& ScreenCapture::status() const noe
 std::vector<Timepoint> ScreenCapture::timepoints() const noexcept {
     return mTimepoints_;
 }
+
+
+
+#endif //0

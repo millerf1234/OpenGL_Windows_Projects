@@ -19,10 +19,6 @@
 
 #include "GLFW_Init.h"
 
-//Prototypes for the glfw function used by this class
-//and for the global flag representing GLFW's init status
-double glfwGetTime();
-
 
 class Timepoint {
 public:
@@ -32,15 +28,19 @@ public:
     Timepoint(std::string_view msg) : tag( !(msg.empty()) 
                                         ? (msg) 
                                           : ("       ") ) {
-        if (GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
+        //if (GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
             timepoint = glfwGetTime();
             mMasterTimepointRecord_.insert(*this);
-        }
-        else
-            timepoint = 0.0;
+        //}
+        //else
+        //    timepoint = 0.0;
     }
 
-    Timepoint(const Timepoint& other) = default;
+    Timepoint(const Timepoint& other) {
+        tag = other.tag;
+        timepoint = other.timepoint;
+        //mMasterTimepointRecord_.insert(*this);
+    };
     Timepoint(Timepoint&& other) = default;
     Timepoint& operator=(const Timepoint& that) = default;
     Timepoint& operator=(Timepoint&& that) = default;
@@ -57,12 +57,12 @@ public:
     }
 
     static std::string getAllTimepoints() noexcept {
-        if (mMasterTimepointRecord_.empty()) { return; }
+        if (mMasterTimepointRecord_.empty()) { return "\n\n        [No Timepoints Have Yet Been Created!]\n\n"; }
         //Get the smallest timepoint
         auto citer = mMasterTimepointRecord_.cbegin();
         double t0 = citer->timepoint;
         //Get the largest timepoint
-        double tMax = mMasterTimepointRecord_.crend()->timepoint - t0;
+        double tMax = (--mMasterTimepointRecord_.crend())->timepoint - t0;
         //Figure out how many digits it will take to display tMax
         int digits = 1;
         while (tMax >= 10) {
@@ -81,14 +81,13 @@ public:
         return oss.str();
     }
 
-    static const std::multiset<Timepoint>& getMasterTimepointMultiset() noexcept {
+    static const std::multiset<Timepoint, std::less<Timepoint>>& getMasterTimepointMultiset() noexcept {
         return mMasterTimepointRecord_;
     }
 
 private:
-    static std::multiset<Timepoint> mMasterTimepointRecord_;
+    static std::multiset<Timepoint, std::less<Timepoint>> mMasterTimepointRecord_;
 };
-
 
 
 

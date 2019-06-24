@@ -47,6 +47,7 @@
 //Global RenderDemo utilities
 #include "ScreenCaptureAssistant.h"
 #include "JoystickStatePrinter.h"
+#include "FramebufferPreferredUsage.h"
 
 enum class PIPELINE_PRIMITIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, TRIANGLE_OUTLINE, LINE_STRIP }; 
 
@@ -142,7 +143,10 @@ private:
 	unsigned long long mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
 	JoystickStatePrinter joystickPrinter;
 
+    std::unique_ptr<FramebufferPreferredUsage> mFBInfo_;
+
 	void doJoystickPrinterLoopLogic();
+
 
 };
 

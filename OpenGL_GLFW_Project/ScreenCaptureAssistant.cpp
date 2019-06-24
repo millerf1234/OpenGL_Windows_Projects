@@ -19,109 +19,14 @@ ScreenCaptureAssistant::ScreenCaptureAssistant() : mWindowContext_(glfwGetCurren
             "is kinda sorta a major major issue that there is no context!\n"));
     }
 
-    setScreenshotOutcomeCallback(defaultScreenshotResultCallbackFunction);
+
+    //setScreenshotOutcomeCallback(defaultScreenshotResultCallbackFunction);
 }
 
 
+ScreenCaptureAssistant::~ScreenCaptureAssistant() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 

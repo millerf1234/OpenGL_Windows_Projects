@@ -17,7 +17,7 @@
 
 #pragma once
 
-#ifndef SCREEN_CAPTURE_H_
+#ifdef SCREEN_CAPTURE_H_
 #define SCREEN_CAPTURE_H_
 
 #include <string>
@@ -35,11 +35,11 @@ enum class ScreenCaptureState {
 
 
 
-
-typedef struct Timepoint {
-    double timepoint;
-    std::string tag;
-} Timepoint;
+//
+//typedef struct Timepoint {
+//    double timepoint;
+//    std::string tag;
+//} Timepoint;
 
 
 class ScreenCapture {

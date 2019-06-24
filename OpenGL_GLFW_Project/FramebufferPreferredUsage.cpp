@@ -7,22 +7,31 @@
 
 
 namespace {
-    const std::string creationMsgPt1 = "Constructing Preferred Usage Object For Framebuffer ";
+    const std::string creationMsgPt1 = "Constructing Framebuffer Preferences Object for FB #";
 }
 
 
 //Prototypes for Implementation-only functions 
+std::string getNameOfGLEnum(GLenum hexEnum) noexcept;
 std::string internalFormatEnumToString(GLenum format) noexcept;
 std::string getType(GLenum type) noexcept;
+std::string checkAgainstOtherValues(GLenum hexEnum) noexcept;
 
 
 
 FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
-                                        mIsDefaultFramebuffer_(0u == framebufferName),
-                                        mName_(framebufferName),
-                                        mTCreation_(creationMsgPt1 + std::to_string(framebufferName)),
-                                        mTReady_(nullptr) {
-    constexpr GLint NOT_SET = -3; //Going to play it safe and go with -3 in-case -1 means something
+                                                   mName_(framebufferName),
+                                                   mIsDefaultFramebuffer_(0u == framebufferName),
+                                                   mTCreation_(creationMsgPt1 + 
+                                                              std::to_string(framebufferName)),
+                                                   mTReady_(nullptr) {
+
+    //Need a Default value to reset to between queries to prevent cross-interference. 
+    //Best to play it safe and go with an obscure value such as '-37' because the 
+    //documentation for these query functions is massive and confusing and I have no
+    //idea what to expect.
+    constexpr GLint NOT_SET = -37; 
+
     assert(glfwGetCurrentContext());
     GLint queryResult = NOT_SET;
     //Query the framebuffer to see if it is double buffered
@@ -54,9 +63,71 @@ FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
     mSampling_.samples = queryResult;
    
     queryResult = NOT_SET;
-    glGetNamedFramebufferParameteriv(mName_, GL_IMPLEMENTATION_COLOR_READ_TYPE, &queryResult);
+    glGetNamedFramebufferParameteriv(mName_, GL_SAMPLE_BUFFERS, &queryResult);
     assert(queryResult != NOT_SET);
     mSampling_.sampleBuffers = queryResult;
+
+    queryResult = NOT_SET;
+    glGetNamedFramebufferParameteriv(mName_, GL_STEREO, &queryResult);
+    assert(queryResult != NOT_SET);
+    if (queryResult == GL_TRUE)
+        mStereoBufferingEnabled_ = true;
+    else if (queryResult == GL_FALSE)
+        mStereoBufferingEnabled_ = false;
+    else {
+        fprintf(ERRLOG, "\nglGetNamedFramebufferParameteriv() returned an unexpected value!");
+        assert(false);
+    }
+
+
+#ifdef INCLUDE_NAME
+    mFramebufferPreferences_.preferredFormatName = 
+        getNameOfGLEnum(mFramebufferPreferences_.preferredFormat);
+    
+    mFramebufferPreferences_.preferredTypeName = 
+        getNameOfGLEnum(mFramebufferPreferences_.preferredType);
+  //  mFramebufferPreferences_.preferredFormatName =
+  //      internalFormatEnumToString(mFramebufferPreferences_.preferredFormat);
+  //  mFramebufferPreferences_.preferredTypeName =
+  //      getType(mFramebufferPreferences_.preferredType);
+#endif 
+
+
+    try {
+        mTReady_ = std::make_unique<Timepoint>("Finished Querying All Basic Preferences for Framebuffer #" + std::to_string(mName_));
+        //Check to see if we are a default framebuffer. If we are, release the newly 
+        //created timepoint because we got some more initialization to get through.
+        if (mIsDefaultFramebuffer_) {
+            mTReady_.release();
+            mTReady_ = nullptr;
+        }
+    }
+    catch (const std::bad_alloc& e) {
+        fprintf(ERRLOG, "\nIt looks like a bad allocation just occurred!\nMsg: %s\n",
+            e.what());
+    }
+
+
+    if (mIsDefaultFramebuffer_)
+        mState_.emplace(DefaultFBState());
+    else
+        mState_ = std::nullopt;
+
+
+    //For a default framebuffer, we now follow the GLFW documentation's
+    //guidance and learn about our default Framebuffer.
+    if (mIsDefaultFramebuffer_) {
+        assert(mState_.has_value());
+        
+        auto defFBState = mState_.value();
+
+        try {
+            mTReady_ = std::make_unique<Timepoint>("Finished Querying All Available Attachments Of This Default Framebuffer #" + std::to_string(mName_));
+        } catch (const std::bad_alloc& e) {
+            fprintf(ERRLOG, "\nBad Alloc! %s\n", e.what());
+            std::exit(EXIT_FAILURE);
+        }
+    }
 }
 
 FramebufferPreferredUsage::~FramebufferPreferredUsage() noexcept {
@@ -73,8 +144,17 @@ GLenum FramebufferPreferredUsage::preferredColorReadFormat() const noexcept {
     return mFramebufferPreferences_.preferredFormat;
 }
 
+std::string FramebufferPreferredUsage::nameOfPreferredColorReadFormat() const noexcept {
+    return internalFormatEnumToString(mFramebufferPreferences_.preferredFormat);
+}
+
+
 GLenum FramebufferPreferredUsage::preferredColorReadType() const noexcept {
     return mFramebufferPreferences_.preferredType;
+}
+
+std::string FramebufferPreferredUsage::nameOfPreferredColorReadType() const noexcept {
+    return getType(mFramebufferPreferences_.preferredType);
 }
 
 
@@ -86,7 +166,23 @@ GLenum FramebufferPreferredUsage::preferredColorReadType() const noexcept {
 
 static constexpr const char* unknownFormatName = "UNKNOWN FORMAT";
 
+std::string getNameOfGLEnum(GLenum hexEnum) noexcept {
+    std::string name = getType(hexEnum);
+    if (name != std::string("UNRECOGNIZED TYPE"))
+        return name;
+    
+    name = internalFormatEnumToString(hexEnum);
+    if (name != unknownFormatName)
+        return name;
+
+    return name;
+}
+
 std::string getType(GLenum type) noexcept {
+    fprintf(MSGLOG, "\n\n\n"
+        "      DEBUG ~~~> The Preferred glReadPixels() type by\n"
+        "                  this implementations has value %#X\n\n\n",
+        type);
     std::string typeName;
     switch (type) {
     default:
@@ -137,7 +233,29 @@ std::string getType(GLenum type) noexcept {
     case (GL_DEPTH_STENCIL):
         typeName = "GL_DEPTH_STENCIL";
         break;
+        
+        // There are Also Data Types Which Might Be Considered Same Thing
+
+    case(GL_BYTE):             //0x1400
+        typeName = "GL_UNSIGNED_BYTE";
+        break;
+    case(GL_UNSIGNED_BYTE):    //0x1401
+        typeName = "GL_UNSIGNED_BYTE";
+        break;
+    case(GL_SHORT):            //0x1402
+        typeName = "GL_SHORT";
+        break;
+    case(GL_UNSIGNED_SHORT):   //0x1403
+        typeName = "GL_UNSIGNED_SHORT";
+        break;
+    case(GL_FLOAT):            //0x1406
+        typeName = "GL_FLOAT";
+        break;
+    case(GL_FIXED):            //0x140C
+        typeName = "GL_FIXED";
+        break;
     }
+    
     return typeName;
 }
 
@@ -146,6 +264,10 @@ std::string getType(GLenum type) noexcept {
 
 
 std::string internalFormatEnumToString(GLenum format) noexcept {
+    fprintf(MSGLOG, "\n\n\n"
+        "      DEBUG ~~~> The Preferred glReadPixels() format by\n"
+        "                  this implementations has value %#X\n\n\n",
+        format);
     std::string name;
     switch (format) {
     default:
@@ -334,3 +456,37 @@ std::string internalFormatEnumToString(GLenum format) noexcept {
     }
     return name;
 }
+
+#ifndef GL_PALETTE4_RGB8_OES
+#define GL_PALETTE4_RGB8_OES 0x8B90
+#endif 
+std::string checkAgainstOtherValues(GLenum hexEnum) noexcept {
+    std::string name = unknownFormatName;
+    switch (hexEnum) {
+    default:
+        break;
+    case(GL_PALETTE4_RGB8_OES):
+        name = "GL_PALETTE4_RGB8_OES";
+        break;
+    }
+
+    return name;
+}
+
+//More Glenum Values 
+
+/*
+// PixelInternalFormat 
+#define GL_PALETTE4_RGB8_OES              0x8B90
+#define GL_PALETTE4_RGBA8_OES             0x8B91
+#define GL_PALETTE4_R5_G6_B5_OES          0x8B92
+#define GL_PALETTE4_RGBA4_OES             0x8B93
+#define GL_PALETTE4_RGB5_A1_OES           0x8B94
+#define GL_PALETTE8_RGB8_OES              0x8B95
+#define GL_PALETTE8_RGBA8_OES             0x8B96
+#define GL_PALETTE8_R5_G6_B5_OES          0x8B97
+#define GL_PALETTE8_RGBA4_OES             0x8B98
+#define GL_PALETTE8_RGB5_A1_OES           0x8B99
+
+
+*/

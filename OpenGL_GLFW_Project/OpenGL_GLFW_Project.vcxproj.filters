@@ -19,26 +19,8 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ed0ef0ff-dece-473a-91eb-cf8eb2074bbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools">
-      <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="NotesAndReferences">
       <UniqueIdentifier>{7e929138-11ce-4b48-bf47-c2e4623f992d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
-      <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject">
-      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader">
-      <UniqueIdentifier>{5680177a-33cf-4bdd-9907-36cbb17c2f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes">
-      <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform">
-      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading">
       <UniqueIdentifier>{61aefebc-6b93-4f8d-a147-495f549eeeb1}</UniqueIdentifier>
@@ -120,9 +102,6 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
       <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
-      <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\UI">
       <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
@@ -409,9 +388,6 @@
     <Filter Include="Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo">
       <UniqueIdentifier>{735dc162-5caf-4c95-8e65-d531798050e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
-      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\FilepathsToAssetDirectories">
       <UniqueIdentifier>{16f4d742-1cf7-4533-8c6c-5ef8d26b6e82}</UniqueIdentifier>
     </Filter>
@@ -429,6 +405,30 @@
     </Filter>
     <Filter Include="Source Files\Utility\Timepoint">
       <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools">
+      <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface">
+      <UniqueIdentifier>{8989212a-db74-40ce-90e1-b3f7ee0b846f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject">
+      <UniqueIdentifier>{23121481-66e4-48e5-b831-d0b43c021a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader">
+      <UniqueIdentifier>{5680177a-33cf-4bdd-9907-36cbb17c2f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes">
+      <UniqueIdentifier>{33360490-6c15-41df-8a2a-48ebd302d069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform">
+      <UniqueIdentifier>{fd0145d2-10f6-4603-b797-8a487b299c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
+      <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
+      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -617,6 +617,9 @@
     </ClCompile>
     <ClCompile Include="FramebufferPreferredUsage.cpp">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClCompile>
+    <ClCompile Include="Timepoint.cpp">
+      <Filter>Source Files\Utility\Timepoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

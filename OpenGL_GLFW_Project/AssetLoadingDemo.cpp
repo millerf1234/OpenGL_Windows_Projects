@@ -628,9 +628,9 @@ void AssetLoadingDemo::renderLoop() {
         ////////////////////////////////////////////////////////////////////////////////
         //This is purely for debug purposes at this time and is not yet functional.
        //Take a screenshot on frame 145
-        if (frameNumber == 145ULL) {
-            screenshotAssistant.takeScreenshot();
-        }
+       // if (frameNumber == 145ULL) {
+       //     screenshotAssistant.takeScreenshot();
+       // }
         //End of Debug Code 
         ////////////////////////////////////////////////////////////////////////////////////
 

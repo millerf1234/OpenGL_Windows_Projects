@@ -10,6 +10,7 @@
 //  References:             https://www.khronos.org/opengl/wiki/Pixel_Transfer
 //                         https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetInternalformat.xhtml
 //                     
+//  [GLFW Link]         https://www.glfw.org/docs/latest/window_guide.html#window_attribs_fb
 //
 //     Calling the following function with the first parameter set to 0 reveals 
 //       void glGetNamedFramebufferParameteriv(GLuint framebuffer,
@@ -30,13 +31,16 @@
 #ifndef FRAMEBUFFER_PREFERED_USAGE_H_
 #define FRAMEBUFFER_PREFERED_USAGE_H_
 
-#ifdef READY_TO_IMPLEMENT_CLIENT_FRAMEBUFFER_OBJECTS
-#include <optional>
-#endif 
 
+#include <optional>
+#include <set>
+#include <string>
+#include "Timepoint.h"
 #include "GlobalIncludes.h"
 
 
+
+#define INCLUDE_NAME
 
 //Here are the 2 most important settings that are entirely the purpose behind this class.
 //This is because they directly matter towards the performance of reading data from the
@@ -44,7 +48,13 @@
 typedef struct ColorReadPreference {
     GLenum preferredFormat;  //e.g. 
     GLenum preferredType;    //e.g.
+#ifdef INCLUDE_NAME
+    std::string preferredFormatName;
+    std::string preferredTypeName;
+#endif //INCLUDE_NAMES
 } PreferredPixelReadParam;
+
+
 
 
 
@@ -57,6 +67,172 @@ typedef struct FramebufferSampling {
 
 
 
+//GLFW suggests in its documentation to retrieve the following
+//properties of the default framebuffer using the function 
+// 'glGetFramebufferAttachmentParameteriv()'. (See the GLFW
+//link above under references)
+typedef struct DefaultFramebufferState {
+
+    //So it's a long story but for the default framebuffer the available 
+    //attachments are referred to under the following GLenums:
+    //        GL_FRONT_LEFT, GL_FRONT_RIGHT, GL_BACK_LEFT,
+    //             GL_BACK_RIGHT, GL_DEPTH or GL_STENCIL,
+    //Arrg it is confusing. Basically all of GLFW's color is being
+    //kept in the BACK_LEFT buffer, so we are very curious about that one.
+    //Let's try to see what we can find out about all of them though. Let's
+    //represent each one with the following struct
+    typedef struct DefaultFBAttachment {
+        
+        GLint targetID;
+        enum class Target { FRONT_LEFT, FRONT_RIGHT, BACK_LEFT,
+            BACK_RIGHT, DEPTH, STENCIL , INVALID};
+        Target target;
+        GLint objectTypeID;
+        enum class ObjectType { NONE, FRAMEBUFFER_DEFAULT,
+            TEXTURE, RENDERBUFFER , OTHER};
+        ObjectType objType;
+        //If ObjectType is NONE, then none of the these remaining values will
+        //be set.
+        //Not all of these will be active at the same time
+        GLint redSize, greenSize, blueSize, alphaSize, depthSize, stencilSize;
+        GLint componentTypeID;
+        enum class ComponentType { FLOAT, INT, UINT, SNORM, UNORM }; //Types 2-5 are all integer types which only are used with color attachments
+        ComponentType componentType;
+        GLint colorEncodingID;
+        enum class ColorEncoding { LINEAR, SRGB };
+        ColorEncoding colorEncoding;
+        DefaultFBAttachment(GLenum targetAttachment) : targetID(targetAttachment),
+                                             target(Target::INVALID),
+                                             objectTypeID(0),
+                                             objType(ObjectType::NONE),
+                                             redSize(0), 
+                                             greenSize(0),
+                                             blueSize(0),
+                                             alphaSize(0),
+                                             depthSize(0),
+                                             stencilSize(0),
+                                             componentTypeID(0),
+                                             componentType(ComponentType::FLOAT),
+                                             colorEncodingID(0),
+                                             colorEncoding(ColorEncoding::LINEAR) {
+            switch (targetAttachment) {
+            default: 
+                break;
+            case (GL_FRONT_LEFT):
+                target = Target::FRONT_LEFT;
+                break;
+            case (GL_FRONT_RIGHT):
+                target = Target::FRONT_RIGHT;
+                break;
+            case (GL_BACK_LEFT):
+                target = Target::BACK_LEFT;
+                break;
+            case (GL_BACK_RIGHT):
+                target = Target::BACK_RIGHT;
+                break;
+            case (GL_DEPTH):
+                target = Target::DEPTH;
+                break;
+            case (GL_STENCIL):
+                target = Target::STENCIL;
+                break;
+            }
+            
+            //Find out our object type
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetAttachment,
+                GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &objectTypeID);
+            if (objectTypeID == GL_NONE)
+                return;
+
+            switch (objectTypeID) {
+            default:
+                objType = ObjectType::OTHER;
+                break;
+            case GL_TEXTURE:
+                objType = ObjectType::TEXTURE;
+                break;
+            case GL_RENDERBUFFER:
+                objType = ObjectType::RENDERBUFFER;
+                break;
+            case GL_FRAMEBUFFER_DEFAULT:
+                objType = ObjectType::FRAMEBUFFER_DEFAULT;
+                break;
+            }
+
+
+            //Since we know we are a valid attachment object type, might as well fill in
+            //the rest of our members
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, &redSize);
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE, &greenSize);
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE, &blueSize);
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE, &alphaSize);
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE, &depthSize);
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE, &stencilSize);
+
+
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE, &componentTypeID);
+            switch (componentTypeID) {
+            default:
+                fprintf(MSGLOG, "\nUnrecognized component type: %#X\n", componentTypeID);
+                break;
+            case (GL_FLOAT):
+                componentType = ComponentType::FLOAT;
+                break;
+            case (GL_INT):
+                componentType = ComponentType::INT;
+                break;
+            case (GL_UNSIGNED_INT):
+                componentType = ComponentType::UINT;
+                break;
+            case (GL_SIGNED_NORMALIZED):
+                componentType = ComponentType::SNORM;
+                break;
+            case (GL_UNSIGNED_NORMALIZED):
+                componentType = ComponentType::UNORM;
+                break;
+            }
+
+            glGetNamedFramebufferAttachmentParameteriv(0u, targetID,
+                GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &colorEncodingID);
+            if (colorEncodingID == GL_SRGB)
+                colorEncoding = ColorEncoding::SRGB;
+
+
+        }
+
+
+    } DefFBAttachment;
+
+
+    DefaultFramebufferState() : frontLeft { GL_FRONT_LEFT }, 
+                                frontRight { GL_FRONT_RIGHT }, 
+                                backLeft { GL_BACK_LEFT },
+                                backRight { GL_BACK_RIGHT },
+                                depth { GL_DEPTH },
+                                stencil { GL_STENCIL }         {                        
+
+    }
+    DefFBAttachment frontLeft; 
+    DefFBAttachment frontRight;
+    DefFBAttachment backLeft;
+    DefFBAttachment backRight;
+    DefFBAttachment depth;
+    DefFBAttachment stencil;
+   
+    
+} DefaultFBState;
+
+
+
+
+
 
 class FramebufferPreferredUsage {
 public:
@@ -65,19 +241,36 @@ public:
 
     ~FramebufferPreferredUsage() noexcept;
 
+    FramebufferPreferredUsage(FramebufferPreferredUsage&& other) noexcept = default;
+
     bool isDefaultFramebuffer() const noexcept { return mIsDefaultFramebuffer_; }
     bool doubleBuffered() const noexcept { return mDoubleBuffered_; }
-    
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///  Here are the preferences that matter for performing screen captures  ///
+    /////////////////////////////////////////////////////////////////////////////
     PreferredPixelReadParam getPreferredReadPixelsParameters() const noexcept;
 
-    //Here are the ones that matter for performing screen captures
     GLenum preferredColorReadFormat() const noexcept;  //e.g. 
+    //Uses an internal lookup table to try to report the name of this GLenum.
+    //Known to fail...
+    std::string nameOfPreferredColorReadFormat() const noexcept;
+
+
     GLenum preferredColorReadType() const noexcept;    //e.g.
+    //Uses an internal lookup table to try to report the name of this GLenum.
+    //Known to fail...
+    std::string nameOfPreferredColorReadType() const noexcept; 
 
 
 
 
+    //Back to the less directly interesting settings...
 
+    CurrentSamplingConfiguration getCurrentSamplingConfiguration() const noexcept { return mSampling_; }
+    bool hasStereoBufferingEnabled() const noexcept { return mStereoBufferingEnabled_; }
 
 
 
@@ -103,6 +296,8 @@ private:
     CurrentSamplingConfiguration mSampling_;
     bool mStereoBufferingEnabled_;
 
+    //This will only be available if this object is a Default Framebuffer
+    std::optional<DefaultFBState> mState_;
 
 };
 
@@ -155,7 +350,7 @@ param returns a boolean value indicating whether stereo buffers (left and right)
 
 
 
-#endif //IMPLEMENTATION_PREFERENCES_H_
+//#endif //IMPLEMENTATION_PREFERENCES_H_
 
 
 

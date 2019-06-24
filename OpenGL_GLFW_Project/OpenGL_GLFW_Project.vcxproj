@@ -220,6 +220,7 @@
     <ClCompile Include="TessellationControlShader.cpp" />
     <ClCompile Include="TessellationEvaluationShader.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
+    <ClCompile Include="Timepoint.cpp" />
     <ClCompile Include="UniformLocationInterface.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
     <ClCompile Include="Vertex.cpp" />
