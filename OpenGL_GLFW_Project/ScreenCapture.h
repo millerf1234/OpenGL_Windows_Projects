@@ -32,14 +32,9 @@ enum class ScreenCaptureState {
     CancelledDueToInvalidFramebufferTarget,
 };
 
-enum class ReadPixelsSourceTarget {
-    BACK_BUFFER,
-    FRONT_BUFFER
-};
 
-enum class ScreenCaptureImplementationStrategy {
-    DIRECT_COPY_TO_APPLICATION,
-};
+
+
 
 typedef struct Timepoint {
     double timepoint;
@@ -50,11 +45,11 @@ typedef struct Timepoint {
 class ScreenCapture {
 public:
     //Shall be called from the main rendering thread only or will throw an exception
-    ScreenCapture(const GLFWwindow* context,
+   /* ScreenCapture(const GLFWwindow* context,
                   ReadPixelsSourceTarget t = ReadPixelsSourceTarget::BACK_BUFFER, 
                   ScreenCaptureImplementationStrategy s =
                                  ScreenCaptureImplementationStrategy::DIRECT_COPY_TO_APPLICATION); 
-
+                                 */
     ~ScreenCapture() noexcept;
     ScreenCapture(const ScreenCapture&) = delete;
     ScreenCapture(ScreenCapture&&) noexcept;

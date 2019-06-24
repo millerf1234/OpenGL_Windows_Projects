@@ -56,7 +56,7 @@ bool RenderDemoBase::checkForContextReset() {
 		break;
 	case GL_UNKNOWN_CONTEXT_RESET:
 		fprintf(MSGLOG, "\nglGetGraphicsResetStatus() returned enum GL_UNKNOWN_CONTEXT_RESET!\n"
-			"This means it is not known what happened or why, but what happend was bad!!!\n");
+			"This means it is not known what happened or why, but what happened was bad!!!\n");
 		resetDetected = true;
 		break;
 	default:
@@ -71,7 +71,7 @@ bool RenderDemoBase::checkForContextReset() {
 
 void RenderDemoBase::performRenderDemoSharedInputLogic() {
 	
-    screenshotAssistant.upkeepFunctionToBeCalledByRenderDemoBase();
+    //screenshotAssistant.upkeepFunctionToBeCalledByRenderDemoBase();
 
     doJoystickPrinterLoopLogic();
 

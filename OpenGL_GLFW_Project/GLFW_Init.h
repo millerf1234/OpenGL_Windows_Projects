@@ -24,6 +24,7 @@
 #include "WindowConfiguration.h"
 #include "ApplicationConstantSettings.h"
 
+
 namespace GLFW_INIT_INTERNAL {
     static bool GLFW_IS_INIT = false;
     inline void atExitFuncToEnsureGLFWTerminateIsCalled() noexcept {

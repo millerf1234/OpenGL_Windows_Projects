@@ -166,11 +166,22 @@ void main() {
     fragColor = vec4(color, 0.85 - 0.01*shaded_vertex.instanceID);
 
 
-//Effect 4+ SELECTED
-#elif (EFFECT_TO_DO >= 4)
+//Effect 4 SELECTED
+#elif (EFFECT_TO_DO == 4)
     vec4 noise = noise4(shaded_vertex.position);
     fragColor = vec4(0.75, 0.65, 0.55, 1.0);
+    
+//Effect 5 SELECTED
+#elif (EFFECT_TO_DO >= 5)
+    const vec4 color1 = vec4(0.68, 0.09, 0.25, 1.0);
+    const vec4 color2 = vec4(0.9, 0.7, 1.0, 0.0);
 
+    vec2 temp = shaded_vertex.position.xy - vec2(0.5);
+    float f = dot(temp, temp);
 
+    if (f > 0.2 + 0.05 * cos(time))
+        discard;
+
+    fragColor = mix(color1, color2, f);
 #endif //EFFECT_TO_DO
 }

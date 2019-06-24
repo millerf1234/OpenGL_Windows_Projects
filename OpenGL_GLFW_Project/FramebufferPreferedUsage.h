@@ -1,3 +1,110 @@
+
+//
+//  Basically this class just goes to town with the function
+//  glGetNamedFramebufferParameteriv() to reveal a whole lot of 
+//  information about the default framebuffer.
+//  
+//  Reference: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetFramebufferParameter.xhtml
+//
+//  [more]                                                                       
+//  References:             https://www.khronos.org/opengl/wiki/Pixel_Transfer
+//                         https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetInternalformat.xhtml
+//                     
+//
+//     Calling the following function with the first parameter set to 0 reveals 
+//       void glGetNamedFramebufferParameteriv(GLuint framebuffer,
+//                                             GLenum pname,
+//                                             GLint* param);
+//
+//    REQUIRES OPENGL 4.5 OR NEWER TO FUNCTION ON DEFAULT FRAMEBUFFERS
+//
+
+
+#pragma once
+
+#ifndef FRAMEBUFFER_PREFERED_USAGE_H_
+#define FRAMEBUFFER_PREFERED_USAGE_H_
+
+#ifdef READY_TO_IMPLEMENT_CLIENT_FRAMEBUFFER_OBJECTS
+#include <optional>
+#endif 
+
+#include "GlobalIncludes.h"
+
+
+class FramebufferPreferredUsage {
+public:
+    //Will default to the default framebuffer if no parameter is provided
+    FramebufferPreferredUsage(GLuint framebufferName = 0u);
+
+    ~FramebufferPreferredUsage() noexcept;
+
+    bool isDefaultFramebuffer() const noexcept { return mIsDefaultFramebuffer_; }
+    bool doubleBuffered() const noexcept { return mDoubleBuffered_; }
+    
+    PreferredPixelReadParam getPreferredReadPixelsParameters() const noexcept ;
+    //Here are the ones that matter for performing screen captures
+    GLenum preferredColorReadFormat;  //e.g. 
+    GLenum preferredColorReadType;    //e.g.
+
+
+    //Here are the main 2 pr that matter for performing screen captures preference 
+    typedef struct ColorReadPreference {
+        GLenum preferredFormat;  //e.g. 
+        GLenum preferredType;    //e.g.
+    } PreferredPixelReadParam;
+
+
+
+
+
+#ifdef READY_TO_IMPLEMENT_CLIENT_FRAMEBUFFER_OBJECTS
+    typedef struct ClientFramebufferProperties {
+        int defaultWidth; //Corresponds to GL_FRAMEBUFFER_DEFAULT_WIDTH
+        int defaultHeight; //Corresponds to GL_FRAMEBUFFER_DEFAULT_HEIGHT
+        int defaultLayers; //Corresponds to GL_FRAMEBUFFER_DEFAULT_LAYERS
+        int defaultSamples; //Corresponds to GL_FRAMEBUFFER_DEFAULT_SAMPLES
+        bool defaultFixedSampleLocations; //Corresponds to GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS
+    } ClientFramebufferDetails;
+    const std::optional<ClientFramebufferDetails> clientFBDetails;
+#endif
+
+private:
+    const GLuint mName_;
+    const Timepoint mTCreation_;
+    Timepoint mTReady_;
+    const bool mIsDefaultFramebuffer_;
+    bool mDoubleBuffered_;
+    
+};
+
+#endif //FRAMEBUFFER_PREFERED_USAGE_H_
+
+
+
+/*
+
+
+GL_DOUBLEBUFFER
+param returns a boolean value indicating whether double buffering is supported for the framebuffer object.
+
+GL_IMPLEMENTATION_COLOR_READ_FORMAT
+param returns a GLenum value indicating the preferred pixel data format for the framebuffer object. See glReadPixels.
+
+GL_IMPLEMENTATION_COLOR_READ_TYPE
+param returns a GLenum value indicating the implementation's preferred pixel data type for the framebuffer object. See glReadPixels.
+
+GL_SAMPLES
+param returns an integer value indicating the coverage mask size for the framebuffer object. See glSampleCoverage.
+
+GL_SAMPLE_BUFFERS
+param returns an integer value indicating the number of sample buffers associated with the framebuffer object. See glSampleCoverage.
+
+GL_STEREO
+param returns a boolean value indicating whether stereo buffers (left and right) are supported for the framebuffer object.
+*/
+
+
 //
 // File:                  ImplementationPreferences.h
 //
@@ -14,37 +121,7 @@
 //                        the primary OpenGL context after it and all the 
 //                        OpenGL functions have had a chance to load.
 //                                                                        
-//                                                                         
-// References:             https://www.khronos.org/opengl/wiki/Pixel_Transfer
-//                         https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetInternalformat.xhtml
-//                                                                       
-// Programmer:            Forrest Miller                                 
-//                                                                      
-// Date:                  June 23, 2019
-//
-//
-
-
-#pragma once
-
-#ifndef IMPLEMENTATION_PREFERENCES_H_
-#define IMPLEMENTATION_PREFERENCES_H_
-
-
-#include "GlobalIncludes.h"
-
-class ImplementationPreferences {
-public:
-    //Only Call From The Main Render Thread With A Valid Context
-    //Or Be Prepared For The Exception This Will Throw
-    ImplementationPreferences() {
-        //glGetInternalformati64v(GL_RENDERBUFFER, )
-    }
-
-
-};
-
-
+                                                  
 
 
 

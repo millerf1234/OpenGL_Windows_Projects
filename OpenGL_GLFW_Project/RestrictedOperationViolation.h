@@ -13,7 +13,7 @@
 class RestrictedOperationViolation : public std::exception {
 public:
     RestrictedOperationViolation(std::string_view msg) : std::exception(
-        (msg.empty()
+        (!(msg.empty())
             ? msg.data()
             : "This Operation Is Not Permitted At This Time")) {
 

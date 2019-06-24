@@ -20,8 +20,8 @@
 //                       others.
 //
 //                       Please only use this class on the main rendering thread.
-//                       This is the one which owns the presentation buffers and calls 
-//                      'glfwSwapBuffers()'. Failure to do so will force this 
+//                       This is the one which owns the presentation buffers and
+//                       calls 'glfwSwapBuffers()'. Failure to do so will force this 
 //                       class to throw an exception. 
 //
 //
@@ -83,11 +83,25 @@ public:
 
     std::unique_ptr<ScreenCapture> getScreenCapture();
 
+    
+
 
 private:
     static size_t nextScreenCaptureID;
 
 
+
+
+
+
+
+    //////////////////////////////////////
+    ////////   UPKEEP FUNCTION   /////////
+    //////////////////////////////////////
+    friend class RenderDemoBase;
+    //This function is needed to keep this object up to date and to 
+    //keep alive it's background tasks
+    void upkeepFunctionToBeCalledByRenderDemoBase() noexcept;
 };
 
 

@@ -170,6 +170,7 @@
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="ConnectedMonitors.cpp" />
+    <ClCompile Include="FramebufferPreferredUsage.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FlyingCameraDemo.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="ConnectedMonitors.h" />
     <ClInclude Include="DebugSettings.h" />
+    <ClInclude Include="FramebufferPreferredUsage.h" />
     <ClInclude Include="FlyingCameraDemo.h" />
     <ClInclude Include="ForceBeginAsyncTask.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
@@ -263,7 +265,6 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </ClInclude>
     <ClInclude Include="GLFW_Init_Report.h" />
-    <ClInclude Include="ImplementationPreferences.h" />
     <ClInclude Include="JoystickStatePrinter.h" />
     <ClInclude Include="MappedGamepad.h" />
     <ClInclude Include="FSMErrorCallback.h" />
@@ -282,9 +283,11 @@
     <ClInclude Include="RestrictedOperationViolation.h" />
     <ClInclude Include="ScreenCapture.h" />
     <ClInclude Include="ScreenCaptureAssistant.h" />
+    <ClInclude Include="ScreenCaptureOperationParameters.h" />
     <ClInclude Include="ShaderProgram2.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
     <ClInclude Include="TGA_Image_File_Format_Header.h" />
+    <ClInclude Include="Timepoint.h" />
     <ClInclude Include="VideoMode.h" />
     <ClInclude Include="WindowCallbackEvent.h" />
     <ClInclude Include="CompiledShader.h" />

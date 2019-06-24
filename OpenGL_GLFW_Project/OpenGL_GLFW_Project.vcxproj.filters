@@ -427,6 +427,9 @@
     <Filter Include="Third Party\GLFW">
       <UniqueIdentifier>{652b198b-6eec-4ad7-9eaf-11d20c4a7f18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Timepoint">
+      <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -610,6 +613,9 @@
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClCompile>
     <ClCompile Include="ScreenCapture.cpp">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClCompile>
+    <ClCompile Include="FramebufferPreferredUsage.cpp">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1135,10 +1141,16 @@
     <ClInclude Include="glfw3.h">
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="ImplementationPreferences.h">
+    <ClInclude Include="RestrictedOperationViolation.h">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
-    <ClInclude Include="RestrictedOperationViolation.h">
+    <ClInclude Include="ScreenCaptureOperationParameters.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
+    <ClInclude Include="Timepoint.h">
+      <Filter>Source Files\Utility\Timepoint</Filter>
+    </ClInclude>
+    <ClInclude Include="FramebufferPreferredUsage.h">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
   </ItemGroup>
