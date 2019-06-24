@@ -1135,6 +1135,12 @@
     <ClInclude Include="glfw3.h">
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
+    <ClInclude Include="ImplementationPreferences.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
+    <ClInclude Include="RestrictedOperationViolation.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">

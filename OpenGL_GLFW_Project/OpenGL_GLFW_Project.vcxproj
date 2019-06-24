@@ -230,7 +230,9 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="freetype.lib" />
-    <Library Include="glfw3dll.lib" />
+    <Library Include="glfw3dll.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </Library>
     <Library Include="OpenAL\OpenAL32.lib" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +263,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </ClInclude>
     <ClInclude Include="GLFW_Init_Report.h" />
+    <ClInclude Include="ImplementationPreferences.h" />
     <ClInclude Include="JoystickStatePrinter.h" />
     <ClInclude Include="MappedGamepad.h" />
     <ClInclude Include="FSMErrorCallback.h" />
@@ -276,6 +279,7 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
+    <ClInclude Include="RestrictedOperationViolation.h" />
     <ClInclude Include="ScreenCapture.h" />
     <ClInclude Include="ScreenCaptureAssistant.h" />
     <ClInclude Include="ShaderProgram2.h" />

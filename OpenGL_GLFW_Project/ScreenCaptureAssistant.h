@@ -1,3 +1,110 @@
+//
+//  File:                                              ScreenCaptureAssistant.h
+//
+//  Class:                                             ScreenCaptureAssistant 
+//
+//  Description:         Designed to provide a convenient internal mechanism for 
+//                       taking screen captures without requiring a third party
+//                       service. It turns out there are quite a number of 
+//                       viable implementation strategies to providing this
+//                       feature. While I do not plan to attempt any of the 
+//                       multiple-context strategies [yet], th
+//                          
+//                       This class is still highly experimental, and as such 
+//                       may contain several different implementations of the
+//                       same functionality. These multiple implementations will
+//                       remain in this file for the long-term most likely because
+//                       while researching this topic I have discovered reports of
+//                       different manufacturers or even different drivers causing  
+//                       some methods to be much faster and/or slower than the  
+//                       others.
+//
+//                       Please only use this class on the main rendering thread.
+//                       This is the one which owns the presentation buffers and calls 
+//                      'glfwSwapBuffers()'. Failure to do so will force this 
+//                       class to throw an exception. 
+//
+//
+//  Programmer:          Forrest Miller      
+//  Date:                June 23, 2019
+
+
+#pragma once
+
+#ifndef SCREEN_CAPTURE_ASSISTANT_H_
+#define SCREEN_CAPTURE_ASSISTANT_H_
+
+#include <string>
+#include <string_view>
+#include <memory>
+#include "RestrictedOperationViolation.h"
+#include "GlobalIncludes.h"
+#include "ScreenCapture.h"
+
+
+
+
+
+enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF };
+
+
+
+typedef void(*ProcessScreenshotResultCallback)();
+
+
+class ScreenCaptureAssistant {
+public:
+    /*                        //===============================================\\                        *\
+                              ||     Constructor/Destructor/Copy/Move/etc.     ||
+    \*                        \\===============================================//                        */
+
+    //Will throw an exception if called from a thread which does not contain an active 
+    //OpenGL context [this is determined by calling GLFW's function 'glfwGetCurrentContext()'] 
+    ScreenCaptureAssistant();
+
+    //Destructor is responsible for making sure all screenshot tasks are complete
+    ~ScreenCaptureAssistant() noexcept;
+
+
+    //Once a ScreenCaptureAssisstant instance has been created, there really should be no reason for it 
+    //to ever move somewhere else [and if it turns out there are, then by all means go ahead and
+    //implement it yourself].
+
+    ScreenCaptureAssistant(const ScreenCaptureAssistant&) = delete;
+    ScreenCaptureAssistant(ScreenCaptureAssistant&&) noexcept = delete;
+    ScreenCaptureAssistant& operator=(const ScreenCaptureAssistant&) = delete;
+    ScreenCaptureAssistant& operator=(ScreenCaptureAssistant&&) noexcept = delete;
+
+
+
+    /*                        //===============================================\\                        *\
+                              ||          ScreenCapture Functionality          ||
+    \*                        \\===============================================//                        */
+
+    std::unique_ptr<ScreenCapture> getScreenCapture();
+
+
+private:
+    static size_t nextScreenCaptureID;
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
 
 // todo
 //   documentation
@@ -32,10 +139,6 @@
 //                      show up on other platforms...
 //                  http://scottmeyers.blogspot.com/2013/03/stdfutures-from-stdasync-arent-special.html
 
-#pragma once
-
-#ifndef SCREEN_CAPTURE_ASSISTANT_H_
-#define SCREEN_CAPTURE_ASSISTANT_H_
 
 #include <iostream>
 #include <fstream>
@@ -62,7 +165,7 @@
 //      full filepath). Otherwise, if a failure occurred at any point in the process, this 
 //      member will contain a message explaining where the error occurred. Thus if a request
 //      to take a screenshot fails, it can be reported to the user why through this message.
-typedef struct TakeScreenshotOutcome {
+typedef struct ScreenshotOutcome {
     bool success;
     std::string msg;
 } ScreenshotOutcome;
@@ -83,13 +186,7 @@ typedef struct Data_For_TGA_Header {
 
 
 
-//Chances are pretty good that TGA will be the only supported file
-//format for the foreseeable future.
-enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF };
 
-
-
-typedef void(*ProcessScreenshotResultCallback)(ScreenshotOutcome);
 
 
 
@@ -236,3 +333,6 @@ private:
 
 
 #endif //SCREEN_CAPTURE_ASSISTANT_H_
+
+
+#endif //0

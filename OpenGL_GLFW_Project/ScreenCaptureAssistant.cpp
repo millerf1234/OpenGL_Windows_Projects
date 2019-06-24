@@ -1,4 +1,138 @@
 
+
+#include "ScreenCaptureAssistant.h"
+
+
+ScreenCaptureAssistant::ScreenCaptureAssistant() : mWindowContext_(glfwGetCurrentContext()) {
+
+    //All there is to do here in the constructor is to call glfwGetCurrentContext and check
+    //the returned handle to see if the thread invoking this constructor has an active OpenGL
+    //context. Without an active context, rendering is not possible and thus this class would
+    //not make any sense.
+
+    if (!mWindowContext_) {
+        throw (std::exception("Exception Was Thrown While Attempting To Construct The\n"
+            "ScreenCaptureAssistant object. It appears as though the thread\n"
+            "this constructor was called upon does not have a current OpenGL\n"
+            "context. Seeing as an OpenGL context is needed to do any rendering\n"
+            "and the sole purpose of this class is to record rendered output, it\n"
+            "is kinda sorta a major major issue that there is no context!\n"));
+    }
+
+    setScreenshotOutcomeCallback(defaultScreenshotResultCallbackFunction);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
+
+
 //#include <memory>
 #include <vector>
 #include <filesystem>
@@ -526,3 +660,4 @@ void defaultScreenshotResultCallbackFunction(ScreenshotOutcome result) {
 
 
 
+#endif 
