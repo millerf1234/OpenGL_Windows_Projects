@@ -10,7 +10,7 @@ RenderDemoBase::RenderDemoBase() {
 	mainRenderWindow = nullptr;
 	mJoystickStatePrintingEnabled_ = false;
 	mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
-
+    mWindowOpaqueness_ = WINDOW_OPACITY;
     counter = 0.0f; //Time starts at 0 in each RenderDemo
 }
 
@@ -88,8 +88,17 @@ void RenderDemoBase::performRenderDemoSharedInputLogic() {
         Timepoint t("Timepoint created..." + std::to_string(counter));
     if (counter == 1200) 
         printf( "\n%s\n", Timepoint::getAllTimepoints().c_str());
-     doJoystickPrinterLoopLogic();
+    
+    int x = checkIfShouldModifyWindowOpacity();
+    if (x != 0) {
+        if (x < 0)
+            decreaseWindowOpacity();
+        else
+            increaseWindowOpacity();
+    } 
 
+    doJoystickPrinterLoopLogic();
+    
 }
 
 void RenderDemoBase::markMainRenderWindowAsReadyToClose() const noexcept {
@@ -154,4 +163,35 @@ void RenderDemoBase::doJoystickPrinterLoopLogic() {
 	if (mJoystickStatePrintingEnabled_) {
 		joystickPrinter.printState();
 	}
+}
+
+int RenderDemoBase::checkIfShouldModifyWindowOpacity() const noexcept {
+    int returnVal = 0;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_KP_DIVIDE)) 
+        returnVal = -1;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_KP_MULTIPLY)) 
+        returnVal += 1;
+    return returnVal;
+}
+
+constexpr const float OPACITY_CHANGE_RATE = 0.00425f;
+constexpr const int UPDATES_TO_DELAY_BETWEEN_PRINTS = 20;
+void RenderDemoBase::increaseWindowOpacity() noexcept {
+    static int printDelayCounter = 0;
+    mWindowOpaqueness_ += OPACITY_CHANGE_RATE;
+    glfwSetWindowOpacity(mainRenderWindow, mWindowOpaqueness_);
+    if (printDelayCounter++ > UPDATES_TO_DELAY_BETWEEN_PRINTS) {
+        printDelayCounter = 0;
+        fprintf(MSGLOG, "Transparency Now set to %%%3.3f\n", mWindowOpaqueness_);
+    }
+}
+
+void RenderDemoBase::decreaseWindowOpacity() noexcept {
+    static int printDelayCounter = 0;
+    mWindowOpaqueness_ -= OPACITY_CHANGE_RATE;
+    glfwSetWindowOpacity(mainRenderWindow, mWindowOpaqueness_);
+    if (printDelayCounter++ > UPDATES_TO_DELAY_BETWEEN_PRINTS) {
+        printDelayCounter = 0;
+        fprintf(MSGLOG, "Transparency Now set to %%%3.3f\n", mWindowOpaqueness_);
+    }
 }

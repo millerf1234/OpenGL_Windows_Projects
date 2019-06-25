@@ -1,7 +1,9 @@
 //
 //
 //  Represents a Timepoint captured from GLFWs clock
-//
+//  Time is measured in seconds and represented as a double
+//  
+//  This class has been set up so that whenever a 
 //  Dependent upon GLFW to operate
 //
 //
@@ -28,12 +30,12 @@ public:
     Timepoint(std::string_view msg) : tag( !(msg.empty()) 
                                         ? (msg) 
                                           : ("       ") ) {
-        //if (GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
+        if (GLFW_INIT_INTERNAL::GLFW_IS_INIT()) {
             timepoint = glfwGetTime();
             mMasterTimepointRecord_.insert(*this);
-        //}
-        //else
-        //    timepoint = 0.0;
+        }
+        else
+            timepoint = 0.0;
     }
 
     Timepoint(const Timepoint& other) {
@@ -57,25 +59,34 @@ public:
     }
 
     static std::string getAllTimepoints() noexcept {
-        if (mMasterTimepointRecord_.empty()) { return "\n\n        [No Timepoints Have Yet Been Created!]\n\n"; }
+        if (mMasterTimepointRecord_.empty()) 
+            return std::string("\n\n        [No Timepoints Have Yet Been Created!]\n\n"); 
         //Get the smallest timepoint
         auto citer = mMasterTimepointRecord_.cbegin();
         double t0 = citer->timepoint;
-        //Get the largest timepoint
-        double tMax = (--mMasterTimepointRecord_.crend())->timepoint - t0;
-        //Figure out how many digits it will take to display tMax
+        //Get the largest timepoint   
+        double tMax = mMasterTimepointRecord_.crbegin()->timepoint - t0;
+        //Figure out how many digits it will take to display tMax. That will be
+        //the width used for printing the time column
         int digits = 1;
         while (tMax >= 10) {
             tMax = tMax / 10;
             digits++;
         }
         std::ostringstream oss;
-        oss << "\n\n     Time                 Message \n   ";
+        oss << "\n\n     Time (ms)                Message \n   ";
         for (; citer != mMasterTimepointRecord_.cend(); citer++) {
             auto oldWidth = oss.width(digits);
-            oss << (citer->timepoint - t0);
+            oss << "\t" << floor((citer->timepoint - t0) * 1'000'000'000) / 1'000'000;
             oss.width(oldWidth);
-            oss << "   |   " << citer->tag << "\n   ";
+            oss << "   |   " << citer->tag;
+            //Only print new line is tag doesn't already
+            auto newlineCheck = citer->tag.crbegin();
+            for (; newlineCheck != citer->tag.crend(); newlineCheck++) {
+                if (*newlineCheck == '\n')
+                    continue;
+            }
+            oss << "\n";
         }
         oss << "\n\n\n";
         return oss.str();

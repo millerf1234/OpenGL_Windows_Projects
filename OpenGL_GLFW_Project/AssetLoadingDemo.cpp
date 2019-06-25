@@ -411,6 +411,7 @@ GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector
 	return (sceneBuffer.size() / vertexSize);
 }
 
+
 void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
 
     //Start with a completely empty order
@@ -565,7 +566,7 @@ void AssetLoadingDemo::prepareScene() {
 
 void AssetLoadingDemo::renderLoop() {
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
-		//Check Input
+        //Check Input
 		if (checkToSeeIfShouldCloseWindow()) {
 			markMainRenderWindowAsReadyToClose();
 			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly

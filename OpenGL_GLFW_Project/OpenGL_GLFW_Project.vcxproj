@@ -245,6 +245,7 @@
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="ConnectedMonitors.h" />
     <ClInclude Include="DebugSettings.h" />
+    <ClInclude Include="DefaultFramebufferState.h" />
     <ClInclude Include="FramebufferPreferredUsage.h" />
     <ClInclude Include="FlyingCameraDemo.h" />
     <ClInclude Include="ForceBeginAsyncTask.h" />

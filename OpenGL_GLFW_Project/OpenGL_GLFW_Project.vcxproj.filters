@@ -1156,6 +1156,9 @@
     <ClInclude Include="FramebufferPreferredUsage.h">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
+    <ClInclude Include="DefaultFramebufferState.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">

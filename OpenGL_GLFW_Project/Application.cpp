@@ -51,11 +51,21 @@ void Application::initialize() {
 
 
 Application::Application() {
-	initialize();
-	if (!mApplicationValid) {
-		fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
-		std::cin.get(); //Need this on Windows to keep the terminal window open
-	}
+    try {
+        initialize();
+        if (!mApplicationValid) {
+            fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
+            std::cin.get(); //Need this on Windows to keep the terminal window open
+        }
+    }
+    catch (const std::system_error& e) {
+            fprintf(stderr, "\nCaught a system error exception:\n\t%s\n", e.what());
+            fprintf(stderr, "\n\n  [Well this is kinda awkward... For once it appears\n"
+                "   as though the reason for crashing is not due to poor\n"
+                "   work by the Application programmer but in fact a system\n"
+                "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
+                "   [Even if you are running this on Linux]\n");
+    }
 }
 
 
@@ -67,35 +77,46 @@ Application::~Application() noexcept {
 
 
 void Application::launch() {
-	if (!mApplicationValid) {
-		fprintf(ERRLOG, "\nError launching Application, Application is invalid!\n");
-		return;
-	}
-	
-	fprintf(MSGLOG, "Loading Main Menu...\n"); //The context is active at this point, so any choice of what to load should happen on the render surface.
-	//have a function here that runs a main menu...  this menu returns a struct consisting of an enum for which mode/sim to launch and then additional configuration parameters (num_players, control scheme, etc...)
+    try {
+        if (!mApplicationValid) {
+            fprintf(ERRLOG, "\nError launching Application, Application is invalid!\n");
+            return;
+        }
 
-	fprintf(MSGLOG, "Application is ready to load a specific program...\n");
-	
+        fprintf(MSGLOG, "Loading Main Menu...\n"); //The context is active at this point, so any choice of what to load should happen on the render surface.
+        //have a function here that runs a main menu...  this menu returns a struct consisting of an enum for which mode/sim to launch and then additional configuration parameters (num_players, control scheme, etc...)
+
+        fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 
 
-	//fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-    fprintf(MSGLOG, "\nSelected FlyingCameraDemo.\n");
-    runFlyingCameraDemo();
-    return;
+        //fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-	//fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-	//runAssetLoadingDemo();
-	//return;
-	
-	//fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
-	//runLightsourceTestDemo();
-	//return;
-	
-	//fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
-	//runTeapotExplosionDemo();
-	//return;
+        fprintf(MSGLOG, "\nSelected FlyingCameraDemo.\n");
+        runFlyingCameraDemo();
+        return;
+
+        //fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+        //runAssetLoadingDemo();
+        //return;
+
+        //fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
+        //runLightsourceTestDemo();
+        //return;
+
+        //fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
+        //runTeapotExplosionDemo();
+        //return;
+
+    }
+    catch (const std::system_error& e) {
+        fprintf(stderr, "\nCaught a system error exception:\n\t%s\n", e.what());
+        fprintf(stderr, "\n\n  [Well this is kinda awkward... For once it appears\n"
+            "   as though the reason for crashing is not due to poor\n"
+            "   work by the Application programmer but in fact a system\n"
+            "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
+            "   [Even if you are running this on Linux]\n");
+    }
 }
 
 

@@ -132,7 +132,7 @@ namespace WindowCallbackInternal {
 		int mods;
 	};
 
-	struct MouseButtonRelease {  // Note from GLFW documentation: When a window window loses focus, synthetic release events will be automatically triggered
+	struct MouseButtonRelease {  // Note from GLFW documentation: When a window loses focus, synthetic release events will be automatically triggered
 		int button;              //                                for all pressed mouse buttons. The way to tell the difference between user input and 
 		int mods;                //                                 synthetic is to change state of window focus with the window focus callback.
 	};

@@ -31,6 +31,7 @@
 
 #include <memory>   //Mostly for smart pointers
 #include <fstream>  //Gotta have that fstream
+#include <system_error> //Probably best to be aware of any system exceptions
 
 #include "GlobalConstants.h"
 #include "ApplicationConstantSettings.h"

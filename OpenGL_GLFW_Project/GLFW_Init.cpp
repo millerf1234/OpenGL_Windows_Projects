@@ -1,4 +1,5 @@
 //  Performs the necessary steps to get GLFW up and running on program startup.
+//  Performs the necessary steps to get GLFW up and running on program startup.
 //  Also does the steps to close the window once program has completed running.
 //
 //  GLFW_Init.cpp
@@ -10,6 +11,8 @@
 
 
 #include "GLFW_Init.h"
+
+#include "Timepoint.h"
 
 //Note that in GLFW3.h these are defined, might want to make the cursor invisible when game launches...
 // #define GLFW_CURSOR_NORMAL          0x00034001
@@ -37,7 +40,7 @@ GLFW_Init::GLFW_Init() {
 	}
 	openFullScreen = USE_FULLSCREEN; 
 	defaultMonitor = MONITOR_TO_USE;
-    GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+    GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
 
     assignAtExitTerminationFunction();
 }
@@ -46,8 +49,8 @@ GLFW_Init::~GLFW_Init() noexcept {
     //The call to glfwTerminate() has been moved to be an 'atexit()' callback function
     //which ensures that it properly gets called while also decoupling it from the lifetime
     //of this object
-    //if (GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
-    //    GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+    //if (GLFW_INIT_INTERNAL::GLFW_IS_INIT()) {
+    //    GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
     //    glfwTerminate();
     //}
 }
@@ -56,11 +59,11 @@ void GLFW_Init::terminate() {
     //The call to glfwTerminate() has been moved to be an 'atexit()' callback function
     //which ensures that it properly gets called while also decoupling it from requiring
     //access to this object
-    if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT) { return; }
+    if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT()) { return; }
 	if (mWindow)
 		glfwDestroyWindow(mWindow); //This function should be called for each window created by this application!
 	glfwTerminate(); //Terminating is quite a bit easier than setting up, as you can see
-    GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+    GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
 }
 
 
@@ -76,10 +79,10 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
     fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");
-        GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+        GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
 		return nullptr;
 	}
-    GLFW_INIT_INTERNAL::GLFW_IS_INIT = true;
+    GLFW_INIT_INTERNAL::GLFW_IS_INIT() = true;
 	fprintf(MSGLOG, "DONE!  GLFW version: %s\n", glfwGetVersionString()); 
 
 
@@ -122,8 +125,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
         fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
         break;
     }
-    fprintf(MSGLOG, "LOSE_CONTEXT_ON_RESET\n");
-    contextResetStrategy = GLFW_LOSE_CONTEXT_ON_RESET;
+    //contextResetStrategy = GLFW_LOSE_CONTEXT_ON_RESET;
 	glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, contextResetStrategy);
 
 
@@ -197,7 +199,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
         std::cin.get();
         glfwTerminate();
 		//glfwIsInitialized = false;
-        GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+        GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
 		return nullptr;
 	}
 	fprintf(MSGLOG, "\t%d connected displays are detected!\n", connectedDisplayCount);
@@ -207,7 +209,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 	if (openFullScreen) {
 		if (connectedDisplayCount >= (defaultMonitor + 1)) { //Check to make sure there is at least enough connected displays for defaultMonitor to exist
 			detectDisplayResolution(defaultMonitor, width, height, refreshRate);
-			if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
+			if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT()) {
 				fprintf(ERRLOG, "\nError detecting display resolution!\n");
                 fprintf(ERRLOG, "\n\t[Press Enter to exit program]\n");
                 std::cin.get();
@@ -231,11 +233,11 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 			}
 			else {
 				fprintf(ERRLOG, "Error occurred creating GLFW window in Fullscreen mode on monitor!\n");
-                GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+                GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
                 glfwTerminate();
 			}
 		}
-		//Re-Implement more robust window checking later... 
+		//Re-Implement more robust window checking later...  [12 months later... HA!]
 		////If specified display is not connected, try opening on the first non-primary display detected
 		//else if (this->connectedDisplayCount >= 2) {
 		//	detectDisplayResolution(1, this->width, this->height, this->refreshRate);
@@ -278,10 +280,10 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 			fprintf(MSGLOG, "Window Successfully Opened!\n\n");
 		}
 		else {
-			fprintf(ERRLOG, "Error opening a GLFW window in Windowed mode (i.e. not Fullscreen)!\n"
+			fprintf(ERRLOG, "Error opening a GLFW window in Windowed mode (i.e. not FullCcreen)!\n"
                 "    (Screen Position: [%d, %d]               Screen Dimensions: [%d, %d]\n\n", 30, 50,
                 3600, 1800);
-            GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+            GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
             glfwTerminate();
 			return nullptr;
 		}
@@ -291,13 +293,14 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
     //is superfluous but doesn't hurt)
 	if (mWindow == nullptr) {
 		fprintf(ERRLOG, "Failed Creating OpenGL Context and Window\n");
-        GLFW_INIT_INTERNAL::GLFW_IS_INIT = false;
+        GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;
         glfwTerminate();
 		return nullptr;
 	}
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
-        GLFW_INIT_INTERNAL::GLFW_IS_INIT = true;
+        GLFW_INIT_INTERNAL::GLFW_IS_INIT() = true;
+        Timepoint temp("GLFW has been initialized!\n");
 	}
 
 	//return (std::move(generateDetectedMonitorsStruct()));  //Don't do this! See comment about return value for function generateDetectedMonitorsStruct() below
@@ -313,7 +316,7 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 		glfwSetFramebufferSizeCallback(mWindow, WindowCallbackInternal::framebufferSizeCallback);
 		glfwSetWindowPosCallback(mWindow, WindowCallbackInternal::windowPositionCallback);
 
-		glfwSetWindowOpacity(mWindow, 0.8f);
+		glfwSetWindowOpacity(mWindow, WINDOW_OPACITY);
 
 		glfwSetDropCallback(mWindow, WindowCallbackInternal::filedropCallback);
 
@@ -346,7 +349,7 @@ void GLFW_Init::assignAtExitTerminationFunction() noexcept {
     if (success != VALUE_ATEXIT_RETURNS_ON_SUCCESS) {
         fprintf(WRNLOG, "\n\n\nWARNING! Unable to set the 'atexit' GLFW Termination Function!\n");
         fprintf(WRNLOG, "This is not a fatal error luckily but deserves closer attention\n"
-            "non-the-less. Please contact a developer!\n");
+            "none-the-less. Please contact a developer!\n");
     }
 }
 
@@ -358,7 +361,7 @@ void GLFW_Init::assignAtExitTerminationFunction() noexcept {
 //Creates a struct from the members of this class
 std::unique_ptr<InitReport> GLFW_Init::generateDetectedMonitorsStruct() {
 
-    if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT) {
+    if (!GLFW_INIT_INTERNAL::GLFW_IS_INIT()) {
         fprintf(ERRLOG, "\n\n\nAn Irrecoverable Issue Has Occurred With GLFW Initialization!\n"
             "        [Press ENTER to crash]\n\n");
         std::cin.get();
@@ -386,7 +389,7 @@ std::unique_ptr<InitReport> GLFW_Init::generateDetectedMonitorsStruct() {
         
     ReportWindowContext:
         //Report On Context
-        report->windowContext.context.contextValid = GLFW_INIT_INTERNAL::GLFW_IS_INIT;
+        report->windowContext.context.contextValid = GLFW_INIT_INTERNAL::GLFW_IS_INIT();
         report->windowContext.context.versionMajor = contextVersionMajor;
         report->windowContext.context.versionMinor = contextVersionMinor;
         report->windowContext.context.forwardCompat = forwardCompatible;
@@ -443,13 +446,14 @@ std::unique_ptr<InitReport> GLFW_Init::generateDetectedMonitorsStruct() {
 
 //Detects the resolution of the active display
 void GLFW_Init::detectDisplayResolution(int displayNum, int& width, int& height, int& refreshRate) {
-	const GLFWvidmode * mode = nullptr;
-	if (displayNum == 0) {
+	
+    const GLFWvidmode* mode = nullptr;
+
+	if (displayNum == 0) 
 		mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	}
-	else {
+	else 
 		mode = glfwGetVideoMode(this->monitors[displayNum]);
-	}
+	
 	//Make sure mode isn't nullptr for some reason
 	if (mode != nullptr) {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

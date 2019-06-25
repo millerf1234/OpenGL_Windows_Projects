@@ -43,9 +43,6 @@
 #include "FramebufferPreferredUsage.h"
 
 
-
-
-
 enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF };
 
 

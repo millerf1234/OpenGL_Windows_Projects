@@ -3,7 +3,7 @@
 //  GLFW_Init.h
 //
 //  Created by Forrest Miller on 2/12/18.
-//  Repurposed for Windows project on 7/16/2018
+//  Re-purposed for Windows project on 7/16/2018
 //
 
 #pragma once
@@ -26,11 +26,14 @@
 
 
 namespace GLFW_INIT_INTERNAL {
-    static bool GLFW_IS_INIT = false;
+    inline bool& GLFW_IS_INIT() noexcept {
+        static bool glfwIsInit = false;
+        return glfwIsInit;
+    }
     inline void atExitFuncToEnsureGLFWTerminateIsCalled() noexcept {
-        if (GLFW_IS_INIT) {
+        if (GLFW_IS_INIT()) {
             glfwTerminate();
-            GLFW_IS_INIT = false;
+            GLFW_IS_INIT() = false;
         }
     }
 } //namespace GLFW_INIT_INTERNAL

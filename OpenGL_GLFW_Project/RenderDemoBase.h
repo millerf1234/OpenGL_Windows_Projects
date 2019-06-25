@@ -141,13 +141,18 @@ private:
 
 	bool mJoystickStatePrintingEnabled_;
 	unsigned long long mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
+    float mWindowOpaqueness_;
 	JoystickStatePrinter joystickPrinter;
 
     std::unique_ptr<FramebufferPreferredUsage> mFBInfo_;
 
 	void doJoystickPrinterLoopLogic();
 
-
+    //Return value signals what should happen. 0 means nothing, positive means increase,
+    //and negative means decrease
+    int checkIfShouldModifyWindowOpacity() const noexcept;
+    void increaseWindowOpacity() noexcept;
+    void decreaseWindowOpacity() noexcept;
 };
 
 

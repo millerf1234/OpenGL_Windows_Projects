@@ -7,7 +7,7 @@
 
 
 namespace {
-    const std::string creationMsgPt1 = "Constructing Framebuffer Preferences Object for FB #";
+    const std::string creationMsgPt1 = "Beginning Analysis Of Preferences Of FB #";
 }
 
 
@@ -21,7 +21,7 @@ std::string checkAgainstOtherValues(GLenum hexEnum) noexcept;
 
 FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
                                                    mName_(framebufferName),
-                                                   mIsDefaultFramebuffer_(0u == framebufferName),
+                                                   mIsDefaultFramebuffer_(0u==framebufferName),
                                                    mTCreation_(creationMsgPt1 + 
                                                               std::to_string(framebufferName)),
                                                    mTReady_(nullptr) {
@@ -79,6 +79,12 @@ FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
         assert(false);
     }
 
+    //Get MSAA
+    queryResult = NOT_SET;
+    glGetIntegerv(GL_SAMPLES, &queryResult);
+    assert(queryResult != NOT_SET);
+    mMSAA_SAMPLES_ = queryResult;
+
 
 #ifdef INCLUDE_NAME
     mFramebufferPreferences_.preferredFormatName = 
@@ -93,23 +99,16 @@ FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
 #endif 
 
 
-    try {
-        mTReady_ = std::make_unique<Timepoint>("Finished Querying All Basic Preferences for Framebuffer #" + std::to_string(mName_));
+        mTReady_ = std::make_unique<Timepoint>("Analysis of Preferences for Framebuffer #" + std::to_string(mName_) + " Complete");
         //Check to see if we are a default framebuffer. If we are, release the newly 
-        //created timepoint because we got some more initialization to get through.
+        //created Timepoint because we got some more initialization to get through.
         if (mIsDefaultFramebuffer_) {
             mTReady_.release();
             mTReady_ = nullptr;
         }
-    }
-    catch (const std::bad_alloc& e) {
-        fprintf(ERRLOG, "\nIt looks like a bad allocation just occurred!\nMsg: %s\n",
-            e.what());
-    }
-
 
     if (mIsDefaultFramebuffer_)
-        mState_.emplace(DefaultFBState());
+        mState_.emplace(DefaultFramebufferState());
     else
         mState_ = std::nullopt;
 
@@ -118,15 +117,8 @@ FramebufferPreferredUsage::FramebufferPreferredUsage(GLuint framebufferName) :
     //guidance and learn about our default Framebuffer.
     if (mIsDefaultFramebuffer_) {
         assert(mState_.has_value());
-        
         auto defFBState = mState_.value();
-
-        try {
-            mTReady_ = std::make_unique<Timepoint>("Finished Querying All Available Attachments Of This Default Framebuffer #" + std::to_string(mName_));
-        } catch (const std::bad_alloc& e) {
-            fprintf(ERRLOG, "\nBad Alloc! %s\n", e.what());
-            std::exit(EXIT_FAILURE);
-        }
+        mTReady_ = std::make_unique<Timepoint>("Acquired Attachments Of Default Framebuffer #" + std::to_string(mName_));
     }
 }
 
@@ -458,24 +450,65 @@ std::string internalFormatEnumToString(GLenum format) noexcept {
 }
 
 #ifndef GL_PALETTE4_RGB8_OES
-#define GL_PALETTE4_RGB8_OES 0x8B90
+#define GL_PALETTE4_RGB8_OES              0x8B90
+#define GL_PALETTE4_RGBA8_OES             0x8B91
+#define GL_PALETTE4_R5_G6_B5_OES          0x8B92
+#define GL_PALETTE4_RGBA4_OES             0x8B93
+#define GL_PALETTE4_RGB5_A1_OES           0x8B94
+#define GL_PALETTE8_RGB8_OES              0x8B95
+#define GL_PALETTE8_RGBA8_OES             0x8B96
+#define GL_PALETTE8_R5_G6_B5_OES          0x8B97
+#define GL_PALETTE8_RGBA4_OES             0x8B98
+#define GL_PALETTE8_RGB5_A1_OES           0x8B99
 #endif 
 std::string checkAgainstOtherValues(GLenum hexEnum) noexcept {
     std::string name = unknownFormatName;
     switch (hexEnum) {
     default:
         break;
-    case(GL_PALETTE4_RGB8_OES):
+
+        //These are older OpenGL 1.0 enums
+    case(GL_PALETTE4_RGB8_OES)://           0x8B90
         name = "GL_PALETTE4_RGB8_OES";
         break;
+    case(GL_PALETTE4_RGBA8_OES)://          0x8B91
+        name = "GL_PALETTE4_RGBA8_OES";
+        break;
+    case(GL_PALETTE4_R5_G6_B5_OES)://       0x8B92
+        name = "GL_PALETTE4__R5_G6_B5_OES";
+        break;
+    case(GL_PALETTE4_RGBA4_OES)://          0x8B93
+        name = "GL_PALETTE4_RGBA4_OES";
+        break;
+    case (GL_PALETTE4_RGB5_A1_OES)://       0x8B94
+        name = "GL_PALETTE4_RGB5_A1_OES";
+        break;
+    case(GL_PALETTE8_RGB8_OES)://           0x8B95
+        name = "GL_PALETTE8_RGB8_OES";
+        break;
+    case(GL_PALETTE8_RGBA8_OES)://          0x8B96
+        name = "GL_PALETTE8_RGBA8_OES";
+        break;
+    case(GL_PALETTE8_R5_G6_B5_OES)://       0x8B97
+        name = "GL_PALETTE8__R5_G6_B5_OES";
+        break;
+    case(GL_PALETTE8_RGBA4_OES)://          0x8B98
+        name = "GL_PALETTE8_RGBA4_OES";
+        break;
+    case (GL_PALETTE8_RGB5_A1_OES)://       0x8B99
+        name = "GL_PALETTE8_RGB5_A1_OES";
+        break;
     }
+  
+
+
 
     return name;
 }
 
 //More Glenum Values 
 
-/*
+/* These are old OpenGL 1.0 GLenums
 // PixelInternalFormat 
 #define GL_PALETTE4_RGB8_OES              0x8B90
 #define GL_PALETTE4_RGBA8_OES             0x8B91
