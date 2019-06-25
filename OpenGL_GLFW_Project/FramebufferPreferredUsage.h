@@ -52,7 +52,6 @@ public:
     bool doubleBuffered() const noexcept { return mDoubleBuffered_; }
 
 
-
     /////////////////////////////////////////////////////////////////////////////
     ///  Here are the preferences that matter for performing screen captures  ///
     /////////////////////////////////////////////////////////////////////////////
@@ -130,13 +129,4 @@ param returns an integer value indicating the number of sample buffers associate
 GL_STEREO
 param returns a boolean value indicating whether stereo buffers (left and right) are supported for the framebuffer object.
 */
-
-
-
-
-
-
-
-#endif //REPORT_DETAILS_ON_GL_IMPLEMENTATION_H_
-
 

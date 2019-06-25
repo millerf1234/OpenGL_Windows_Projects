@@ -1,7 +1,10 @@
 //
+//  Class representing the state of the Default Framebuffer 
 //
-//
-//
+//  Current implementation of this class is lazy with everything being
+//  public. This class's purpose is meant for purely informational 
+//  purposes though so it would be foolish and probably not very 
+//  useful for client code to modify this object externally. 
 //
 //
 //
@@ -38,7 +41,10 @@ typedef struct ColorReadPreference {
 
 
 
-//Outlines the current sampling behavior enabled on this buffer
+//Outlines the current sampling behavior enabled on this buffer/
+//Member Fields: 
+//         int  samples;       //The number of MSAA samples in use
+//         int  sampleBuffers; //The number of MSAA buffers in use
 typedef struct FramebufferSampling {
     int samples;
     int sampleBuffers;
@@ -211,6 +217,18 @@ public:
     DefFBAttachment depth;
     DefFBAttachment stencil;
 
+    //Refresh's this object to erase all of its current data then
+    //recreate itself based off the current Default Framebuffer.
+    //Useful for detecting changes to the Default Framebuffer.
+    //WARNING! All Existing Object State WIll Be Lost
+    void refresh() noexcept {
+        frontLeft = DefFBAttachment{ GL_FRONT_LEFT };
+        frontRight = DefFBAttachment{ GL_FRONT_RIGHT };
+        backLeft = DefFBAttachment{ GL_BACK_LEFT };
+        backRight = DefFBAttachment{ GL_BACK_RIGHT };
+        depth = DefFBAttachment{ GL_DEPTH };
+        stencil = DefFBAttachment{ GL_STENCIL };
+    }
 
 };
 

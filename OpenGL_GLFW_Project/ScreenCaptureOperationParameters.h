@@ -21,8 +21,18 @@ enum class ReadPixelsDefaultFramebufferTarget {
 
 ////////////////////////////////////////////////////////////////
 ///////   INTERESTING!!!   On Page 459 of OpenGL SuperBible, it says
-///////                   glReadPixels is for default framebuffers only
+///////                   glReadPixels is for the Default Framebuffer only
 ///////                    while glReadBuffer() is for client framebuffers.
+///////
+///////        [UPDATE] I Do Not Think This Is True. The Website (link)
+///////            says that glReadPixels() will target whatever is bound
+///////           to GL_READ_FRAMEBUFFER, which can be bound using 
+///////            glBindFramebuffer(GLenum target, GLuint FBO);
+///////            with target being GL_READ_FRAMEBUFFER or 
+///////            GL_FRAMEBUFFFER. Binging FBO with '0u' resets 
+///////            to the Default Framebuffer.
+///////
+///////      (link): https://www.lighthouse3d.com/tutorials/opengl_framebuffer_objects/
 ////////////////////////////////////////////////////////////////
 
 enum class ScreenCaptureImplementationStrategy {

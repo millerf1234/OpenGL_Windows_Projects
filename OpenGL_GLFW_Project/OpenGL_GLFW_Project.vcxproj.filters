@@ -430,6 +430,9 @@
     <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
       <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Framebuffer">
+      <UniqueIdentifier>{735c38ed-3d06-4589-96d9-3477e7681689}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -615,11 +618,11 @@
     <ClCompile Include="ScreenCapture.cpp">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClCompile>
-    <ClCompile Include="FramebufferPreferredUsage.cpp">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClCompile>
     <ClCompile Include="Timepoint.cpp">
       <Filter>Source Files\Utility\Timepoint</Filter>
+    </ClCompile>
+    <ClCompile Include="FramebufferPreferredUsage.cpp">
+      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1153,11 +1156,11 @@
     <ClInclude Include="Timepoint.h">
       <Filter>Source Files\Utility\Timepoint</Filter>
     </ClInclude>
-    <ClInclude Include="FramebufferPreferredUsage.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultFramebufferState.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
+      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FramebufferPreferredUsage.h">
+      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

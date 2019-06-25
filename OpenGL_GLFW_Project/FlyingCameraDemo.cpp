@@ -88,14 +88,14 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
     const std::string filepathToModels = FILEPATH_TO_MODELS;
     std::string modelName, modelName2;
     //modelName = "DemoSceneInsideABox00.obj";
-   // modelName = "SimpleSkyDome_ReExport.obj";
+    modelName = "SimpleSkyDome_ReExport.obj";
     //modelName = "DebugSimpleSkyDomeTest.obj";
    // modelName2 = "DebugSimpleSkyDomeTest_Triangulated.obj";
-    //modelName = "SubdivisionCube.obj";
+   // modelName = "SubdivisionCube.obj";
 
     //modelName = "box_cutter.obj";
 
-    modelName = "CargoSpaceshipIdeaThing02.obj";
+    //modelName = "CargoSpaceshipIdeaThing02.obj";
 
 #if 0 
     for (int i = 0; i < 35; i++) {

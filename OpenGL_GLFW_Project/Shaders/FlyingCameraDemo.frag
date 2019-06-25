@@ -88,7 +88,7 @@ float fbm(vec3 x);
 void main() { 
 
 
-#define EFFECT_TO_DO 3
+#define EFFECT_TO_DO 1
 
 //NO EFFECT SELECTED
 #ifndef EFFECT_TO_DO
@@ -174,13 +174,13 @@ void main() {
 //Effect 5 SELECTED
 #elif (EFFECT_TO_DO >= 5)
     const vec4 color1 = vec4(0.68, 0.09, 0.25, 1.0);
-    const vec4 color2 = vec4(0.9, 0.7, 1.0, 0.0);
+    const vec4 color2 = vec4(0.9, 0.7, 1.0, 0.25);
 
-    vec2 temp = shaded_vertex.position.xy - vec2(0.5);
+    vec2 temp = normalize(shaded_vertex.position.xy) - vec2(0.5);
     float f = dot(temp, temp);
 
-    if (f > 0.2 + 0.05 * cos(time))
-        discard;
+    //if (f < 0.4 + 0.05 * cos(time))
+        //discard;
 
     fragColor = mix(color1, color2, f);
 #endif //EFFECT_TO_DO

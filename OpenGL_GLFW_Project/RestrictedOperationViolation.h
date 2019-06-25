@@ -1,8 +1,11 @@
 
+//I have decided to go a different route than the throw-exception-for-improper-usage
+//route since improper usage probably won't be surrounded in try-catch blocks anyways,
+//so this exception is not ever thrown. 
 
 #pragma once
 
-#ifndef RESTRICTED_OPERATION_VIOLATION_H_
+#ifdef RESTRICTED_OPERATION_VIOLATION_H_
 #define RESTRICTED_OPERATION_VIOLATION_H_
 
 #include <stdexcept>
