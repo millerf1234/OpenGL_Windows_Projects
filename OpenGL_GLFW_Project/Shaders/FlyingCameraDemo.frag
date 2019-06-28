@@ -55,7 +55,9 @@ float cosinePartialSummation(float x, int intervalsToCompute, float intervalSpac
 }
 
 
+#define USING_NOISE_02
 
+#ifdef USING_NOISE_01
 //                                                 Reference 
 //  Callable Noise Functions included in this file:
 //	 +-------------------------------------+------------------------------------------+---------------------------------+
@@ -84,6 +86,20 @@ float noise(vec2 p);
 float snoise(vec3 v);
 float fbm(vec2 x);
 float fbm(vec3 x);
+#endif 
+
+#ifdef USING_NOISE_02
+// FUNCTION:     vec3 psrdnoise(vec2 pos, vec2 per, float rot);
+// ShaderFile:   "psrdnoise.glsl"
+// Source:       Part of the MIT Permissive Licensed Shader Noise Package 
+//               From AshimaArts. 
+//
+// 2-D tiling simplex noise with rotating gradients and analytical derivative.
+// The first component of the 3-element return vector is the noise value,
+// and the second and third components are the x and y partial derivatives.
+//
+vec3 psrdnoise(vec2 pos, vec2 per, float rot);
+#endif 
 
 void main() { 
 
@@ -140,7 +156,7 @@ void main() {
        fragColor.b *= -1.;
 
     if (abs(dot(shaded_vertex.pretransform_normal, vec3(0.0, 0.0, 1.0))) < 0.0005)
-       fragColor = vec4(0.68, 0.125, 0.985, 0.9);
+       fragColor = vec4(0.68, 0.125, 0.985, 0.75) + vec4(psrdnoise(fragColor.rb, fragColor.rg, time), 0.0);
    // else 
     //   discard;
 

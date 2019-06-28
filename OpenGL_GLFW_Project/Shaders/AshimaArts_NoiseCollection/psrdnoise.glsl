@@ -59,7 +59,7 @@
 //
 
 //
-// TODO: One-pixel wide artefacts used to occur due to precision issues with
+// TODO: One-pixel wide artifacts used to occur due to precision issues with
 // the gradient indexing. This is specific to this variant of noise, because
 // one axis of the simplex grid is perfectly aligned with the input x axis.
 // The errors were rare, and they are now very unlikely to ever be visible
@@ -77,6 +77,14 @@ vec3 mod289(vec3 x) {
 // Permutation polynomial (ring size 289 = 17*17)
 vec3 permute(vec3 x) {
   return mod289(((x*34.0)+1.0)*x);
+}
+
+// Float version of above functions
+float mod289(float x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0; }
+
+float permute(float x) {
+     return mod289(((x*34.0)+1.0)*x);
 }
 
 // Hashed 2-D gradients with an extra rotation.

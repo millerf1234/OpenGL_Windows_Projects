@@ -85,12 +85,8 @@ void RenderDemoBase::performRenderDemoSharedInputLogic() {
             std::exit(EXIT_FAILURE);
         }
     }
-    if (counter % 200 == 0)
-        Timepoint t("Timepoint created..." + std::to_string(counter));
-    if (counter == 1200) 
-        printf( "\n%s\n", Timepoint::getAllTimepoints().c_str());
     
-    int x = checkIfShouldModifyWindowOpacity();
+    const int x = checkIfShouldModifyWindowOpacity();
     if (x != 0) {
         if (x < 0)
             decreaseWindowOpacity();

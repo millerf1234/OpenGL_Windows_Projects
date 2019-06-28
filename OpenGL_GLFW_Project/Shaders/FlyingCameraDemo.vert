@@ -106,10 +106,9 @@
 \                                                END OF SECTION 1                              /    */
 
 
-
-
-
-//Function to call for fun and profit
+//My own function
+// To be called for fun and profit. Creates waveforms other than a sine wave by summing 
+// harmonics. The third parameter 'intervalSpacing' should be >1.0f please. 
 float cosinePartialSummation(float x, int intervalsToCompute, float intervalSpacing) {
     float summation = cos(x);
     for (int i = 1; i <= max(1, intervalsToCompute); i++) {
@@ -117,6 +116,23 @@ float cosinePartialSummation(float x, int intervalsToCompute, float intervalSpac
     }
     return summation;
 }
+
+
+//There are some noise functions declared in a separate GLSL file that the
+//Application will need to link when building the ShaderProgram. Here are 
+//prototypes for some of these external functions:
+
+
+// FUNCTION:     vec3 psrdnoise(vec2 pos, vec2 per, float rot);
+// ShaderFile:   "psrdnoise.glsl"
+// Source:       Part of the MIT Permissive Licensed Shader Noise Package 
+//               From AshimaArts. 
+//
+// 2-D tiling simplex noise with rotating gradients and analytical derivative.
+// The first component of the 3-element return vector is the noise value,
+// and the second and third components are the x and y partial derivatives.
+//
+vec3 psrdnoise(vec2 pos, vec2 per, float rot);
 
 
 //  BEGIN       Shader Logic Implementation Description
@@ -134,7 +150,9 @@ void main() {
                                           0.05*vec4(float((gl_InstanceID / 18))*((0.001 + (0.0019*float(gl_InstanceID % 5)) + 0.19*float(gl_InstanceID % 25))*float(gl_InstanceID)*cos(time + gl_InstanceID)),
                                                float((gl_InstanceID / 18))*0.05*float(gl_InstanceID)*sin(time + gl_InstanceID),
                                                float((gl_InstanceID / 18))*300.*(clamp(TextureCoord.s - 0.5, -0.5, 0.5) - clamp(TextureCoord.t, 0.3, 1.0)),
-                                               17.0*zoom) + vec4(0.0, 0.0, 0.0, 17.0*zoom);
+                                               17.0*zoom) + vec4(0.0, 0.0, 0.0, 17.0*zoom)
+                                        +
+                                          vec4(0.015*psrdnoise(positionInScreenSpace.xy, vec2(5.0*cosinePartialSummation(0.05*time+gl_InstanceID, 8, 2.0), 1.0*sin(0.05*time)), rotation[0][0]), 0.0);
 
     //shaded_vertex.position = positionInScreenSpace + vec4(0.0, 0.0, 0.0, zoom);
     shaded_vertex.position = positionInWorldMesh;

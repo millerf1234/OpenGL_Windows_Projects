@@ -95,7 +95,8 @@ public:
         //Print the first value out as a special case
         for (; citer != mMasterTimepointRecord_.cend(); citer++) {
             //auto oldWidth = oss.width(digits);
-            oss << "\t" << std::showpoint << std::setprecision(static_cast<std::streamsize>(5)) << floor((citer->timepoint - t0));// * 1'000'000'000.0) / 1'000'000.0;
+            oss << "\t" << std::showpoint << std::setprecision(static_cast<std::streamsize>(6)) << std::left
+                << floor((citer->timepoint - t0));// * 1'000'000'000.0) / 1'000'000.0;
             //oss.width(oldWidth);
             oss << "   |   " << citer->tag;
             //Only print new line is tag doesn't already

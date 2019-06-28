@@ -32,6 +32,7 @@
 #include "MeshFunctions.h"
 #include "GLFW_Init.h"
 #include "ShaderProgram.h"
+#include "FramePerformanceTimepointsList.h"
 
 #include "RenderDemoBase.h"
 #include "QuickObj.h" //For loading '.obj' files
@@ -82,75 +83,9 @@ public:
 	virtual void loadAssets() override;
 	virtual void run() override;
 	
-    class FramePerformanceData final {
-    public:
-        unsigned long long frameNumber;
-        Timepoint tStart;
-        Timepoint* tBeginRender;
-        Timepoint* tFlipBuffers;
-        FramePerformanceData* next;
-        FramePerformanceData(unsigned long long frameNum,
-            Timepoint timeStart) : frameNumber(frameNum),
-            tStart(timeStart),
-            tBeginRender(nullptr),
-            tFlipBuffers(nullptr),
-            next(nullptr) {
-        }
-        ~FramePerformanceData() noexcept {
-            if (tBeginRender) {
-                delete tBeginRender;
-                tBeginRender = nullptr;
-            }
-            if (tFlipBuffers) {
-                delete tFlipBuffers;
-                tFlipBuffers = nullptr;
-            }
-        }
-        FramePerformanceData(FramePerformanceData&& that) noexcept {
-            frameNumber = that.frameNumber;
-            tStart = that.tStart;
-            tBeginRender = that.tBeginRender;
-            that.tBeginRender = nullptr;
-            tFlipBuffers = that.tFlipBuffers;
-            that.tFlipBuffers = nullptr;
-            next = that.next;
-            that.next = nullptr;
-        }
-    };
-    class FramePerformanceList {
-    public:
-        size_t framePerformanceListSize;
-        FramePerformanceData* framePerformanceListHead; //pointer to the head of the list 
-        FramePerformanceData* framePerformanceListCurrent; //pointer to the most recent element in the list
-        FramePerformanceList() : framePerformanceListSize(0ULL),
-            framePerformanceListHead(nullptr),
-            framePerformanceListCurrent(nullptr) {
+    
 
-        }
-        ~FramePerformanceList() noexcept {
-            if (framePerformanceListSize > 0ULL) {
-                while (framePerformanceListHead != nullptr) {
-                    while (framePerformanceListHead->next != nullptr) {
-                        while (framePerformanceListHead->next != framePerformanceListCurrent) {
-                            auto next = framePerformanceListHead->next;
-                            delete framePerformanceListHead;
-                            framePerformanceListHead = next;
-                        }
-                        //Delete all the elements up until the last one so that headPtr == currentPtr
-                        delete framePerformanceListHead;
-                        framePerformanceListHead = framePerformanceListCurrent;
-                    }
-                    //The head pointer and current pointer are the same
-                    delete framePerformanceListHead;
-                    framePerformanceListHead = nullptr;
-                    framePerformanceListCurrent = nullptr;
-                    //If next is nullptr then we have reached the last element in the list
-                }
-                //Else if head is nullptr we are done
-            }
-        }
-    };
-    FramePerformanceList framePerformance;
+    FramePerformanceTimepointsList framePerformance;
 
 
 protected: //private:
@@ -161,6 +96,7 @@ protected: //private:
     unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
         frameDepthClampLastToggled;
+    mutable unsigned long long framePerformanceReportingLastToggled;
 
 	glm::vec3 backgroundColor;
 
@@ -173,7 +109,7 @@ protected: //private:
 	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
 	GLsizei instanceCount;
 	
-
+    bool reportPerformance;
 	bool freezeTimeToggle; 
     bool reverseTimePropogation;
 	bool enableBlending;
@@ -251,6 +187,7 @@ protected: //private:
 								+~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
 	
 	bool checkToSeeIfShouldCloseWindow() const noexcept; //check 'esc'
+    bool checkIfShouldTogglePerformanceReporting() const noexcept;
 	bool checkIfShouldPause() const noexcept; //Probably 'space'
 	bool checkIfShouldReset() const noexcept;
 	bool checkIfShouldFreezeTime() const noexcept;
@@ -292,6 +229,8 @@ protected: //private:
 	bool checkForUpdatedShaders();
 	void buildNewShader();
     void reportStatistics() noexcept;
+    void propagateTime() noexcept;
+
 
 
 

@@ -60,28 +60,58 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
     //Create our shader program (i.e. pipeline)
     sceneShader = std::make_unique<ShaderProgram>();
 
+    
+    ////////////////////////////////////////////////////////////////////
+    //////////////////         VERTEX SHADERS         //////////////////
+    ////////////////////////////////////////////////////////////////////
+    //Attach the primary vertex shader
     sceneShader->attachVert(filepathToShaders + "FlyingCameraDemo.vert");
+    
+    //Build and attach any required secondary Vertex shaders
+
+    //Noise shader collection 01
+#if 0
     ShaderInterface::VertexShader vertNoise(filepathToShaders + "ShaderNoiseFunctions.glsl");
     vertNoise.makeSecondary();
-    if (!vertNoise.readyToBeAttached()) {
+    if (!vertNoise.readyToBeAttached()) 
         fprintf(ERRLOG, "\nError attaching secondary noise shader as vertex shader!\n");
-        std::exit(EXIT_FAILURE);
-    }
     else 
         sceneShader->attachSecondaryVert(&vertNoise);
+#endif 
+    //Noise shader collection 02
+    ShaderInterface::VertexShader psrdNoise(filepathToShaders +
+        "AshimaArts_NoiseCollection\\psrdnoise.glsl");
+    psrdNoise.makeSecondary();
+    if (!psrdNoise.readyToBeAttached())
+        fprintf(ERRLOG, "\nError attaching \'psrdNoise\' shader!\n");
+    else
+        sceneShader->attachSecondaryVert(&psrdNoise);
 
+
+    ////////////////////////////////////////////////////////////////////
+    //////////////////       FRAGMENT SHADERS         //////////////////
+    ////////////////////////////////////////////////////////////////////
     sceneShader->attachFrag(filepathToShaders + "FlyingCameraDemo.frag");
+#if 0
     ShaderInterface::FragmentShader fragNoise(filepathToShaders + "ShaderNoiseFunctions.glsl");
     fragNoise.makeSecondary();
-
-    if (!fragNoise.readyToBeAttached()) {
+    if (!fragNoise.readyToBeAttached()) 
         fprintf(ERRLOG, "\nError attaching secondary noise shader as fragment shader!\n");
-        std::exit(EXIT_FAILURE);
-    } 
     else 
         sceneShader->attachSecondaryFrag(&fragNoise);
-    sceneShader->link();
+#endif 
+    //Noise shader collection 02
+    ShaderInterface::FragmentShader psrdNoiseFrag(filepathToShaders +
+        "AshimaArts_NoiseCollection\\psrdnoise.glsl");
+    psrdNoiseFrag.makeSecondary();
+    if (!psrdNoiseFrag.readyToBeAttached())
+        fprintf(ERRLOG, "\nError attaching \'psrdNoise\' shader!\n");
+    else
+        sceneShader->attachSecondaryFrag(&psrdNoiseFrag);
 
+    
+    ////////////////////////  LINK SHADER PROGRAM  /////////////////////
+    sceneShader->link();
     if (sceneShader->checkIfLinked()) {
         fprintf(MSGLOG, "Program Successfully linked!\n");
         return;

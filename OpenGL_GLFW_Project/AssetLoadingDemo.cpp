@@ -123,13 +123,17 @@
 //  |           '9' & '0'             |                            Increase/Decrease FOV                               |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |          CNTRL + 'S'            |             Enabled/Disabled Performance Reporting to Console                  |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
 //  ===~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=====~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~===
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  | [GENERAL PATTERN]               |                                                                                |
 //  |            L/R Shift            |             Increases the speed of many of the available actions               |
 //  |                                 |   [Some actions treat L-Shift, R-Shift or both L/R-Shifts as unique inputs]    |
 //  ===~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=====~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~===
-//
+//  
 //
 //
 //  Additional Notes and General Things to be Aware Of:
@@ -180,6 +184,8 @@ constexpr const float CAMERA_MINIMUM_FOV = -3.14159f;
 constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
 constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
 
+constexpr const unsigned long long FRAMES_BETWEEN_PERFORMANCE_REPORT = 180ULL;
+
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
 void AssetLoadingDemo::initialize() {
@@ -195,6 +201,7 @@ void AssetLoadingDemo::initialize() {
     frameTimeFreezeLastToggled = 0ull;
     frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
+    framePerformanceReportingLastToggled = 0ULL;
 
     counter = 0.0f;
     timeTickRateModifier = 0.0f;
@@ -210,7 +217,7 @@ void AssetLoadingDemo::initialize() {
     drawMultipleInstances = false;
     instanceCount = STARTING_INSTANCE_COUNT;
     
-
+    reportPerformance = false;
     freezeTimeToggle = false;
     reverseTimePropogation = false;
     enableBlending = false;
@@ -571,27 +578,22 @@ void AssetLoadingDemo::prepareScene() {
 
 
 
-typedef AssetLoadingDemo::FramePerformanceData* FrameTimepointCaptures;
+
 void AssetLoadingDemo::renderLoop() {
 
-    framePerformance.framePerformanceListHead = new FramePerformanceData(0ull,
-        Timepoint("Decoy Frame 0"));
-    framePerformance.framePerformanceListHead->tBeginRender = new Timepoint("Frame 0 decoy");
-    framePerformance.framePerformanceListHead->tFlipBuffers = new Timepoint("Frame 0 decoy");
-    framePerformance.framePerformanceListCurrent = framePerformance.framePerformanceListHead;
-    framePerformance.framePerformanceListSize++;
+    //Call this function to initialize the frame performance profiler
+    framePerformance.prepareToEnterRenderLoop();
 
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
         
-        framePerformance.framePerformanceListCurrent->next = new FramePerformanceData(frameNumber, Timepoint("RenderLoop Beginning for frame " + std::to_string(frameNumber)));
-        framePerformance.framePerformanceListSize++;
-        framePerformance.framePerformanceListCurrent = framePerformance.framePerformanceListCurrent->next;
-
+        framePerformance.recordLoopStartTimepoint(frameNumber);
+        ////////////////////////
         //Check Input
 		if (checkToSeeIfShouldCloseWindow()) {
 			markMainRenderWindowAsReadyToClose();
 			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
 		}
+        reportPerformance = checkIfShouldTogglePerformanceReporting();
 		if (checkIfShouldPause()) {
 			pause();
 			continue;
@@ -605,8 +607,8 @@ void AssetLoadingDemo::renderLoop() {
 		}
 		if (checkIfShouldFreezeTime()) { //'checkIfShouldFreezeTime()' relies on 'toggleFreezeTime()' to 
 			toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
-		}
-        
+        }
+
         if (checkIfShouldReverseDirectionOfTime())
             reverseTime();
 
@@ -616,83 +618,93 @@ void AssetLoadingDemo::renderLoop() {
         if (checkIfShouldDecreasePassageOfTime())
             decreasePassageToTime();
 
-		if (checkIfShouldToggleBlending()) 
-			toggleBlending();
-		
-        if (checkIfShouldToggleDepthClamping()) 
+        if (checkIfShouldToggleBlending())
+            toggleBlending();
+
+        if (checkIfShouldToggleDepthClamping())
             toggleDepthClamping();
-        
+
         if (checkIfShouldUpdateFieldOfView())
             updateFieldOfView();
 
 
-		//More Input Checking
-		changePrimitiveType();
-		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
-		rotate();
+        //More Input Checking
+        changePrimitiveType();
+        changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
+        rotate();
         changeZoom();
-		translate();
+        translate();
 
 
 
-		//Perform logic 
+        ////////////////////////
+        //Perform logic 
+        ////////////////////////
+        performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
-		performRenderDemoSharedInputLogic(); //This is the loop function of the base class
-
-
-        if ((frameNumber % 160ULL) == 159ULL) {
+        //It is required to call 'reportStatistics()' periodically regardless of whether we are 
+        //printing performance statics or not so that the recorded frame Timepoint samples 
+        //are periodically flushed. 
+        if ((frameNumber % FRAMES_BETWEEN_PERFORMANCE_REPORT) == 0ULL) {
             reportStatistics();
         }
 
-		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
-			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
-			if (checkForUpdatedShaders()) {
-				buildNewShader();
-			}
-		}
+        if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
+            (FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
+            if (checkForUpdatedShaders()) {
+                buildNewShader();
+            }
+        }
+
+        propagateTime();
 
 
-        ////////////////////////////////////////////////////////////////////////////////
+        //```````````````````````````````````````````````````````````````````````````````
         //This is purely for debug purposes at this time and is not yet functional.
-       //Take a screenshot on frame 145
-       // if (frameNumber == 145ULL) {
-       //     screenshotAssistant.takeScreenshot();
-       // }
-        //End of Debug Code 
-        ////////////////////////////////////////////////////////////////////////////////////
+        //Take a screenshot on frame 145
+        // if (frameNumber == 145ULL) {
+        //     screenshotAssistant.takeScreenshot();
+        // }
+         //End of Debug Code 
+         //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+        
 
-        framePerformance.framePerformanceListCurrent->tBeginRender = new Timepoint("Begin Draw Calls for frame " + std::to_string(frameNumber));
-		//Set up to draw frame
-		updateFrameClearColor(); //background color
-		updateBaseUniforms();
+
+        ////////////////////////////
+        //Set up to draw frame
+        ////////////////////////////
+        framePerformance.recordBeginDrawCommandsTimepoint();
+        updateFrameClearColor(); //background color
+        updateBaseUniforms();
         updateRenderDemoSpecificUniforms();
 
-		//Draw frame
-		drawVerts();
 
-		if (!freezeTimeToggle) { //if time is not frozen
-            float delta = (0.0125f * (1.0f + timeTickRateModifier));
-            ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
-		}
 
-        framePerformance.framePerformanceListCurrent->tFlipBuffers = new Timepoint("Flip Buffers for frame " + std::to_string(frameNumber));
-		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
+        ///////////////////////////
+        //Draw frame
+        //////////////////////////
+        drawVerts();
 
-		glfwPollEvents();
 
-		 //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
-		if (checkForContextReset()) {
-			fprintf(MSGLOG, "\nContext Reset Required!\n");
-			fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
-			std::cin.get();
-			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
-		}
-	
-		
 
-		frameNumber++; //Increment the frame counter
-		prepareGLContextForNextFrame(); 
-	}
+        framePerformance.recordReadyToFlipBuffersTimepoint();
+        glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
+
+        glfwPollEvents();
+
+        //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
+        if (checkForContextReset()) {
+            fprintf(MSGLOG, "\nContext Reset Required!\n");
+            fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
+            std::cin.get();
+            glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
+        }
+
+
+
+        frameNumber++; //Increment the frame counter
+        prepareGLContextForNextFrame();
+    }
 
 }
 
@@ -703,10 +715,27 @@ void AssetLoadingDemo::renderLoop() {
 
 
 inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const  noexcept {
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		return true;
-	}
-	return false;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        return true;
+    }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldTogglePerformanceReporting() const noexcept {
+    if ((framePerformanceReportingLastToggled + FRAMES_TO_WAIT_BETWEEN_INPUT_READS) > frameNumber)
+        return reportPerformance;
+    bool performanceReportingState = reportPerformance;
+    if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ||
+        (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
+            performanceReportingState = !performanceReportingState;
+            fprintf(MSGLOG, "Performance Reporting %s\n", performanceReportingState ?
+                "Enabled" : "Disabled");
+            framePerformanceReportingLastToggled = frameNumber;
+            return performanceReportingState;
+        }
+    }
+    return performanceReportingState;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldPause() const noexcept {
@@ -849,6 +878,7 @@ void AssetLoadingDemo::reset() noexcept {
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
+    framePerformanceReportingLastToggled = 0ULL;
 	zoom = 1.0f;
 	if (drawMultipleInstances) {
 		instanceCount = STARTING_INSTANCE_COUNT;
@@ -1313,8 +1343,11 @@ void AssetLoadingDemo::buildNewShader() {
 	
 }
 
+//Eventually this ugly implementation logic should get moved to be a member of the
+//FramePerformanceTimepointsList object.
 void AssetLoadingDemo::reportStatistics() noexcept {
-    if (framePerformance.framePerformanceListSize > 2ULL) { return; }
+    //Make sure we have a large enough sample size to generate an accurate report.
+    if (framePerformance.framePerformanceListSize < 10ULL) { return; }
     double tBeginSum, tBeginAvg;
     double timeFromLoopBeginToDrawCommandsTotal, timeFromLoopBeginToDrawCommandsAvg;
     double timeFromDrawCommandsToFlipBuffersTotal, timeFromDrawCommandsToFlipBuffersAvg;
@@ -1327,34 +1360,68 @@ void AssetLoadingDemo::reportStatistics() noexcept {
     timeFromFlipBuffersToNextFrameBeginTotal = 0.0;
 
     while (framePerformance.framePerformanceListHead != framePerformance.framePerformanceListCurrent) {
-        const double t0 = framePerformance.framePerformanceListHead->tStart.timepoint;
-        capturedFramesCounter += 1.0;
-        tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
-        timeFromLoopBeginToDrawCommandsTotal += (framePerformance.framePerformanceListHead->tBeginRender->timepoint - t0);
-        timeFromDrawCommandsToFlipBuffersTotal += (framePerformance.framePerformanceListHead->tFlipBuffers->timepoint - framePerformance.framePerformanceListHead->tBeginRender->timepoint);
-        timeFromFlipBuffersToNextFrameBeginTotal += (framePerformance.framePerformanceListHead->next->tStart.timepoint - framePerformance.framePerformanceListHead->tFlipBuffers->timepoint);
 
-        auto next = framePerformance.framePerformanceListHead->next;
-        delete framePerformance.framePerformanceListHead;
-        framePerformance.framePerformanceListSize--;
-        framePerformance.framePerformanceListHead = next;
+        //We need to make sure that this object has all of its Timepoints
+        if ((nullptr == (framePerformance.framePerformanceListHead->tBeginRender)) ||
+            (nullptr == (framePerformance.framePerformanceListHead->tFlipBuffers))) {
+            //If a required Timepoint is missing from this object, delete it and move on 
+            auto next = framePerformance.framePerformanceListHead->next;
+            delete framePerformance.framePerformanceListHead;
+            framePerformance.framePerformanceListSize--;
+            framePerformance.framePerformanceListHead = next;
+            continue;
+        }
+
+        else {
+            const double t0 = framePerformance.framePerformanceListHead->tStart.timepoint;
+            capturedFramesCounter += 1.0;
+            tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
+            timeFromLoopBeginToDrawCommandsTotal +=
+                (framePerformance.framePerformanceListHead->tBeginRender->timepoint - t0);
+            timeFromDrawCommandsToFlipBuffersTotal +=
+                (framePerformance.framePerformanceListHead->tFlipBuffers->timepoint -
+                    framePerformance.framePerformanceListHead->tBeginRender->timepoint);
+            timeFromFlipBuffersToNextFrameBeginTotal +=
+                (framePerformance.framePerformanceListHead->next->tStart.timepoint -
+                    framePerformance.framePerformanceListHead->tFlipBuffers->timepoint);
+
+            auto next = framePerformance.framePerformanceListHead->next;
+            delete framePerformance.framePerformanceListHead;
+            framePerformance.framePerformanceListSize--;
+            framePerformance.framePerformanceListHead = next;
+        }
     }
 
-    tBeginAvg = tBeginSum / capturedFramesCounter;
-    timeFromLoopBeginToDrawCommandsAvg = timeFromLoopBeginToDrawCommandsTotal / capturedFramesCounter;
-    timeFromDrawCommandsToFlipBuffersAvg = timeFromDrawCommandsToFlipBuffersTotal / capturedFramesCounter;
-    timeFromFlipBuffersToNextFrameBeginAvg = timeFromFlipBuffersToNextFrameBeginTotal / capturedFramesCounter;
+    //Make sure we have at least one frame to prevent division by 0
+    if (capturedFramesCounter == 0ULL) 
+        return; 
 
-
-    fprintf(MSGLOG, "\nPerformance Report:   [These are all averages] \n");
-    fprintf(MSGLOG, "  Frame Average Time:                     %f sec\n"
-        "  Time From Frame Begin to Draw:          %f sec\n"
-        "  Time From Draw to Flip Buffers:         %f sec\n"
-        "  Time From Flip Buffers to Next Frame:   %f sec\n",
-        tBeginAvg, timeFromLoopBeginToDrawCommandsAvg, timeFromDrawCommandsToFlipBuffersAvg, timeFromFlipBuffersToNextFrameBeginAvg);
+    if (reportPerformance) {
+        tBeginAvg = tBeginSum / capturedFramesCounter;
+        timeFromLoopBeginToDrawCommandsAvg = timeFromLoopBeginToDrawCommandsTotal / capturedFramesCounter;
+        timeFromDrawCommandsToFlipBuffersAvg = timeFromDrawCommandsToFlipBuffersTotal / capturedFramesCounter;
+        timeFromFlipBuffersToNextFrameBeginAvg = timeFromFlipBuffersToNextFrameBeginTotal / capturedFramesCounter;
+        fprintf(MSGLOG, "\nPerformance Report:   [These are all averages] \n");
+        fprintf(MSGLOG, "  Frame Average Time:                     %f sec\n"
+            "  Time From Frame Begin to Draw:          %f sec\n"
+            "  Time From Draw to Flip Buffers:         %f sec\n"
+            "  Time From Flip Buffers to Next Frame:   %f sec\n",
+            tBeginAvg, timeFromLoopBeginToDrawCommandsAvg,
+            timeFromDrawCommandsToFlipBuffersAvg,
+            timeFromFlipBuffersToNextFrameBeginAvg);
+    }
 }
 
 
+void AssetLoadingDemo::propagateTime() noexcept {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //  Propagate Time
+    if (!freezeTimeToggle) { //if time is not frozen
+        const float delta = (0.0125f * (1.0f + timeTickRateModifier));
+        ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}
 
 
 void AssetLoadingDemo::updateFrameClearColor() {

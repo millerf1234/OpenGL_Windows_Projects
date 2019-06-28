@@ -178,6 +178,7 @@
     <ClCompile Include="FilepathWrapper.cpp" />
     <ClCompile Include="FlyingCameraDemo.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="FramePerformanceTimepointsList.cpp" />
     <ClCompile Include="FSMCallbackInitializer.cpp" />
     <ClCompile Include="FSMMonitorEventCallback.cpp" />
     <ClCompile Include="FSMRenderEngine.cpp" />
@@ -253,6 +254,8 @@
     <ClInclude Include="FramebufferPreferredUsage.h" />
     <ClInclude Include="FlyingCameraDemo.h" />
     <ClInclude Include="ForceBeginAsyncTask.h" />
+    <ClInclude Include="FramePerformanceTimepoints.h" />
+    <ClInclude Include="FramePerformanceTimepointsList.h" />
     <ClInclude Include="FSMCallbackInitializer.h" />
     <ClInclude Include="FSMMonitorEventCallback.h" />
     <ClInclude Include="FSMRenderEngine.h" />

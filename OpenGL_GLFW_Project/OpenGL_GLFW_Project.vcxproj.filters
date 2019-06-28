@@ -439,6 +439,9 @@
     <Filter Include="Resource Files\Models\OBJ\ExperimentalText">
       <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\PerformanceProfiling">
+      <UniqueIdentifier>{6367e239-9a61-480d-b9f4-0040431a12c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -632,6 +635,9 @@
     </ClCompile>
     <ClCompile Include="OpenGLEnumToString.cpp">
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
+    </ClCompile>
+    <ClCompile Include="FramePerformanceTimepointsList.cpp">
+      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1173,6 +1179,12 @@
     </ClInclude>
     <ClInclude Include="OpenGLEnumToString.h">
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
+    </ClInclude>
+    <ClInclude Include="FramePerformanceTimepoints.h">
+      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
+    </ClInclude>
+    <ClInclude Include="FramePerformanceTimepointsList.h">
+      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
