@@ -4,14 +4,31 @@
 //Programmer:           Forrest Miller
 //Date:                 July - November(and beyond) 2018
 
+#include <thread>
+
 #include "Application.h"
 
+//The renderdemos are included in the order that they were written. As such, the 
+//level of complexity in each project increases accordingly. 
+#include "TeapotExplosion.h"
+//At this point I found it easier to piggy-back off of AssetLoadingDemo, so these
+//RenderDemoes are all heavily built atop AssetLoadingDemo
+#include "LightsourceTestDemo.h"
+#include "AssetLoadingDemo.h"
 #include "FlyingCameraDemo.h"
 
 void Application::initialize() {
 	mApplicationValid = true;
 	initReport = nullptr;
 	glfwInitializer = nullptr;
+
+    if constexpr (USE_DEBUG) {
+        auto threadID = std::this_thread::get_id();
+        std::ostringstream threadIDString;
+        threadIDString << "[DEBUG: Application Operating On Thread: 0x" << std::hex << threadID;
+        threadIDString << "]";
+        fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
+    }
 
 	fprintf(MSGLOG, "Application is loading...\n");
 	if ( !setupGLFW() ) {
@@ -64,7 +81,7 @@ Application::Application() {
                 "   as though the reason for crashing is not due to poor\n"
                 "   work by the Application programmer but in fact a system\n"
                 "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
-                "   [Even if you are running this on Linux]\n");
+                "   [Even if you are running this on Linux].\n");
     }
 }
 
@@ -115,7 +132,7 @@ void Application::launch() {
             "   as though the reason for crashing is not due to poor\n"
             "   work by the Application programmer but in fact a system\n"
             "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
-            "   [Even if you are running this on Linux]\n");
+            "   [Even if you are running this on Linux].\n");
     }
 }
 

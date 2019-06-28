@@ -5,15 +5,17 @@
 #include "FlyingCameraDemo.h"
 
 
+#include "Timepoint.h"
 
 FlyingCameraDemo::FlyingCameraDemo(InitReport* initReport) : AssetLoadingDemo(initReport) {
+    Timepoint creation("FlyingCameraDemo: Beginning Construction of object!");
     if (error) {
-        fprintf(ERRLOG, "\nError Occured While Constructing the FlyingCameraDemo!\n");
+        fprintf(ERRLOG, "\nError Occurred While Constructing the FlyingCameraDemo!\n");
         return;
     }
 
     if (!mainRenderWindow) {
-        fprintf(ERRLOG, "\nError Occured While In Constructor for The FlyingCameraDemo!\n"
+        fprintf(ERRLOG, "\nError Occurred While In Constructor for The FlyingCameraDemo!\n"
             "The error is because the variable 'mainRenderWindow' is set to nullptr!\n");
         return;
     }
@@ -27,14 +29,24 @@ FlyingCameraDemo::~FlyingCameraDemo() noexcept {
 
 
 void FlyingCameraDemo::loadAssets() {
+    Timepoint loadingStart("FlyingCameraDemo: function \'loadAssets()\' entered!");
     loadFlyingCameraDemoShaders();
     loadFlyingCameraDemoWorldMesh();
 
     prepareScene();
+    Timepoint loadingFinish("FlyingCameraDemo: functions \'loadAssets()\' has completed!");
 }
 
 void FlyingCameraDemo::run() {
     AssetLoadingDemo::run();
+}
+
+void FlyingCameraDemo::updateRenderDemoSpecificUniforms() noexcept {
+    /*static int count = 0;
+    count++;
+    if (count % 115 == 114)
+        fprintf(MSGLOG, "\nFlyingCameraDemoDerivedFuncBehavior in effect!\n");*/
+
 }
 
 void FlyingCameraDemo::createCamera() noexcept {
@@ -88,12 +100,15 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
     const std::string filepathToModels = FILEPATH_TO_MODELS;
     std::string modelName, modelName2;
     //modelName = "DemoSceneInsideABox00.obj";
-    modelName = "SimpleSkyDome_ReExport.obj";
+    //modelName = "SimpleSkyDome_ReExport.obj";
     //modelName = "DebugSimpleSkyDomeTest.obj";
-   // modelName2 = "DebugSimpleSkyDomeTest_Triangulated.obj";
-   // modelName = "SubdivisionCube.obj";
+     //modelName2 = "DebugSimpleSkyDomeTest_Triangulated.obj";
+    //modelName = "SubdivisionCube.obj";
+
+    modelName = "HighlyExperimental\\BlenderTextExportExperiment\\BlenderTextExportTest_000001.obj";
 
     //modelName = "box_cutter.obj";
+    //modelName2 = "Spaceship.obj";
 
     //modelName = "CargoSpaceshipIdeaThing02.obj";
 
@@ -134,7 +149,7 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
         }
 #else
         sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName, 1.0));
-        //sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName2, 1.0));
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName2, 1.0));
 #endif 
 #if 0 
     }

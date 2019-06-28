@@ -16,26 +16,43 @@
 
 #include <string>
 #include <string_view>
+#include <iomanip>
 #include <set>
 #include <ostream>
 
 #include "GLFW_Init.h"
 
-
-class Timepoint {
+//Basic utility class representing an instance in time. Holds a double 
+//member 'timepoint' which represents the number of seconds since GLFWinit()
+//was successfully called and a std::string member representing an assignable
+//label. A LocalTimepoint will not be logged globally and so is best utilized 
+//internal time measurements. For most time events use Timepoint to allow a 
+//snapshot of how the Application performs to be recorded.
+class LocalTimepoint {
 public:
     double timepoint;
     std::string tag;
-    Timepoint() : Timepoint("  ~~~~[No Message Assigned]~~~~  ") { ; }
-    Timepoint(std::string_view msg) : tag( !(msg.empty()) 
-                                        ? (msg) 
-                                          : ("       ") ) {
+    LocalTimepoint() : LocalTimepoint("  ~~~~[No Message Assigned]~~~~  ") { ; }
+    LocalTimepoint(std::string_view msg) : tag(!(msg.empty())
+        ? (msg)
+        : ("       ")) {
         if (GLFW_INIT_INTERNAL::GLFW_IS_INIT()) {
             timepoint = glfwGetTime();
-            mMasterTimepointRecord_.insert(*this);
+            //mMasterTimepointRecord_.insert(*this);
         }
         else
             timepoint = 0.0;
+    }
+};
+
+
+class Timepoint : public LocalTimepoint {
+public:
+    //INSERTING A TIMEPOINT WITHOUT A MESSAGE WILL NOT LOG IT GLOBALLY
+    Timepoint() : LocalTimepoint() { ; }
+    Timepoint(std::string_view msg) : LocalTimepoint(msg) {
+        if (GLFW_INIT_INTERNAL::GLFW_IS_INIT())
+            mMasterTimepointRecord_.insert(*this);
     }
 
     Timepoint(const Timepoint& other) {
@@ -75,10 +92,11 @@ public:
         }
         std::ostringstream oss;
         oss << "\n\n     Time (ms)                Message \n   ";
+        //Print the first value out as a special case
         for (; citer != mMasterTimepointRecord_.cend(); citer++) {
-            auto oldWidth = oss.width(digits);
-            oss << "\t" << floor((citer->timepoint - t0) * 1'000'000'000) / 1'000'000;
-            oss.width(oldWidth);
+            //auto oldWidth = oss.width(digits);
+            oss << "\t" << std::showpoint << std::setprecision(static_cast<std::streamsize>(5)) << floor((citer->timepoint - t0));// * 1'000'000'000.0) / 1'000'000.0;
+            //oss.width(oldWidth);
             oss << "   |   " << citer->tag;
             //Only print new line is tag doesn't already
             auto newlineCheck = citer->tag.crbegin();

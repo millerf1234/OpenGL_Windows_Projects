@@ -55,23 +55,24 @@
 //  list is not an exhaustive list. 
 //
 //  +---------------------------------+--------------------------------------------------------------------------------+
-//  |            Input                |                              Description of Action                             |
-//  +---------------------------------+--------------------------------------------------------------------------------+                                                                                                             
+//  |             Input               |                              Description of Action                             |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  ===~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=====~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~===
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
-//  |           Arrow Keys            |           Modifies the rotations angles for Pitch and Head(Yaw)                |
-//  |                                 |                                                                                |
-//  +---------------------------------+--------------------------------------------------------------------------------+
-//  |                                 |                                                                                |
-//  |     Arrow Keys + L/R Shift      |          Modifies the rotations Roll and a sped-up Pitch                       |
+//  |           Arrow Keys            |            Modifies the rotation angles for Pitch and Head(Yaw)                |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
-//  |              Z, W               |                  Changes the value of the uniform 'zoom'                       |
-//  |         Z, W  + L-/R-Shift      |                       (same as before, except faster)                          |
+//  |          'Q' and 'E'            |                        Modifies the Roll rotation angle                        | //Rotations are all just Euler rotations so expect gimbal lock
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |              Z, W               |                    Changes the value of the uniform 'zoom'                     |
+//  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                 Modifies input primitive for scene draw calls                  |
-//  |     Tilde/'1'/'2'/'3'           |              [Press tilde once for LINES, twice for LINE_STRIP]                |
+//  |        Tilde/'1'/'2'/'3'        |              [Press tilde once for LINES, twice for LINE_STRIP]                |
 //  |                                 |     [Press '1' for triangles, '2' for TRIANGLE_STRIP, '3' for TRIANGLE_FAN]    |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
@@ -122,6 +123,12 @@
 //  |           '9' & '0'             |                            Increase/Decrease FOV                               |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
+//  ===~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=====~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~===
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  | [GENERAL PATTERN]               |                                                                                |
+//  |            L/R Shift            |             Increases the speed of many of the available actions               |
+//  |                                 |   [Some actions treat L-Shift, R-Shift or both L/R-Shifts as unique inputs]    |
+//  ===~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=====~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~===
 //
 //
 //
@@ -178,10 +185,11 @@ constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
 void AssetLoadingDemo::initialize() {
     //Set error flag
     error = false;
+
     //Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
     frameNumber = 0ull;
     frameUnpaused = 0ull;
-    frameLineTypeLastSwitched = 0ull;
+    frameLineTypeLastSwitched = 0ull;  
     frameInstancedDrawingBehaviorLastToggled = 0ull;
     frameInstancedDrawingCountLastModified = 0ull;
     frameTimeFreezeLastToggled = 0ull;
@@ -563,9 +571,22 @@ void AssetLoadingDemo::prepareScene() {
 
 
 
-
+typedef AssetLoadingDemo::FramePerformanceData* FrameTimepointCaptures;
 void AssetLoadingDemo::renderLoop() {
+
+    framePerformance.framePerformanceListHead = new FramePerformanceData(0ull,
+        Timepoint("Decoy Frame 0"));
+    framePerformance.framePerformanceListHead->tBeginRender = new Timepoint("Frame 0 decoy");
+    framePerformance.framePerformanceListHead->tFlipBuffers = new Timepoint("Frame 0 decoy");
+    framePerformance.framePerformanceListCurrent = framePerformance.framePerformanceListHead;
+    framePerformance.framePerformanceListSize++;
+
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
+        
+        framePerformance.framePerformanceListCurrent->next = new FramePerformanceData(frameNumber, Timepoint("RenderLoop Beginning for frame " + std::to_string(frameNumber)));
+        framePerformance.framePerformanceListSize++;
+        framePerformance.framePerformanceListCurrent = framePerformance.framePerformanceListCurrent->next;
+
         //Check Input
 		if (checkToSeeIfShouldCloseWindow()) {
 			markMainRenderWindowAsReadyToClose();
@@ -609,6 +630,7 @@ void AssetLoadingDemo::renderLoop() {
 		changePrimitiveType();
 		changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
 		rotate();
+        changeZoom();
 		translate();
 
 
@@ -617,6 +639,10 @@ void AssetLoadingDemo::renderLoop() {
 
 		performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
+
+        if ((frameNumber % 160ULL) == 159ULL) {
+            reportStatistics();
+        }
 
 		if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
 			(FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
@@ -635,10 +661,11 @@ void AssetLoadingDemo::renderLoop() {
         //End of Debug Code 
         ////////////////////////////////////////////////////////////////////////////////////
 
-
+        framePerformance.framePerformanceListCurrent->tBeginRender = new Timepoint("Begin Draw Calls for frame " + std::to_string(frameNumber));
 		//Set up to draw frame
 		updateFrameClearColor(); //background color
-		updateUniforms(); 
+		updateBaseUniforms();
+        updateRenderDemoSpecificUniforms();
 
 		//Draw frame
 		drawVerts();
@@ -648,6 +675,7 @@ void AssetLoadingDemo::renderLoop() {
             ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
 		}
 
+        framePerformance.framePerformanceListCurrent->tFlipBuffers = new Timepoint("Flip Buffers for frame " + std::to_string(frameNumber));
 		glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
 
 		glfwPollEvents();
@@ -1032,57 +1060,137 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 
 void AssetLoadingDemo::rotate() noexcept {
 
-	if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
-		(glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) {
+    // Pitch 
+    static constexpr const float PITCH_DELTA_BASE = 0.045f;
+    static constexpr const float PITCH_DELTA_LSHIFT = 0.085f;
+    static constexpr const float PITCH_DELTA_RSHIFT = 0.125f;
+    static constexpr const float PITCH_DELTA_LRSHIFT = 0.2f;
+    // Roll
+    static constexpr const float ROLL_DELTA_BASE = 0.045f;
+    static constexpr const float ROLL_DELTA_LSHIFT = 0.085f;
+    static constexpr const float ROLL_DELTA_RSHIFT = 0.125f;
+    static constexpr const float ROLL_DELTA_LRSHIFT = 0.2f;
+    // Head/Yaw
+    static constexpr const float HEAD_DELTA_BASE = 0.045f;
+    static constexpr const float HEAD_DELTA_LSHIFT = 0.085f;
+    static constexpr const float HEAD_DELTA_RSHIFT = 0.125f;
+    static constexpr const float HEAD_DELTA_LRSHIFT = 0.2f;
+    
+    //Reduce queries to the Renderwindow by polling state of
+    //left and right shift keys only once
+    static constexpr const unsigned int NEITHERSHIFTPRESSED = 0u;
+    static constexpr const unsigned int LSHIFTVAL = 1u;
+    static constexpr const unsigned int RSHIFTVAL = 2u;
+    int lrShiftState = NEITHERSHIFTPRESSED;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        lrShiftState += LSHIFTVAL;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+        lrShiftState += RSHIFTVAL;
 
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			pitch += 0.05f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			pitch -= 0.05f;
-		}
 
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
-			zoom += 0.095f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
-			zoom -= 0.095f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			roll += 0.3f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			roll -= 0.3f;
-		}
-	}
+    if (NEITHERSHIFTPRESSED == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
+            pitch += PITCH_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+            pitch -= PITCH_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+            roll += ROLL_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            roll -= ROLL_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS)
+            head += HEAD_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS)
+            head -= HEAD_DELTA_BASE;
+    }
+    else if (LSHIFTVAL == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
+            pitch += PITCH_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+            pitch -= PITCH_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+            roll += ROLL_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            roll -= ROLL_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS)
+            head += HEAD_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS)
+            head -= HEAD_DELTA_LSHIFT;
+    }
+    else if (RSHIFTVAL == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
+            pitch += PITCH_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+            pitch -= PITCH_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+            roll += ROLL_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            roll -= ROLL_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS)
+            head += HEAD_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS)
+            head -= HEAD_DELTA_RSHIFT;
+    }
 	else {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			head += 0.05f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			head -= 0.05f;
-		}
-
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			roll += 0.05f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			roll -= 0.05f;
-		}
-
-
-		//Sneak scaling in here as well..
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS) {
-			zoom += 0.025f;
-		}
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS) {
-			zoom -= 0.025f;
-		}
-
-        if (zoom < 0.2f)
-            zoom = 0.2f;
-	}
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
+            pitch += PITCH_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+            pitch -= PITCH_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+            roll += ROLL_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            roll -= ROLL_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Q) == GLFW_PRESS)
+            head += HEAD_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS)
+            head -= HEAD_DELTA_LRSHIFT;	
+    }
 }
+
+void AssetLoadingDemo::changeZoom() noexcept {
+
+    // Zoom
+    static constexpr const float ZOOM_DELTA_BASE = 0.025f;
+    static constexpr const float ZOOM_DELTA_LSHIFT = 0.095f;
+    static constexpr const float ZOOM_DELTA_RSHIFT = 0.125f;
+    static constexpr const float ZOOM_DELTA_LRSHIFT = 0.25f;
+
+    //Reduce queries to the Renderwindow by polling state of
+    //left and right shift keys only once
+    static constexpr const unsigned int NEITHERSHIFTPRESSED = 0u;
+    static constexpr const unsigned int LSHIFTVAL = 1u;
+    static constexpr const unsigned int RSHIFTVAL = 2u;
+    int lrShiftState = NEITHERSHIFTPRESSED;
+    
+    if (NEITHERSHIFTPRESSED == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS)
+            zoom += ZOOM_DELTA_BASE;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS)
+            zoom -= ZOOM_DELTA_BASE;
+    }
+    else if (LSHIFTVAL == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS)
+            zoom += ZOOM_DELTA_LSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS)
+            zoom -= ZOOM_DELTA_LSHIFT;
+    }
+    else if (RSHIFTVAL == lrShiftState) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS)
+            zoom += ZOOM_DELTA_RSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS)
+            zoom -= ZOOM_DELTA_RSHIFT;
+    }
+    else {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS)
+            zoom += ZOOM_DELTA_LRSHIFT;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS)
+            zoom -= ZOOM_DELTA_LRSHIFT;
+    }
+
+    //Clamp zoom to prevent from growing too close to 0.0f
+    if (zoom < 0.2f)
+        zoom = 0.2f;
+}
+
 
 void AssetLoadingDemo::translate() noexcept {
 	float turbo = 1.0f;
@@ -1205,6 +1313,48 @@ void AssetLoadingDemo::buildNewShader() {
 	
 }
 
+void AssetLoadingDemo::reportStatistics() noexcept {
+    if (framePerformance.framePerformanceListSize > 2ULL) { return; }
+    double tBeginSum, tBeginAvg;
+    double timeFromLoopBeginToDrawCommandsTotal, timeFromLoopBeginToDrawCommandsAvg;
+    double timeFromDrawCommandsToFlipBuffersTotal, timeFromDrawCommandsToFlipBuffersAvg;
+    double timeFromFlipBuffersToNextFrameBeginTotal, timeFromFlipBuffersToNextFrameBeginAvg;
+    double capturedFramesCounter = 0.0;
+
+    tBeginSum = 0.0;
+    timeFromLoopBeginToDrawCommandsTotal = 0.0;
+    timeFromDrawCommandsToFlipBuffersTotal = 0.0;
+    timeFromFlipBuffersToNextFrameBeginTotal = 0.0;
+
+    while (framePerformance.framePerformanceListHead != framePerformance.framePerformanceListCurrent) {
+        const double t0 = framePerformance.framePerformanceListHead->tStart.timepoint;
+        capturedFramesCounter += 1.0;
+        tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
+        timeFromLoopBeginToDrawCommandsTotal += (framePerformance.framePerformanceListHead->tBeginRender->timepoint - t0);
+        timeFromDrawCommandsToFlipBuffersTotal += (framePerformance.framePerformanceListHead->tFlipBuffers->timepoint - framePerformance.framePerformanceListHead->tBeginRender->timepoint);
+        timeFromFlipBuffersToNextFrameBeginTotal += (framePerformance.framePerformanceListHead->next->tStart.timepoint - framePerformance.framePerformanceListHead->tFlipBuffers->timepoint);
+
+        auto next = framePerformance.framePerformanceListHead->next;
+        delete framePerformance.framePerformanceListHead;
+        framePerformance.framePerformanceListSize--;
+        framePerformance.framePerformanceListHead = next;
+    }
+
+    tBeginAvg = tBeginSum / capturedFramesCounter;
+    timeFromLoopBeginToDrawCommandsAvg = timeFromLoopBeginToDrawCommandsTotal / capturedFramesCounter;
+    timeFromDrawCommandsToFlipBuffersAvg = timeFromDrawCommandsToFlipBuffersTotal / capturedFramesCounter;
+    timeFromFlipBuffersToNextFrameBeginAvg = timeFromFlipBuffersToNextFrameBeginTotal / capturedFramesCounter;
+
+
+    fprintf(MSGLOG, "\nPerformance Report:   [These are all averages] \n");
+    fprintf(MSGLOG, "  Frame Average Time:                     %f sec\n"
+        "  Time From Frame Begin to Draw:          %f sec\n"
+        "  Time From Draw to Flip Buffers:         %f sec\n"
+        "  Time From Flip Buffers to Next Frame:   %f sec\n",
+        tBeginAvg, timeFromLoopBeginToDrawCommandsAvg, timeFromDrawCommandsToFlipBuffersAvg, timeFromFlipBuffersToNextFrameBeginAvg);
+}
+
+
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
@@ -1238,10 +1388,8 @@ void AssetLoadingDemo::updateFrameClearColor() {
 }
 
 
-
-
-void AssetLoadingDemo::updateUniforms() {
-	if (!sceneShader)
+void AssetLoadingDemo::updateBaseUniforms() noexcept {
+    if (!sceneShader)
 		return;
 
 	sceneShader->use(); 
@@ -1265,9 +1413,15 @@ void AssetLoadingDemo::updateUniforms() {
 
 	
 	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
-	
+}
 
-
+void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
+  /*
+    static int printMsgCounter = 0;
+    printMsgCounter++;
+    if (printMsgCounter % 115 == 114)
+        fprintf(MSGLOG, "AssetLoadingDemo\'s \'updateRenderDemoSpecificUniforms()\' called\n");
+  */
 }
 
 

@@ -433,6 +433,12 @@
     <Filter Include="Source Files\Utility\RenderTools\Framebuffer">
       <UniqueIdentifier>{735c38ed-3d06-4589-96d9-3477e7681689}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Debug\OpenGLEnumToString">
+      <UniqueIdentifier>{1219ec74-dc5b-458a-8310-f1d6e783fd7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\ExperimentalText">
+      <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -623,6 +629,9 @@
     </ClCompile>
     <ClCompile Include="FramebufferPreferredUsage.cpp">
       <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLEnumToString.cpp">
+      <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1147,9 +1156,6 @@
     <ClInclude Include="glfw3.h">
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="RestrictedOperationViolation.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenCaptureOperationParameters.h">
       <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
     </ClInclude>
@@ -1161,6 +1167,12 @@
     </ClInclude>
     <ClInclude Include="FramebufferPreferredUsage.h">
       <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="RestrictedOperationViolation.h">
+      <Filter>Source Files\Unfinished</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLEnumToString.h">
+      <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1439,6 +1451,15 @@
     </None>
     <None Include="glfw3dll.exp">
       <Filter>Third Party\GLFW</Filter>
+    </None>
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.mtl">
+      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+    </None>
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj">
+      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+    </None>
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell">
+      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

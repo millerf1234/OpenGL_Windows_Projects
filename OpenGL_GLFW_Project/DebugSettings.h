@@ -1,16 +1,45 @@
-// File:                   DebugSettings
-//
-// Description:            Defines macros that determine how much debugging is to be  
-//                         done throughout the project. This is a global include.
-//
-// Date:                   January 2019
-
-#pragma once
-
-#ifndef DEBUG_SETTINGS_H___
-#define DEBUG_SETTINGS_H___
-
-
+// File:                 DebugSettings                                             
+//                                                                                 
+// Description:                  Define macros which determine the behavior of this
+//                             Application's underlying libraries "GLFW" and "glad"
+//                                                                                 
+//                             The first option is the macro "USE_DEBUG_". Defining
+//                            this macro lets GLFW know that the OpenGL context and
+//                         render-window it creates should operate in 'debug' mode.
+//                           [Behind the scenes: 'glfwWindowHint()' is called using
+//                          parameters 'GLFW_OPENGL_DEBUG_CONTEXT' and 'GLFW_TRUE',
+//                            [and what happens with glad is actually broken and is
+//                                                 eventually going to be removed]]
+//                         Defining this may also cause the start-up to be slightly
+//                         more verbose. However, leaving this macro undefined will
+//                           cause neither 'GLFW's debug_context hint nor 'glad' in
+//                          debug configuration to be used for the build. One major
+//                               difference between release and debug 'glad' is the
+//                                   inclusion of customizable pre- and post-OpenGL
+//                                       function-call callbacks in the debug mode.
+//                                                                                 
+//                                                                                 
+//                                                                                 
+//        The second option is the macro "FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_"
+//                         which affects solely the single [for now] OpenGL context
+//                       used on the primary render thread. Typically an OpenGL    
+//                      Context is designed to run in a very asynchronous manner   
+//                      its client Application. However, this can lead to some     
+//                     out-of-order debug/warning/error messages to be reported by 
+//                    the OpenGL Context many Application instructions beyond their
+//                      source. Thus, to overcome this issue for debugging it is   
+//                     simply a matter of defining this macro, which will cause    
+//                     every OpenGL function call to block until the OpenGL Context
+//                                has completed the operation. Be advised this will 
+//                                                            slow everything down.
+//                                                                                 
+//                                                                                 
+// Date:                 January 2019                                              
+                                                                                   
+#pragma once                                                                       
+                                                                                   
+#ifndef DEBUG_SETTINGS_H___                                                        
+#define DEBUG_SETTINGS_H___                                                        
 
 
 
@@ -22,6 +51,7 @@
 //it out) will prevent many unexpected events from being reported but should result in better 
 //performance.
 #define USE_DEBUG_
+
 
 //The macro 'FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_' specifically affects the behavior of the
 //OpenGL context. Defining this macro will cause the context to be synchronized with the application

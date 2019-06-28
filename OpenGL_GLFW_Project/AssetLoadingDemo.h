@@ -50,7 +50,7 @@ using ParsedModelData_CIter = std::vector<std::unique_ptr<QuickObj>>::const_iter
 //Setting this variable to false will cause all generated texture coordinates to be the same point 
 static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
-static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5U;
+static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5;
 
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
@@ -82,6 +82,77 @@ public:
 	virtual void loadAssets() override;
 	virtual void run() override;
 	
+    class FramePerformanceData final {
+    public:
+        unsigned long long frameNumber;
+        Timepoint tStart;
+        Timepoint* tBeginRender;
+        Timepoint* tFlipBuffers;
+        FramePerformanceData* next;
+        FramePerformanceData(unsigned long long frameNum,
+            Timepoint timeStart) : frameNumber(frameNum),
+            tStart(timeStart),
+            tBeginRender(nullptr),
+            tFlipBuffers(nullptr),
+            next(nullptr) {
+        }
+        ~FramePerformanceData() noexcept {
+            if (tBeginRender) {
+                delete tBeginRender;
+                tBeginRender = nullptr;
+            }
+            if (tFlipBuffers) {
+                delete tFlipBuffers;
+                tFlipBuffers = nullptr;
+            }
+        }
+        FramePerformanceData(FramePerformanceData&& that) noexcept {
+            frameNumber = that.frameNumber;
+            tStart = that.tStart;
+            tBeginRender = that.tBeginRender;
+            that.tBeginRender = nullptr;
+            tFlipBuffers = that.tFlipBuffers;
+            that.tFlipBuffers = nullptr;
+            next = that.next;
+            that.next = nullptr;
+        }
+    };
+    class FramePerformanceList {
+    public:
+        size_t framePerformanceListSize;
+        FramePerformanceData* framePerformanceListHead; //pointer to the head of the list 
+        FramePerformanceData* framePerformanceListCurrent; //pointer to the most recent element in the list
+        FramePerformanceList() : framePerformanceListSize(0ULL),
+            framePerformanceListHead(nullptr),
+            framePerformanceListCurrent(nullptr) {
+
+        }
+        ~FramePerformanceList() noexcept {
+            if (framePerformanceListSize > 0ULL) {
+                while (framePerformanceListHead != nullptr) {
+                    while (framePerformanceListHead->next != nullptr) {
+                        while (framePerformanceListHead->next != framePerformanceListCurrent) {
+                            auto next = framePerformanceListHead->next;
+                            delete framePerformanceListHead;
+                            framePerformanceListHead = next;
+                        }
+                        //Delete all the elements up until the last one so that headPtr == currentPtr
+                        delete framePerformanceListHead;
+                        framePerformanceListHead = framePerformanceListCurrent;
+                    }
+                    //The head pointer and current pointer are the same
+                    delete framePerformanceListHead;
+                    framePerformanceListHead = nullptr;
+                    framePerformanceListCurrent = nullptr;
+                    //If next is nullptr then we have reached the last element in the list
+                }
+                //Else if head is nullptr we are done
+            }
+        }
+    };
+    FramePerformanceList framePerformance;
+
+
 protected: //private:
 	bool error;
 	//float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
@@ -142,7 +213,8 @@ protected: //private:
 	float head, pitch, roll;
 	float zoom;
 	
-	
+
+
 	///////////////////////////////////////////////////////
 	/////////////      Setup Functions      ///////////////
 	///////////////////////////////////////////////////////
@@ -166,6 +238,13 @@ protected: //private:
 	//-----------------------------------------------------------------//
 	//    The Render Loop Consists of the following series of steps    //
 	//-----------------------------------------------------------------//
+
+    //  [0]  timing functions  
+   // void recordLoopStartTimepoint() noexcept;
+   // void recordRenderStartTimepoint() noexcept;
+   // void recordPrepareGLContextForNextFrameTimepoint() noexcept;
+
+
 
 	/*							+~~~~~~~~~~~~~~~~~~~~~~~~~~+
 								|   (1)  Input Detection   |
@@ -201,6 +280,7 @@ protected: //private:
 	void changeInstancedDrawingBehavior() noexcept;
 	//void modifyInstancedDrawingSpiralPattern() noexcept;
 	void rotate() noexcept;
+    void changeZoom() noexcept;
 	void translate() noexcept;
    
 
@@ -211,7 +291,7 @@ protected: //private:
 	
 	bool checkForUpdatedShaders();
 	void buildNewShader();
-
+    void reportStatistics() noexcept;
 
 
 
@@ -231,8 +311,10 @@ protected: //private:
 	/////////////////////////////////
 	///  (4b)  Update Uniforms    ///
 	/////////////////////////////////
-	void updateUniforms();
 
+    //Updates 
+	void updateBaseUniforms() noexcept;
+    virtual void updateRenderDemoSpecificUniforms() noexcept;
 
 
 	////////////////////////////////
@@ -246,7 +328,7 @@ protected: //private:
 	/////////////////////////////////
 	///  (4d)  Make Draw Calls    ///                          
 	/////////////////////////////////
-	void drawVerts();
+	virtual void drawVerts();
 
 
 	
@@ -264,7 +346,7 @@ protected: //private:
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	////  The following are utility functions called by the setup and renderloop functions   ////
+	////  The following are utility functions called by the setup and render-loop functions  ////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
     //This function expects each vertex in the passed-in sceneBuffer to be exactly

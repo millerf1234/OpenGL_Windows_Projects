@@ -89,6 +89,8 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -132,6 +134,7 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -204,6 +207,7 @@
     <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
+    <ClCompile Include="OpenGLEnumToString.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
     <ClCompile Include="PrimaryRenderWindow.cpp" />
     <ClCompile Include="PrimaryWindowCallbackFunctions.cpp" />
@@ -280,6 +284,7 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h" />
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h" />
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
+    <ClInclude Include="OpenGLEnumToString.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
     <ClInclude Include="RestrictedOperationViolation.h" />
@@ -449,6 +454,8 @@
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
       <SubType>Designer</SubType>
     </None>
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.mtl" />
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell" />
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
     <None Include="obj\SimpleSkyDome.mtl" />
@@ -660,6 +667,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\CargoSpaceshipIdeaThing02.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

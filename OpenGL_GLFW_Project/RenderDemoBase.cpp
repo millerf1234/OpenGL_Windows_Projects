@@ -80,7 +80,8 @@ void RenderDemoBase::performRenderDemoSharedInputLogic() {
             mFBInfo_ = std::make_unique<FramebufferPreferredUsage>(0u);
         }
         catch (const std::bad_alloc& e) {
-            fprintf(ERRLOG, "Failure to allocate memory. We are all going to die!\n");
+            fprintf(ERRLOG, "Failure to allocate memory. We are all going to die!\n"
+                "\t[Obligatory Message] --> \'%s\'\n\n", e.what());
             std::exit(EXIT_FAILURE);
         }
     }
@@ -174,11 +175,13 @@ int RenderDemoBase::checkIfShouldModifyWindowOpacity() const noexcept {
     return returnVal;
 }
 
-constexpr const float OPACITY_CHANGE_RATE = 0.00425f;
-constexpr const int UPDATES_TO_DELAY_BETWEEN_PRINTS = 20;
+static constexpr const float OPACITY_CHANGE_RATE = 0.00425f;
+static constexpr const int UPDATES_TO_DELAY_BETWEEN_PRINTS = 20;
 void RenderDemoBase::increaseWindowOpacity() noexcept {
     static int printDelayCounter = 0;
     mWindowOpaqueness_ += OPACITY_CHANGE_RATE;
+    if (mWindowOpaqueness_ > 1.0f)
+        mWindowOpaqueness_ = 1.0f;
     glfwSetWindowOpacity(mainRenderWindow, mWindowOpaqueness_);
     if (printDelayCounter++ > UPDATES_TO_DELAY_BETWEEN_PRINTS) {
         printDelayCounter = 0;
@@ -189,6 +192,8 @@ void RenderDemoBase::increaseWindowOpacity() noexcept {
 void RenderDemoBase::decreaseWindowOpacity() noexcept {
     static int printDelayCounter = 0;
     mWindowOpaqueness_ -= OPACITY_CHANGE_RATE;
+    if (mWindowOpaqueness_ < 0.0f)
+        mWindowOpaqueness_ = 0.0f;
     glfwSetWindowOpacity(mainRenderWindow, mWindowOpaqueness_);
     if (printDelayCounter++ > UPDATES_TO_DELAY_BETWEEN_PRINTS) {
         printDelayCounter = 0;

@@ -36,20 +36,7 @@
 #include "GlobalConstants.h"
 #include "ApplicationConstantSettings.h"
 #include "GLFW_Init.h"
-
-#include "AssetLoadingDemo.h"
-#include "LightsourceTestDemo.h"
-#include "TeapotExplosion.h"
-
-
-//static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
-//
-//static constexpr const bool USE_FULLSCREEN = false;
-//
-//static constexpr const bool USE_VSYNC = true;
-//
-//static constexpr int DEFAULT_AA_SAMPLES = 8;
-
+#include "RenderDemoBase.h"
 
 
 class Application final {
@@ -85,18 +72,20 @@ private:
 	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
 	//newly created, without either of the load() or run() methods having been called. This
 	//function is intended to be called by the more specific run_____Demo() functions below.
-	void runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char* name = "[UNTITLED]");
+	void runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char* name = "[UNTITLED]");
 
 
 
 
-	//The following functions are for setting up and running different demo programs. These functions rely on
-	//the runRenderDemo() function above for polymorphically calling their overridden virtual functions. 
-	
-    void runFlyingCameraDemo();
-	void runAssetLoadingDemo();
-	void runLightsourceTestDemo();
-	void runTeapotExplosionDemo();
+	//The following functions are for setting up and running different demo programs. These functions rely on the
+	//runRenderDemo() function above for polymorphic-behavior when calling their overridden virtual functions. 
+
+    void runTeapotExplosionDemo();
+    void runLightsourceTestDemo();
+    void runAssetLoadingDemo();
+    void runFlyingCameraDemo(); 
+
+
 
 };
 
