@@ -140,6 +140,23 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 		fprintf(MSGLOG, "FALSE\n");
 	}
 
+    fprintf(MSGLOG, "\t  DOUBLE BUFFERING: ");
+    if constexpr (DOUBLE_BUFFERING) {
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+        fprintf(MSGLOG, "ENABLED!\n");
+    }
+    else {
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
+        fprintf(MSGLOG, "NOT ENABLED!!!!!!!!!!\n");
+        fprintf(MSGLOG, ""
+            "\t                    _Y_Y_Y_Y_Y_Y_Y_Y_\n"
+            "\t                     | | | | | | | | \n"
+            "\t                     | | | | | | | | \n"
+            "\t                     V V V V V V V V \n"
+            "\t                     Are you sure?\n"
+            "\t     [press ENTER to be sure]\n");
+        std::cin.get();
+    }
 
 	fprintf(MSGLOG, "\t  Decorate Window Border: ");
 	if (decoratedBorder) {

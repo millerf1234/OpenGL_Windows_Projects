@@ -21,7 +21,7 @@
 //hash table. Value Should be 1.0f or less, with 0.7f - 0.8f 
 //typically being the desirable sweet-spot. The default load 
 //factor of std::unordered_map is 1.0f. To be safe the code 
-//will clamp any values outside of the range [0.5f, 1.0f] to
+//will clamp any values outside of the range [0.5f, 0.95f] to
 //the closest value in that range.
 constexpr float TARGET_MAXIMUM_LOAD_FACTOR = 0.75f; 
 
@@ -47,12 +47,16 @@ DictionaryOfGLEnums::DictionaryOfGLEnums() noexcept {
     float loadFactor;
     if constexpr (TARGET_MAXIMUM_LOAD_FACTOR < 0.5f)
         loadFactor = 0.5f;
-    else if constexpr (TARGET_MAXIMUM_LOAD_FACTOR > 1.0f)
-        loadFactor = 1.0f;
+    else if constexpr (TARGET_MAXIMUM_LOAD_FACTOR > 0.95f)
+        loadFactor = 0.95f;
     else 
         loadFactor = TARGET_MAXIMUM_LOAD_FACTOR;
     mDictionary_.max_load_factor(loadFactor);
-    mDictionary_.reserve(800ULL);
+    //mDictionary_.reserve(16384ULL); //Using the debugger it appears as though
+    //it is best to not reserve space ahead of time because the resulting Hash
+    //table size upon completion is quite a bit smaller. Maybe one day I can 
+    //investigate why this is... I'm probably misinterpreting std::unordered_map's
+    //syntax somewhere somehow. 
     buildDictionary();
     fprintf(MSGLOG, "\nGLEnum Dictionary Built With %d Mappings Total!\n",
         mDictionary_.bucket_count());

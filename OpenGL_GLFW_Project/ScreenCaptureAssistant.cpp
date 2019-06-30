@@ -1,7 +1,11 @@
 
 
 #include "ScreenCaptureAssistant.h"
+#include <fstream>
+#include "FilesystemDirectory.h"
+#include "RelativeFilepathsToResources.h"
 
+constexpr const char* SCREENSHOT_NAME_TEMPLATE = "ScreenCapture_";
 
 ScreenCaptureAssistant::ScreenCaptureAssistant() : mWindowContext_(glfwGetCurrentContext()) {
 
@@ -18,9 +22,45 @@ ScreenCaptureAssistant::ScreenCaptureAssistant() : mWindowContext_(glfwGetCurren
             "and the sole purpose of this class is to record rendered output, it\n"
             "is kinda sorta a major major issue that there is no context!\n"));
     }
+    const std::string screenshotsDirStr(FILEPATH_TO_SCREENSHOTS);
+    FilesystemDirectory screenshotsDir(screenshotsDirStr);
 
-
+    for (int i = 0; i < 12; i++) {
+        auto name = screenshotsDir.getNextUniqueFilenameFor(SCREENSHOT_NAME_TEMPLATE);
+        auto nameStr = name.string();
+        auto nameStringIter = nameStr.cend();
+        bool removeChar = true;
+        int counter = 0;
+        while (removeChar) {
+            nameStringIter--;
+            if ((*nameStringIter == '\\') ||
+                (*nameStringIter == '/')) {
+                counter++;
+                continue;
+            }
+            else 
+                removeChar = false;
+        }
+        while (counter-- > 0)
+            nameStr.pop_back();
+        name = nameStr + std::string(".txt");
+        bool ya = !(std::filesystem::exists(name));
+        try {
+            std::ofstream fileWriter(name);
+            if (!fileWriter) {
+                fprintf(ERRLOG, "Error creating std::ofstream!\n");
+                continue;
+            }
+            for (int j = 32; j < 256; j++)
+                fileWriter << "[" << j << "]  " << static_cast<char>(j) << std::endl;
+        }
+        catch (...) {
+            fprintf(ERRLOG, "\nError writing file for %s\n", name.string().c_str());
+        }
+    }
     //setScreenshotOutcomeCallback(defaultScreenshotResultCallbackFunction);
+
+        fprintf(MSGLOG, "Done Creating Files!\n");
 }
 
 

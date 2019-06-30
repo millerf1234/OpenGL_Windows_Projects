@@ -22,13 +22,13 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D2B07B3B-FDC0-414E-9AC8-34430DBD1632}</ProjectGuid>
     <RootNamespace>OpenGLGLFWProject</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -170,9 +170,12 @@
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetInterface.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
+    <ClCompile Include="BasicColorAttachmentTexture.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="ConnectedMonitors.cpp" />
+    <ClCompile Include="FilesystemDirectory.cpp" />
+    <ClCompile Include="FramebufferBase.cpp" />
     <ClCompile Include="FramebufferPreferredUsage.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="FilepathWrapper.cpp" />
@@ -207,6 +210,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
+    <ClCompile Include="OffscreenFramebuffer.cpp" />
     <ClCompile Include="OpenAL_Init.cpp" />
     <ClCompile Include="OpenGLEnumToString.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
@@ -218,6 +222,7 @@
     <ClCompile Include="RenderDemoBase.cpp" />
     <ClCompile Include="ScreenCapture.cpp" />
     <ClCompile Include="ScreenCaptureAssistant.cpp" />
+    <ClCompile Include="ScreenFramebuffer.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgram2.cpp" />
     <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp" />
@@ -248,9 +253,12 @@
     <ClInclude Include="AsciiAsset.h" />
     <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
+    <ClInclude Include="BasicColorAttachmentTexture.h" />
     <ClInclude Include="ConnectedMonitors.h" />
     <ClInclude Include="DebugSettings.h" />
     <ClInclude Include="DefaultFramebufferState.h" />
+    <ClInclude Include="FilesystemDirectory.h" />
+    <ClInclude Include="FramebufferBase.h" />
     <ClInclude Include="FramebufferPreferredUsage.h" />
     <ClInclude Include="FlyingCameraDemo.h" />
     <ClInclude Include="ForceBeginAsyncTask.h" />
@@ -287,6 +295,7 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h" />
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h" />
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
+    <ClInclude Include="OffscreenFramebuffer.h" />
     <ClInclude Include="OpenGLEnumToString.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
     <ClInclude Include="QuickObj_NGonParser.h" />
@@ -294,6 +303,7 @@
     <ClInclude Include="ScreenCapture.h" />
     <ClInclude Include="ScreenCaptureAssistant.h" />
     <ClInclude Include="ScreenCaptureOperationParameters.h" />
+    <ClInclude Include="ScreenFramebuffer.h" />
     <ClInclude Include="ShaderProgram2.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
     <ClInclude Include="TGA_Image_File_Format_Header.h" />
@@ -461,6 +471,7 @@
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell" />
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
+    <None Include="obj\ScrewTornadoThing.mtl" />
     <None Include="obj\SimpleSkyDome.mtl" />
     <None Include="obj\SimpleSkyDome_ReExport.mtl" />
     <None Include="obj\Splines.mtl" />
@@ -487,6 +498,7 @@
     <None Include="Shaders\ColorTransforms.frag" />
     <None Include="Shaders\FlyingCameraDemo.frag" />
     <None Include="Shaders\FlyingCameraDemo.vert" />
+    <None Include="Shaders\FlyingCameraDemo2.vert" />
     <None Include="Shaders\LightsourceTestDemo.frag" />
     <None Include="Shaders\LightsourceTestDemo.vert">
       <DeploymentContent>false</DeploymentContent>
@@ -675,6 +687,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\ScrewTornadoThing.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

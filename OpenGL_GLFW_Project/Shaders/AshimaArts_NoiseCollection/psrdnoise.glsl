@@ -1,4 +1,4 @@
-#version 120
+#version 450 core
 
 //
 // vec3  psrdnoise(vec2 pos, vec2 per, float rot)

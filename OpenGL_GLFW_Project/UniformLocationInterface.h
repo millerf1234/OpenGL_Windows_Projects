@@ -211,6 +211,7 @@ namespace ShaderInterface {
 
 		//Function to be called when requests are made to this object before it is 'activated'
 		static void inactiveUniformTrackingResponse() {
+            assert(false);
 			//fprintf(WRNLOG, "\nWarning! Unable to process Uniform related request!\n");
 		}
 		

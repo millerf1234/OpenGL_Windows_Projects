@@ -45,7 +45,7 @@
 #include <algorithm>
 #include <chrono>     //for tracking  'last_write_time'
 #include <filesystem> 
-#include <optional>  //To pretect against uninitialized FileWriteTime
+#include <optional>  //To protect against uninitialized FileWriteTime
 
 
 

@@ -21,6 +21,8 @@ FlyingCameraDemo::FlyingCameraDemo(InitReport* initReport) : AssetLoadingDemo(in
     }
 
     createCamera();
+    glEnable(GL_STENCIL_TEST);
+    glEnable(GL_DEPTH_TEST);
 }
 
 FlyingCameraDemo::~FlyingCameraDemo() noexcept {
@@ -64,9 +66,10 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
     ////////////////////////////////////////////////////////////////////
     //////////////////         VERTEX SHADERS         //////////////////
     ////////////////////////////////////////////////////////////////////
+    
+#ifdef USE_VERSION_1
     //Attach the primary vertex shader
     sceneShader->attachVert(filepathToShaders + "FlyingCameraDemo.vert");
-    
     //Build and attach any required secondary Vertex shaders
 
     //Noise shader collection 01
@@ -86,7 +89,22 @@ void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
         fprintf(ERRLOG, "\nError attaching \'psrdNoise\' shader!\n");
     else
         sceneShader->attachSecondaryVert(&psrdNoise);
+#else 
+      //Attach the primary vertex shader
+    sceneShader->attachVert(filepathToShaders + "FlyingCameraDemo2.vert");
+    //Build and attach any required secondary Vertex shaders
 
+
+    ShaderInterface::VertexShader cellular2x2x2Noise(filepathToShaders +
+        "AshimaArts_NoiseCollection\\cellular2x2x2.glsl");
+    cellular2x2x2Noise.makeSecondary();
+    if (!cellular2x2x2Noise.readyToBeAttached())
+        fprintf(ERRLOG, "\nError attaching \'cellular2x2x2Noise\' shader!\n");
+    else
+        sceneShader->attachSecondaryVert(&cellular2x2x2Noise);
+
+
+#endif 
 
     ////////////////////////////////////////////////////////////////////
     //////////////////       FRAGMENT SHADERS         //////////////////
@@ -130,15 +148,13 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
     const std::string filepathToModels = FILEPATH_TO_MODELS;
     std::string modelName, modelName2;
     //modelName = "DemoSceneInsideABox00.obj";
-    //modelName = "SimpleSkyDome_ReExport.obj";
-    //modelName = "DebugSimpleSkyDomeTest.obj";
-     //modelName2 = "DebugSimpleSkyDomeTest_Triangulated.obj";
+    modelName = "SimpleSkyDome_ReExport.obj";
     //modelName = "SubdivisionCube.obj";
-
-    modelName = "HighlyExperimental\\BlenderTextExportExperiment\\BlenderTextExportTest_000001.obj";
+    //modelName = "ScrewTornadoThing.obj";
+    //modelName = "HighlyExperimental\\BlenderTextExportExperiment\\BlenderTextExportTest_000001.obj";
 
     //modelName = "box_cutter.obj";
-    //modelName2 = "Spaceship.obj";
+    modelName2 = "Spaceship.obj";
 
     //modelName = "CargoSpaceshipIdeaThing02.obj";
 

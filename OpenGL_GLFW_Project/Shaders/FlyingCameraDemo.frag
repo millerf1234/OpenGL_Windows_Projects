@@ -104,7 +104,7 @@ vec3 psrdnoise(vec2 pos, vec2 per, float rot);
 void main() { 
 
 
-#define EFFECT_TO_DO 1
+#define EFFECT_TO_DO 6
 
 //NO EFFECT SELECTED
 #ifndef EFFECT_TO_DO
@@ -135,7 +135,7 @@ void main() {
         fragColor.rgb = vec3(1.0) - fragColor.rgb;
 
     if (abs(dot(shaded_vertex.pretransform_normal, vec3(0.0, 0.0, 1.0))) < 0.0005)
-       fragColor = vec4(0.68, 0.125, 0.985, 0.9);
+       fragColor = vec4(0.68, 0.125, 0.985, 0.75 - 0.005*shaded_vertex.instanceID);
 
 
     //if (length(fragColor.rgb) > length(vec3(0.9)))
@@ -156,7 +156,7 @@ void main() {
        fragColor.b *= -1.;
 
     if (abs(dot(shaded_vertex.pretransform_normal, vec3(0.0, 0.0, 1.0))) < 0.0005)
-       fragColor = vec4(0.68, 0.125, 0.985, 0.75) + vec4(psrdnoise(fragColor.rb, fragColor.rg, time), 0.0);
+       fragColor = vec4(0.68, 0.125, 0.985, 0.75);// + vec4(psrdnoise(fragColor.rb, 0.05*fragColor.rg, 0.0), 0.0);
    // else 
     //   discard;
 
@@ -188,7 +188,7 @@ void main() {
     fragColor = vec4(0.75, 0.65, 0.55, 1.0);
     
 //Effect 5 SELECTED
-#elif (EFFECT_TO_DO >= 5)
+#elif (EFFECT_TO_DO == 5)
     const vec4 color1 = vec4(0.68, 0.09, 0.25, 1.0);
     const vec4 color2 = vec4(0.9, 0.7, 1.0, 0.25);
 
@@ -199,5 +199,13 @@ void main() {
         //discard;
 
     fragColor = mix(color1, color2, f);
+
+    #elif (EFFECT_TO_DO >= 6) 
+    const vec4 color1 = vec4(0.9, 0.4, 0.19, 0.5);
+    const vec4 color2 = vec4(0.5, 0.6, 0.9, 0.85);
+    const vec3 lightPosition = vec3(10.0 * cos(time), 8.0 * sin(time), sinePartialSummation(0.05*time, 8, 2.0));
+
+    fragColor = mix(color1, color2, abs(dot(normalize(lightPosition), normalize(shaded_vertex.normal))));
+    fragColor += vec4(abs(0.25*psrdnoise(vec2(shaded_vertex.instanceID, 0.0), shaded_vertex.position.xy, 1.5 + 0.5*sin(time))), 0.0);
 #endif //EFFECT_TO_DO
 }

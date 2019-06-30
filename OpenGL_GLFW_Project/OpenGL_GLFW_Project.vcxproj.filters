@@ -403,9 +403,6 @@
     <Filter Include="Third Party\GLFW">
       <UniqueIdentifier>{652b198b-6eec-4ad7-9eaf-11d20c4a7f18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Timepoint">
-      <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools">
       <UniqueIdentifier>{0ceada58-1941-4a6a-801c-b7db2c2b51be}</UniqueIdentifier>
     </Filter>
@@ -427,20 +424,44 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\ShaderObject\Uniform\UniformInternal">
       <UniqueIdentifier>{c76b7fe0-a23a-463b-a23a-5f22719fa7a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
-      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Framebuffer">
-      <UniqueIdentifier>{735c38ed-3d06-4589-96d9-3477e7681689}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Debug\OpenGLEnumToString">
       <UniqueIdentifier>{1219ec74-dc5b-458a-8310-f1d6e783fd7b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Models\OBJ\ExperimentalText">
       <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\PerformanceProfiling">
+    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
+      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Sample\ScrewTornadoThing">
+      <UniqueIdentifier>{be4b08e1-689a-4046-b90b-95ac966396dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\PerformanceProfiling">
       <UniqueIdentifier>{6367e239-9a61-480d-b9f4-0040431a12c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\PerformanceProfiling\Timepoint">
+      <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Texture">
+      <UniqueIdentifier>{c47d5824-7ccc-4408-8f3e-b9ed11ef2bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Texture\Version0">
+      <UniqueIdentifier>{4933fd47-cef9-4d1f-bbf4-5ecaf2ea1b06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer">
+      <UniqueIdentifier>{735c38ed-3d06-4589-96d9-3477e7681689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1">
+      <UniqueIdentifier>{4a4d314f-295a-45c2-af11-2d353d42af00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]">
+      <UniqueIdentifier>{7d357ad1-1e14-4c89-8dca-6705a6a3d234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot\Incomplete">
+      <UniqueIdentifier>{bc753c36-7f50-4d4e-bd85-5984c2915388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Filepath\Deprecated">
+      <UniqueIdentifier>{41e8b6d5-2f4e-47d6-9c57-209294eb84aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -470,9 +491,6 @@
     </ClCompile>
     <ClCompile Include="TeapotExplosion.cpp">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
-    </ClCompile>
-    <ClCompile Include="FilepathWrapper.cpp">
-      <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\Utility\Math</Filter>
@@ -621,23 +639,41 @@
     <ClCompile Include="ShaderProgram2.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenCaptureAssistant.cpp">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClCompile>
-    <ClCompile Include="ScreenCapture.cpp">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClCompile>
     <ClCompile Include="Timepoint.cpp">
-      <Filter>Source Files\Utility\Timepoint</Filter>
-    </ClCompile>
-    <ClCompile Include="FramebufferPreferredUsage.cpp">
-      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling\Timepoint</Filter>
     </ClCompile>
     <ClCompile Include="OpenGLEnumToString.cpp">
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
     </ClCompile>
     <ClCompile Include="FramePerformanceTimepointsList.cpp">
-      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
+    </ClCompile>
+    <ClCompile Include="FramebufferPreferredUsage.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicColorAttachmentTexture.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Texture\Version0</Filter>
+    </ClCompile>
+    <ClCompile Include="FramebufferBase.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClCompile>
+    <ClCompile Include="OffscreenFramebuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenFramebuffer.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenCapture.cpp">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenCaptureAssistant.cpp">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClCompile>
+    <ClCompile Include="FilepathWrapper.cpp">
+      <Filter>Source Files\Utility\Filepath\Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="FilesystemDirectory.cpp">
+      <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -843,9 +879,6 @@
     </ClInclude>
     <ClInclude Include="TeapotExplosion.h">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
-    </ClInclude>
-    <ClInclude Include="FilepathWrapper.h">
-      <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Source Files\Utility\Math</Filter>
@@ -1141,12 +1174,6 @@
     <ClInclude Include="LoggingMessageTargets.h">
       <Filter>Header Files\SetupAndConfiguration\Modifiable</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenCaptureAssistant.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
-    <ClInclude Include="TGA_Image_File_Format_Header.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
     <ClInclude Include="WindowConfiguration.h">
       <Filter>Header Files\SetupAndConfiguration\Modifiable</Filter>
     </ClInclude>
@@ -1156,23 +1183,11 @@
     <ClInclude Include="ForceBeginAsyncTask.h">
       <Filter>Source Files\Utility\MultiThreading</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenCapture.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
     <ClInclude Include="glfw3.h">
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenCaptureOperationParameters.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot</Filter>
-    </ClInclude>
     <ClInclude Include="Timepoint.h">
-      <Filter>Source Files\Utility\Timepoint</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultFramebufferState.h">
-      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FramebufferPreferredUsage.h">
-      <Filter>Source Files\Utility\RenderTools\Framebuffer</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling\Timepoint</Filter>
     </ClInclude>
     <ClInclude Include="RestrictedOperationViolation.h">
       <Filter>Source Files\Unfinished</Filter>
@@ -1181,10 +1196,46 @@
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
     </ClInclude>
     <ClInclude Include="FramePerformanceTimepoints.h">
-      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClInclude>
     <ClInclude Include="FramePerformanceTimepointsList.h">
-      <Filter>Source Files\Utility\RenderTools\PerformanceProfiling</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
+    </ClInclude>
+    <ClInclude Include="FramebufferPreferredUsage.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultFramebufferState.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicColorAttachmentTexture.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Texture\Version0</Filter>
+    </ClInclude>
+    <ClInclude Include="FramebufferBase.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClInclude>
+    <ClInclude Include="OffscreenFramebuffer.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenFramebuffer.h">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
+    </ClInclude>
+    <ClInclude Include="TGA_Image_File_Format_Header.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenCapture.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenCaptureAssistant.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenCaptureOperationParameters.h">
+      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+    </ClInclude>
+    <ClInclude Include="FilepathWrapper.h">
+      <Filter>Source Files\Utility\Filepath\Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesystemDirectory.h">
+      <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1472,6 +1523,15 @@
     </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell">
       <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+    </None>
+    <None Include="Shaders\FlyingCameraDemo2.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+    </None>
+    <None Include="obj\ScrewTornadoThing.mtl">
+      <Filter>Resource Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
+    </None>
+    <None Include="obj\ScrewTornadoThing.obj">
+      <Filter>Resource Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

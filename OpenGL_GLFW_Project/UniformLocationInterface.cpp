@@ -48,9 +48,10 @@ namespace ShaderInterface {
 
 	void UniformLocationInterface::activateUniformLocationTracker(const GLuint programID) {
 		if (mActivated_) {
-			fprintf(ERRLOG, "\nError! Unable to activate UniformLocationTracker in UniformLocationInterface %u!"
-				"This UniformLocationInterface has already been activated for program %u!\n", programID, getProgramID());
-			return;
+			//fprintf(ERRLOG, "\nError! Unable to activate UniformLocationTracker in UniformLocationInterface %u!"
+			//	"This UniformLocationInterface has already been activated for program %u!\n", programID, getProgramID());
+			//return;
+            assert(false);
 		}
 		mUniformLocationTracker_ = std::make_unique<UniformLocationTracker>(programID);
 		if (mUniformLocationTracker_) {
