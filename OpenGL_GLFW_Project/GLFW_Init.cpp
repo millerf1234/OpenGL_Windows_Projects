@@ -73,7 +73,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
     //There are a handful of hints for GLFW that must be set before 'glfwInit()' 
     //is called. As of GLFW 3.3, the only hint that matters for non-MacOS-platforms 
     //this JoystickHatHint
-    glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE); //Treat joystick hats as separate from Joystick buttons
+    glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_TRUE); //Treat joystick hats as separate from Joystick buttons
 	
 
     fprintf(MSGLOG, "Initializing GLFW..."); 
@@ -333,7 +333,7 @@ void GLFW_Init::specifyWindowCallbackFunctions() {
 		glfwSetFramebufferSizeCallback(mWindow, WindowCallbackInternal::framebufferSizeCallback);
 		glfwSetWindowPosCallback(mWindow, WindowCallbackInternal::windowPositionCallback);
 
-		glfwSetWindowOpacity(mWindow, WINDOW_OPACITY);
+		glfwSetWindowOpacity(mWindow, INITIAL_WINDOW_OPACITY);
 
 		glfwSetDropCallback(mWindow, WindowCallbackInternal::filedropCallback);
 

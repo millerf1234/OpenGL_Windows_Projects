@@ -181,8 +181,8 @@ const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
 constexpr const float CAMERA_MAXIMUM_FOV = 3.14159f;
 constexpr const float CAMERA_MINIMUM_FOV = -3.14159f;
-constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
-constexpr const float CAMERA_Z_PLANE_FAR = 10.0f;
+constexpr const float CAMERA_Z_PLANE_NEAR = 0.5f;
+constexpr const float CAMERA_Z_PLANE_FAR = 1000.0f;
 
 constexpr const unsigned long long FRAMES_BETWEEN_PERFORMANCE_REPORT = 180ULL;
 
@@ -201,6 +201,7 @@ void AssetLoadingDemo::initialize() {
     frameTimeFreezeLastToggled = 0ull;
     frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
+    frameThatTimePropogationWasLastReversed = 0ULL;
     framePerformanceReportingLastToggled = 0ULL;
 
     counter = 0.0f;
@@ -340,7 +341,7 @@ void AssetLoadingDemo::loadAssets() {
 void AssetLoadingDemo::loadShaders() { 
 	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
-#define USE_RUBYMINE
+//#define USE_RUBYMINE
 #ifdef USE_RUBYMINE
 	/////////////////////////
 	////    RubyMine Shader   (from the internet)
@@ -482,10 +483,32 @@ void AssetLoadingDemo::loadModels() {
 	//                             Load one or more models                                     //  
     ///////////////////////////////////////////////////////////////////////////////////////////// 
 
+
+
     /////////////////////
     //  TEST!
     /////////////
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Test01_Pos.obj", 1.0f));  //Single triangle test file
+
+
+
+    /////////////////////
+    //  World Meshes
+    /////////////
+    std::string worldMeshName;
+    
+    //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
+    //Primitives Inside The Cube To Keep Things Interesting.
+    //worldMeshName = "DemoSceneInsideABox00.obj";
+
+    //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
+    //Intersecting A Plane Horizontally Through The Middle
+    worldMeshName = "SimpleSkyDome_ReExport.obj";
+
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+
+
 
     /////////////////////
     //  Well-Behaved models
@@ -635,6 +658,8 @@ void AssetLoadingDemo::renderLoop() {
         changeZoom();
         translate();
 
+        //Even more input checking 
+        readJoystick0State_AssumingXInput_AndThenProcessAllInput();
 
 
         ////////////////////////
@@ -755,26 +780,18 @@ inline bool AssetLoadingDemo::checkIfShouldReset() const noexcept {
 
 inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
 	if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS) {
-			return true;
-		}
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS)
+            return true;
 	}
 	return false;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldReverseDirectionOfTime() const noexcept {
-    static bool keyWasPressedOnPreviousFrame = false;
-
-    if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) {
-        if (!keyWasPressedOnPreviousFrame) {
-            keyWasPressedOnPreviousFrame = true; //setup for the next frame
+   
+    if ((frameNumber - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) 
             return true;
-        }
     }
-
-    else
-        keyWasPressedOnPreviousFrame = false;
-
     return false;
 }
 
@@ -878,11 +895,12 @@ void AssetLoadingDemo::reset() noexcept {
 	frameTimeFreezeLastToggled = 0ull;
 	frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
+    frameThatTimePropogationWasLastReversed = 0ULL;
     framePerformanceReportingLastToggled = 0ULL;
 	zoom = 1.0f;
-	if (drawMultipleInstances) {
+	if (drawMultipleInstances) 
 		instanceCount = STARTING_INSTANCE_COUNT;
-	}
+	
     
     recomputeProjectionMatrix();
 }
@@ -891,15 +909,16 @@ void AssetLoadingDemo::toggleTimeFreeze() noexcept {
 	//Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
 	frameTimeFreezeLastToggled = frameNumber;
 	freezeTimeToggle = !freezeTimeToggle;
-	if (freezeTimeToggle) {
+	if (freezeTimeToggle) 
 		fprintf(MSGLOG, "Time Frozen!\n");
-	}
-	else {
+	
+	else 
 		fprintf(MSGLOG, "Time Unfrozen!\n");
-	}
+	
 }
 
 void AssetLoadingDemo::reverseTime() noexcept {
+    frameThatTimePropogationWasLastReversed = frameNumber;
     reverseTimePropogation = !reverseTimePropogation;
     fprintf(MSGLOG, "Time is now propagating %s\n",
         reverseTimePropogation ? "Backwards" : "Forwards");
@@ -1008,6 +1027,11 @@ void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
         screenHeight = static_cast<float>(height);
     }
 
+    //Safety first [Prevent a divide by zero]
+    if (fabsf(screenWidth) < 0.000001f)
+        return;
+    if (fabsf(screenHeight) < 0.000001f)
+        return;
 
     //Compute the screen -projection matrix
     //perspective = glm::mat4(1.0f); //Set projection matrix to 4x4 identity
@@ -1056,8 +1080,8 @@ void AssetLoadingDemo::changePrimitiveType() noexcept {
 }
 
 void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
-	//Only allow toggling to happen every 11 frames
-	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > 11ull) {
+
+	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
 			frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
 			drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
@@ -1421,6 +1445,126 @@ void AssetLoadingDemo::propagateTime() noexcept {
         ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}
+
+void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput() {
+    if (glfwJoystickPresent(0)) {
+        if (glfwJoystickIsGamepad(0)) {
+            GLFWgamepadstate gamepadInput;
+            if (!glfwGetGamepadState(0, &gamepadInput)) {
+                //assert(false); //Please plug in only xinput gamepads for now 
+                return;
+            }
+            
+            //Debug
+            //float val = gamepadInput.axes[4];
+            //if ((val > -1.0f) && (val < 0.0f))
+            //    fprintf(MSGLOG, "\nIT IS NEGATIVE!\n");
+            
+            constexpr float HEAD_SPEED = 0.05f;
+            constexpr float ROLL_SPEED = 0.05f;
+            constexpr float PITCH_SPEED = 0.05f;
+
+            //Read head and pitch from axes 2 and 3 (which are x-y directions of right thumbstick)
+            if (!(fabsf(gamepadInput.axes[2]) <= 0.08f)) {
+                head += gamepadInput.axes[2] * HEAD_SPEED;
+            }
+            if (!(fabsf(gamepadInput.axes[3]) <= 0.08f)) {
+                pitch += gamepadInput.axes[3] * PITCH_SPEED;
+            }
+
+            roll += (((gamepadInput.axes[4] + 1.0f) / 2.0f) * ROLL_SPEED);
+            roll -= (((gamepadInput.axes[5] + 1.0f) / 2.0f) * ROLL_SPEED);
+
+
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]) {
+                zoom -= 0.05f; //Zoom 
+            }
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN]) {
+                zoom += 0.05f;
+            }
+
+            //Only do d-pad left/right input if drawing instanced
+            if (drawMultipleInstances) {
+                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]) {
+                    instanceCount++;
+                }
+                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]) {
+                    instanceCount--;
+                    if (instanceCount < 1)
+                        instanceCount = 1;
+                }
+            }
+
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {
+                fov = fov * 0.99f;
+                //fprintf(MSGLOG, "\nFOV WAS UPDATED YALL! IT NOW IS A-BEING %f\n", fov);
+            }
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]) {
+                fov = fov * 1.01f;
+            }
+
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_BACK]) {
+                reset();
+            }
+
+            recomputeProjectionMatrix();
+
+
+            /////////////////////////////////////
+            //Process the A, B, X, Y buttons
+            /////////////////////////////////////
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_A])
+                toggleBlending();
+
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_B]) {
+                if ((frameNumber - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
+                    reverseTime();
+            }
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_X]) {
+                if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
+                    toggleTimeFreeze();
+            }
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
+                if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+                    frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
+                    drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
+                    fprintf(MSGLOG, "Instanced Rendering set to: %s",
+                        (drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
+                }
+            }
+
+
+            //If Input Button Combo
+                //Then Recompile Shaders? [This would save time versus reimplementing entire shader class collection]
+
+
+
+        }
+        else {
+            int buttons;
+            const unsigned char* buttonStates = glfwGetJoystickButtons(0, &buttons);
+            if (buttons > 0) {
+                for (int i = 0; i < buttons; i++) {
+
+                    //   if (buttonStates[i] == GLFW_PRESS)
+                          // stateMsg << "PRESSED";
+                     //  else
+                     //     // stateMsg << "RELEASED";
+                     //  if ((i % 2) == 0)
+                          // stateMsg << "\t\t";
+                     //  else
+                         //  stateMsg << "\n";
+                }
+                //if ((buttons % 2) == 0)
+                   // stateMsg << "\n";
+
+            }
+        }
+    }
+
+
+
 }
 
 

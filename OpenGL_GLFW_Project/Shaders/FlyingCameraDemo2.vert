@@ -314,11 +314,11 @@ void main() {
 
     vec4 positionInScreenSpace = MVP * positionInWorldMesh;
 
-    vec2 cel3D = 0.045*cellular(positionInScreenSpace.xyz);
-    vec2 cel2x2x2 = 0.05*cellular2x2x2(positionInScreenSpace.xyz);
+    vec2 cel3D = float(gl_InstanceID+1)*0.245*cellular(positionInScreenSpace.xyz);
+    vec2 cel2x2x2 = length(cel3D)*0.25*cellular2x2x2(positionInScreenSpace.xyz);
     vec2 normalCel3D = 0.1*cellular(VertNormal);
 
-    float instancedGrowth = pow(1.025, 1.0 + 0.25*float(gl_InstanceID));
+    float instancedGrowth = 3.0+pow(1.025, 1.0 + 0.25*float(gl_InstanceID));
 
     vec4 temp = positionInScreenSpace + vec4(cel3D + cel2x2x2 + normalCel3D, 0.0, 0.0)     // vec4(1500.0*sin(float(gl_InstanceID)), 0.0, 0.0, 0.0)+ 1.19*exp(float(gl_InstanceID + gl_VertexID + 2))*vec4(1.0 + (0.1 * float(gl_InstanceID)))+cellular(50.0*cos(25.0+time)*positionInScreenSpace.xyz), 0.0*float(gl_InstanceID+1)*sin(gl_InstanceID + time), 0.0)
     + vec4(instancedGrowth*cosinePartialSummation(float(gl_InstanceID) * (time + float(gl_InstanceID)), 16, 3.2578), instancedGrowth*cosinePartialSummation(time + gl_InstanceID + 3.141/2.0, 18, 3.476), 0.0, zoom + 1.0);

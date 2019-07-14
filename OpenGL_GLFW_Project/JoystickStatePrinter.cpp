@@ -112,7 +112,7 @@ void JoystickStatePrinter::reaquireDefaultState() {
 		BaseJoyState joyStateBackup = mDefaultState_;
 
 		mHasDefaultState_ = false; //Temporarily fake object not having a set default state
-		recordNewlyConnectedJoystickState(); //Try to aquire a default state
+		recordNewlyConnectedJoystickState(); //Try to acquire a default state
 
 		if (!mHasDefaultState_) { //If something went wrong
             //Revert to stored backup 
@@ -125,7 +125,7 @@ void JoystickStatePrinter::reaquireDefaultState() {
 void JoystickStatePrinter::recordNewlyConnectedJoystickState() {
 	if (mHasDefaultState_) { return; } //If a default state is already recorded, then return
 
-	//Confirm that there is a joystick availble
+	//Confirm that there is a joystick available
 	if (!glfwJoystickPresent(mID_)) { return; } 
 
 	clearPreviouslyStoredDefaultState(); 
@@ -168,7 +168,7 @@ std::string JoystickStatePrinter::buildStateString() {
 	if (mPrintedDisconnectMessage_) { return ""; }  //No need to print a message repeatedly for a disconnected joystick
 
 	//If we are connected but don't have a name currently, that must be fixed by 
-	//aquiring a name for our newly connected Joystick
+	//acquiring a name for our newly connected Joystick
 	if (joystickPresent && !mHasName_) {
 		mName_ = glfwGetJoystickName(mID_);
 		mHasName_ = true;
@@ -258,7 +258,7 @@ void JoystickStatePrinter::buildFullStateMessage(std::stringstream& stateMsg) {
 		int buttons;
 		const unsigned char* buttonStates = glfwGetJoystickButtons(mID_, &buttons);
 		if (buttons > 0) {
-			stateMsg << "\nJoystick has " << buttons << " buttons available for querrying\n";
+			stateMsg << "\nJoystick has " << buttons << " buttons available for querying\n";
 			for (int i = 0; i < buttons; i++) {
 				stateMsg << "Button[" << i << "] is ";
 				if (buttonStates[i] == GLFW_PRESS)
@@ -284,12 +284,12 @@ void JoystickStatePrinter::buildFullStateMessage(std::stringstream& stateMsg) {
 		const unsigned char* hatStates = glfwGetJoystickHats(mID_, &hats);
 		if (hats > 0) {
 			if (hats == 1) {
-				stateMsg << "Joystick has 1 'hat' input available for querrying\n";
+				stateMsg << "Joystick has 1 'hat' input available for querying\n";
 				stateMsg << "Hat is currently in state: ";
 				stateMsg << convertHatInputToText(hatStates[0]);
 			}
 			else {
-				stateMsg << "Joystick has %d hats available for querrying\n";
+				stateMsg << "Joystick has %d hats available for querying\n";
 
 				for (int i = 0; i < hats; i++) {
 					stateMsg << "Hat[" << i << "] has state " << convertHatInputToText(hatStates[i]);
@@ -319,7 +319,7 @@ void JoystickStatePrinter::buildDetectedInputsMessage(std::stringstream& stateMs
 	}
 
 	if (!mHasDefaultState_) { //If there still isn't any default state
-		stateMsg << "\nERROR! Unable to aquire a default state for joystick!\n";
+		stateMsg << "\nERROR! Unable to acquire a default state for joystick!\n";
 		return;
 	}
 
@@ -386,7 +386,14 @@ void JoystickStatePrinter::buildDetectedInputsMessage(std::stringstream& stateMs
 		buttonStates = glfwGetJoystickButtons(mID_, &(mDefaultState_.numButtons));
 	}
 	int pressedButtonCounter = 0;
-	
+
+    ////For debug
+    //std::vector<unsigned char> buttonStatesViewable;
+    //for (int i = 0; i < mDefaultState_.numButtons; i++) {
+    //    buttonStatesViewable.push_back(buttonStates[i]);
+    //}
+    ////End debug part
+
 	for (int i = 0; i < mDefaultState_.numButtons; i++) {
 		if (buttonStates[i] == GLFW_PRESS) {
 			buttonWasPrinted = true;

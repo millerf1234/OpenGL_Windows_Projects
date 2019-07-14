@@ -104,7 +104,7 @@ vec3 psrdnoise(vec2 pos, vec2 per, float rot);
 void main() { 
 
 
-#define EFFECT_TO_DO 6
+#define EFFECT_TO_DO 0
 
 //NO EFFECT SELECTED
 #ifndef EFFECT_TO_DO
@@ -113,20 +113,21 @@ void main() {
 
 //EFFECT 0 SELECTED
 #elif (EFFECT_TO_DO <= 0)
-    vec4 color1 = vec4(smoothstep(vec3(-1.0, -1.0, -1.0), vec3(1.0, 1.0, 1.0), shaded_vertex.normal),
-                       0.745); 
-    vec4 color2 = vec4(0.75 + 0.25*sin(sinePartialSummation(time, 23, 0.1)),    //r
-                     0.5 + length(shaded_vertex.position),                      //g
+    vec4 color1 = vec4(smoothstep(vec3(0.0, -2.0, 0.0), vec3(2.0, 0.2, 2.0), shaded_vertex.normal),
+                       0.75+0.25*cos(shaded_vertex.vertexID + time)); 
+    vec4 color2 = vec4(0.75 + 0.25*sin(sinePartialSummation(time, 23, 2.1)),    //r
+                     0.2 + length(shaded_vertex.position) * sinePartialSummation(time + shaded_vertex.normal.x, 3, 4.0),                      //g
                      cos(length(shaded_vertex.position)),                       //b
                      0.35);                                                     //a
-    vec4 color3 = 3.0*noise4(time);
+    vec4 color3 = vec4(0.275, 0.0245, 0.056, 0.8);//3.0*noise4(time);
 
     fragColor = mix(
                    mix(color1, color2, 0.5 + 0.35*sin(time + shaded_vertex.instanceID)),
-                   color3, 0.5 + 1.3 * sinePartialSummation(time + shaded_vertex.instanceID, 6, 0.5));
+                   color3, 0.5 + 0.3 * sinePartialSummation(time + shaded_vertex.instanceID, 6, 2.5));
 
-    if (fragColor.r < 0.3) 
-        fragColor.r += 1.35*(float(shaded_vertex.textureCoord.s + shaded_vertex.textureCoord.t) / 2.3);
+
+    if (fragColor.g > 0.3 + 0.45 * sinePartialSummation(time + shaded_vertex.position.y, 3, 3.0)) 
+        fragColor.b += 0.35*(float(shaded_vertex.textureCoord.s + shaded_vertex.textureCoord.t) / 2.3);
 
     if (abs(fragColor.g - fragColor.b) > (1.0 + 0.1*sin(time)*fragColor.r))
         fragColor.rgb = fragColor.rbg;
@@ -136,7 +137,7 @@ void main() {
 
     if (abs(dot(shaded_vertex.pretransform_normal, vec3(0.0, 0.0, 1.0))) < 0.0005)
        fragColor = vec4(0.68, 0.125, 0.985, 0.75 - 0.005*shaded_vertex.instanceID);
-
+       
 
     //if (length(fragColor.rgb) > length(vec3(0.9)))
     //    fragColor.rgb *= 0.5;
@@ -177,15 +178,16 @@ void main() {
 
 
 #elif (EFFECT_TO_DO == 3)
-    float noiseVal = snoise(vec3(sinePartialSummation(time + 0.014*shaded_vertex.instanceID, 99, max(2.25, 8.25 + gl_FragCoord.x + gl_FragCoord.y))));
-    vec3 color = vec3(abs(noiseVal + shaded_vertex.vertexID * 3.14 / 87.1), abs(cos(3.14*noiseVal)), 0.5 + 0.5*cos(time - noiseVal));
-    fragColor = vec4(color, 0.85 - 0.01*shaded_vertex.instanceID);
+    //float noiseVal = snoise(vec3(sinePartialSummation(time + 0.014*shaded_vertex.instanceID, 99, max(2.25, 8.25 + gl_FragCoord.x + gl_FragCoord.y))));
+    //vec3 color = vec3(abs(noiseVal + shaded_vertex.vertexID * 3.14 / 87.1), abs(cos(3.14*noiseVal)), 0.5 + 0.5*cos(time - noiseVal));
+    //fragColor = vec4(color, 0.85 - 0.01*shaded_vertex.instanceID);
 
+    fragColor = vec4(abs(sin(time*5.0*gl_FragCoord.x)), abs(sin(time*35.0*gl_FragCoord.y)), abs(cos(time*gl_FragCoord.x + gl_FragCoord.y)), 0.35); 
 
 //Effect 4 SELECTED
 #elif (EFFECT_TO_DO == 4)
     vec4 noise = noise4(shaded_vertex.position);
-    fragColor = vec4(0.75, 0.65, 0.55, 1.0);
+    fragColor = vec4(0.75, 0.65 + 0.36*cos(time+gl_FragCoord.x+gl_FragCoord.y), 0.55, 0.261) + noise;
     
 //Effect 5 SELECTED
 #elif (EFFECT_TO_DO == 5)
@@ -200,7 +202,13 @@ void main() {
 
     fragColor = mix(color1, color2, f);
 
-    #elif (EFFECT_TO_DO >= 6) 
+    #elif (EFFECT_TO_DO == 6 || EFFECT_TO_DO == 7)
+    fragColor = vec4( dot(shaded_vertex.normal, vec3(0.0, -1.0, 12.5))*sinePartialSummation(gl_FragCoord.x, 15, 200.5), 
+                     dot(shaded_vertex.normal, vec3(0.0, 6.0, 2.5))*cosinePartialSummation(gl_FragCoord.y, 15, 200.5),
+                     sinePartialSummation(gl_FragCoord.x * gl_FragCoord.y + time, 4, 2.76),
+                     0.29);
+
+    #elif (EFFECT_TO_DO >= 8) 
     const vec4 color1 = vec4(0.9, 0.4, 0.19, 0.5);
     const vec4 color2 = vec4(0.5, 0.6, 0.9, 0.85);
     const vec3 lightPosition = vec3(10.0 * cos(time), 8.0 * sin(time), sinePartialSummation(0.05*time, 8, 2.0));

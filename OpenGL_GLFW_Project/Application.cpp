@@ -5,6 +5,7 @@
 //Date:                 July - November(and beyond) 2018
 
 #include <thread>
+#include <cstddef> //NOTE: Might not be necessary anymore to include <cstddef>
 
 #include "Application.h"
 
@@ -17,12 +18,19 @@
 #include "AssetLoadingDemo.h"
 #include "FlyingCameraDemo.h"
 
+//This macro is for providing conditional debug message reports. 
+//Functionality is implemented as a macro (rather than as a function)
+//to allow complete replacement with a no-op when functionality is disabled
+#define PRINTDEBUGMESSAGE(x, ...)
+
 void Application::initialize() {
 	mApplicationValid = true;
 	initReport = nullptr;
 	glfwInitializer = nullptr;
 
     if constexpr (USE_DEBUG) {
+        fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
+        //fprintf(MSGLOG, "[DEBUG:    C Implementation Allows For Analyzability: %s\n", __STDC_ANALYZABLE__ ? "TRUE" : "FALSE");
         auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
         threadIDString << "[DEBUG: Application Operating On Thread: 0x" << std::hex << threadID;
@@ -67,7 +75,7 @@ void Application::initialize() {
 }
 
 
-Application::Application() {
+Application::Application() noexcept {
     try {
         initialize();
         if (!mApplicationValid) {
@@ -76,13 +84,24 @@ Application::Application() {
         }
     }
     catch (const std::system_error& e) {
-            fprintf(stderr, "\nCaught a system error exception:\n\t%s\n", e.what());
-            fprintf(stderr, "\n\n  [Well this is kinda awkward... For once it appears\n"
+            fprintf(ERRLOG, "\nCaught a system error exception:\n\t%s\n", e.what());
+            fprintf(ERRLOG, "\n\n  [Well this is kinda awkward... For once it appears\n"
                 "   as though the reason for crashing is not due to poor\n"
                 "   work by the Application programmer but in fact a system\n"
                 "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
                 "   [Even if you are running this on Linux].\n");
     }
+    catch (const std::exception& e) {
+        fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! Exception Encountered!\n"
+            "EXCEPTION MSG: %s\n\n", e.what());
+        assert(false);
+    }
+
+    catch (...) {
+        fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
+        assert(false);
+    }
+
 }
 
 
@@ -109,13 +128,13 @@ void Application::launch() {
 
         //fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
 
-        fprintf(MSGLOG, "\nSelected FlyingCameraDemo.\n");
-        runFlyingCameraDemo();
-        return;
-
-        //fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
-        //runAssetLoadingDemo();
+        //fprintf(MSGLOG, "\nSelected FlyingCameraDemo.\n");
+        //runFlyingCameraDemo();
         //return;
+
+        fprintf(MSGLOG, "\nSelected AssetLoadingDemo.\n");
+        runAssetLoadingDemo();
+        return;
 
         //fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
         //runLightsourceTestDemo();

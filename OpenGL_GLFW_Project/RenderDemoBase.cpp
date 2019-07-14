@@ -10,7 +10,7 @@ RenderDemoBase::RenderDemoBase() {
 	mainRenderWindow = nullptr;
 	mJoystickStatePrintingEnabled_ = false;
 	mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
-    mWindowOpaqueness_ = WINDOW_OPACITY;
+    mWindowOpaqueness_ = INITIAL_WINDOW_OPACITY;
     counter = 0.0f; //Time starts at 0 in each RenderDemo
 }
 

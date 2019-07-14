@@ -96,6 +96,7 @@ protected: //private:
     unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
         frameDepthClampLastToggled;
+    unsigned long long frameThatTimePropogationWasLastReversed;
     mutable unsigned long long framePerformanceReportingLastToggled;
 
 	glm::vec3 backgroundColor;
@@ -175,13 +176,6 @@ protected: //private:
 	//    The Render Loop Consists of the following series of steps    //
 	//-----------------------------------------------------------------//
 
-    //  [0]  timing functions  
-   // void recordLoopStartTimepoint() noexcept;
-   // void recordRenderStartTimepoint() noexcept;
-   // void recordPrepareGLContextForNextFrameTimepoint() noexcept;
-
-
-
 	/*							+~~~~~~~~~~~~~~~~~~~~~~~~~~+
 								|   (1)  Input Detection   |
 								+~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
@@ -231,6 +225,7 @@ protected: //private:
     void reportStatistics() noexcept;
     void propagateTime() noexcept;
 
+    void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
 
 
 

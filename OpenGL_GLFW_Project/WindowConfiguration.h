@@ -20,7 +20,7 @@ static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of a
 //is different from running the Application in Windowed-Fullscreen mode. Windowed-Fullscreen
 //mode simply has the Application run with whatever configuration the Operating System is
 //using, which allows for quicker switching between this Application and other open windows.
-static constexpr const bool USE_FULLSCREEN = false;
+static constexpr const bool USE_FULLSCREEN = true;
 
 
 //Pretty much always want this to be true 
@@ -28,7 +28,7 @@ static constexpr const bool DOUBLE_BUFFERING = true;
 
 //Should be a value between 0.0f and 1.0f, with 0.0f representing
 //full transparency and 1.0f representing complete opaqueness. 
-static constexpr const float WINDOW_OPACITY = 1.0f; 
+static constexpr const float INITIAL_WINDOW_OPACITY = 1.0f; 
 
 //Probably want this on unless going for a benchmark/stress-test run
 static constexpr const bool USE_VSYNC = true;

@@ -53,6 +53,7 @@ void FlyingCameraDemo::updateRenderDemoSpecificUniforms() noexcept {
 
 void FlyingCameraDemo::createCamera() noexcept {
     //todo
+    //yeah
 }
 
 void FlyingCameraDemo::loadFlyingCameraDemoShaders() noexcept {
@@ -156,7 +157,7 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
     //modelName = "box_cutter.obj";
     modelName2 = "Spaceship.obj";
 
-    //modelName = "CargoSpaceshipIdeaThing02.obj";
+    //modelName2 = "CargoSpaceshipIdeaThing02.obj";
 
 #if 0 
     for (int i = 0; i < 35; i++) {
@@ -194,12 +195,17 @@ void FlyingCameraDemo::loadFlyingCameraDemoWorldMesh() noexcept {
             break;
         }
 #else
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName, 1.0));
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName2, 1.0));
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName, 1.0f));
+       // sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + modelName2, 1.0f));
+        
+       
+
 #endif 
 #if 0 
     }
 #endif 
+sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + "BlockshipSampleExports//BlockShipSample_01_3DCoatExport01.obj", 1.0f));
+//sceneObjects.emplace_back(std::make_unique<QuickObj>(filepathToModels + "Spaceship.obj", 2.0f));
     //Report to console how many models were loaded
     const size_t loadedModlCount = sceneObjects.size();
     if (loadedModlCount == 0u)
