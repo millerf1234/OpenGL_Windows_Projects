@@ -23,8 +23,8 @@ fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"           
     "exception! This is the stuff you only read about\n"                         \
     "these days in textbooks! Perhaps you should restart\n"                      \
     "your computer, but congratualtions on the\n"                                \
-    "new story you have for your grandkids.\n"                                   \
-    "\n[Here is the obligatory exception message]\n\t%s\n\n",                    \
+    "new story you have for your grandchildren.\n"                               \
+    "\n\t[Here is the obligatory exception message]\n\t%s\n\n",                  \
     e.what());                                                                   \
 } 
 
@@ -33,7 +33,7 @@ fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"           
 
 
 
-int main(int argc, char ** argv) {
+int main(int argc, char * argv[]) {
     SAFETY
 	std::unique_ptr<Application> app = std::make_unique<Application>(); 
 	app->launch();

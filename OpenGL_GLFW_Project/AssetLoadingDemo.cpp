@@ -341,33 +341,27 @@ void AssetLoadingDemo::loadAssets() {
 void AssetLoadingDemo::loadShaders() { 
 	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
+    fprintf(MSGLOG, "\nInitializing Shaders!\n");
+
+    sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
+
+
+
+
+
 //#define USE_RUBYMINE
+
 #ifdef USE_RUBYMINE
 	/////////////////////////
 	////    RubyMine Shader   (from the internet)
 	/////////////////////////
-	fprintf(MSGLOG, "\nInitializing Shaders!\n");
-
-	sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 	
     //Attach the main shader stages to the sceneShader
 	sceneShader->attachVert(shadersRFP + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
 	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
 	sceneShader->attachFrag(shadersRFP + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
 	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
-	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
-	sceneShader->link();
-	if (sceneShader->checkIfLinked()) {
-		fprintf(MSGLOG, "Program Successfully linked!\n");
-		return;
-	}
-	else {
-		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
-		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-		std::cin.get(); //Hold the mainRenderWindow open if there was an error
-		markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
-		return;
-	}
+	
 
 
 #else 
@@ -375,9 +369,6 @@ void AssetLoadingDemo::loadShaders() {
 	/////////////////////////
 	////    Normal Shader
 	/////////////////////////
-	fprintf(MSGLOG, "\nInitializing Shaders!\n");
-
-	sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
 	//Attach the main shader stages to the sceneShader
 	sceneShader->attachVert(shadersRFP + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
@@ -402,23 +393,36 @@ void AssetLoadingDemo::loadShaders() {
 	shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
     ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
-	//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
-	sceneShader->link();
-	if (sceneShader->checkIfLinked()) {
-		fprintf(MSGLOG, "Program Successfully linked!\n");
-	}
-	else {
-		fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+#endif //ifdef USE_RUBYMINE or NORMAL
+
+
+    //Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
+    sceneShader->link();
+    if (sceneShader->checkIfLinked()) {
+        fprintf(MSGLOG, "Program Successfully linked!\n");
+    }
+    else {
+        //Hide the window so user can see error message about shader
+        GLFWwindow* applicationWindow = glfwGetCurrentContext();
+        if (applicationWindow)
+            glfwIconifyWindow(applicationWindow);
+
+        fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
         //This next line is to give the user false hope
-		fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-		std::cin.get(); //Hold the mainRenderWindow open if there was an error
-		markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
-		return;
-	}
+        fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+        std::cin.get(); //Hold the mainRenderWindow open if there was an error
+        markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
+
+        //Return Window from Iconification?
+        if (applicationWindow)
+            glfwRestoreWindow(applicationWindow);
+
+        return;
+    }
 
 
-	fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
-#endif //ifdef USE_RUBYMINE
+    fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
+
 }
 
 
@@ -495,15 +499,15 @@ void AssetLoadingDemo::loadModels() {
     /////////////////////
     //  World Meshes
     /////////////
-    std::string worldMeshName;
+    std::string worldMeshName("");
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    //worldMeshName = "DemoSceneInsideABox00.obj";
+    worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    worldMeshName = "SimpleSkyDome_ReExport.obj";
+    //worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));

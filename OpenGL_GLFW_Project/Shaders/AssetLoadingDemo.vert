@@ -1,23 +1,64 @@
 //Vertex Shader 
 
-
 #version 450 core
 
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////      HOW TO USE    /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Define One Of the Following Shaders To Use It
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//#define BASIC_VERT
+//#define UNDERWATER_EFFECT_OF_SORTS
+//#define VOLATILE_SURFACE
+#define INSTANCED_CIRCLE_VERT
+#define EXTRA_ROTATION_PER_INSTANCE_VERT
+#define COOL_VERT
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Modify the following to affect overall behavior
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//Determines how many unique VertexID values will be possible 
+//for effects that have a repeating per-vertex pattern
+#define VERTEX_ID_MOD_VALUE 46   
+
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////       End Of Configuration       ///////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+//The next 50 lines or so are just boilerplate
+
+//What the input data looks like
 layout(location = 0) in vec4 ModelPosition;
 layout(location = 1) in vec2 ModelTexCoord;
 layout(location = 2) in vec3 ModelNormal;
 
-out vec4 position;
-out vec2 texCoord;
-out vec3 normal;
+//What our Vertex Shader output should look like 
+//(this struct represents a single vertex)
+out VERTEX_SHADER_OUTPUT {  
+    float vertID;
+    float vertIDMod;
+    float instanceID;
+    vec4 position;
+    vec2 texCoord;
+    vec3 normal;
+} processed_vertex;
 
+
+//Some parameters that are passed in by the Application
 uniform float zoom;
 uniform float time;
 uniform mat4 rotation;
 uniform mat4 MVP;
 
 
-#define vert float(gl_VertexID)
+#define vert float(1+gl_VertexID)
+#define vertMod float(getVertIDMod(gl_VertexID))
 #define inst float(gl_InstanceID+1)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -32,60 +73,106 @@ float fbm(vec2 x);             //2d Fractal Brownian Motion
 float fbm(vec3 x);             //3d Fractal Brownian Motion
 
 
-#define BASIC_VERT
-#define UNDERWATER_EFFECT_OF_SORTS
-#define VOLATILE_SURFACE
-#define INSTANCED_CIRCLE_VERT
-#define EXTRA_ROTATION_PER_INSTANCE_VERT
-#define COOL_VERT
+////////////////////////////////////////////////////////////////////////////
+////  Local Functions Implementing Shared Functionality Between Shaders
+////////////////////////////////////////////////////////////////////////////
+
+// Computes the VertexIDMod value
+int getVertIDMod(in int vertexID) {
+    return (vertexID % int(VERTEX_ID_MOD_VALUE)) + 1;
+}
+
 
 
 #if defined BASIC_VERT
 
 void main() {
-	normal = mat3(rotation) * ModelNormal;
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
 
-	position = ModelPosition + vec4(0.0, inst, 0.0, zoom);
+	processed_vertex.normal = mat3(rotation) * ModelNormal;
 
-	gl_Position = MVP * position;
+	processed_vertex.position = ModelPosition + vec4(0.0, inst, 0.0, zoom);
+
+	gl_Position = MVP * processed_vertex.position;
 }
 
 #elif defined UNDERWATER_EFFECT_OF_SORTS
 void main() {
-	normal = mat3(rotation) * ModelNormal;
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
+    processed_vertex.normal = mat3(rotation) * ModelNormal;
+                                                                                    
+    processed_vertex.position = ModelPosition + smoothstep(vec4(0.0),
+                                                           vec4(110.0 *sin(0.3 * 0.5*3.14159 * time + 1.9*inst), 5.0 *cos(0.5*3.14159 * time + 1.5*inst), 0.0, zoom),
+                                                           ModelPosition);
 
-	position = ModelPosition + vec4(7.0 *sin(0.3 * 0.5*3.14159 * time + 1.9*inst), 5.0 *cos(0.5*3.14159 * time + 1.5*inst), 0.0, zoom);
 
 
+    gl_Position = MVP * processed_vertex.position;
 
-	gl_Position = MVP * position;
-
-	gl_Position.xy *= 1.0 + abs(0.2*cnoise(0.124*gl_Position));
-
+    gl_Position.xy *= 1.5 + abs(
+                                0.45*cnoise(
+                                            0.124*gl_Position + vec4(
+                                                                     sin(
+                                                                         vertMod+time
+                                                                         ),
+                                                                     cos(
+                                                                         sin(
+                                                                             -vertMod+time
+                                                                             )
+                                                                         ),
+                                                                     cos(
+                                                                         cos(
+                                                                             inst+vertMod
+                                                                             )
+                                                                         ),
+                                                                     zoom
+                                                                     )
+                                           )
+                               );
+                                
 }
 
 
-#elif define VOLATILE_SURFACE
+#elif defined VOLATILE_SURFACE
 void main() {
-	normal = mat3(rotation) * ModelNormal;
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
 
-	position = (MVP * (ModelPosition + (vec4(0.0, 0.0, 0.0, zoom))) + (vec4(floor((inst+4.0) / 5.0) * cos(6.28 / 5.0 * inst + vert*time), floor((inst + 4.0) / 5.0) * sin(6.28 / 5.0 * inst), 0.0, 0.0)));
-	gl_Position = position;
+	processed_vertex.normal = mat3(rotation) * ModelNormal;
+
+	processed_vertex.position = (MVP * (ModelPosition + (vec4(0.0, 0.0, 0.0, 2.5*zoom))) + (vec4(floor((inst+4.0) / 5.0) * cos(6.28 / 5.0 * inst + vert*time), floor((inst + 4.0) / 5.0) * sin(6.28 / 5.0 * inst), 0.0, 0.0)));
+	gl_Position = processed_vertex.position;
 }
 
 #elif defined INSTANCED_CIRCLE_VERT
 void main() {
-	normal = mat3(rotation) * ModelNormal;
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
 
-	//texCoord = ModelTexCoord;
+	processed_vertex.normal = mat3(rotation) * ModelNormal;
+
 
 	//Step value (for second step function) determined through experimentation
-	position = MVP * (rotation * ModelPosition + vec4(0., 0., 0., zoom)) + step(-inst, -0.1) * vec4(15.0*cos(inst), 25.0*sin(inst), 0., 0.0) + step(-inst, -711.01) * vec4(45.0*cos(inst), 65.0*sin(inst), 0.0, 0.);
-	gl_Position = position;
+	processed_vertex.position = MVP * (rotation * ModelPosition + vec4(0., 0., 0., zoom)) + step(-inst, -0.1) * vec4(15.0*cos(inst), 25.0*sin(inst), 0., 0.0) + step(-inst, -711.01) * vec4(45.0*cos(inst), 65.0*sin(inst), 0.0, 0.);
+	gl_Position = processed_vertex.position;
 }
 
 #elif defined EXTRA_ROTATION_PER_INSTANCE_VERT
 void main() {
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
 
 	float flip = -1.0;
 	float flipper = -1.0;
@@ -118,6 +205,34 @@ void main() {
 
 #elif defined COOL_VERT
 void main() {
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
+
+
+
+	float cool = (sin(1.24*(time / (0.2*inst + 1) - (0.009*vert))));
+	cool *= step(0.257, abs(cool));
+	position = ModelPosition + vec4(3.0*cos(inst + cool), (1.0 - inst) / cool, (0.5*inst) / cool, zoom);
+
+
+
+	//Normally a separate matrix is needed for transforming the normal vectors.
+	// However this has not yet been implemented...
+	normal = mat3(rotation) * ModelNormal;
+
+
+	gl_Position = (MVP * position);
+}
+
+#else 
+ void main() {
+    processed_vertex.vertID = vert;
+    processed_vertex.vertIDMod = vertMod;
+    processed_vertex.instanceID = inst;
+    processed_vertex.texCoord = ModelTexCoord;
+
 
 	float cool = (sin(1.24*(time / (0.2*inst + 1) - (0.009*vert))));
 	cool *= step(0.257, abs(cool));
@@ -126,12 +241,13 @@ void main() {
 
 	texCoord = ModelTexCoord;
 
-	//Normally a seperate matrix is needed for transforming the normal vectors.
+	//Normally a separate matrix is needed for transforming the normal vectors.
 	// However this has not yet been implemented...
 	normal = mat3(rotation) * ModelNormal;
 
 
 	gl_Position = (MVP * position);
-}
+
+ }
 
 #endif

@@ -18,39 +18,75 @@
 #include "AssetLoadingDemo.h"
 #include "FlyingCameraDemo.h"
 
-//This macro is for providing conditional debug message reports. 
-//Functionality is implemented as a macro (rather than as a function)
-//to allow complete replacement with a no-op when functionality is disabled
-#define PRINTDEBUGMESSAGE(x, ...)
 
 void Application::initialize() {
 	mApplicationValid = true;
 	initReport = nullptr;
 	glfwInitializer = nullptr;
 
+
+    //If Application is built with macro USE_DEBUG_ defined, we will report more 
+    //details during start-up about the Runtime Environment's configuration and
+    //this Application's state.
     if constexpr (USE_DEBUG) {
-        fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
-        //fprintf(MSGLOG, "[DEBUG:    C Implementation Allows For Analyzability: %s\n", __STDC_ANALYZABLE__ ? "TRUE" : "FALSE");
+        //fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
+        
+        //Print the ID for this thread (the Application's main thread)
         auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
         threadIDString << "[DEBUG: Application Operating On Thread: 0x" << std::hex << threadID;
         threadIDString << "]";
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
+
     }
 
+
 	fprintf(MSGLOG, "Application is loading...\n");
-	if ( !setupGLFW() ) {
+
+    // STEP 1     INITIALIZE GLFW, Create an OpenGL Context and Acquire Our
+    //Application's Window 
+    if ( !setupGLFW() ) {
+        mApplicationValid = false;
+
 		fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
-		mApplicationValid = false;
 		return;
 	}
+    else {
+        //If GLFW initializes but then we fail later on in the initialization, 
+        //we run into a problem that the window we opened with GLFW may not want to relinquish focus
+        //back to the OS/Desktop (depending on how it is configured). To ensure the user is able to 
+        //see any potential error message, we manually ensure the Application's window relinquishes 
+        //its focus for now until we have reached the end of the Application's constructor.
+        GLFWwindow* currentWindow = glfwGetCurrentContext();
+        if (currentWindow) 
+            glfwIconifyWindow(currentWindow);
+        
+    }
+
+    // STEP 2      Once GLFW has been successfully initialized, move on to loading 
+    //             definitions for the GL function pointers. This is a really tedious
+    //             process that we luckily are able to defer to third party library 
+    //            'glad'. 
 	if ( !loadGraphicsLanguageFunctions() ) {
-		fprintf(ERRLOG, "\nThe application encountered an error while loading the graphics language!\n");
-		mApplicationValid = false;
-		return;
+        mApplicationValid = false;
+
+        fprintf(ERRLOG, "\n"
+            "The application encountered an error while loading the graphics language!\n"
+            "        (Please Ensure You Have An OpenGL %d.%d Compatible Graphics\n"
+            "               Driver Installed And Updated To Its Most Recent Version)\n\n"
+            "\t[Press ENTER to end the process]\n\n",
+            DEFAULT_OPENGL_VERSION_MAJOR,
+            DEFAULT_OPENGL_VERSION_MINOR);
+        std::cin.get();
+        return;
 	}
 
-	configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in "ProjectParameters.h"
+    //  Step 3        Once GLFW and glad have completed their required initialization procedures,
+    //                the Application performs a lot of it's own self-configuration now before it is
+    //                ready to return from its constructor. This configuration process involves setting
+    //                all of the necessary callback functions and setting the initial state of the 
+    //                OpenGL context.
+	configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in Header Files -> SetupAndConfiguration -> Modifiable -> DebugBehavior -> "DebugSettings.h"
 	setInitialGLState();
 
     //Check to see if GLFW supports Raw Mouse Motion Input
@@ -76,13 +112,20 @@ void Application::initialize() {
 
 
 Application::Application() noexcept {
+    
     try {
         initialize();
         if (!mApplicationValid) {
             fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
             std::cin.get(); //Need this on Windows to keep the terminal window open
         }
+        else { //Else we are successfully initialized and can restore the window
+            GLFWwindow* currentWindow = glfwGetCurrentContext();
+            if (currentWindow) 
+                glfwRestoreWindow(currentWindow);
+        }
     }
+
     catch (const std::system_error& e) {
             fprintf(ERRLOG, "\nCaught a system error exception:\n\t%s\n", e.what());
             fprintf(ERRLOG, "\n\n  [Well this is kinda awkward... For once it appears\n"
@@ -101,7 +144,6 @@ Application::Application() noexcept {
         fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
         assert(false);
     }
-
 }
 
 
@@ -153,6 +195,21 @@ void Application::launch() {
             "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
             "   [Even if you are running this on Linux].\n");
     }
+
+    catch (const std::exception& e) {
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t\t[In Application's \'run()\' function]\n"
+            "\n\t\tError! Exception Encountered!\n"
+            "EXCEPTION MSG: %s\n\n\n\n", e.what());
+        assert(false);
+    }
+
+
+    catch (...) {
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t\t[In Application's \'run()\' function]\n"
+            "\n\t\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n\n\n\n");
+        assert(false);
+    }
+
 }
 
 
@@ -185,17 +242,29 @@ bool Application::loadGraphicsLanguageFunctions() {
 		return false;
 	}
 
-	if (GLAD_GL_EXT_framebuffer_multisample) {
-		/* GL_EXT_framebuffer_multisample is supported */
-	}
-
-	fprintf(MSGLOG, "  Graphics Language loaded.\n");
-	fprintf(MSGLOG, "\tGraphics Language version: OpenGL %s\n", glGetString(GL_VERSION));
-	fprintf(MSGLOG, "\tGraphics Language Vendor:  %s\n", glGetString(GL_VENDOR));
-	fprintf(MSGLOG, "\tGraphics Rendering Device:    %s\n", glGetString(GL_RENDERER));
+    reportDetailsFromGLImplementation();
 
 	return true;
 }
+
+void Application::reportDetailsFromGLImplementation() {
+
+    //if (GLAD_GL_EXT_framebuffer_multisample) {
+    //	// GL_EXT_framebuffer_multisample is supported 
+    //}
+
+    fprintf(MSGLOG, "  Graphics Language loaded.\n");
+    fprintf(MSGLOG, "\tGraphics Language Version:         OpenGL %s\n",
+        glGetString(GL_VERSION));
+    fprintf(MSGLOG, "\tGraphics Shading Language Version: %s\n",
+        glGetString(GL_SHADING_LANGUAGE_VERSION));
+    fprintf(MSGLOG, "\tGraphics Language Vendor:          %s\n",
+        glGetString(GL_VENDOR));
+    fprintf(MSGLOG, "\tGraphics Rendering Device:         %s\n",
+        glGetString(GL_RENDERER));
+
+}
+
 
 void Application::configureGraphicsContextDebugCallbackFunctions() const {
 	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");

@@ -37,7 +37,7 @@ uniform float time;
 
 //Function to call for creating waveforms other than sine. The third parameter 'intervalSpacing'
 //should not be 0 and 
-float sinePartialSummation(float x, int intervalsToCompute, float intervalSpacing) {
+float sinePartialSummation(in float x, in int intervalsToCompute, in float intervalSpacing) {
     float summation = sin(x);
     for (int i = 1; i <= max(1, intervalsToCompute); i++) {
         summation += (1.0 / pow(intervalSpacing, i)) * sin( intervalSpacing * x);
