@@ -97,13 +97,15 @@ void main() {
     processed_vertex.texCoord = ModelTexCoord;
 	processed_vertex.normal = mat3(rotation) * ModelNormal;
 
-    const float instanceDistanceAmplitude = 5. + abs(log2(noiseAmpl * snoise(time*0.005*vec2(cross(vec3(ModelTexCoord, vertMod + inst), ModelNormal)))) * float(gl_InstanceID));
+    vec3 instanceDisplacement = vec3(0.0);
 
-    vec3 instanceDisplacementVector = vec3(0.0);
-    vec3 instanceDisplacement = instanceDistanceAmplitude * vec3(cos(1.75*(time / (0.1*pow(1.05,inst)))),
-                                                                 sin(1.25*(0.25*time / (0.1*pnoise(vec2(inst, exp(inst)), int(customParameter3))))),
-                                                                 0.0);
-
+    if (gl_InstanceID != 0) {
+        const float instanceDistanceAmplitude = 8. * inst; // max( 0.25, abs(log2(noiseAmpl * snoise(time*0.005*vec2(cross(vec3(ModelTexCoord, inst), ModelNormal)))) + float(gl_InstanceID)));
+        const vec3 instanceDisplacementVector = vec3(cos(1.75*(time * (0.1*pow(1.05, inst-1.)))),
+                                                     sin(1.25*(time * (0.01*pNoise(vec2(inst-1., exp(inst)), int(customParameter3))))),
+                                                     0.33);
+        instanceDisplacement = instanceDistanceAmplitude * instanceDisplacementVector; 
+    }
 	processed_vertex.position = MVP * (ModelPosition + vec4(instanceDisplacement, zoom));
 
     gl_Position = processed_vertex.position;

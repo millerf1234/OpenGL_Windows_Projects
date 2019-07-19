@@ -119,7 +119,7 @@ void main() {
         color = (snoise(vec2(4.5*cos(intensity * processed_vertex.instanceID - time), 35.0 * tan(0.01*time)))) * vec4(0.2, 0.47, 0.87, 0.56);//BLACK;//discard;
     }
 	else if (intensity > 0.25) {
-		color = vec4(0.83, 0.72, 0.49, 1.0);
+		color = vec4(0.283, 0.72, 0.949, 1.0);
 		//discard;
 	}
 	else if (intensity > (0.175)) {

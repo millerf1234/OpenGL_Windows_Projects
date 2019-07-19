@@ -115,7 +115,7 @@ protected: //private:
 	bool freezeTimeToggle; 
     bool reverseTimePropogation;
 	bool enableBlending;
-    bool enableDepthClamping;
+    mutable bool enableDepthClamping;
 
     //These next 3 variables allow for various configurations to be alternated 
     //between within a ShaderProgram while the Application is running. It is up to

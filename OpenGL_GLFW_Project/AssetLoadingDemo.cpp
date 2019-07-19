@@ -341,6 +341,8 @@ void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const n
 
     glEnable(GL_PROGRAM_POINT_SIZE);
 
+    glEnable(GL_DEPTH_CLAMP);
+    enableDepthClamping = true;
 
     //test
     if (glIsEnabled(GL_MULTISAMPLE))
@@ -543,22 +545,17 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    ///worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    ///worldMeshName = "SimpleSkyDome_ReExport.obj";
+    worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
-    //A very detailed landscape encapsulated within an ellipse
-    //[WARNING: May Take Up To Several Minutes To Load] 
-    ///worldMeshName = "DomedLandscape.obj";
-
-    
     //A very simple large sphere 
     //worldMeshName = "LargeSphere.obj";
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
