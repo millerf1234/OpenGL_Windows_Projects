@@ -1,7 +1,9 @@
 //File:                        UniformLocationInterface.h
 //Class:                       UniformLocationInterface 
 //
-//Description:                 This class is designed to act as an intermediary between 
+//Description:                 
+//
+//                             This class is designed to act as an intermediary between 
 //                             a UniformLocationTracker object and the rest of the Application.
 //                             The benefits of this class are that it can be constructed into a 
 //                             valid state without all the required information available that 
@@ -37,7 +39,6 @@
 
 #include <functional>
 
-#include "LoggingMessageTargets.h"
 #include "UniformLocationTracker.h"
 
 //using ShaderInterface::UniformLocationTracker;
@@ -202,7 +203,7 @@ namespace ShaderInterface {
 
 		//Intended to be called as part of moving this object. On completion of this function, 
 		//this object will have all of its function pointers equal to the "that" object's function
-		//pointers upon entr and "that"'s function pointers will subsequently be deactivated.
+		//pointers upon function entry and "that"'s function pointers will subsequently be deactivated.
 		void transferFunctionPointers(UniformLocationInterface & that); 
 
 		void linkFunctionPointersToUniformLocationTracker(); //Used during the activation process
@@ -273,27 +274,34 @@ namespace ShaderInterface {
 		//inactiveUniformTrackingResponse() function. These functions should not be modified. Instead modify the
 		//inactiveUniformTrackingResponse() function. All parameters are ignored
 
+
+
 		static void warnNotActive1i(const GLchar * uname, const GLint x) { inactiveUniformTrackingResponse(); }
 		static void warnNotActive1u(const GLchar * uname, const GLuint x) { inactiveUniformTrackingResponse(); }
 		static void warnNotActive1f(const GLchar * uname, const GLfloat x) { inactiveUniformTrackingResponse(); }
 
-		//Since the vector update function (i.e. Uniform1iv, Uniform2iv, Uniform3iv... ) all share the same signature, they
-		//can all be set with just one of these functions. These also cover the array-based matrix update functions.
-		static void warnNotActiveiv(const GLchar * uname, const GLint * v, GLsizei n) { inactiveUniformTrackingResponse(); }
-		static void warnNotActiveuv(const GLchar * uname, const GLuint * v, GLsizei n) { inactiveUniformTrackingResponse(); }
-		static void warnNotActivefv(const GLchar * uname, const GLfloat * v, GLsizei n) { inactiveUniformTrackingResponse(); }
+        //Since the vector update function (i.e. Uniform1iv, Uniform2iv, Uniform3iv... ) all share the same signature, they
+        //can all be set with just one of these functions. These also cover the array-based matrix update functions.
+        static void warnNotActiveiv(const GLchar * uname, const GLint * v, GLsizei n) { inactiveUniformTrackingResponse(); }
+        static void warnNotActiveuv(const GLchar * uname, const GLuint * v, GLsizei n) { inactiveUniformTrackingResponse(); }
+        static void warnNotActivefv(const GLchar * uname, const GLfloat * v, GLsizei n) { inactiveUniformTrackingResponse(); }
 
-		static void warnNotActive2i(const GLchar * uname, const GLint x, const GLint y) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive2u(const GLchar * uname, const GLuint x, const GLuint y) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive2f(const GLchar * uname, const GLfloat x, const GLfloat y) { inactiveUniformTrackingResponse(); }
+        static void warnNotActive2i(const GLchar * uname, const GLint x, const GLint y) { inactiveUniformTrackingResponse(); }
+        static void warnNotActive2u(const GLchar * uname, const GLuint x, const GLuint y) { inactiveUniformTrackingResponse(); }
+        static void warnNotActive2f(const GLchar * uname, const GLfloat x, const GLfloat y) { inactiveUniformTrackingResponse(); }
 
-		static void warnNotActive3i(const GLchar * uname, const GLint x, const GLint y, const GLint z) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive3u(const GLchar * uname, const GLuint x, const GLuint y, const GLuint z) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive3f(const GLchar * uname, const GLfloat x, const GLfloat y, const GLfloat z) { inactiveUniformTrackingResponse(); }
+        static void warnNotActive3i(const GLchar * uname, const GLint x, const GLint y, const GLint z) { inactiveUniformTrackingResponse(); }
 
-		static void warnNotActive4i(const GLchar * uname, const GLint x, const GLint y, const GLint z, const GLint w) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive4u(const GLchar * uname, const GLuint x, const GLuint y, const GLuint z, const GLuint w) { inactiveUniformTrackingResponse(); }
-		static void warnNotActive4f(const GLchar * uname, const GLfloat x, const GLfloat y, const GLfloat z, const GLfloat w) { inactiveUniformTrackingResponse(); }
+        static void warnNotActive3u(const GLchar * uname, const GLuint x, const GLuint y, const GLuint z) { inactiveUniformTrackingResponse(); }
+
+        static void warnNotActive3f(const GLchar* uname, const GLfloat x, const GLfloat y, const GLfloat z) { inactiveUniformTrackingResponse(); }
+
+		static void warnNotActive4i(const GLchar * uname, const GLint x, const GLint y,
+            const GLint z, const GLint w) { inactiveUniformTrackingResponse(); }
+		static void warnNotActive4u(const GLchar * uname, const GLuint x, const GLuint y,
+            const GLuint z, const GLuint w) { inactiveUniformTrackingResponse(); }
+		static void warnNotActive4f(const GLchar * uname, const GLfloat x, const GLfloat y,
+            const GLfloat z, const GLfloat w) { inactiveUniformTrackingResponse(); }
 		
 		static void warnNotActiveMat2(const GLchar * uname, const glm::mat2 * M, GLsizei n) { inactiveUniformTrackingResponse(); }
 		static void warnNotActiveMat2x3(const GLchar * uname, const glm::mat2x3 * M, GLsizei n) { inactiveUniformTrackingResponse(); }

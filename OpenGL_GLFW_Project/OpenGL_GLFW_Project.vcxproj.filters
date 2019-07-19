@@ -148,15 +148,6 @@
     <Filter Include="Resource Files\Models\OBJ">
       <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine">
-      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine\Engine2">
-      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Engine\CrazyEngine">
-      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample">
       <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
     </Filter>
@@ -462,6 +453,24 @@
     </Filter>
     <Filter Include="Source Files\Utility\Filepath\Deprecated">
       <UniqueIdentifier>{41e8b6d5-2f4e-47d6-9c57-209294eb84aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere">
+      <UniqueIdentifier>{bd745267-950a-49b9-b089-f56136ff3cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Interceptor">
+      <UniqueIdentifier>{82105745-b98e-4940-a1dc-74655ccf86f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\Spaceships\Interceptor\00">
+      <UniqueIdentifier>{fec4ad5e-110d-4015-a65e-8dfe1e43ba28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\JetEngine">
+      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\JetEngine\Engine2">
+      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\OBJ\JetEngine\CrazyEngine">
+      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1243,7 +1252,7 @@
       <Filter>Third Party\FreeType</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
-      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
+      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
     </None>
     <None Include="obj\BeveledCube.mtl">
       <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
@@ -1378,10 +1387,10 @@
       <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
     </None>
     <None Include="obj\CrazyJetEngine.mtl">
-      <Filter>Resource Files\Models\OBJ\Engine\CrazyEngine</Filter>
+      <Filter>Resource Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
     </None>
     <None Include="obj\CrazyJetEngine.obj">
-      <Filter>Resource Files\Models\OBJ\Engine\CrazyEngine</Filter>
+      <Filter>Resource Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
     </None>
     <None Include="AssetLoadingDemo_CoolEffect.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
@@ -1411,7 +1420,7 @@
       <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
     <None Include="obj\Engine2_Textured.obj">
-      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
+      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
     </None>
     <None Include="obj\DrillThing00.obj">
       <Filter>Resource Files\Models\OBJ\Sample\DrillThing</Filter>
@@ -1533,6 +1542,14 @@
     <None Include="obj\ScrewTornadoThing.obj">
       <Filter>Resource Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
     </None>
+    <None Include="obj\LargeSphere.mtl">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
+    </None>
+    <None Include="obj\Interceptor00.mtl">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
+    </None>
+    <None Include="obj\LargeSphere.obj" />
+    <None Include="obj\Interceptor00.obj" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1624,7 +1641,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">
-      <Filter>Resource Files\Models\OBJ\Engine\Engine2</Filter>
+      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
     </Image>
     <Image Include="obj\BeveledCube.png">
       <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>

@@ -106,6 +106,7 @@ void main() {
 
 #define EFFECT_TO_DO 0
 
+
 //NO EFFECT SELECTED
 #ifndef EFFECT_TO_DO
     fragColor = vec4(0.75, 0.35, 0.95, 0.75); }

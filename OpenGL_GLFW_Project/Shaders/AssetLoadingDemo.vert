@@ -11,9 +11,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Define One Of the Following Shaders To Use It
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//#define BASIC_VERT
-//#define UNDERWATER_EFFECT_OF_SORTS
-//#define VOLATILE_SURFACE
+#define BASIC_VERT
+#define UNDERWATER_EFFECT_OF_SORTS
+#define VOLATILE_SURFACE
 #define INSTANCED_CIRCLE_VERT
 #define EXTRA_ROTATION_PER_INSTANCE_VERT
 #define COOL_VERT
@@ -56,6 +56,10 @@ uniform float time;
 uniform mat4 rotation;
 uniform mat4 MVP;
 
+uniform uint customParameter1, customParameter2, customParameter3;
+const float noiseAmpl_A = 1.0 + (float(customParameter2) * 0.5);
+const float noiseAmpl_B = 1.0 + (float(customParameter3) * 0.1);
+const float noiseAmpl = noiseAmpl_A*noiseAmpl_B;
 
 #define vert float(1+gl_VertexID)
 #define vertMod float(getVertIDMod(gl_VertexID))
@@ -91,12 +95,21 @@ void main() {
     processed_vertex.vertIDMod = vertMod;
     processed_vertex.instanceID = inst;
     processed_vertex.texCoord = ModelTexCoord;
-
 	processed_vertex.normal = mat3(rotation) * ModelNormal;
 
-	processed_vertex.position = ModelPosition + vec4(0.0, inst, 0.0, zoom);
+    const float instanceDistanceAmplitude = 5. + abs(log2(noiseAmpl * snoise(time*0.005*vec2(cross(vec3(ModelTexCoord, vertMod + inst), ModelNormal)))) * float(gl_InstanceID));
 
-	gl_Position = MVP * processed_vertex.position;
+    vec3 instanceDisplacementVector = vec3(0.0);
+    vec3 instanceDisplacement = instanceDistanceAmplitude * vec3(cos(1.75*(time / (0.1*pow(1.05,inst)))),
+                                                                 sin(1.25*(0.25*time / (0.1*pnoise(vec2(inst, exp(inst)), int(customParameter3))))),
+                                                                 0.0);
+
+	processed_vertex.position = MVP * (ModelPosition + vec4(instanceDisplacement, zoom));
+
+    gl_Position = processed_vertex.position;
+//	gl_Position = MVP * processed_vertex.position;
+
+    gl_PointSize = vertMod * cos(vertMod*time*max(1.0, pow(vertMod, noiseAmpl))) * (cnoise(2.0*vec4(2.5*processed_vertex.position.xy, 5.0 * sin(0.25*(time + vertMod)), cos(0.25*(time + vertMod * 3.14/2.0)))));
 }
 
 #elif defined UNDERWATER_EFFECT_OF_SORTS
@@ -107,12 +120,12 @@ void main() {
     processed_vertex.texCoord = ModelTexCoord;
     processed_vertex.normal = mat3(rotation) * ModelNormal;
                                                                                     
-    processed_vertex.position = ModelPosition + smoothstep(vec4(0.0),
-                                                           vec4(110.0 *sin(0.3 * 0.5*3.14159 * time + 1.9*inst), 5.0 *cos(0.5*3.14159 * time + 1.5*inst), 0.0, zoom),
+    processed_vertex.position = ModelPosition + smoothstep(vec4(-20.0 + 15.5*cos(inst*(time / vertMod))),
+                                                           vec4(175.0+110.0 *sin(0.3 * inst - 0.5*3.14159 * time*cos(time + 1.9*inst)), 8.0+5.0 *cos(0.5*3.14159 * time + 1.5*inst), 0.0, 0.45*zoom),
                                                            ModelPosition);
 
 
-
+    
     gl_Position = MVP * processed_vertex.position;
 
     gl_Position.xy *= 1.5 + abs(

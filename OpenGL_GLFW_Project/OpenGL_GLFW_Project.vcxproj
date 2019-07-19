@@ -135,6 +135,9 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -469,6 +472,8 @@
     </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.mtl" />
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell" />
+    <None Include="obj\Interceptor00.mtl" />
+    <None Include="obj\LargeSphere.mtl" />
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
     <None Include="obj\ScrewTornadoThing.mtl" />
@@ -692,6 +697,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\ScrewTornadoThing.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\LargeSphere.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Interceptor00.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

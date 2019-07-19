@@ -95,8 +95,9 @@ protected: //private:
 	unsigned long long frameNumber;
     unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
-        frameDepthClampLastToggled;
-    unsigned long long frameThatTimePropogationWasLastReversed;
+        frameDepthClampLastToggled, frameThatTimePropogationWasLastReversed, 
+        frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified,
+        frameThatCustomShaderParameter3LastModified;
     mutable unsigned long long framePerformanceReportingLastToggled;
 
 	glm::vec3 backgroundColor;
@@ -115,6 +116,17 @@ protected: //private:
     bool reverseTimePropogation;
 	bool enableBlending;
     bool enableDepthClamping;
+
+    //These next 3 variables allow for various configurations to be alternated 
+    //between within a ShaderProgram while the Application is running. It is up to
+    //the shader program to give these values meaning. 
+    GLuint customShaderParameter1, customShaderParameter2, customShaderParameter3;
+    //The 3 preceding variables are associated with the following 3 uniform values
+    //in the shader code
+    const GLchar* CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME = "customParameter1";
+    const GLchar* CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME = "customParameter2";
+    const GLchar* CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME = "customParameter3";
+
 
 	//Scene Control Variables
 	std::unique_ptr<ShaderProgram> sceneShader;
@@ -158,14 +170,34 @@ protected: //private:
 	
 	void initialize(); //Called by constructor(s)
 
+    //Sets the initial OpenGL Context state to the default 
+    //state expected by this RenderDemo upon first entering its
+    //render loop (However, this function does not explicitly  
+    //set its state; instead it relies quite a bit on the 
+    //Application having set a number of specific state variables*
+    //while it was creating the window and loading the OpenGL function pointers) 
+    //[If in the future it is decided to use the GPU to generate assets,
+    //this function will need to be called after that has taken place]
+    void setAssetLoadingDemoSpecificGlobalGLContextState() const noexcept;
 
-	void loadShaders(); //Sets up the sceneShader
+    //Loads all required GLSL shader file assets, compiles them and
+    //links them into ShaderProgram(s). Because valid shaders are 
+    //necessary for any rendering to occur, this function returns a
+    //bool. Will return 'true' if all shaders compiled and linked 
+    //without an issue. Otherwise the returned value will be false
+	bool loadShaders(); //Sets up the sceneShader
+
+    //Loads all of the mesh data. Since this data is (surprisingly) not
+    //vital for rendering, it is possible for this function to fail
+    //completely and the RenderDemo will still be able to enter its
+    //render loop and run as normal (baring any uncaught exceptions)
 	void loadModels(); //Loads 3D model data from asset files
 	
-
 	//This function is meant to be called after the sceneShader is linked and 
 	//all models for the scene have finished loading
 	void prepareScene();
+
+
 
 	///////////////////////////////////////////////////////
 	/////////////      The Render Loop      ///////////////
@@ -192,6 +224,14 @@ protected: //private:
     bool checkIfShouldToggleDepthClamping() const noexcept;
     bool checkIfShouldUpdateFieldOfView() const noexcept;
 
+    bool checkIfShouldIncreaseCustomShaderParameter1() const noexcept;
+    bool checkIfShouldIncreaseCustomShaderParameter2() const noexcept;
+    bool checkIfShouldIncreaseCustomShaderParameter3() const noexcept;
+    //bool checkIfShouldResetCustomShaderParameter1() const noexcept;
+    //bool checkIfShouldResetCustomShaderParameter2() const noexcept;
+    //bool checkIfShouldResetCustomShaderParameter3() const noexcept;
+    bool checkIfShouldResetCustomShaderParameters() const noexcept;
+
 
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							   |  (2)  Input Processing    |
@@ -206,10 +246,15 @@ protected: //private:
 	void toggleBlending() noexcept;
     void toggleDepthClamping() noexcept;
     void updateFieldOfView() noexcept;
-    void recomputeProjectionMatrix() noexcept;
+    void recomputeProjectionMatrix() noexcept;  
     void changePrimitiveType() noexcept;
 	void changeInstancedDrawingBehavior() noexcept;
-	//void modifyInstancedDrawingSpiralPattern() noexcept;
+    void increaseCustomShaderParameter1() noexcept;
+    void increaseCustomShaderParameter2() noexcept;
+    void increaseCustomShaderParameter3() noexcept;
+    void resetCustomShaderParameter1() noexcept;
+    void resetCustomShaderParameter2() noexcept;
+    void resetCustomShaderParameter3() noexcept;
 	void rotate() noexcept;
     void changeZoom() noexcept;
 	void translate() noexcept;

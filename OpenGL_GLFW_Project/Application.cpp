@@ -34,10 +34,13 @@ void Application::initialize() {
         //Print the ID for this thread (the Application's main thread)
         auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
-        threadIDString << "[DEBUG: Application Operating On Thread: 0x" << std::hex << threadID;
-        threadIDString << "]";
+        threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x" << std::hex << threadID;
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
 
+
+        fprintf(MSGLOG, "[ ~DEBUG~ ] Maximum number of bytes in a multibyte character on this platform: %d\n", MB_CUR_MAX);
+
+        fprintf(MSGLOG, "\n");
     }
 
 

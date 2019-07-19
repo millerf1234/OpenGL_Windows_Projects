@@ -175,7 +175,7 @@ constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 5.5f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 8.5f);
 const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
@@ -193,22 +193,24 @@ void AssetLoadingDemo::initialize() {
     error = false;
 
     //Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
-    frameNumber = 0ull;
-    frameUnpaused = 0ull;
-    frameLineTypeLastSwitched = 0ull;  
-    frameInstancedDrawingBehaviorLastToggled = 0ull;
-    frameInstancedDrawingCountLastModified = 0ull;
-    frameTimeFreezeLastToggled = 0ull;
-    frameBlendOperationLastToggled = 0ull;
-    frameDepthClampLastToggled = 0ull;
+    frameNumber = 0ULL;
+    frameUnpaused = 0ULL;
+    frameLineTypeLastSwitched = 0ULL;  
+    frameInstancedDrawingBehaviorLastToggled = 0ULL;
+    frameInstancedDrawingCountLastModified = 0ULL;
+    frameTimeFreezeLastToggled = 0ULL;
+    frameBlendOperationLastToggled = 0ULL;
+    frameDepthClampLastToggled = 0ULL;
     frameThatTimePropogationWasLastReversed = 0ULL;
+    frameThatCustomShaderParameter1LastModified = 0ULL;
+    frameThatCustomShaderParameter2LastModified = 0ULL;
+    frameThatCustomShaderParameter3LastModified = 0ULL;
     framePerformanceReportingLastToggled = 0ULL;
-
     counter = 0.0f;
     timeTickRateModifier = 0.0f;
-    vao = 0u;
-    sceneBufferVBO = 0u;
-    triangleOutlineEBO = 0u;
+    vao = 0U;
+    sceneBufferVBO = 0U;
+    triangleOutlineEBO = 0U;
 
 
     //Set the starting input primitive type
@@ -223,6 +225,11 @@ void AssetLoadingDemo::initialize() {
     reverseTimePropogation = false;
     enableBlending = false;
     enableDepthClamping = false;
+
+    customShaderParameter1 = 0U;
+    customShaderParameter2 = 0U;
+    customShaderParameter3 = 0U;
+
 
     //Set values for screen projection 
     fov = CAMERA_DEFAULT_FOV;
@@ -250,21 +257,23 @@ void AssetLoadingDemo::initialize() {
     //Keep an extra zoom parameter
     zoom = 1.0f; //Higher number means farther away
 
-    backgroundColor = glm::vec3(0.0f, 0.0f, 0.0f); //The values set here have no impact on the actual background color, see the background-color-update function 
 
-    glEnable(GL_PROGRAM_POINT_SIZE);
+     //INITIALIZATION-ONLY -- The values set here have no impact on the actual background color, instead
+    backgroundColor = glm::vec3(0.0f, 0.0f, 0.0f); //see the background-color-update function
 
-    //test
-    if (glIsEnabled(GL_MULTISAMPLE))
-        fprintf(MSGLOG, "\nMULTISAMPLING IS ENABLED!\n");
-    else
-        fprintf(MSGLOG, "\nMULTISAMPLING IS DISABLED!\n");
-    glDisable(GL_MULTISAMPLE);
 }
 
 
+
 AssetLoadingDemo::AssetLoadingDemo(InitReport* initReport) : RenderDemoBase() {
-	initialize();
+	
+    initialize();
+
+    //Set the initial OpenGL context state (basically consists of calls to glEnable())
+    setAssetLoadingDemoSpecificGlobalGLContextState();
+
+
+
     //Make sure we have a monitor to render to
     if (!initReport || !initReport->monitors.activeMonitor.activeMonitor) {
         error = true;
@@ -327,18 +336,52 @@ void AssetLoadingDemo::run() {
 }
 
 
+void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const noexcept {
+
+
+    glEnable(GL_PROGRAM_POINT_SIZE);
+
+
+    //test
+    if (glIsEnabled(GL_MULTISAMPLE))
+        fprintf(MSGLOG, "\nMULTISAMPLING IS ENABLED!\n");
+    else
+        fprintf(MSGLOG, "\nMULTISAMPLING IS DISABLED!\n");
+
+    //glDisable(GL_MULTISAMPLE);
+}
 
 
 void AssetLoadingDemo::loadAssets() {
-	loadShaders(); //load the GLSL shader code
-	loadModels();  //have the GL context load the Teapot vertices to video memory 
-	
-	prepareScene();
+    try {
+        if (!loadShaders()) //load the GLSL shader code
+            return;
+        loadModels();  //have the GL context load the Teapot vertices to video memory 
+        prepareScene();
+    }
+    catch (const std::system_error& sysErr) {
+        error = true;
+        fprintf(ERRLOG, "\nCaught System Error [%#08x] while loading assets!\n"
+            "  ~~> [ERROR CODE MEANING: %s]\n"
+            "\n                                        <<  Error Message  >>\n"
+            "%s\n\n",
+            sysErr.code().value(),  sysErr.code().message().c_str(),  sysErr.what());
+    }
+    catch (const std::exception& e) {
+        error = true;
+        fprintf(ERRLOG, "\nCaught Exception while loading assets!\n"
+            "\n                                        <<  Exception Message  >>\n"
+            "%s\n\n", e.what());
+    }
+    catch (...) {
+        error = true;
+        fprintf(ERRLOG, "\nCaught an unidentified exception while loading assets!\n");
+    }
 }
 
 
 
-void AssetLoadingDemo::loadShaders() { 
+bool AssetLoadingDemo::loadShaders() { 
 	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
@@ -353,7 +396,7 @@ void AssetLoadingDemo::loadShaders() {
 
 #ifdef USE_RUBYMINE
 	/////////////////////////
-	////    RubyMine Shader   (from the internet)
+	////    RubyMine Shader   (from the Internet)
 	/////////////////////////
 	
     //Attach the main shader stages to the sceneShader
@@ -400,29 +443,26 @@ void AssetLoadingDemo::loadShaders() {
     sceneShader->link();
     if (sceneShader->checkIfLinked()) {
         fprintf(MSGLOG, "Program Successfully linked!\n");
+        fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
+        return true;
     }
-    else {
-        //Hide the window so user can see error message about shader
-        GLFWwindow* applicationWindow = glfwGetCurrentContext();
-        if (applicationWindow)
-            glfwIconifyWindow(applicationWindow);
+    //else 
+    //Hide the window so user can see error message about shader
+    GLFWwindow* applicationWindow = glfwGetCurrentContext();
+    if (applicationWindow)
+        glfwIconifyWindow(applicationWindow);
 
-        fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
-        //This next line is to give the user false hope
-        fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
-        std::cin.get(); //Hold the mainRenderWindow open if there was an error
-        markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
+    fprintf(ERRLOG, "Shader Program was not successfully linked!\n");
+    //This next line is to give the user false hope
+    fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n");
+    std::cin.get(); //Hold the mainRenderWindow open if there was an error
+    markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
 
-        //Return Window from Iconification?
-        if (applicationWindow)
-            glfwRestoreWindow(applicationWindow);
+    //Return Window from Iconification?
+    if (applicationWindow)
+        glfwRestoreWindow(applicationWindow);
 
-        return;
-    }
-
-
-    fprintf(MSGLOG, "\nAll Shaders Successfully Built!\n");
-
+    return false;
 }
 
 
@@ -507,8 +547,16 @@ void AssetLoadingDemo::loadModels() {
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    //worldMeshName = "SimpleSkyDome_ReExport.obj";
+    ///worldMeshName = "SimpleSkyDome_ReExport.obj";
 
+
+    //A very detailed landscape encapsulated within an ellipse
+    //[WARNING: May Take Up To Several Minutes To Load] 
+    ///worldMeshName = "DomedLandscape.obj";
+
+    
+    //A very simple large sphere 
+    //worldMeshName = "LargeSphere.obj";
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
@@ -518,14 +566,17 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
+    for (int i = 0; i < 10; i++)
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
@@ -654,6 +705,24 @@ void AssetLoadingDemo::renderLoop() {
         if (checkIfShouldUpdateFieldOfView())
             updateFieldOfView();
 
+        //CUSTOM SHADER PARAMETERS
+        if (checkIfShouldIncreaseCustomShaderParameter1())
+            increaseCustomShaderParameter1();
+        //if (checkIfShouldResetCustomShaderParameter1())
+        //    resetCustomShaderParameter1();
+        if (checkIfShouldIncreaseCustomShaderParameter2())
+            increaseCustomShaderParameter2();
+        //if (checkIfShouldResetCustomShaderParameter2())
+        //    resetCustomShaderParameter2();
+        if (checkIfShouldIncreaseCustomShaderParameter3())
+            increaseCustomShaderParameter3();
+        //if (checkIfShouldResetCustomShaderParameter3())
+        //    resetCustomShaderParameter3();
+        if (checkIfShouldResetCustomShaderParameters()) {
+            resetCustomShaderParameter1();
+            resetCustomShaderParameter2();
+            resetCustomShaderParameter3();
+        }
 
         //More Input Checking
         changePrimitiveType();
@@ -840,7 +909,6 @@ inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept 
 }
 
 inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
-
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_9) == GLFW_PRESS) 
         return true;
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_0) == GLFW_PRESS) 
@@ -848,6 +916,84 @@ inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
     return false;
 
 }
+
+
+
+inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter1() const noexcept {
+    if ((frameNumber - frameThatCustomShaderParameter1LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_5) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter2() const noexcept {
+    if ((frameNumber - frameThatCustomShaderParameter2LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_6) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter3() const noexcept {
+    if ((frameNumber - frameThatCustomShaderParameter3LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_7) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//-----------------
+//  It turns out GLFW will only acknowledge input from each key only once, so what I was 
+//  trying to do here with these following functions of having them each react to the same
+//  key input does not work
+//-----------------
+//inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameter1() const noexcept {
+//    const unsigned long long frameThatMostRecentCustomShaderParameterUpdateOccurred = std::max({ frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified, frameThatCustomShaderParameter3LastModified });
+//    if ((frameNumber - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+//        if (glfwGetKey(mainRenderWindow, GLFW_KEY_8) == GLFW_PRESS) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+//
+//inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameter2() const noexcept {
+//    const unsigned long long frameThatMostRecentCustomShaderParameterUpdateOccurred = std::max({ frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified, frameThatCustomShaderParameter3LastModified });
+//    if ((frameNumber - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+//        if (glfwGetKey(mainRenderWindow, GLFW_KEY_8) == GLFW_PRESS) {
+//            return true;
+//            printf("Returning True for # 2!\n");
+//        }
+//    }
+//    return false;
+//}
+//
+//inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameter3() const noexcept {
+//    const unsigned long long frameThatMostRecentCustomShaderParameterUpdateOccurred = std::max({ frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified, frameThatCustomShaderParameter3LastModified });
+//    if ((frameNumber - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+//        if (glfwGetKey(mainRenderWindow, GLFW_KEY_8) == GLFW_PRESS) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameters() const noexcept {
+    const unsigned long long frameThatMostRecentCustomShaderParameterUpdateOccurred = std::max({ frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified, frameThatCustomShaderParameter3LastModified });
+    if ((frameNumber - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_8) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 
 void AssetLoadingDemo::pause() {
 	const auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
@@ -887,6 +1033,7 @@ void AssetLoadingDemo::reset() noexcept {
 	head = 0.0f; //Reset rotation
 	pitch = 0.0f;
 	roll = 0.0f;
+    cameraPos = CAMERA_POSITION;
 	xTranslation = 0.0f;
 	yTranslation = 0.0f;
     zTranslation = 0.0f;
@@ -900,6 +1047,9 @@ void AssetLoadingDemo::reset() noexcept {
 	frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
     frameThatTimePropogationWasLastReversed = 0ULL;
+    frameThatCustomShaderParameter1LastModified = 0ULL;
+    frameThatCustomShaderParameter2LastModified = 0ULL;
+    frameThatCustomShaderParameter3LastModified = 0ULL;
     framePerformanceReportingLastToggled = 0ULL;
 	zoom = 1.0f;
 	if (drawMultipleInstances) 
@@ -1020,6 +1170,8 @@ void AssetLoadingDemo::updateFieldOfView() noexcept {
 
 void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
     
+    view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
+
     //Must get value of the window's width and height
     float screenWidth = 1.0f;
     float screenHeight = 1.0f;
@@ -1115,6 +1267,44 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
     if (instanceCount < 0)
         instanceCount = 0;
 }
+
+
+void AssetLoadingDemo::increaseCustomShaderParameter1() noexcept {
+    customShaderParameter1++;
+    frameThatCustomShaderParameter1LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 1 is now %u\n", customShaderParameter1);
+}
+
+void AssetLoadingDemo::increaseCustomShaderParameter2() noexcept {
+    customShaderParameter2++;
+    frameThatCustomShaderParameter2LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 2 is now %u\n", customShaderParameter2);
+}
+
+void AssetLoadingDemo::increaseCustomShaderParameter3() noexcept {
+    customShaderParameter3++;
+    frameThatCustomShaderParameter3LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 3 is now %u\n", customShaderParameter3);
+}
+
+void AssetLoadingDemo::resetCustomShaderParameter1() noexcept {
+    customShaderParameter1 = 0U;
+    frameThatCustomShaderParameter1LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 1 is now %u\n", customShaderParameter1);
+}
+
+void AssetLoadingDemo::resetCustomShaderParameter2() noexcept {
+    customShaderParameter2 = 0U;
+    frameThatCustomShaderParameter2LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 2 is now %u\n", customShaderParameter2);
+}
+
+void AssetLoadingDemo::resetCustomShaderParameter3() noexcept {
+    customShaderParameter3 = 0U;
+    frameThatCustomShaderParameter3LastModified = frameNumber;
+    fprintf(MSGLOG, "Custom Shader Parameter 3 is now %u\n", customShaderParameter3);
+}
+
 
 void AssetLoadingDemo::rotate() noexcept {
 
@@ -1452,48 +1642,79 @@ void AssetLoadingDemo::propagateTime() noexcept {
 }
 
 void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput() {
+
     if (glfwJoystickPresent(0)) {
+        
+        //If the Joystick is supported as a Gamepad we can make more broad
+        //assumptions regarding its input mapping layout, thus allowing a
+        //larger range of user actions to be available
         if (glfwJoystickIsGamepad(0)) {
+
+            //-----------------------------------
+            //Try to read the gamepad's state
+            //-----------------------------------
+            
+            //Create a gamepad state object
             GLFWgamepadstate gamepadInput;
+            //Initialize the gamepad state object to a neutral state
+            for (unsigned int i = 0U; i < sizeof(gamepadInput.buttons); i++)
+                gamepadInput.buttons[i] = GLFW_RELEASE;//static_cast<unsigned char>('\0');
+            //Set the four analog stick axes to read as centered
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X] = 0.0f;
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] = 0.0f;
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] = 0.0f;
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] = 0.0f;
+            //Set the triggers to -1.0f
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] = -1.0f;
+            gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] = -1.0f;
             if (!glfwGetGamepadState(0, &gamepadInput)) {
                 //assert(false); //Please plug in only xinput gamepads for now 
                 return;
             }
-            
-            //Debug
-            //float val = gamepadInput.axes[4];
-            //if ((val > -1.0f) && (val < 0.0f))
-            //    fprintf(MSGLOG, "\nIT IS NEGATIVE!\n");
-            
-            constexpr float HEAD_SPEED = 0.05f;
-            constexpr float ROLL_SPEED = 0.05f;
-            constexpr float PITCH_SPEED = 0.05f;
 
+            
+            //Process the Axes [L/R Analog Sticks and Triggers]
+            constexpr float HEAD_SPEED = 0.035f;
+            constexpr float ROLL_SPEED = 0.035f;
+            constexpr float PITCH_SPEED = 0.035f;
+
+            //~~~~~~~~~~~~
+            //    LEFT THUMB STICK
+            //~~~~~~~~~~~~
+            //If stick's value is greater than the neutral dead zone
+            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]) > 0.08f) 
+                cameraPos += (0.185f * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] * glm::normalize(lookAtOrgin));
+            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X]) > 0.08f)
+                cameraPos += (0.185f * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X] * glm::cross(glm::normalize(lookAtOrgin), glm::normalize(upDirection)));
+
+            //~~~~~~~~~~~~
+            //    RIGHT THUMB STICK
+            //~~~~~~~~~~~~
             //Read head and pitch from axes 2 and 3 (which are x-y directions of right thumbstick)
-            if (!(fabsf(gamepadInput.axes[2]) <= 0.08f)) {
+            if (!(fabsf(gamepadInput.axes[2]) <= 0.08f)) //If stick's value is greater than the neutral dead zone
                 head += gamepadInput.axes[2] * HEAD_SPEED;
-            }
-            if (!(fabsf(gamepadInput.axes[3]) <= 0.08f)) {
+            if (!(fabsf(gamepadInput.axes[3]) <= 0.08f)) 
                 pitch += gamepadInput.axes[3] * PITCH_SPEED;
-            }
-
             roll += (((gamepadInput.axes[4] + 1.0f) / 2.0f) * ROLL_SPEED);
             roll -= (((gamepadInput.axes[5] + 1.0f) / 2.0f) * ROLL_SPEED);
 
 
+           //~~~~~~~~~~~~
+           //    D-PAD
+           //~~~~~~~~~~~~
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]) {
-                zoom -= 0.05f; //Zoom 
+                zoom -= 0.075f; //Zoom 
             }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN]) {
-                zoom += 0.05f;
+                zoom += 0.075f;
             }
 
             //Only do d-pad left/right input if drawing instanced
             if (drawMultipleInstances) {
-                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]) {
+                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]) {
                     instanceCount++;
                 }
-                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]) {
+                if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]) {
                     instanceCount--;
                     if (instanceCount < 1)
                         instanceCount = 1;
@@ -1501,11 +1722,10 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             }
 
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {
-                fov = fov * 0.99f;
-                //fprintf(MSGLOG, "\nFOV WAS UPDATED YALL! IT NOW IS A-BEING %f\n", fov);
+                fov = fov * 0.985f;
             }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]) {
-                fov = fov * 1.01f;
+                fov = fov * 1.015f;
             }
 
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_BACK]) {
@@ -1539,13 +1759,17 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             }
 
 
+
+
             //If Input Button Combo
                 //Then Recompile Shaders? [This would save time versus reimplementing entire shader class collection]
 
 
 
         }
-        else {
+
+        
+        else { //If Joystick 0 is not a gamepad 
             int buttons;
             const unsigned char* buttonStates = glfwGetJoystickButtons(0, &buttons);
             if (buttons > 0) {
@@ -1631,7 +1855,11 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
 }
 
 void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
-  /*
+
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+    /*
     static int printMsgCounter = 0;
     printMsgCounter++;
     if (printMsgCounter % 115 == 114)
@@ -1779,9 +2007,16 @@ float AssetLoadingDemo::getShiftBoost() const noexcept {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 
-	
+    //  Background and Description
+    //In the loadModels() function, a vector of unique pointer to QuickObjects 
+    //is created. Each of these QuickObjects contains mesh data for a model,
+    //with each model in its own model space.
+    //This function's purpose is to take this vector of model meshes (each in its own
+    //space) and position them into a single mesh all in world space. 
+    
 	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
 	int objectCounter = 0;
 
@@ -1806,9 +2041,9 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		
 
 		//Increment offset to prepare for the next object
-		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-12.0f, 12.0f);
-        objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-6.0f, 6.0f);
-        objectPositionOffset.z += MathFunc::getRandomInRangef(1.0f, 1.0f);
+		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-22.0f, 22.0f);
+        objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-16.0f, 16.0f);
+        //objectPositionOffset.z += MathFunc::getRandomInRangef(5.0f, 5.0f);
 
         //objectPositionOffset = glm::normalize(objectPositionOffset);
 
@@ -1884,8 +2119,11 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
         if (0u == targetVBO) {
             fprintf(ERRLOG, "\n\n\nThe attempt to allocate a VBO to use has failed...\n");
             fprintf(ERRLOG, "         Press [ENTER] to crash...\n");
-            std::cin.get();
-            std::exit(EXIT_FAILURE);
+            try { //Compiler was warning that 'cin.get()' may throw exceptions 
+                std::cin.get();
+                std::exit(EXIT_FAILURE);
+            }  //Catch it all
+            catch (...) { std::exit(EXIT_FAILURE); }
         }
         else
             fprintf(WRNLOG, "A Vertex Buffer Object with ID=%u has been created!\n\n", targetVBO);
