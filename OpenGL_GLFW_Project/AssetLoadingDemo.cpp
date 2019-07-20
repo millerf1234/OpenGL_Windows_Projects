@@ -166,6 +166,7 @@
 //#include <future>
 #include "AssetLoadingDemo.h"
 
+#include "TGAImage.h"
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
@@ -211,6 +212,7 @@ void AssetLoadingDemo::initialize() {
     vao = 0U;
     sceneBufferVBO = 0U;
     triangleOutlineEBO = 0U;
+    ourTexture = 0u;
 
 
     //Set the starting input primitive type
@@ -388,10 +390,18 @@ bool AssetLoadingDemo::loadShaders() {
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
+    if (!buildQuadTextureTestShader()) {
+        fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
+        std::exit(EXIT_FAILURE);
+    }
+    else {
+        if (!loadTexture2DFromTGA()) {
+            fprintf(ERRLOG, "\nError loading texture from TGA file!\n");
+            std::exit(EXIT_FAILURE);
+        }
+    }
+
     sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
-
-
-
 
 
 //#define USE_RUBYMINE
@@ -465,6 +475,26 @@ bool AssetLoadingDemo::loadShaders() {
         glfwRestoreWindow(applicationWindow);
 
     return false;
+}
+
+
+bool AssetLoadingDemo::buildQuadTextureTestShader() {
+    quadTextureTestShader = std::make_unique<ShaderProgram>(); 
+    quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
+    quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
+    quadTextureTestShader->link();
+    return quadTextureTestShader->checkIfLinked();
+}
+
+bool AssetLoadingDemo::loadTexture2DFromTGA() {
+    quadTextureTestShader->use();
+    TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
+    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
+    glTextureStorage2D(ourTexture, 1, GL_RGB8, testTexture.width(), testTexture.height());
+    glBindTexture(GL_TEXTURE_2D, ourTexture);
+
+    glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), GL_RGB, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
+    return true;
 }
 
 
@@ -549,13 +579,13 @@ void AssetLoadingDemo::loadModels() {
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    worldMeshName = "SimpleSkyDome_ReExport.obj";
+    //worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     //A very simple large sphere -0
     //worldMeshName = "LargeSphere.obj";
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -571,8 +601,8 @@ void AssetLoadingDemo::loadModels() {
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
-    for (int i = 0; i < 10; i++)
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //for (int i = 0; i < 10; i++)
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
@@ -604,7 +634,7 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in blender and then saved into the same file
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
@@ -1862,6 +1892,24 @@ void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
     if (printMsgCounter % 115 == 114)
         fprintf(MSGLOG, "AssetLoadingDemo\'s \'updateRenderDemoSpecificUniforms()\' called\n");
   */
+
+
+    //Update the quadTextureTestShader uniforms
+    quadTextureTestShader->uniforms.updateUniform1f("time", counter);
+    quadTextureTestShader->uniforms.updateUniform1f("zoom", 1.0f);
+    rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
+    quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+
+    glm::mat4 MVP; //Model-View-Projection matrix 
+    MVP = perspective * (view * (rotation));
+    const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        xTranslation, yTranslation, zTranslation, 1.0f);
+    MVP *= userTranslation;//* MVP;
+
+
+    quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
 }
 
 
@@ -1873,6 +1921,9 @@ void AssetLoadingDemo::drawVerts() {
 
 	if (sceneShader)
 		sceneShader->use();
+
+    if (quadTextureTestShader)
+        quadTextureTestShader->use();
 
     glBindVertexArray(vao);
 

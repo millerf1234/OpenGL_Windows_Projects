@@ -505,6 +505,9 @@
     <Filter Include="Source Files\Unfinished\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
+      <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -719,6 +722,24 @@
     </ClCompile>
     <ClCompile Include="TGAImage.cpp">
       <Filter>Source Files\Unfinished\TGALoader</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGA.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGAColorMapData.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGAHeader.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGAImageData.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGAImageID.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="TGASDK\sources\TGAVariable.cpp">
+      <Filter>Third Party\TGASDK\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1285,6 +1306,45 @@
     <ClInclude Include="TGAImage.h">
       <Filter>Source Files\Unfinished\TGALoader</Filter>
     </ClInclude>
+    <ClInclude Include="TGASDK\include\TGA.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAEnum.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAError.hpp">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAExports.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAFile.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAHeader.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\include\TGAVersion.h">
+      <Filter>Third Party\TGASDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\sources\TGAColorMapData.h">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\sources\TGAFiler.hpp">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\sources\TGAImageData.h">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\sources\TGAImageID.h">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClInclude>
+    <ClInclude Include="TGASDK\sources\TGAVariable.h">
+      <Filter>Third Party\TGASDK\source</Filter>
+    </ClInclude>
+    <ClInclude Include="TGAImageTest.h">
+      <Filter>Source Files\Unfinished\TGALoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1595,6 +1655,12 @@
     </None>
     <None Include="obj\LargeSphere.obj">
       <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
+    </None>
+    <None Include="Shaders\DrawTextureOnQuad.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+    </None>
+    <None Include="Shaders\DrawTextureOnQuad.vert">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

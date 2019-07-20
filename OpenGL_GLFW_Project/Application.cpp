@@ -20,6 +20,7 @@
 
 
 void Application::initialize() {
+
 	mApplicationValid = true;
 	initReport = nullptr;
 	glfwInitializer = nullptr;

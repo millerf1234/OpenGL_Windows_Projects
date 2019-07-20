@@ -40,33 +40,42 @@ void TGAImageData::readRLE(void* pBuf)
 
   for (unsigned i = 0, n = (unsigned)m_pHeader->image_specification().width * m_pHeader->image_specification().height; i < n; ++i)
   {
-    if (repeat == 0 && direct == 0)
-    {
-      int r = m_pFile->read(&head, 1);
+    if (repeat == 0 && direct == 0) {
+      const int r = m_pFile->read(&head, 1);
+      /* My attempt at a fix for it crashing */
+      if (r == 0) {
+          for (unsigned char i = 0U; i < sizeBlock; i++) {
+              buf[i] = '\0';
+              //printf("Fixing file at i = %d\n", i);
+          }
+          buf += sizeBlock;
+          continue;
+      }
+      /* End of my fix attempt*/
       if (r != 1) 
         throw TGAError("readRLE has been fail", eTGAResult_BadStructure);
       if (head >= 128) 
       {
         repeat = head - 127;
         int r = m_pFile->read(vBlock, sizeBlock);
+        printf("vBlock is %d, %d, %d\n", vBlock[0], vBlock[1], vBlock[2]);
         if (r != sizeBlock)
-          throw("readRLE has been fail", eTGAResult_BadStructure);
+          throw  TGAError("readRLE has been fail #2", eTGAResult_BadStructure);
       }
       else
       {
         direct = head + 1;
       }
     }
-    if (repeat > 0)
-    {
+
+    if (repeat > 0) {
       memcpy(buf, vBlock, sizeBlock);
       --repeat;
     }
-    else
-    {
+    else {
       int r = m_pFile->read(buf, sizeBlock);
       if (r != sizeBlock)
-        throw("readRLE has been fail", eTGAResult_BadStructure);
+        throw TGAError("readRLE has been fail #3", eTGAResult_BadStructure);
       --direct;
     }
     buf += sizeBlock;

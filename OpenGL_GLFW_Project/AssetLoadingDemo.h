@@ -105,6 +105,7 @@ protected: //private:
     GLuint vao; //Only 1 VertexArrayObject is required because all buffers share a common data layout.
     GLuint triangleOutlineEBO;
     GLuint sceneBufferVBO;//primarySceneBufferVBO, alternateSceneBufferVBO; 
+    GLuint ourTexture;
 
 	//Variables that are modifiable by input from the user
 	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
@@ -129,7 +130,7 @@ protected: //private:
 
 
 	//Scene Control Variables
-	std::unique_ptr<ShaderProgram> sceneShader;
+	std::unique_ptr<ShaderProgram> sceneShader, quadTextureTestShader;
 	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
     std::vector<GLfloat> sceneBuffer;// , alternativeSceneBuffer;
     std::vector<GLuint> triangleOutlineElementOrdering;
@@ -327,6 +328,9 @@ protected: //private:
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	////  The following are utility functions called by the setup and render-loop functions  ////
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+    bool buildQuadTextureTestShader();
+    bool loadTexture2DFromTGA();
 
     //This function expects each vertex in the passed-in sceneBuffer to be exactly
     //9 components.
