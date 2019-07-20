@@ -472,6 +472,39 @@
     <Filter Include="Resource Files\Models\OBJ\JetEngine\CrazyEngine">
       <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{4897fc50-d48c-46c8-a1b8-1caf9453661a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Texture2D">
+      <UniqueIdentifier>{9cbfb8e8-6ee4-4c02-999a-0de917184b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Cubemap">
+      <UniqueIdentifier>{6a45dfcb-5766-4329-9e68-1e7808ebf67b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Texture2D\jpeg">
+      <UniqueIdentifier>{63a58731-d5ec-49a9-ae4e-62d299927f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Cubemap\green">
+      <UniqueIdentifier>{92a424db-5124-43f0-917f-93d57f427e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Texture2D\png">
+      <UniqueIdentifier>{80b0579c-1ae3-402a-8269-995ba4273491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Texture2D\tga">
+      <UniqueIdentifier>{e72d4079-66a2-4508-834c-7c7c3fb3f1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\TGASDK">
+      <UniqueIdentifier>{8cd53d14-428a-47cd-b365-17062a87a145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\TGASDK\source">
+      <UniqueIdentifier>{5bd9af5f-b24e-46e0-bde6-81c2e03f9dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\TGASDK\include">
+      <UniqueIdentifier>{a92f2d5b-f54c-49e7-8a4a-62a29b6f7f31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\TGALoader">
+      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -683,6 +716,9 @@
     </ClCompile>
     <ClCompile Include="FilesystemDirectory.cpp">
       <Filter>Source Files\Utility\Filepath</Filter>
+    </ClCompile>
+    <ClCompile Include="TGAImage.cpp">
+      <Filter>Source Files\Unfinished\TGALoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1246,6 +1282,9 @@
     <ClInclude Include="FilesystemDirectory.h">
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
+    <ClInclude Include="TGAImage.h">
+      <Filter>Source Files\Unfinished\TGALoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1548,8 +1587,15 @@
     <None Include="obj\Interceptor00.mtl">
       <Filter>Resource Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
     </None>
-    <None Include="obj\LargeSphere.obj" />
-    <None Include="obj\Interceptor00.obj" />
+    <None Include="Images\Cubemap\green\hw_green.shader">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </None>
+    <None Include="obj\Interceptor00.obj">
+      <Filter>Resource Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
+    </None>
+    <None Include="obj\LargeSphere.obj">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1638,6 +1684,12 @@
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt">
       <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </Text>
+    <Text Include="Images\Cubemap\green\license.txt">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Text>
+    <Text Include="TGASDK_GithubLink.txt">
+      <Filter>Third Party\TGASDK</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">
@@ -1684,6 +1736,24 @@
     </Image>
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png">
       <Filter>NotesAndReferences</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_bk.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_dn.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_ft.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_lf.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_rt.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\green\green_up.tga">
+      <Filter>Resource Files\Images\Cubemap\green</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

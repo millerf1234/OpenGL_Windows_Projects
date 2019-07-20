@@ -111,7 +111,7 @@ void main() {
     gl_Position = processed_vertex.position;
 //	gl_Position = MVP * processed_vertex.position;
 
-    gl_PointSize = vertMod * cos(vertMod*time*max(1.0, pow(vertMod, noiseAmpl))) * (cnoise(2.0*vec4(2.5*processed_vertex.position.xy, 5.0 * sin(0.25*(time + vertMod)), cos(0.25*(time + vertMod * 3.14/2.0)))));
+    gl_PointSize = max(1.0, abs(1.0/vertMod + cos(vertMod*time*max(1.0, pow(vertMod, noiseAmpl))) * (cnoise(2.0*vec4(2.5*processed_vertex.position.xy, 5.0 * sin(0.25*(time + vertMod)), cos(0.25*(time + vertMod * 3.14/2.0)))))));
 }
 
 #elif defined UNDERWATER_EFFECT_OF_SORTS

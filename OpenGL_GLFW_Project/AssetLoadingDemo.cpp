@@ -552,10 +552,10 @@ void AssetLoadingDemo::loadModels() {
     worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
-    //A very simple large sphere 
+    //A very simple large sphere -0
     //worldMeshName = "LargeSphere.obj";
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 

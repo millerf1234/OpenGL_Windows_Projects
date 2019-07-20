@@ -233,6 +233,7 @@
     <ClCompile Include="TessellationControlShader.cpp" />
     <ClCompile Include="TessellationEvaluationShader.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
+    <ClCompile Include="TGAImage.cpp" />
     <ClCompile Include="Timepoint.cpp" />
     <ClCompile Include="UniformLocationInterface.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="ScreenFramebuffer.h" />
     <ClInclude Include="ShaderProgram2.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
+    <ClInclude Include="TGAImage.h" />
     <ClInclude Include="TGA_Image_File_Format_Header.h" />
     <ClInclude Include="Timepoint.h" />
     <ClInclude Include="VideoMode.h" />
@@ -451,6 +453,7 @@
     <None Include="glfw3.ilk" />
     <None Include="glfw3.pdb" />
     <None Include="glfw3dll.exp" />
+    <None Include="Images\Cubemap\green\hw_green.shader" />
     <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html" />
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
@@ -543,6 +546,7 @@
     <Font Include="Fonts\RobotoCondensed-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Images\Cubemap\green\license.txt" />
     <Text Include="NewTieFighterNotice.txt" />
     <Text Include="NoteOnVisualStudioGLSLTextColoring.txt" />
     <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt" />
@@ -552,6 +556,7 @@
     <Text Include="NotesOnTexturing.txt" />
     <Text Include="NotesOnUsingMultipleContexts.txt" />
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
+    <Text Include="TGASDK_GithubLink.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -635,6 +640,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\Cubemap\green\green_bk.tga" />
+    <Image Include="Images\Cubemap\green\green_dn.tga" />
+    <Image Include="Images\Cubemap\green\green_ft.tga" />
+    <Image Include="Images\Cubemap\green\green_lf.tga" />
+    <Image Include="Images\Cubemap\green\green_rt.tga" />
+    <Image Include="Images\Cubemap\green\green_up.tga" />
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
     <Image Include="obj\2DTexturedQuadPlaneTexture.png" />

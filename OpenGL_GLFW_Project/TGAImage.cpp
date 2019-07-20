@@ -1,0 +1,1 @@
+#include "TGAImage.h"

@@ -65,19 +65,19 @@ void main() {
     const float noiseAmpl_A = float(customParameter2) * 0.5;
     const float noiseAmpl_B = float(customParameter3) * 0.1;
 
-    const float distFalloff = 1. / max(1., .000344*length(processed_vertex.position.xyz));
+    const float distFalloff = 1. / max(1., 0.0000344*length(processed_vertex.position.xyz));
 
     if (0U == lightingVersion) {
-        vec3 lightDir = normalize(-vec3(-2.475 * cos(time + noiseAmpl_A*cnoise(distFalloff*position)), 0.0*1.5 * cos(time + noiseAmpl_B*fbm(3.0*cross(2.0*vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
-        vec3 light2Dir = normalize(vec3(-2.475 * cos(time + noiseAmpl_A*cnoise(distFalloff*position)), 0.0*1.5 * cos(time + noiseAmpl_B*snoise(3.0*cross(vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
-        intensity = abs(dot(normalize(lightDir), normal)) + abs(dot(normalize(mat3(rotation)*light2Dir), normal));
-        intensity *= 0.8; 
+        vec3 lightDir = normalize(-vec3(-2.475 * cos(time + noiseAmpl_A*cnoise(distFalloff*position)), 0.5 * cos(time + noiseAmpl_B*snoise(distFalloff*3.0*cross(2.0*vec3(gl_FragCoord.xy, cos(0.5*time)), position.xyz))), 1.0));
+        vec3 light2Dir = normalize(vec3(-2.475 * cos(time + noiseAmpl_A*cnoise(distFalloff*position)), 0.5 * sin(time + noiseAmpl_B*snoise(3.0*cross(vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
+        intensity = abs(dot(normalize(lightDir), normal)) + abs(dot(normalize(mat3(rotation)*normalize(light2Dir)), normal));
+        intensity *= 0.6; 
     }
     else if (1U == lightingVersion) {
         vec3 lightDir = normalize(vec3(-7.0 * cos(time + noiseAmpl_A*cnoise(position)), 1.5 * cos(time + noiseAmpl_B*fbm(cross(vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
         vec3 light2Dir = normalize(vec3(-2.475 * cos(time + noiseAmpl_A*cnoise(position)), 1.5 * cos(time + noiseAmpl_B*snoise(3.0*cross(vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
         intensity = abs(dot(normalize(lightDir), normal)) + abs(dot(normalize(mat3(rotation)*light2Dir), normal));
-        intensity *= 0.8; 
+        intensity *= 0.6; 
     }
     else {
         vec3 lightDir = normalize(vec3(-7.0 * cos(time + noiseAmpl_A*cnoise(position)), 1.5 * cos(time + noiseAmpl_B*fbm(cross(vec3(gl_FragCoord.xy, cos(time)), position.xyz))), 1.0));
@@ -88,19 +88,19 @@ void main() {
 
 
 
-	if (intensity > 0.94) {
-		color = RED; 
+	if (intensity > (0.94 + 0.08*cos(time))) {
+		color = vec4(0.0, 0.45 + 0.35 * sin(time), 1.0 - abs(0.45*sin(time)), 1.0);//RED; 
 	}
-    else if (intensity > 0.92) {
+    else if (intensity > (0.92 + 0.08*cos(time))) {
        discard; 
     }
-    else if (intensity > 0.745) {
+    else if (intensity > (0.745 + 0.04*cos(time))) {
         color = vec4(0.25, 0.56, 0.95, 0.86);
     }
-    else if (intensity > 0.6575) {
+    else if (intensity > (0.6575 + 0.08*cos(time))) {
         color = vec4(0.3 + (1.0 + pow(1.05, processed_vertex.instanceID)) * snoise(position), 0.93, 0.39, 0.45);
     }
-    else if (intensity > 0.6385) {
+    else if (intensity > (0.6385 + 0.08*cos(time))) {
        discard; 
     }
 	else if (intensity > 0.59) {
@@ -142,6 +142,8 @@ void main() {
     if (lightingVersion == 1u) {
         color.rgb = color.brg;
     }
+
+    color.rgb *= min(1.0, 90. / length(processed_vertex.position.xyz));
     
 	color.a = smoothstep(-10.22, 10.5, 0.35 - 0.33*abs(sin(1.0*time + 4.0 * snoise(vec2(abs(intensity), time)))));
 }
