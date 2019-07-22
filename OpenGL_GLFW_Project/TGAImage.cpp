@@ -203,36 +203,9 @@ public:
             mWidth_ = image_spec.width;
             mHeight_ = image_spec.height;
             mComponents_ = image_spec.pixel_depth / 8;
-
-
-/*
-        TGAFileImpl tgaFile(argv[1]);
-
-  TGA tga(&tgaFile);
-  tga.read();
-
-  const TGAHeader& hdr = tga.header();
-  const TGAField& field = hdr.field();
-  const ColorMapSpecification& cmap = hdr.color_map_specification();
-  const ImageSpecification& image_spec = hdr.image_specification();
-
-  auto sizeHeader = hdr.size();
-
-  std::vector<unsigned __int8> vImageID; vImageID.resize((int)tga.image_id_size());
-  std::vector<unsigned __int8> vColorMapData; vColorMapData.resize((int)tga.color_map_data_size());
-  std::vector<unsigned __int8> vImageData; vImageData.resize((int)tga.image_data_size());
-
-  tga.image_id(vImageID.data());
-  tga.color_map_data(vColorMapData.data());
-  tga.image_data(vImageData.data());
-
-        */
-
-
-
-
         }
-        catch (const TGAError& tgaErr) {
+
+        catch (const TGAError& tgaErr) { //Most likely we will be catching a TGA error
             const std::string msgPart1 = "[ERROR] While attempting to load the TGA file \"";
             const std::string msgPart2 = tgaFilepath.string();
             const std::string msgPart3 = "\"\n        a TGAError exception was thrown!\n";
@@ -244,6 +217,7 @@ public:
             constructFromEmptyFile();
             return;
         }
+
         catch (const std::system_error& e) {
             const std::string msgPart1 = "[ERROR] While attempting to load the TGA file \"";
             const std::string msgPart2 = tgaFilepath.string();
@@ -256,6 +230,7 @@ public:
             constructFromEmptyFile();
             return;
         }
+
         catch (const std::exception& e) {
             const std::string msgPart1 = "[ERROR] While attempting to load the TGA file \"";
             const std::string msgPart2 = tgaFilepath.string();
@@ -268,7 +243,8 @@ public:
             constructFromEmptyFile();
             return;
         }
-        catch (...) {
+
+        catch (...) { //Gotta catch them all 
             mErrReport_ += "[ERROR] While Attempting To Load The TGA file \"";
             mErrReport_ += tgaFilepath.string();
             mErrReport_ += "\"\n        an unknown exception was thrown!\n";
@@ -346,16 +322,59 @@ private:
     //Utility Functions
 
     void constructFromEmptyFile() noexcept {
+
         mPath_ = "";
-        mData_ = { 0u, 0u, 0u, 0u,     0u, 0u, 0u, 0u,
-                   0u, 0u, 0u, 0u,     0u, 0u, 0u, 0u };
         mpProperties_ = nullptr;
+
+#define DO_PROGRAMED_TEST_PATTERN
+#ifndef DO_PROGRAMED_TEST_PATTERN
+        mData_ = { 0u, 0u, 255u, 155u,     0u, 255u, 0u, 255u,
+                   0u, 255u, 0u, 155u,     0u, 0u, 255u, 255u };
         mWidth_ = 2;
         mHeight_ = 2;
         mComponents_ = 4;
-    }
-};
 
+#else
+        mWidth_ = 60;
+        mHeight_ = 60;
+        mComponents_ = 4;
+
+        mData_.reserve(mWidth_ * mHeight_ * 4);
+        for (int i = 0; i < mWidth_ * mHeight_; i++) {
+            const uint8_t iMod = static_cast<uint8_t>(i/2 % 255);
+            const uint8_t iMod_32 = static_cast<uint8_t>((i / 32) % 255);
+            //Blue
+            mData_.push_back(iMod_32);
+
+            //Green
+            if (iMod < 25u)
+                mData_.push_back(255u);
+            else if (iMod < 50u)
+                mData_.push_back(125u);
+            else if (iMod < 75u)
+                mData_.push_back(55u);
+            else if (iMod < 100u)
+                mData_.push_back(2u + 2u * (iMod + 100u));
+            else
+                mData_.push_back(iMod - 97u);
+
+            //Red
+            mData_.push_back(255u - (iMod_32));
+
+            //Alpha
+            if (iMod % 2u == 0u)
+                mData_.push_back(0u);
+            else
+                mData_.push_back(255u - iMod / 5u);
+
+        }
+#endif //DO_PROGRAMED_TEST_PATTERN
+
+
+    }
+
+};
+ 
 
 
 
@@ -367,48 +386,48 @@ private:
 //---------------------------------------------------
 
 
-TGAImage::TGAImage() : mpImpl_(std::make_unique<TGAImageImpl>()) { ; }
+TGAImage::TGAImage() : pImpl_(std::make_unique<TGAImageImpl>()) { ; }
 
 TGAImage::TGAImage(const std::filesystem::path& tgaFilepath) :
-    mpImpl_(std::make_unique<TGAImageImpl>(tgaFilepath)) { ; }
+    pImpl_(std::make_unique<TGAImageImpl>(tgaFilepath)) { ; }
 
 
 TGAImage::~TGAImage() noexcept { ; }
 
 
-TGAImage::TGAImage(TGAImage&& that) noexcept { mpImpl_ = std::move(that.mpImpl_); }
+TGAImage::TGAImage(TGAImage&& that) noexcept { pImpl_ = std::move(that.pImpl_); }
 
 TGAImage& TGAImage::operator=(TGAImage&& that) noexcept {
-    assert(that.mpImpl_);
+    assert(that.pImpl_);
     if (this != &that)
-        mpImpl_ = std::move(that.mpImpl_);
+        pImpl_ = std::move(that.pImpl_);
     return *this;
 }
 
 
 std::string_view TGAImage::errorReportString() const noexcept {
-    assert(mpImpl_);
-    return mpImpl_->errorReportString();
+    assert(pImpl_);
+    return pImpl_->errorReportString();
 }
 
 //Returns the image's width
 int TGAImage::width() const noexcept {
-    return mpImpl_->width();
+    return pImpl_->width();
 }
 
 //Returns the image's height
 int TGAImage::height() const noexcept {
-    return mpImpl_->height();
+    return pImpl_->height();
 }
 
 //Returns the number of components per pixel the data uses.
 int TGAImage::components() const noexcept {
-    return mpImpl_->components();
+    return pImpl_->components();
 }
 
 //Gives access to the loaded image data
 std::vector<uint8_t>& TGAImage::dataVector() noexcept {
-    return mpImpl_->dataVector();
+    return pImpl_->dataVector();
 }
 
 /*

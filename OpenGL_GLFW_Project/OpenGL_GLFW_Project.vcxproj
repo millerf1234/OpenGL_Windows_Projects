@@ -173,7 +173,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
-    <ClCompile Include="AssetInterface.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
     <ClCompile Include="BasicColorAttachmentTexture.cpp" />
     <ClCompile Include="CompiledShader.cpp" />
@@ -263,7 +262,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationConstantSettings.h" />
     <ClInclude Include="AsciiAsset.h" />
-    <ClInclude Include="AssetInterface.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="BasicColorAttachmentTexture.h" />
     <ClInclude Include="ConnectedMonitors.h" />
@@ -319,7 +317,6 @@
     <ClInclude Include="ShaderProgram2.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
     <ClInclude Include="TGAImage.h" />
-    <ClInclude Include="TGAImageTest.h" />
     <ClInclude Include="TGASDK\include\TGA.h" />
     <ClInclude Include="TGASDK\include\TGAEnum.h" />
     <ClInclude Include="TGASDK\include\TGAError.hpp" />
@@ -669,6 +666,18 @@
     <Image Include="Images\Cubemap\green\green_lf.tga" />
     <Image Include="Images\Cubemap\green\green_rt.tga" />
     <Image Include="Images\Cubemap\green\green_up.tga" />
+    <Image Include="Images\Cubemap\spire\spire_bk.png" />
+    <Image Include="Images\Cubemap\spire\spire_bk.tga" />
+    <Image Include="Images\Cubemap\spire\spire_dn.png" />
+    <Image Include="Images\Cubemap\spire\spire_dn.tga" />
+    <Image Include="Images\Cubemap\spire\spire_ft.png" />
+    <Image Include="Images\Cubemap\spire\spire_ft.tga" />
+    <Image Include="Images\Cubemap\spire\spire_lf.png" />
+    <Image Include="Images\Cubemap\spire\spire_lf.tga" />
+    <Image Include="Images\Cubemap\spire\spire_rt.png" />
+    <Image Include="Images\Cubemap\spire\spire_rt.tga" />
+    <Image Include="Images\Cubemap\spire\spire_up.png" />
+    <Image Include="Images\Cubemap\spire\spire_up.tga" />
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
     <Image Include="obj\2DTexturedQuadPlaneTexture.png" />

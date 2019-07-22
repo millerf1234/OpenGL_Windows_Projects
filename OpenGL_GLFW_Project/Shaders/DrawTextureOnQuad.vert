@@ -86,7 +86,7 @@ void main() {
 
     processed_vertex.position = MVP * ModelPosition;
 
-    gl_Position = processed_vertex.position + vec4(0., 0., 0., zoom);
+    gl_Position = processed_vertex.position + vec4(.05*inst*sin(3.04*inst), .075*inst*cos(1.14*inst), 0.001*inst, zoom);
 }
 
 #endif 

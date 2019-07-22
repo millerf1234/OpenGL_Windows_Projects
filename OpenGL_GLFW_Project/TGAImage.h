@@ -29,11 +29,16 @@ public:
     //  CONSCTRUCTORS
     //~~~~~~~~~~~~~~~~
     
-    //Constructs object to contain an image of size 2x2 of all zeros
+    //Constructs object to contain an image of size 2x2 with a 
+    //test pattern of red-green-blue corners and full alpha
     TGAImage();
     //Loads the data from the tgaFile and stores it internally.
-    //Object will have an image of size 2x2 of all zeros if data
-    //acquisition fails for any reason.
+    //Object will have an image of size 2x2 if data
+    //acquisition fails for any reason. This 2x2 image has a 
+    //test pattern of:
+    //                    B  G      [Assuming data is in BGRA8 format]
+    //                    G  R  
+    //plus full alpha at each value.
     explicit TGAImage(const std::filesystem::path& tgaFilepath);
     
     
@@ -79,7 +84,7 @@ public:
     
 private:
     class TGAImageImpl;
-    std::unique_ptr<TGAImageImpl> mpImpl_;
+    std::unique_ptr<TGAImageImpl> pImpl_;
 };
 
 #endif //TGA_IMAGE_H_

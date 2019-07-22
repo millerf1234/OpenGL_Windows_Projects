@@ -421,9 +421,6 @@
     <Filter Include="Resource Files\Models\OBJ\ExperimentalText">
       <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot">
-      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\Sample\ScrewTornadoThing">
       <UniqueIdentifier>{be4b08e1-689a-4046-b90b-95ac966396dc}</UniqueIdentifier>
     </Filter>
@@ -447,9 +444,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]">
       <UniqueIdentifier>{7d357ad1-1e14-4c89-8dca-6705a6a3d234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\TakeScreenshot\Incomplete">
-      <UniqueIdentifier>{bc753c36-7f50-4d4e-bd85-5984c2915388}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Filepath\Deprecated">
       <UniqueIdentifier>{41e8b6d5-2f4e-47d6-9c57-209294eb84aa}</UniqueIdentifier>
@@ -502,19 +496,31 @@
     <Filter Include="Third Party\TGASDK\include">
       <UniqueIdentifier>{a92f2d5b-f54c-49e7-8a4a-62a29b6f7f31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Unfinished\TGALoader">
-      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
       <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\TGALoader">
+      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Cubemap\spire">
+      <UniqueIdentifier>{6df3e0b8-5cd1-4d1e-a711-6a6f2da4e7e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Cubemap\spire\tga">
+      <UniqueIdentifier>{4df2c721-6a94-4612-85c2-e037de4a72c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Cubemap\spire\png">
+      <UniqueIdentifier>{8637c818-ffe4-40ad-b9fd-5cdee01c6b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\TakeScreenshot">
+      <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\TakeScreenshot\Incomplete">
+      <UniqueIdentifier>{bc753c36-7f50-4d4e-bd85-5984c2915388}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderProgram.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
@@ -548,9 +554,6 @@
     </ClCompile>
     <ClCompile Include="AsciiAsset.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetInterface.cpp">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClCompile>
     <ClCompile Include="Face.cpp">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
@@ -681,9 +684,6 @@
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgram2.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
-    </ClCompile>
     <ClCompile Include="Timepoint.cpp">
       <Filter>Source Files\Utility\PerformanceProfiling\Timepoint</Filter>
     </ClCompile>
@@ -709,10 +709,10 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
     </ClCompile>
     <ClCompile Include="ScreenCapture.cpp">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClCompile>
     <ClCompile Include="ScreenCaptureAssistant.cpp">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClCompile>
     <ClCompile Include="FilepathWrapper.cpp">
       <Filter>Source Files\Utility\Filepath\Deprecated</Filter>
@@ -721,7 +721,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
     <ClCompile Include="TGAImage.cpp">
-      <Filter>Source Files\Unfinished\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\TGALoader</Filter>
     </ClCompile>
     <ClCompile Include="TGASDK\sources\TGA.cpp">
       <Filter>Third Party\TGASDK\source</Filter>
@@ -740,6 +740,12 @@
     </ClCompile>
     <ClCompile Include="TGASDK\sources\TGAVariable.cpp">
       <Filter>Third Party\TGASDK\source</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram2.cpp">
+      <Filter>Source Files\Unfinished</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -954,9 +960,6 @@
     </ClInclude>
     <ClInclude Include="AsciiAsset.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetInterface.h">
-      <Filter>Source Files\Utility\Asset Loading</Filter>
     </ClInclude>
     <ClInclude Include="Face.h">
       <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
@@ -1225,9 +1228,6 @@
     <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderProgram2.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalConstants.h">
       <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
     </ClInclude>
@@ -1286,16 +1286,16 @@
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]</Filter>
     </ClInclude>
     <ClInclude Include="TGA_Image_File_Format_Header.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="ScreenCapture.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="ScreenCaptureAssistant.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="ScreenCaptureOperationParameters.h">
-      <Filter>Source Files\Utility\RenderTools\TakeScreenshot\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\TakeScreenshot\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="FilepathWrapper.h">
       <Filter>Source Files\Utility\Filepath\Deprecated</Filter>
@@ -1304,7 +1304,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
     <ClInclude Include="TGAImage.h">
-      <Filter>Source Files\Unfinished\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\TGALoader</Filter>
     </ClInclude>
     <ClInclude Include="TGASDK\include\TGA.h">
       <Filter>Third Party\TGASDK\include</Filter>
@@ -1342,8 +1342,8 @@
     <ClInclude Include="TGASDK\sources\TGAVariable.h">
       <Filter>Third Party\TGASDK\source</Filter>
     </ClInclude>
-    <ClInclude Include="TGAImageTest.h">
-      <Filter>Source Files\Unfinished\TGALoader</Filter>
+    <ClInclude Include="ShaderProgram2.h">
+      <Filter>Source Files\Unfinished</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1820,6 +1820,42 @@
     </Image>
     <Image Include="Images\Cubemap\green\green_up.tga">
       <Filter>Resource Files\Images\Cubemap\green</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_bk.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_dn.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_ft.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_lf.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_rt.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_up.png">
+      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_bk.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_dn.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_ft.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_lf.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_rt.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="Images\Cubemap\spire\spire_up.tga">
+      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

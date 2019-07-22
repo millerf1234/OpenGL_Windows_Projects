@@ -711,8 +711,8 @@ namespace ShaderInterface {
 	}
 
 
-	//Note-to-self: I can probably remove the 'UniformType' enum completetly since ULBuckets will be constructed in the correct place automatically. 
-	//Updated Note-To-self: Don't remove UniformType becuase I now use it for CachedUniformLocations as well...     I can probably delete both of these messages
+	//Note-to-self: I can probably remove the 'UniformType' enum completely since ULBuckets will be constructed in the correct place automatically. 
+	//Updated Note-To-self: Don't remove UniformType because I now use it for CachedUniformLocations as well...     I can probably delete both of these messages
 	inline GLint UniformLocationTracker::lookupUniformLocation(uint_fast8_t& listIndex, const char * name, UniformType ut) {
 		if (listIndex == NOT_IN_VECTOR) { //If no uniforms of this type have been tracked yet
 			mUniformLocationLists.emplace_back(); //Emplace a new list

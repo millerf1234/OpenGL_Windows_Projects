@@ -43,24 +43,25 @@ void TGAImageData::readRLE(void* pBuf)
     if (repeat == 0 && direct == 0) {
       const int r = m_pFile->read(&head, 1);
       /* My attempt at a fix for it crashing */
-      if (r == 0) {
-          for (unsigned char i = 0U; i < sizeBlock; i++) {
-              buf[i] = '\0';
-              //printf("Fixing file at i = %d\n", i);
-          }
-          buf += sizeBlock;
-          continue;
-      }
+      //Doesn't work. TGA is run length encoded
+      //if (r == 0) {
+      //    for (unsigned char i = 0U; i < sizeBlock; i++) {
+      //        buf[i] = '\0';
+      //        //printf("Fixing file at i = %d\n", i);
+      //    }
+      //    buf += sizeBlock;
+      //    continue;
+      //}
       /* End of my fix attempt*/
       if (r != 1) 
-        throw TGAError("readRLE has been fail", eTGAResult_BadStructure);
+        throw TGAError("TGA FAILURE: readRLE failed [Code 1]", eTGAResult_BadStructure);
       if (head >= 128) 
       {
         repeat = head - 127;
         int r = m_pFile->read(vBlock, sizeBlock);
         printf("vBlock is %d, %d, %d\n", vBlock[0], vBlock[1], vBlock[2]);
         if (r != sizeBlock)
-          throw  TGAError("readRLE has been fail #2", eTGAResult_BadStructure);
+          throw  TGAError("TGA FAILURE: readRLE failed [Code 2]", eTGAResult_BadStructure);
       }
       else
       {
@@ -75,7 +76,7 @@ void TGAImageData::readRLE(void* pBuf)
     else {
       int r = m_pFile->read(buf, sizeBlock);
       if (r != sizeBlock)
-        throw TGAError("readRLE has been fail #3", eTGAResult_BadStructure);
+        throw TGAError("TGA FAILURE : readRLE failed[Code 3]", eTGAResult_BadStructure);
       --direct;
     }
     buf += sizeBlock;

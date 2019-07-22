@@ -489,11 +489,28 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
     quadTextureTestShader->use();
     TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
+    //TGAImage testTexture(R"(C:\Users\Forrest\Documents\GitHub\TGA\datatest\rgb32_top_left_rle.tga)");
+    //TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\spire\spire_ft.tga)");
+
+
+    const GLenum internalFormat = (testTexture.components() == 3) ? GL_RGB8 : GL_RGBA8;
+    const GLenum dataFormat = (internalFormat == GL_RGB8) ? GL_BGR : GL_BGRA;
+
     glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
-    glTextureStorage2D(ourTexture, 1, GL_RGB8, testTexture.width(), testTexture.height());
+    glTextureStorage2D(ourTexture, 1, internalFormat, testTexture.width(), testTexture.height());
     glBindTexture(GL_TEXTURE_2D, ourTexture);
 
-    glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), GL_RGB, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
     return true;
 }
 
@@ -1893,10 +1910,10 @@ void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
         fprintf(MSGLOG, "AssetLoadingDemo\'s \'updateRenderDemoSpecificUniforms()\' called\n");
   */
 
-
+    quadTextureTestShader->use();
     //Update the quadTextureTestShader uniforms
     quadTextureTestShader->uniforms.updateUniform1f("time", counter);
-    quadTextureTestShader->uniforms.updateUniform1f("zoom", 1.0f);
+    quadTextureTestShader->uniforms.updateUniform1f("zoom", zoom);
     rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
     quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
 
@@ -1910,6 +1927,7 @@ void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
 
 
     quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+
 }
 
 
@@ -1919,8 +1937,8 @@ void AssetLoadingDemo::drawVerts() {
     
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
-	if (sceneShader)
-		sceneShader->use();
+	//if (sceneShader)
+	//	sceneShader->use();
 
     if (quadTextureTestShader)
         quadTextureTestShader->use();

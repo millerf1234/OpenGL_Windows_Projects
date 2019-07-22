@@ -27,5 +27,6 @@ const uint lightingVersion = customParameter1 % 3U;
 
 
 void main() {
-    color = vec4(0.1, 0.1, 0.6, 1.0) + texture(tex_object, processed_vertex.texCoord);
+    color = texture(tex_object, processed_vertex.texCoord);
+    color.a = color.a / (0.0075*processed_vertex.instanceID);
 }

@@ -989,7 +989,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 				else                      //Still need a tessc to be ready to link
 					return false;	
 			}
-			else            //If neither tesselation shaders are attached
+			else            //If neither tessellation shaders are attached
 				return true;
 		}
 		//else 
