@@ -703,6 +703,53 @@ void AssetLoadingDemo::prepareScene() {
 
 void AssetLoadingDemo::renderLoop() {
 
+    glUseProgram(0u);
+
+    //Debug stress test
+    constexpr const size_t iterationCount = 100'000U;
+    const GLuint sceneShaderID = sceneShader->ID();
+    const GLuint quadShaderID = quadTextureTestShader->ID();
+
+    Timepoint tAlt0("Start of Alternating Test");
+    for (size_t i = 0; i < iterationCount; i++) {
+        if (i % 2 == 0)
+            glUseProgram(sceneShaderID);
+        else
+            glUseProgram(quadShaderID);
+    }
+    Timepoint tFinish_Alt("End of Alternating Test");
+
+    printf("\nAlternating Test Completed!       [ITERATIONS RUN = %d]\n", iterationCount);
+    printf("     [START]    t0 recorded time %f\n", tAlt0.timepoint);
+    printf("     [Finish]   t1 recorded time %f\n", tFinish_Alt.timepoint);
+    printf("[TOTAL TIME ELAPSED: %f\n", tFinish_Alt.timepoint - tAlt0.timepoint);
+
+    //Reset
+    glUseProgram(0U);
+
+    //Trial 2
+    Timepoint tSame0("Start of \'Same\' Test");
+    for (size_t i = 0; i < iterationCount; i++) {
+        if (i % 2 == 0)
+            glUseProgram(sceneShaderID);//sceneShader->use();
+        else
+            glUseProgram(sceneShaderID);
+    }
+    Timepoint tFinish_Same("End of \'SAME\' Test");
+
+    printf("\nSame Test Completed!       [ITERATIONS RUN = %d]\n", iterationCount);
+    printf("     [START]    t0 recorded time %f\n", tSame0.timepoint);
+    printf("     [Finish]   t1 recorded time %f\n", tFinish_Same.timepoint);
+    printf("[TOTAL TIME ELAPSED: %f\n", tFinish_Same.timepoint - tSame0.timepoint);
+
+    printf("\n\n%s\n\n", tSame0.getAllTimepoints().c_str());
+
+    glfwIconifyWindow(mainRenderWindow);
+    std::cin.get();
+    glfwRestoreWindow(mainRenderWindow);
+
+
+
     //Call this function to initialize the frame performance profiler
     framePerformance.prepareToEnterRenderLoop();
 
