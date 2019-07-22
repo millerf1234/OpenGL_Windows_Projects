@@ -703,13 +703,17 @@ void AssetLoadingDemo::prepareScene() {
 
 void AssetLoadingDemo::renderLoop() {
 
+    //////////////////////////////////////////
+    // glUseProgram() Overhead Profiling Test
+    //////////////////////////////////////////
+
     glUseProgram(0u);
 
-    //Debug stress test
-    constexpr const size_t iterationCount = 100'000U;
+    constexpr const size_t iterationCount = 100'000'000U;
     const GLuint sceneShaderID = sceneShader->ID();
     const GLuint quadShaderID = quadTextureTestShader->ID();
 
+    int dataVal = 0;
     Timepoint tAlt0("Start of Alternating Test");
     for (size_t i = 0; i < iterationCount; i++) {
         if (i % 2 == 0)
@@ -747,8 +751,9 @@ void AssetLoadingDemo::renderLoop() {
     glfwIconifyWindow(mainRenderWindow);
     std::cin.get();
     glfwRestoreWindow(mainRenderWindow);
-
-
+    ///////////////////////////////////////////////
+    ////   End Profiling Test
+    ///////////////////////////////////////////////
 
     //Call this function to initialize the frame performance profiler
     framePerformance.prepareToEnterRenderLoop();
