@@ -43,14 +43,6 @@ void FlyingCameraDemo::run() {
     AssetLoadingDemo::run();
 }
 
-void FlyingCameraDemo::updateRenderDemoSpecificUniforms() noexcept {
-    /*static int count = 0;
-    count++;
-    if (count % 115 == 114)
-        fprintf(MSGLOG, "\nFlyingCameraDemoDerivedFuncBehavior in effect!\n");*/
-
-}
-
 void FlyingCameraDemo::createCamera() noexcept {
     //todo
     //yeah

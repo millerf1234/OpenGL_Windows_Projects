@@ -1,5 +1,10 @@
 //File:             AssetLoadingDemo.h
 //
+//  +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+//  |   FYI         Currently the 'AssetLoadingDemo.cpp' source file has much more       |
+//  |               thorough documentation than can be found here in the header.         |
+//  +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+//
 //Description:      This header file contains the definition for a class which inherits from
 //                  RenderDemoBase, thus making this class represent a RenderDemo. 
 //                  The point of this RenderDemo is to demonstrate basic object parsing/loading
@@ -237,90 +242,84 @@ protected: //private:
 	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 							   |  (2)  Input Processing    |
 							   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
-
-	void pause();
-	void reset() noexcept;
-	void toggleTimeFreeze() noexcept;
+    
+    void pause();
+    void reset() noexcept;
+    void toggleTimeFreeze() noexcept;
     void reverseTime() noexcept;
     void increasePassageOfTime() noexcept;
     void decreasePassageToTime() noexcept;
-	void toggleBlending() noexcept;
+    void toggleBlending() noexcept;
     void toggleDepthClamping() noexcept;
     void updateFieldOfView() noexcept;
     void recomputeProjectionMatrix() noexcept;  
     void changePrimitiveType() noexcept;
-	void changeInstancedDrawingBehavior() noexcept;
+    void changeInstancedDrawingBehavior() noexcept;
     void increaseCustomShaderParameter1() noexcept;
     void increaseCustomShaderParameter2() noexcept;
     void increaseCustomShaderParameter3() noexcept;
     void resetCustomShaderParameter1() noexcept;
     void resetCustomShaderParameter2() noexcept;
     void resetCustomShaderParameter3() noexcept;
-	void rotate() noexcept;
+    void rotate() noexcept;
     void changeZoom() noexcept;
-	void translate() noexcept;
+    void translate() noexcept;
    
-
-
-	/*						    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-							    |	 (3)   Handle Events	 |
-							    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			    			                 */
-	
-	bool checkForUpdatedShaders();
-	void buildNewShader();
+    
+    
+    /*                                  +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+                                        |   (3)   Handle Events     |
+                                        +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                    */
+    
+    bool checkForUpdatedShaders();
+    void buildNewShader();
     void reportStatistics() noexcept;
     void propagateTime() noexcept;
-
+    
     void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
-
-
-
-
-
-	/*								+~~~~~~~~~~~~~~~~~~+
-									|	(4) Render     |
-									+~~~~~~~~~~~~~~~~~~+			    							     */
-
-	////////////////////////////////////////
-	///  (4a)  Background Color Update   ///
-	////////////////////////////////////////
-
-	void updateFrameClearColor();
-
-
-	/////////////////////////////////
-	///  (4b)  Update Uniforms    ///
-	/////////////////////////////////
-
-    //Updates 
-	void updateBaseUniforms() noexcept;
-    virtual void updateRenderDemoSpecificUniforms() noexcept;
-
-
-	////////////////////////////////
-	///  (4c)  Update Buffers    ///
-	////////////////////////////////
-
-    /*      Maybe one day           */
-
-
-
-	/////////////////////////////////
-	///  (4d)  Make Draw Calls    ///                          
-	/////////////////////////////////
-	virtual void drawVerts();
-
-
+    
+    
+    
+    
+    
+    /*                                   +~~~~~~~~~~~~~~~~~~+
+                                         |   (4) Render     |
+                                         +~~~~~~~~~~~~~~~~~~+                                  */
+    
+    /////////////////////////////////////////
+    ///  (4-1)  Background Color Update   ///
+    /////////////////////////////////////////
+    
+    void updateFrameClearColor();
+    
+    
+    ///////////////////////////////////
+    ///  (4-2a)  Update Uniforms    ///
+    ///////////////////////////////////
+    
+    void updateBaseUniforms() noexcept;
+    
+    
+    //////////////////////////////////
+    ///  (4-2b)  Update Buffers    ///
+    //////////////////////////////////
+    
+    /*        Maybe one day         */
+    
+    
+	//////////////////////////////////
+	///  (4-2c)  Make Draw Call    ///                           
+	////////////////////////////////// 
+	virtual void drawVerts();                  
+                                      
+    // [REPEAT Step 4-2 (parts a-c) for each draw call]  
 	
 	
-	/*						+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-							|	(5) Clean-up and Prepare for Next Frame     |
-							+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+			   			     */
-	
-	void prepareGLContextForNextFrame() noexcept;
+    /*                    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+                          |    (5) Clean-up and Prepare for Next Frame    |
+                          +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                    */
 
-
-
+    void prepareGLContextForNextFrame() noexcept;
 
 
 

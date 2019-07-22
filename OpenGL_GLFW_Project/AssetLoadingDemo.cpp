@@ -592,7 +592,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    ///worldMeshName = "DemoSceneInsideABox00.obj";
+    worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -602,7 +602,7 @@ void AssetLoadingDemo::loadModels() {
     //A very simple large sphere -0
     //worldMeshName = "LargeSphere.obj";
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -611,7 +611,7 @@ void AssetLoadingDemo::loadModels() {
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
@@ -651,9 +651,9 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
-    //Several different objects were given a parent-child relationship in blender and then saved into the same file
+    //Several different objects were given a parent-child relationship in Blender and then saved into the same file
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
 
     //////////////////////
@@ -699,63 +699,9 @@ void AssetLoadingDemo::prepareScene() {
 
 
 
-
-
 void AssetLoadingDemo::renderLoop() {
-
-    //////////////////////////////////////////
-    // glUseProgram() Overhead Profiling Test
-    //////////////////////////////////////////
-
-    glUseProgram(0u);
-
-    constexpr const size_t iterationCount = 100'000'000U;
-    const GLuint sceneShaderID = sceneShader->ID();
-    const GLuint quadShaderID = quadTextureTestShader->ID();
-
-    int dataVal = 0;
-    Timepoint tAlt0("Start of Alternating Test");
-    for (size_t i = 0; i < iterationCount; i++) {
-        if (i % 2 == 0)
-            glUseProgram(sceneShaderID);
-        else
-            glUseProgram(quadShaderID);
-    }
-    Timepoint tFinish_Alt("End of Alternating Test");
-
-    printf("\nAlternating Test Completed!       [ITERATIONS RUN = %d]\n", iterationCount);
-    printf("     [START]    t0 recorded time %f\n", tAlt0.timepoint);
-    printf("     [Finish]   t1 recorded time %f\n", tFinish_Alt.timepoint);
-    printf("[TOTAL TIME ELAPSED: %f\n", tFinish_Alt.timepoint - tAlt0.timepoint);
-
-    //Reset
-    glUseProgram(0U);
-
-    //Trial 2
-    Timepoint tSame0("Start of \'Same\' Test");
-    for (size_t i = 0; i < iterationCount; i++) {
-        if (i % 2 == 0)
-            glUseProgram(sceneShaderID);//sceneShader->use();
-        else
-            glUseProgram(sceneShaderID);
-    }
-    Timepoint tFinish_Same("End of \'SAME\' Test");
-
-    printf("\nSame Test Completed!       [ITERATIONS RUN = %d]\n", iterationCount);
-    printf("     [START]    t0 recorded time %f\n", tSame0.timepoint);
-    printf("     [Finish]   t1 recorded time %f\n", tFinish_Same.timepoint);
-    printf("[TOTAL TIME ELAPSED: %f\n", tFinish_Same.timepoint - tSame0.timepoint);
-
-    printf("\n\n%s\n\n", tSame0.getAllTimepoints().c_str());
-
-    glfwIconifyWindow(mainRenderWindow);
-    std::cin.get();
-    glfwRestoreWindow(mainRenderWindow);
-    ///////////////////////////////////////////////
-    ////   End Profiling Test
-    ///////////////////////////////////////////////
-
-    //Call this function to initialize the frame performance profiler
+  
+    //Call this function to initialize the frame performance profiler object.
     framePerformance.prepareToEnterRenderLoop();
 
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
@@ -853,37 +799,26 @@ void AssetLoadingDemo::renderLoop() {
         propagateTime();
 
 
-        //```````````````````````````````````````````````````````````````````````````````
-        //This is purely for debug purposes at this time and is not yet functional.
-        //Take a screenshot on frame 145
-        // if (frameNumber == 145ULL) {
-        //     screenshotAssistant.takeScreenshot();
-        // }
-         //End of Debug Code 
-         //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-        
-
-
         ////////////////////////////
         //Set up to draw frame
         ////////////////////////////
         framePerformance.recordBeginDrawCommandsTimepoint();
         updateFrameClearColor(); //background color
-        updateBaseUniforms();
-        updateRenderDemoSpecificUniforms();
 
 
 
         ///////////////////////////
         //Draw frame
         //////////////////////////
+        updateBaseUniforms();
+        //updateRenderDemoSpecificUniforms();
         drawVerts();
 
 
-
+        ///////////////////////////
+        //
         framePerformance.recordReadyToFlipBuffersTimepoint();
         glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
-
         glfwPollEvents();
 
         //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
@@ -1924,65 +1859,61 @@ void AssetLoadingDemo::updateFrameClearColor() {
 
 
 void AssetLoadingDemo::updateBaseUniforms() noexcept {
+    
+    if (quadTextureTestShader) {
+        quadTextureTestShader->use();
+        //Update the quadTextureTestShader uniforms
+        quadTextureTestShader->uniforms.updateUniform1f("time", counter);
+        quadTextureTestShader->uniforms.updateUniform1f("zoom", zoom);
+        rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
+        quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+        
+        glm::mat4 MVP; //Model-View-Projection matrix 
+        MVP = perspective * (view * (rotation));
+        const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            xTranslation, yTranslation, zTranslation, 1.0f);
+        MVP *= userTranslation;//* MVP;
+        
+        
+        quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+        
+        return;
+    }
+    
+    //ELSE 
+    
     if (!sceneShader)
-		return;
-
-	sceneShader->use(); 
-
-	//glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	//sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
-
-	sceneShader->uniforms.updateUniform1f("time", counter);
-	sceneShader->uniforms.updateUniform1f("zoom", zoom);
-
-	rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
-	sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
-
-	glm::mat4 MVP; //Model-View-Projection matrix 
-	MVP = perspective * (view * (rotation));
-	const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-			                                    0.0f, 1.0f, 0.0f, 0.0f,
-			                                    0.0f, 0.0f, 1.0f, 0.0f,
-			                                    xTranslation, yTranslation, zTranslation, 1.0f);
-    MVP *= userTranslation;//* MVP;
-
-	
-	sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
-}
-
-void AssetLoadingDemo::updateRenderDemoSpecificUniforms() noexcept {
-
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
-    /*
-    static int printMsgCounter = 0;
-    printMsgCounter++;
-    if (printMsgCounter % 115 == 114)
-        fprintf(MSGLOG, "AssetLoadingDemo\'s \'updateRenderDemoSpecificUniforms()\' called\n");
-  */
-
-    quadTextureTestShader->use();
-    //Update the quadTextureTestShader uniforms
-    quadTextureTestShader->uniforms.updateUniform1f("time", counter);
-    quadTextureTestShader->uniforms.updateUniform1f("zoom", zoom);
+        return;
+    
+    sceneShader->use(); 
+    
+    //glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
+    
+    sceneShader->uniforms.updateUniform1f("time", counter);
+    sceneShader->uniforms.updateUniform1f("zoom", zoom);
+    
     rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
-    quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
-
+    sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+    
     glm::mat4 MVP; //Model-View-Projection matrix 
     MVP = perspective * (view * (rotation));
     const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-        0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        xTranslation, yTranslation, zTranslation, 1.0f);
+                                                0.0f, 1.0f, 0.0f, 0.0f,
+                                                0.0f, 0.0f, 1.0f, 0.0f,
+                                                xTranslation, yTranslation, zTranslation, 1.0f);
     MVP *= userTranslation;//* MVP;
-
-
-    quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
-
+    
+    
+    sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+    
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+    
 }
-
-
 
 
 void AssetLoadingDemo::drawVerts() {

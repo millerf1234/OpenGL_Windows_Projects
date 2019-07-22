@@ -42,8 +42,6 @@ public:
     virtual void loadAssets() override;
     virtual void run() override;
 
-protected:
-    virtual void updateRenderDemoSpecificUniforms() noexcept override;
 
 private:
 

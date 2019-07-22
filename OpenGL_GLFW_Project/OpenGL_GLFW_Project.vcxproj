@@ -507,6 +507,11 @@
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
+    <None Include="ReportOnProfilingOfOpenGLFunction__glUseProgram.txt.vsspell" />
+    <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
+      <FileType>Document</FileType>
+    </Text>
+    <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt" />
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2D.glsl" />
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2.glsl" />
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2x2.glsl" />

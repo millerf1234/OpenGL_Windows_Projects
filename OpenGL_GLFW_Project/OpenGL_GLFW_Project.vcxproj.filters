@@ -385,9 +385,6 @@
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer">
       <UniqueIdentifier>{735c38ed-3d06-4589-96d9-3477e7681689}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1">
-      <UniqueIdentifier>{4a4d314f-295a-45c2-af11-2d353d42af00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version2[WorkInProgress]">
       <UniqueIdentifier>{7d357ad1-1e14-4c89-8dca-6705a6a3d234}</UniqueIdentifier>
     </Filter>
@@ -528,6 +525,12 @@
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotesAndReferences\Profiling">
+      <UniqueIdentifier>{e721d8e3-4ad6-49c5-b3ab-57f804b22bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]">
+      <UniqueIdentifier>{4a4d314f-295a-45c2-af11-2d353d42af00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -694,7 +697,7 @@
       <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClCompile>
     <ClCompile Include="FramebufferPreferredUsage.cpp">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]</Filter>
     </ClCompile>
     <ClCompile Include="BasicColorAttachmentTexture.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Texture\Version0</Filter>
@@ -1268,10 +1271,10 @@
       <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClInclude>
     <ClInclude Include="FramebufferPreferredUsage.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]</Filter>
     </ClInclude>
     <ClInclude Include="DefaultFramebufferState.h">
-      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1</Filter>
+      <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]</Filter>
     </ClInclude>
     <ClInclude Include="BasicColorAttachmentTexture.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Texture\Version0</Filter>
@@ -1674,6 +1677,10 @@
     <None Include="Shaders\DrawTextureOnQuad.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
+    <None Include="ReportOnProfilingOfOpenGLFunction__glUseProgram.txt.vsspell" />
+    <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt">
+      <Filter>NotesAndReferences\Profiling</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1767,6 +1774,9 @@
     </Text>
     <Text Include="TGASDK_GithubLink.txt">
       <Filter>Third Party\TGASDK</Filter>
+    </Text>
+    <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
+      <Filter>NotesAndReferences\Profiling</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -1027,3 +1027,5 @@ void QuickObj::addLineEndpointToVertexData(Vertex p, size_t expectedVertexCompon
             mVertices_.push_back(0.0f);
     }
 }
+
+
