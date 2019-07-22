@@ -48,8 +48,11 @@ public:
 
 class Timepoint : public LocalTimepoint {
 public:
+
     //INSERTING A TIMEPOINT WITHOUT A MESSAGE WILL NOT LOG IT GLOBALLY
     Timepoint() : LocalTimepoint() { ; }
+
+    //Constructs a timepoint. WIll log it globally
     Timepoint(std::string_view msg) : LocalTimepoint(msg) {
         if (GLFW_INIT_INTERNAL::GLFW_IS_INIT())
             mMasterTimepointRecord_.insert(*this);

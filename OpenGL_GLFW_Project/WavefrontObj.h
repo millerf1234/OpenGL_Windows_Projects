@@ -23,7 +23,9 @@
 //				    http://paulbourke.net/dataformats/obj/
 //					
 //
-//Future additions:    todo  (maybe make code less confusing)
+//Future additions:    todo  (maybe make code less confusing. Oh, and
+//                            actually one day I should finish implementing
+//                            this class)
 //
 //
 //  Programmer:       Forrest Miller
@@ -36,7 +38,7 @@
 #ifndef WAVEFRONT_OBJ_H_
 #define WAVEFRONT_OBJ_H_
 
-#define WAVEFRONT_OBJ_INCOMPLETE_
+#define WAVEFRONT_OBJ_INCOMPLETE_ true
 
 #ifndef WAVEFRONT_OBJ_INCOMPLETE_
 

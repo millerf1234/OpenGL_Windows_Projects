@@ -28,26 +28,14 @@
     <Filter Include="Source Files\Utility\Filepath">
       <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets">
-      <UniqueIdentifier>{dbe0ec7f-4cd2-48c8-a42a-8668b8980862}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj">
-      <UniqueIdentifier>{612d584d-fa74-4e7c-bcc7-fe6dbe9bbdbc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl">
-      <UniqueIdentifier>{cdaf0160-e6f0-4017-abec-92a6ea34e00a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\Common">
       <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\Common\VertexUtility">
       <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete">
-      <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects">
       <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
@@ -96,9 +84,6 @@
     </Filter>
     <Filter Include="Resource Files\Settings">
       <UniqueIdentifier>{c34989ef-eb53-4289-a864-8cbdccf57ea5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader">
-      <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
       <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
@@ -283,45 +268,6 @@
     <Filter Include="Source Files\Unfinished\EntityComponents\Phong Shading Parameters">
       <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework">
-      <UniqueIdentifier>{ff960e48-d54d-4699-882f-21d54024dac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine">
-      <UniqueIdentifier>{2b4199fa-3c19-4a70-bd7f-e97d113425a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions">
-      <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback">
-      <UniqueIdentifier>{4fac4fee-ea86-437f-a085-cb9ec2f5aa4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback">
-      <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions">
-      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor">
-      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode">
-      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window">
-      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes">
-      <UniqueIdentifier>{3d7008b9-eccd-4d25-960b-da5d35b8f900}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Context">
-      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick">
-      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections">
-      <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Unfinished\Audio">
       <UniqueIdentifier>{8509665d-7627-442d-aee1-e5c02c778924}</UniqueIdentifier>
     </Filter>
@@ -499,9 +445,6 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
       <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\TGALoader">
-      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Images\Cubemap\spire">
       <UniqueIdentifier>{6df3e0b8-5cd1-4d1e-a711-6a6f2da4e7e6}</UniqueIdentifier>
     </Filter>
@@ -516,6 +459,75 @@
     </Filter>
     <Filter Include="Source Files\Unfinished\TakeScreenshot\Incomplete">
       <UniqueIdentifier>{bc753c36-7f50-4d4e-bd85-5984c2915388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite">
+      <UniqueIdentifier>{ff960e48-d54d-4699-882f-21d54024dac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine">
+      <UniqueIdentifier>{2b4199fa-3c19-4a70-bd7f-e97d113425a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions">
+      <UniqueIdentifier>{d18811ad-09e6-4721-b370-78555df1906d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback">
+      <UniqueIdentifier>{4fac4fee-ea86-437f-a085-cb9ec2f5aa4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions\ErrorCallback">
+      <UniqueIdentifier>{5355f770-bdee-4df3-9cb0-ea9b531f2c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions">
+      <UniqueIdentifier>{78fb244f-7206-4d44-8503-c079c2e0dd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor">
+      <UniqueIdentifier>{91912dcb-a48b-4ff1-993b-2ac0540346c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode">
+      <UniqueIdentifier>{ed2b1a13-51f0-4797-915f-85d0b9cce77b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window">
+      <UniqueIdentifier>{3ad78f8b-fd01-4da3-b7b1-a10ae7c40f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes">
+      <UniqueIdentifier>{3d7008b9-eccd-4d25-960b-da5d35b8f900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Context">
+      <UniqueIdentifier>{5002b46c-ff66-4423-b976-19199b2bb68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick">
+      <UniqueIdentifier>{aff5795c-e868-4049-ab86-84400bb98c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentCollections">
+      <UniqueIdentifier>{de37aa82-8415-46ce-a7e5-d962af728c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\WavefrontObj">
+      <UniqueIdentifier>{612d584d-fa74-4e7c-bcc7-fe6dbe9bbdbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\WavefrontObj\Incomplete">
+      <UniqueIdentifier>{b5c0a67e-d771-4c4e-a77c-dc60777be163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\WavefrontMtl">
+      <UniqueIdentifier>{cdaf0160-e6f0-4017-abec-92a6ea34e00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets">
+      <UniqueIdentifier>{23ca37dc-8869-48b7-89f0-210b7664d96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\AudioAssets">
+      <UniqueIdentifier>{65347c51-acf1-424c-954b-e92bfcc79871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets">
+      <UniqueIdentifier>{0432b6ba-b9c3-4af6-a210-1303a276a611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\Common">
+      <UniqueIdentifier>{c229ddf0-ce1b-468d-b695-aea29ad4d871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader">
+      <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal">
+      <UniqueIdentifier>{8caadb96-ae92-4c6a-a157-e1b048f4206d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGALoader">
+      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -552,20 +564,11 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AsciiAsset.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
-    </ClCompile>
-    <ClCompile Include="Face.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Line.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClCompile>
     <ClCompile Include="AssetLoadingDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClCompile>
     <ClCompile Include="WavefrontObj.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\WavefrontObj\Incomplete</Filter>
     </ClCompile>
     <ClCompile Include="Lightsource.cpp">
       <Filter>Source Files\Utility\Lightsource\HalfFinished</Filter>
@@ -583,13 +586,13 @@
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
     </ClCompile>
     <ClCompile Include="WavefrontMtl.cpp">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
+      <Filter>Source Files\Unfinished\WavefrontMtl</Filter>
     </ClCompile>
     <ClCompile Include="PhongShadingParameterSet.cpp">
       <Filter>Source Files\Unfinished\EntityComponents\Phong Shading Parameters</Filter>
     </ClCompile>
     <ClCompile Include="QuickObj.cpp">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader</Filter>
     </ClCompile>
     <ClCompile Include="MeshFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
@@ -619,40 +622,40 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1\WindowSetup</Filter>
     </ClCompile>
     <ClCompile Include="VideoMode.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
     </ClCompile>
     <ClCompile Include="JoystickBase.cpp">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClCompile>
     <ClCompile Include="JoystickManager.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="MappedGamepad.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="Joystick.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClCompile>
     <ClCompile Include="JoystickStatePrinter.cpp">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClCompile>
     <ClCompile Include="ConnectedMonitors.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentCollections</Filter>
     </ClCompile>
     <ClCompile Include="FSMMonitor.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClCompile>
     <ClCompile Include="FSMWindow.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
     </ClCompile>
     <ClCompile Include="FSMContext.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Context</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Context</Filter>
     </ClCompile>
     <ClCompile Include="FSMCallbackInitializer.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions</Filter>
     </ClCompile>
     <ClCompile Include="FSMMonitorEventCallback.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback</Filter>
     </ClCompile>
     <ClCompile Include="glad\release\glad.c">
       <Filter>Third Party\glad\release</Filter>
@@ -664,19 +667,16 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
     </ClCompile>
     <ClCompile Include="FSMRenderEngine.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine</Filter>
     </ClCompile>
     <ClCompile Include="FSMWindowAttributes.cpp">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
     </ClCompile>
     <ClCompile Include="TessellationControlShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
     <ClCompile Include="TessellationEvaluationShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="QuickObj_NGonParser.cpp">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClCompile>
     <ClCompile Include="FlyingCameraDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo</Filter>
@@ -721,7 +721,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
     <ClCompile Include="TGAImage.cpp">
-      <Filter>Source Files\Utility\Asset Loading\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGALoader</Filter>
     </ClCompile>
     <ClCompile Include="TGASDK\sources\TGA.cpp">
       <Filter>Third Party\TGASDK\source</Filter>
@@ -746,6 +746,18 @@
     </ClCompile>
     <ClCompile Include="ShaderProgram2.cpp">
       <Filter>Source Files\Unfinished</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickObj_NGonParser.cpp">
+      <Filter>Source Files\Unfinished</Filter>
+    </ClCompile>
+    <ClCompile Include="AsciiAsset.cpp">
+      <Filter>Source Files\Utility\Asset Loading\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Face.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -958,20 +970,11 @@
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Unfinished\EntityComponents\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="AsciiAsset.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets</Filter>
-    </ClInclude>
-    <ClInclude Include="Face.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj</Filter>
-    </ClInclude>
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
     </ClInclude>
     <ClInclude Include="WavefrontObj.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontObj\Incomplete</Filter>
+      <Filter>Source Files\Unfinished\WavefrontObj\Incomplete</Filter>
     </ClInclude>
     <ClInclude Include="glm\common.hpp">
       <Filter>Third Party\GLM</Filter>
@@ -1088,7 +1091,7 @@
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
     </ClInclude>
     <ClInclude Include="WavefrontMtl.h">
-      <Filter>Source Files\Utility\Asset Loading\AsciiBasedAssets\WavefrontMtl</Filter>
+      <Filter>Source Files\Unfinished\WavefrontMtl</Filter>
     </ClInclude>
     <ClInclude Include="DefaultPhongIllumination.h">
       <Filter>Source Files\Unfinished\DefaultAssets</Filter>
@@ -1100,7 +1103,7 @@
       <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\FilepathsToAssetDirectories</Filter>
     </ClInclude>
     <ClInclude Include="QuickObj.h">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader</Filter>
     </ClInclude>
     <ClInclude Include="MeshFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
@@ -1142,43 +1145,43 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
     </ClInclude>
     <ClInclude Include="VideoMode.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
     </ClInclude>
     <ClInclude Include="JoystickBase.h">
       <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClInclude>
     <ClInclude Include="JoystickManager.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="MappedGamepad.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="Joystick.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
     </ClInclude>
     <ClInclude Include="JoystickStatePrinter.h">
       <Filter>Source Files\Utility\Debug\Joystick State Printer</Filter>
     </ClInclude>
     <ClInclude Include="ConnectedMonitors.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentCollections</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentCollections</Filter>
     </ClInclude>
     <ClInclude Include="FSMMonitor.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor</Filter>
     </ClInclude>
     <ClInclude Include="FSMWindow.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window</Filter>
     </ClInclude>
     <ClInclude Include="FSMContext.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Context</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Context</Filter>
     </ClInclude>
     <ClInclude Include="FSMCallbackInitializer.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions</Filter>
     </ClInclude>
     <ClInclude Include="FSMMonitorEventCallback.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions\MonitorEventCallback</Filter>
     </ClInclude>
     <ClInclude Include="FSMErrorCallback.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\CallbackFunctions\ErrorCallback</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\CallbackFunctions\ErrorCallback</Filter>
     </ClInclude>
     <ClInclude Include="DebugSettings.h">
       <Filter>Header Files\SetupAndConfiguration\Modifiable\DebugBehavior</Filter>
@@ -1199,19 +1202,16 @@
       <Filter>Source Files\GraphicsLanguageFramework\Version1</Filter>
     </ClInclude>
     <ClInclude Include="FSMRenderEngine.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine</Filter>
     </ClInclude>
     <ClInclude Include="FSMWindowAttributes.h">
-      <Filter>Source Files\Unfinished\GraphicsLanguageFramework\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
+      <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Window\WindowAttributes</Filter>
     </ClInclude>
     <ClInclude Include="TessellationControlShader.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClInclude>
     <ClInclude Include="TessellationEvaluationShader.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="QuickObj_NGonParser.h">
-      <Filter>Source Files\Projects\RenderDemos\AssetLoading\QuickObjLoader</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_Init_Report.h">
       <Filter>Source Files\GraphicsLanguageFramework\Version1\Initialization</Filter>
@@ -1304,7 +1304,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
     <ClInclude Include="TGAImage.h">
-      <Filter>Source Files\Utility\Asset Loading\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGALoader</Filter>
     </ClInclude>
     <ClInclude Include="TGASDK\include\TGA.h">
       <Filter>Third Party\TGASDK\include</Filter>
@@ -1344,6 +1344,18 @@
     </ClInclude>
     <ClInclude Include="ShaderProgram2.h">
       <Filter>Source Files\Unfinished</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickObj_NGonParser.h">
+      <Filter>Source Files\Unfinished</Filter>
+    </ClInclude>
+    <ClInclude Include="AsciiAsset.h">
+      <Filter>Source Files\Utility\Asset Loading\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Face.h">
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
