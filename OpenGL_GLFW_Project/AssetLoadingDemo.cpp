@@ -487,6 +487,7 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 }
 
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
+    assert(quadTextureTestShader); 
     quadTextureTestShader->use();
     TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
     //TGAImage testTexture(R"(C:\Users\Forrest\Documents\GitHub\TGA\datatest\rgb32_top_left_rle.tga)");
@@ -610,8 +611,8 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
@@ -811,9 +812,17 @@ void AssetLoadingDemo::renderLoop() {
         //Draw frame
         //////////////////////////
         updateBaseUniforms();
-        //updateRenderDemoSpecificUniforms();
-        drawVerts();
+        
 
+        //static GLuint queries[4] = { 0u, 0u, 0u, 0u };
+        ////Some Pipeline Statistics Queries Are HardCoded In [For Now]
+        //if ((frameNumber % 60ULL) == 58ULL) {
+        //    glGenQueries(4, &(queries[0]));
+
+        //    
+        //}
+
+        drawVerts();
 
         ///////////////////////////
         //
@@ -1611,8 +1620,8 @@ void AssetLoadingDemo::reportStatistics() noexcept {
     while (framePerformance.framePerformanceListHead != framePerformance.framePerformanceListCurrent) {
 
         //We need to make sure that this object has all of its Timepoints
-        if ((nullptr == (framePerformance.framePerformanceListHead->tBeginRender)) ||
-            (nullptr == (framePerformance.framePerformanceListHead->tFlipBuffers))) {
+        if ((nullptr == (framePerformance.framePerformanceListHead->timepointBeginRender)) ||
+            (nullptr == (framePerformance.framePerformanceListHead->timepointFlipBuffers))) {
             //If a required Timepoint is missing from this object, delete it and move on 
             auto next = framePerformance.framePerformanceListHead->next;
             delete framePerformance.framePerformanceListHead;
@@ -1626,13 +1635,13 @@ void AssetLoadingDemo::reportStatistics() noexcept {
             capturedFramesCounter += 1.0;
             tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
             timeFromLoopBeginToDrawCommandsTotal +=
-                (framePerformance.framePerformanceListHead->tBeginRender->timepoint - t0);
+                (framePerformance.framePerformanceListHead->timepointBeginRender->timepoint - t0);
             timeFromDrawCommandsToFlipBuffersTotal +=
-                (framePerformance.framePerformanceListHead->tFlipBuffers->timepoint -
-                    framePerformance.framePerformanceListHead->tBeginRender->timepoint);
+                (framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint -
+                    framePerformance.framePerformanceListHead->timepointBeginRender->timepoint);
             timeFromFlipBuffersToNextFrameBeginTotal +=
                 (framePerformance.framePerformanceListHead->next->tStart.timepoint -
-                    framePerformance.framePerformanceListHead->tFlipBuffers->timepoint);
+                    framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint);
 
             auto next = framePerformance.framePerformanceListHead->next;
             delete framePerformance.framePerformanceListHead;
@@ -1859,7 +1868,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 
 
 void AssetLoadingDemo::updateBaseUniforms() noexcept {
-    
+    quadTextureTestShader = nullptr;
     if (quadTextureTestShader) {
         quadTextureTestShader->use();
         //Update the quadTextureTestShader uniforms

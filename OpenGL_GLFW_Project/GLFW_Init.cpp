@@ -254,6 +254,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
                 glfwTerminate();
 			}
 		}
+        //TODO... Fix this 
 		//Re-Implement more robust window checking later...  [12 months later... HA!]
 		////If specified display is not connected, try opening on the first non-primary display detected
 		//else if (this->connectedDisplayCount >= 2) {

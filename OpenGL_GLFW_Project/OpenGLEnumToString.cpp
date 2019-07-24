@@ -465,17 +465,129 @@ void DictionaryOfGLEnums::buildDictionary() noexcept {
 
     
 
+    
+    insert(GL_DEPTH_STENCIL,           "GL_DEPTH_STENCIL");           //0x84F9
 
 
+
+    /////////////////////////////////////////////////////
+    //  Requires OpenGL 4.6 or newer below this point  //  
+    /////////////////////////////////////////////////////
+    //The following macro should be defined in 'glad.h' if using OpenGL 4.6
+#ifdef GL_VERSION_4_6
+    
+    //    ...
+
+    //These appear in glad.h at around line 4516 
+    insert(GL_ALPHA4_EXT,              "GL_ALPHA4_EXT");              //0x803B
+    insert(GL_ALPHA8_EXT,              "GL_ALPHA8_EXT");              //0x803C
+    insert(GL_ALPHA12_EXT,             "GL_ALPHA12_EXT");             //0x803D
+    insert(GL_ALPHA16_EXT,             "GL_ALPHA16_EXT");             //0x803E
+    insert(GL_LUMINANCE4_EXT,          "GL_LUMINANCE4_EXT");          //0x803F
+    insert(GL_LUMINANCE8_EXT,          "GL_LUMINANCE8_EXT");          //0x8040
+    insert(GL_LUMINANCE12_EXT,         "GL_LUMINANCE12_EXT");         //0x8041
+    insert(GL_LUMINANCE16_EXT,         "GL_LUMINANCE16_EXT");         //0x8042
+    insert(GL_LUMINANCE4_ALPHA4_EXT,   "GL_LUMINANCE4_ALPHA4_EXT");   //0x8043    
+    insert(GL_LUMINANCE6_ALPHA2_EXT,   "GL_LUMINANCE6_ALPHA2_EXT");   //0x8044
+    insert(GL_LUMINANCE8_ALPHA8_EXT,   "GL_LUMINANCE8_ALPHA8_EXT");   //0x8045
+    insert(GL_LUMINANCE12_ALPHA4_EXT,  "GL_LUMINANCE12_ALPHA4_EXT");  //0x8046
+    insert(GL_LUMINANCE12_ALPHA12_EXT, "GL_LUMINANCE12_ALPHA12_EXT"); //0x8047
+    insert(GL_LUMINANCE16_ALPHA16_EXT, "GL_LUMINANCE16_ALPHA16_EXT"); //0x8048
+    insert(GL_INTENSITY_EXT,           "GL_INTENSITY_EXT");           //0x8049
+    insert(GL_INTENSITY4_EXT,          "GL_INTENSITY4_EXT");          //0x804A
+    insert(GL_INTENSITY8_EXT,          "GL_INTENSITY8_EXT");          //0x804B
+    insert(GL_INTENSITY12_EXT,         "GL_INTENSITY12_EXT");         //0x804C
+    insert(GL_INTENSITY16_EXT,         "GL_INTENSITY16_EXT");         //0x804D
+    insert(GL_RGB2_EXT,                "GL_RGB2_EXT");                //0x804E
+    
+    //Apparently OpenGL decided to reuse all of the following enum values as
+    //they had before, the only difference being the macro adding an "_EXT" to
+    //the end. Thus all of these following entries already appear in the map.
+    //This happens again in several other places below within this 4.6-specific
+    //section.
+
+    //insert(GL_RGB4_EXT,              "GL_RGB4_EXT");                //0x804F
+    //insert(GL_RGB5_EXT,              "GL_RGB5_EXT");                //0x8050
+    //insert(GL_RGB8_EXT,              "GL_RGB8_EXT");                //0x8051
+    //insert(GL_RGB10_EXT,             "GL_RGB10_EXT");               //0x8052
+    //insert(GL_RGB12_EXT,             "GL_RGB12_EXT");               //0x8053
+    //insert(GL_RGB16_EXT,             "GL_RGB16_EXT");               //0x8054
+    //insert(GL_RGBA2_EXT,             "GL_RGBA2_EXT");               //0x8055
+    //insert(GL_RGBA4_EXT,             "GL_RGBA4_EXT");               //0x8056
+    //insert(GL_RGB5_A1_EXT,           "GL_RGB5_A1_EXT");             //0x8057
+    //insert(GL_RGBA8_EXT,             "GL_RGBA8_EXT");               //0x8058
+    //insert(GL_RGB10_A2_EXT,          "GL_RGB10_A2_EXT");            //0x8059
+    //insert(GL_RGBA12_EXT,            "GL_RGBA12_EXT");              //0x805A
+    //insert(GL_RGBA16_EXT,            "GL_RGBA16_EXT");              //0x805B
+
+    //   ...
 
     
-    insert(GL_DEPTH_STENCIL,     "GL_DEPTH_STENCIL");  //0x84F9
+    insert(GL_TEXTURE_TOO_LARGE_EXT,   "GL_TEXTURE_TOO_LARGE_EXT");   //0x8065
 
+    //   ...               /* These Names are too long for the pattern... */  
 
+    insert(GL_COMPRESSED_LUMINANCE_LATC1_EXT,
+                                       "GL_COMPRESSED_LUMINANCE_LATC1_EXT"); //0x8C70
+    insert(GL_COMPRESSED_SIGNED_LUMINANCE_LATC1_EXT,
+                                "GL_COMPRESSED_SIGNED_LUMINANCE_LATC1_EXT"); //0x8C71
+    insert(GL_COMPRESSED_LUMINANCE_ALPHA_LATC2_EXT,
+                                 "GL_COMPRESSED_LUMINANCE_ALPHA_LATC2_EXT"); //0x8C72
+    insert(GL_COMPRESSED_SIGNED_LUMINANCE_ALPHA_LATC2_EXT,
+                          "GL_COMPRESSED_SIGNED_LUMINANCE_ALPHA_LATC2_EXT"); //0x8C73
+    //insert(GL_COMPRESSED_RED_RGTC1_EXT,
+    //                                   "GL_COMPRESSED_RED_RGTC1_EXT");     //0x8DBB
+    //insert(GL_COMPRESSED_SIGNED_RED_RGTC1_EXT,
+    //                                 "GL_COMPRESSED_SIGNED_RED_RGTC1_EXT");//0x8DBC
+    //insert(GL_COMPRESSED_RED_GREEN_RGTC2_EXT, 
+    //                                  "GL_COMPRESSED_RED_GREEN_RGTC2_EXT");//0x8DBD
+    //insert(GL_COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT, 
+    //                           "GL_COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT");//0x8DBE
+    insert(GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
+                                          "GL_COMPRESSED_RGB_S3TC_DXT1_EXT");//0x83F0
+    insert(GL_COMPRESSED_RGBA_S3TC_DXT1_EXT,
+                                         "GL_COMPRESSED_RGBA_S3TC_DXT1_EXT");//0x83F1
+    insert(GL_COMPRESSED_RGBA_S3TC_DXT3_EXT,
+                                         "GL_COMPRESSED_RGBA_S3TC_DXT3_EXT");//0x83F2
+    insert(GL_COMPRESSED_RGBA_S3TC_DXT5_EXT,
+                                         "GL_COMPRESSED_RGBA_S3TC_DXT5_EXT");//0x83F3
 
-  
+    //     ...
+
+    //insert(GL_SRGB_EXT,                "GL_SRGB_EXT");              //0x8C40
+    //insert(GL_SRGB8_EXT,               "GL_SRGB8_EXT");             //0x8C41
+    //insert(GL_SRGB_ALPHA_EXT,          "GL_SRGB_ALPHA_EXT");        //0x8C42
+    //insert(GL_SRGB8_ALPHA8_EXT,        "GL_SRGB8_ALPHA8_EXT");      //0x8C43
+    insert(GL_SLUMINANCE_ALPHA_EXT,    "GL_SLUMINANCE_ALPHA_EXT");    //0x8C44
+    insert(GL_SLUMINANCE8_ALPHA8_EXT,  "GL_SLUMINANCE8_ALPHA8_EXT");  //0x8C45
+    insert(GL_SLUMINANCE_EXT,          "GL_SLUMINANCE_EXT");          //0x8C46
+    insert(GL_SLUMINANCE8_EXT,         "GL_SLUMINANCE8_EXT");         //0x8C47
+    //insert(GL_COMPRESSED_SRGB_EXT,     "GL_COMPRESSED_SRGB_EXT");   //0x8C48
+    //insert(GL_COMPRESSED_SRGB_ALPHA_EXT,
+    //                                "GL_COMPRESSED_SRGB_ALPHA_EXT");//0x8C49
+    insert(GL_COMPRESSED_SLUMINANCE_EXT,
+                                      "GL_COMPRESSED_SLUMINANCE_EXT");//0x8C4A
+    insert(GL_COMPRESSED_SLUMINANCE_ALPHA_EXT,
+                                "GL_COMPRESSED_SLUMINANCE_ALPHA_EXT");//0x8C4B
+    insert(GL_COMPRESSED_SRGB_S3TC_DXT1_EXT,
+                                  "GL_COMPRESSED_SRGB_S3TC_DXT1_EXT");//0x8C4C
+    insert(GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT,
+                            "GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT");//0x8C4D
+    insert(GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT,
+                            "GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT");//0x8C4E
+    insert(GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT,
+                            "GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT");//0x8C4F
+#endif //GL_VERSION_4_6
 
 }
+
+
+
+
+
+
+//Old leftover Code. I thought perhaps it might once again have a usage
+//since it cherry-picks special sets of values
 #if 0
 
 

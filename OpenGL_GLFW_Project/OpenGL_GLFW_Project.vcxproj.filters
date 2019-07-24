@@ -373,9 +373,6 @@
     <Filter Include="Source Files\Utility\PerformanceProfiling">
       <UniqueIdentifier>{6367e239-9a61-480d-b9f4-0040431a12c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\PerformanceProfiling\Timepoint">
-      <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Texture">
       <UniqueIdentifier>{c47d5824-7ccc-4408-8f3e-b9ed11ef2bd9}</UniqueIdentifier>
     </Filter>
@@ -511,17 +508,8 @@
     <Filter Include="Source Files\Utility\Asset Loading\AudioAssets">
       <UniqueIdentifier>{65347c51-acf1-424c-954b-e92bfcc79871}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets">
-      <UniqueIdentifier>{0432b6ba-b9c3-4af6-a210-1303a276a611}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\Common">
       <UniqueIdentifier>{c229ddf0-ce1b-468d-b695-aea29ad4d871}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader">
-      <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal">
-      <UniqueIdentifier>{8caadb96-ae92-4c6a-a157-e1b048f4206d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
@@ -531,6 +519,27 @@
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]">
       <UniqueIdentifier>{4a4d314f-295a-45c2-af11-2d353d42af00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\ImageLoader">
+      <UniqueIdentifier>{2cb097aa-71e7-4d95-aea1-2f7dcd94561d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\MeshAssets">
+      <UniqueIdentifier>{0432b6ba-b9c3-4af6-a210-1303a276a611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader">
+      <UniqueIdentifier>{ea0c641a-0967-4be4-a105-348152c8dae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader\QuidkObjLoaderInternal">
+      <UniqueIdentifier>{8caadb96-ae92-4c6a-a157-e1b048f4206d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\PerformanceProfiling\Application">
+      <UniqueIdentifier>{f32efec0-92dc-4043-9a66-0238537b137c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\PerformanceProfiling\Application\Timepoint">
+      <UniqueIdentifier>{0720beb8-3fdc-4208-8a63-714c29a9b54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\PerformanceProfiling\GPU">
+      <UniqueIdentifier>{0e4415b7-e863-4830-8eb5-7f9ba26a88db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -595,7 +604,7 @@
       <Filter>Source Files\Unfinished\EntityComponents\Phong Shading Parameters</Filter>
     </ClCompile>
     <ClCompile Include="QuickObj.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader</Filter>
     </ClCompile>
     <ClCompile Include="MeshFunctions.cpp">
       <Filter>Source Files\Utility\Math</Filter>
@@ -688,13 +697,10 @@
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
     </ClCompile>
     <ClCompile Include="Timepoint.cpp">
-      <Filter>Source Files\Utility\PerformanceProfiling\Timepoint</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling\Application\Timepoint</Filter>
     </ClCompile>
     <ClCompile Include="OpenGLEnumToString.cpp">
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
-    </ClCompile>
-    <ClCompile Include="FramePerformanceTimepointsList.cpp">
-      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClCompile>
     <ClCompile Include="FramebufferPreferredUsage.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]</Filter>
@@ -757,10 +763,16 @@
       <Filter>Source Files\Utility\Asset Loading\Common</Filter>
     </ClCompile>
     <ClCompile Include="Face.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="FramePerformanceTimepointsList.cpp">
+      <Filter>Source Files\Utility\PerformanceProfiling\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Profiler.cpp">
+      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1106,7 +1118,7 @@
       <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY\FilepathsToAssetDirectories</Filter>
     </ClInclude>
     <ClInclude Include="QuickObj.h">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader</Filter>
     </ClInclude>
     <ClInclude Include="MeshFunctions.h">
       <Filter>Source Files\Utility\Math</Filter>
@@ -1256,19 +1268,13 @@
       <Filter>Third Party\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="Timepoint.h">
-      <Filter>Source Files\Utility\PerformanceProfiling\Timepoint</Filter>
+      <Filter>Source Files\Utility\PerformanceProfiling\Application\Timepoint</Filter>
     </ClInclude>
     <ClInclude Include="RestrictedOperationViolation.h">
       <Filter>Source Files\Unfinished</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLEnumToString.h">
       <Filter>Source Files\Utility\Debug\OpenGLEnumToString</Filter>
-    </ClInclude>
-    <ClInclude Include="FramePerformanceTimepoints.h">
-      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
-    </ClInclude>
-    <ClInclude Include="FramePerformanceTimepointsList.h">
-      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
     </ClInclude>
     <ClInclude Include="FramebufferPreferredUsage.h">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]</Filter>
@@ -1355,10 +1361,22 @@
       <Filter>Source Files\Utility\Asset Loading\Common</Filter>
     </ClInclude>
     <ClInclude Include="Face.h">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
-      <Filter>Source Files\Utility\Asset Loading\ModelAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\MeshAssets\QuickObjLoader\QuidkObjLoaderInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="FramePerformanceTimepoints.h">
+      <Filter>Source Files\Utility\PerformanceProfiling\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="FramePerformanceTimepointsList.h">
+      <Filter>Source Files\Utility\PerformanceProfiling\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Profiler.h">
+      <Filter>Source Files\Utility\PerformanceProfiling</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineObserver.h">
+      <Filter>Source Files\Utility\PerformanceProfiling\GPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

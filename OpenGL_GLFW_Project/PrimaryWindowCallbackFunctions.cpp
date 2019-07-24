@@ -39,7 +39,7 @@ namespace WindowCallbackInternal {
 
 	void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
-		fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected framebuffer size update! New fb is %dx%d pixels\n", width, height);
+		//fprintf(MSGLOG, "\nGLFW_CALLBACK::Detected framebuffer size update! New fb is %dx%d pixels\n", width, height);
         if ( (width > 0) && (height > 0) )
 		    glViewport(0, 0, width, height);
 

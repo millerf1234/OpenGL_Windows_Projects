@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
     <ClCompile Include="BasicColorAttachmentTexture.cpp" />
@@ -261,6 +262,8 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationConstantSettings.h" />
+    <ClInclude Include="PipelineObserver.h" />
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="AsciiAsset.h" />
     <ClInclude Include="AssetLoadingDemo.h" />
     <ClInclude Include="BasicColorAttachmentTexture.h" />

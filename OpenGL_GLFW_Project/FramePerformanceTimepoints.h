@@ -11,33 +11,33 @@ class FramePerformanceTimepoints final {
 public:
     unsigned long long frameNumber;
     Timepoint tStart;
-    Timepoint* tBeginRender;
-    Timepoint* tFlipBuffers;
+    Timepoint* timepointBeginRender;
+    Timepoint* timepointFlipBuffers;
     FramePerformanceTimepoints* next;
     FramePerformanceTimepoints(unsigned long long frameNum,
         Timepoint timeStart) : frameNumber(frameNum),
         tStart(timeStart),
-        tBeginRender(nullptr),
-        tFlipBuffers(nullptr),
+        timepointBeginRender(nullptr),
+        timepointFlipBuffers(nullptr),
         next(nullptr) {
     }
     ~FramePerformanceTimepoints() noexcept {
-        if (tBeginRender) {
-            delete tBeginRender;
-            tBeginRender = nullptr;
+        if (timepointBeginRender) {
+            delete timepointBeginRender;
+            timepointBeginRender = nullptr;
         }
-        if (tFlipBuffers) {
-            delete tFlipBuffers;
-            tFlipBuffers = nullptr;
+        if (timepointFlipBuffers) {
+            delete timepointFlipBuffers;
+            timepointFlipBuffers = nullptr;
         }
     }
     FramePerformanceTimepoints(FramePerformanceTimepoints&& that) noexcept {
         frameNumber = that.frameNumber;
         tStart = that.tStart;
-        tBeginRender = that.tBeginRender;
-        that.tBeginRender = nullptr;
-        tFlipBuffers = that.tFlipBuffers;
-        that.tFlipBuffers = nullptr;
+        timepointBeginRender = that.timepointBeginRender;
+        that.timepointBeginRender = nullptr;
+        timepointFlipBuffers = that.timepointFlipBuffers;
+        that.timepointFlipBuffers = nullptr;
         next = that.next;
         that.next = nullptr;
     }

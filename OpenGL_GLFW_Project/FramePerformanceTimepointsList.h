@@ -20,11 +20,12 @@ public:
 
 
     void prepareToEnterRenderLoop() {
+
         constexpr const char decoyMsg[] = "Frame 0 Decoy";
         allocateFramePerfTimepointsAndAssignToCurrent(0ull, decoyMsg);
         assert(framePerformanceListCurrent);
-        framePerformanceListCurrent->tBeginRender = new Timepoint(decoyMsg);
-        framePerformanceListCurrent->tFlipBuffers = new Timepoint(decoyMsg);
+        framePerformanceListCurrent->timepointBeginRender = new Timepoint(decoyMsg);
+        framePerformanceListCurrent->timepointFlipBuffers = new Timepoint(decoyMsg);
         framePerformanceListHead = framePerformanceListCurrent;
     }
 
@@ -38,14 +39,14 @@ public:
     //have completed processing and draw-calls are beginning to be issued
     //[This includes uniform updates]
     void recordBeginDrawCommandsTimepoint() {
-        assert(nullptr == framePerformanceListCurrent->tBeginRender);
-        framePerformanceListCurrent->tBeginRender = 
+        assert(nullptr == framePerformanceListCurrent->timepointBeginRender);
+        framePerformanceListCurrent->timepointBeginRender = 
             new Timepoint("Input and Logic Completed. Issuing Draw Calls");
     }
 
     void recordReadyToFlipBuffersTimepoint() {
-        assert(nullptr == framePerformanceListCurrent->tFlipBuffers);
-        framePerformanceListCurrent->tFlipBuffers =
+        assert(nullptr == framePerformanceListCurrent->timepointFlipBuffers);
+        framePerformanceListCurrent->timepointFlipBuffers =
             new Timepoint("All Draw Calls Issued! Preparing to Flip Buffers!");
     }
 

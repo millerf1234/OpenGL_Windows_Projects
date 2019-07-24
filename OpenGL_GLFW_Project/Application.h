@@ -64,6 +64,7 @@ private:
     //Call this function once the Graphics Language Functions have all been loaded to announce to the 
     //console what specifics the platforms OpenGL implementation is operating with.
     void reportDetailsFromGLImplementation(); 
+    void reportDetailsFromGLImplementationOnTextureUnitLimitations();
 	void configureGraphicsContextDebugCallbackFunctions() const; //The callback function is provided by Application and is found in its own header file 
 	void setInitialGLState();
 	void checkMSAA() const; //Prints MSAA config to MSGLOG

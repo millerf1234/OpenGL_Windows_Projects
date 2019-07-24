@@ -9,6 +9,8 @@
 
 #include "Application.h"
 
+#include "OpenGLEnumToString.h"   //Needed to convert OpenGL query results to strings
+
 //The renderdemos are included in the order that they were written. As such, the 
 //level of complexity in each project increases accordingly. 
 #include "TeapotExplosion.h"
@@ -247,7 +249,7 @@ bool Application::loadGraphicsLanguageFunctions() {
 	}
 
     reportDetailsFromGLImplementation();
-
+    reportDetailsFromGLImplementationOnTextureUnitLimitations();
 	return true;
 }
 
@@ -258,6 +260,7 @@ void Application::reportDetailsFromGLImplementation() {
     //}
 
     fprintf(MSGLOG, "  Graphics Language loaded.\n");
+
     fprintf(MSGLOG, "\tGraphics Language Version:         OpenGL %s\n",
         glGetString(GL_VERSION));
     fprintf(MSGLOG, "\tGraphics Shading Language Version: %s\n",
@@ -266,8 +269,83 @@ void Application::reportDetailsFromGLImplementation() {
         glGetString(GL_VENDOR));
     fprintf(MSGLOG, "\tGraphics Rendering Device:         %s\n",
         glGetString(GL_RENDERER));
-
 }
+
+void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
+
+    std::ostringstream texLimReport;
+
+    texLimReport << "\n"
+        << "\t\t   +-------------------------------+\n"
+        << "\t\t   | TEXTURE UNIT OPERATING LIMITS |\n"
+        << "\t\t   +-------------------------------+\n";
+
+    //Maximum Supported Texture Size
+    GLint maxTexSize = 0;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+    texLimReport << "\t  Maximum Texture Size:                         "
+        << maxTexSize << "\n";
+
+    //Maximum Supported Texture Size [CubeMap]
+    GLint maxTexSizeCubemap = 0;
+    glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, &maxTexSizeCubemap);
+    texLimReport << "\t  Maximum Texture Size [CUBEMAP]:               "
+        << maxTexSizeCubemap << "\n";
+
+    //Maximum Supported Simultaneous Texture Units
+    GLint maxTexUnits = 0;
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTexUnits);
+    texLimReport << "\t  MAXIMUM SUPPORTED SIMULTANEOUS TEXTURE UNITS: "
+        << maxTexUnits << "\n";
+
+    //Supported Compressed Texture Formats Count
+    GLint numSupportedCompressedTextureFormats = 0;
+    glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS,
+                  &numSupportedCompressedTextureFormats);
+    texLimReport << "\t  SUPPORTED COMPRESSED TEXTURE FORMATS:         "
+        << numSupportedCompressedTextureFormats << "\n";
+    
+
+    //Supported Compressed Texture Formats Array 
+    // [Some of these formats supported by my computer are 
+    //  really old and aren't part of Modern OpenGL]
+    //  See: https://www.khronos.org/registry/OpenGL/extensions/OES/OES_compressed_paletted_texture.txt
+    constexpr const bool REPORT_SUPPORTED_COMPRESSED_TEXTURE_FORMATS_TO_CONSOLE = false;
+    if constexpr (REPORT_SUPPORTED_COMPRESSED_TEXTURE_FORMATS_TO_CONSOLE) {
+        GLint* supportedCompTexFormats = new GLint[numSupportedCompressedTextureFormats];
+        if (!supportedCompTexFormats) {
+            fprintf(ERRLOG, "\nMemory Allocation Failed!\n");
+            std::exit(EXIT_FAILURE);
+        }
+        for (GLint i = 0; i < numSupportedCompressedTextureFormats; i++) {
+            supportedCompTexFormats[i] = 0;
+        }
+        glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, &(supportedCompTexFormats[0]));
+        for (GLint i = 0; i < numSupportedCompressedTextureFormats; i++) {
+            if (supportedCompTexFormats[i] == 0)
+                break;
+            texLimReport << "\t[0x" << std::hex << supportedCompTexFormats[i]
+                << std::dec << "]   " << convertGLEnumToString(supportedCompTexFormats[i])
+                << "\n";
+        }
+        delete[] supportedCompTexFormats;
+        supportedCompTexFormats = nullptr;
+    }
+
+
+    //EXPERIMENT WITH USING A QUERY OBJECT
+    //WARNING! THIS IS NOT HOW TIMESTAMP QUERIES WORK! [See OpenGL SuperBible (7e) P.547]
+    //Get a timestamp from the context just to see what happens
+    //GLuint timestampQuery = 0u;
+    //glGenQueries(1, &timestampQuery);
+    //glQueryCounter(GL_TIMESTAMP, timestampQuery);
+    //GLuint readTimeVal = 0u;
+    //glGetQueryObjectuiv(timestampQuery, GL_QUERY_RESULT, &readTimeVal);
+    //glDeleteQueries(1, &timestampQuery);
+
+    fprintf(MSGLOG, "%s\n", texLimReport.str().c_str());
+}
+
 
 
 void Application::configureGraphicsContextDebugCallbackFunctions() const {

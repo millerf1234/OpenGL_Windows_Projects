@@ -38,8 +38,8 @@
                                                                                    
 #pragma once                                                                       
                                                                                    
-#ifndef DEBUG_SETTINGS_H___                                                        
-#define DEBUG_SETTINGS_H___                                                        
+#ifndef DEBUG_SETTINGS_H_                                                        
+#define DEBUG_SETTINGS_H_                                                        
 
 
 
@@ -61,11 +61,11 @@
 //long after the Application event that triggered them. It is recommended to leave this enabled while
 //debugging unless absolutely necessary. 
 //This macro will only be used if the 'USE_DEBUG_' macro is defined.
-#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
+//#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
 
 
 
 
 
 
-#endif //DEBUG_SETTINGS_H___
+#endif //DEBUG_SETTINGS_H_

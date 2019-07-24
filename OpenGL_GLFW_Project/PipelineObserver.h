@@ -1,6 +1,10 @@
 
 //INCOMPLETE!
 
+//REQUIRES OPENGL 4.6 TO WORK PROPERLY. PREVIOUS VERSIONS OF 
+//OPENGL REQUIRE THE EXTENSION GL_ARB_pipeline_statistics to 
+//be available on the platform.
+
 #pragma once
 
 #ifndef PIPELINE_OBSERVER_H_
@@ -117,7 +121,7 @@ public:
         //This implementation works as long as the order in which these 'if' statements 
         //occur never change. (The other option would be to iterate through the ActiveQuery
         //vector with a switch statement to enable each query. The other option is better 
-        //because it doesn't rely on the order of these if statements occurring exactly the same
+        //because it doesn't rely on the order of these 'if' statements occurring exactly the same
         //multiple times in multiple places.
         if (primitivesGenerated.enabled) {
             glBeginQuery(GL_PRIMITIVES_GENERATED, mQueries_[nextQueryIndex++]);
@@ -185,37 +189,37 @@ public:
 
 
         if (primitivesGenerated.enabled) {
-            glEndQuery(GL_PRIMITIVES_GENERATED, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (verticesSubmitted.enabled) {
-            glEndQuery(GL_VERTICES_SUBMITTED, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (primitivesSubmitted.enabled) {
-            glEndQuery(GL_PRIMITIVES_SUBMITTED, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (vertexShaderInvocations.enabled) {
-            glEndQuery(GL_VERTEX_SHADER_INVOCATIONS, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (tessControlShaderPatches.enabled) {
-            glEndQuery(GL_TESS_CONTROL_SHADER_PATCHES, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (geomInvocations.enabled) {
-            glEndQuery(GL_GEOMETRY_SHADER_INVOCATIONS, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (geomPrimitivesEmitted.enabled) {
-            glEndQuery(GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (fragInvocations.enabled) {
-            glEndQuery(GL_FRAGMENT_SHADER_INVOCATIONS, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (computeInvocations.enabled) {
-            glEndQuery(GL_COMPUTE_SHADER_INVOCATIONS, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (clippingInputPrimitives.enabled) {
-            glEndQuery(GL_CLIPPING_INPUT_PRIMITIVES, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
         if (clippingOutputPrimitives.enabled) {
-            glEndQuery(GL_CLIPPING_OUTPUT_PRIMITIVES, mQueries_[nextQueryIndex++]);
+            glEndQuery(mQueries_[nextQueryIndex++]);
         }
 
         return "";

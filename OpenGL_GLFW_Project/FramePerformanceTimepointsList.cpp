@@ -19,7 +19,7 @@
 //only through the 'Head' pointer, and all memory allocations are performed
 //using the 'Current' pointer. This ensures that all memory is accounted
 //for thus greatly reducing the possibility of a leak.
-//
+
 
 FramePerformanceTimepointsList::FramePerformanceTimepointsList() : framePerformanceListSize(0ULL),
                                                                    framePerformanceListHead(nullptr),
