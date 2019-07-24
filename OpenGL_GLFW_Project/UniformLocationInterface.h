@@ -122,74 +122,8 @@ namespace ShaderInterface {
 		void updateUniformMat4x4(const GLchar * uniformName, const glm::mat4 * matrix, GLsizei count = 1) { fptr_UpdateUniformMat4_(uniformName, matrix, count); }
 		void updateUniformMat4x4(const GLchar * uniformName, const GLfloat * matrix, GLsizei count = 1) { fptr_UpdateUniformMat4Array_(uniformName, matrix, count); }
 
-
-        //                UNIFORM LOCATION CACHEING FUNCTIONALITY
-        //   Allows for client code to request a 'cachedUniformLocation' object that
-        //   can be used to save several pointer dereferences and a hash-table look up
-        //   operation which otherwise are required internally for each of the 
-        //  'updateUniform__##()' member functions of this object. The downside 
-        //   ShaderProgram's UniformTracker class when updating uniform values.
-        //                                               
-		/*  Uniform Cacheing is disabled for now... 
-        //       ( I have not actually done tests to verify this for myself, but my hunch is that the performance  
-        //         benefits of using CachedUniformLocations are minimal, since really all that these functions do 
-        //         is pass along to the GL Context a request to update the Uniform. Thus the speed at which uniforms 
-        //         will be updated between draw calls will be almost entirely dependent on the GL Context
-        //         
-        //       ( Also having these functions return std::weak_ptr types may be unecessary or even improper usage 
-        //        of std::weak_ptr )
-        //
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1i(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1u(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1f(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1iv(const GLchar * uniformName, GLsizei count = 1); //A vector is a pointer to an array of the element instead of seperate arguments
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1uv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform1fv(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2i(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2u(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2f(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2iv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2uv(const GLchar * uniformName,  GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform2fv(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3i(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3u(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3f(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3iv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3uv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform3fv(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4i(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4u(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4f(const GLchar * uniformName);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4iv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4uv(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniform4fv(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUnifromMat2(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x2(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x3(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat2x4(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x2(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x3(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat3x4(const GLchar * uniformName, GLsizei count = 1);
-
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x2(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x3(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4(const GLchar * uniformName, GLsizei count = 1);
-		std::weak_ptr<CachedUniformLocation> getCachedUniformMat4x4(const GLchar * uniformName, GLsizei count = 1);
-		*/
-
 		//Gets the number of uniform locations that have successfully been updated for this ShaderProgram. 
 		size_t getNumberOfTrackedUniforms() const;
-
-		//Returns the number of unique CachedUniformLocations that have been given away by this object. In other
-		//words, giving away multiple weak_pointers to the same UniformLocation would only count as 1 in the tally.
-		size_t getNumberOfCachedUniforms() const;// { return mCachedLocationsCount; }
 
 		//Returns the GL-assigned program ID that this objects uniform locations are associated with.
 		GLuint getProgramID() const;// { return mProgramID; }

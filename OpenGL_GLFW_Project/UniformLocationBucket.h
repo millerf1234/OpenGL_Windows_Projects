@@ -11,7 +11,7 @@
 //		 mostly intended for internal-use-only by a UniformLocationTracker. Whilestwhile, the UniformLocationTracker comes with an
 //		 interface for allowing calls to bypass the UniformLocationTracker to result in faster updates.
 //
-// Actually I tweaked my implementation slightly right after first writing this, so having these buckets know their uniform type is probably surpurfulous since they
+// Actually I tweaked my implementation slightly right after first writing this, so having these buckets know their uniform type is probably superfluous since they
 // will be arranged in their containers by type. 
 //
 //
@@ -19,8 +19,8 @@
 
 #pragma once
 
-#ifndef UNIFORM_LOCATION_BUCKET
-#define UNIFORM_LOCATION_BUCKET
+#ifndef UNIFORM_LOCATION_BUCKET_H_
+#define UNIFORM_LOCATION_BUCKET_H_
 
 #ifndef WRNLOG
 #define WRNLOG stderr
@@ -37,7 +37,9 @@ namespace ShaderInterface {
 		INT2, UINT2, FLOAT2, INT2V, UINT2V, FLOAT2V,
 		INT3, UINT3, FLOAT3, INT3V, UINT3V, FLOAT3V,
 		INT4, UINT4, FLOAT4, INT4V, UINT4V, FLOAT4V,
-		MAT2, MAT3, MAT4, MAT2X3, MAT3X2, MAT2X4, MAT4X2, MAT3X4, MAT4X3,   //All matrices are of fv (float vector) type
+		MAT2,   MAT3,   MAT4,
+        MAT2X3, MAT3X2, MAT2X4,
+        MAT4X2, MAT3X4, MAT4X3,   //All matrices are of fv (float vector) type
 		UNSPECIFIED
 	};
 
@@ -95,12 +97,15 @@ namespace ShaderInterface {
 		}
 
 		void setType(UniformType type) {
-			if (mType_ != UniformType::UNSPECIFIED) { //If a type has already been set for this uniform location
+            assert(mType_ != UniformType::UNSPECIFIED);
+            mType_ = type;
+			/* //Old Implementation from before I was aware of 'assert'
+            if (mType_ != UniformType::UNSPECIFIED) { //If a type has already been set for this uniform location
 				fprintf(WRNLOG, "WARNING! Unable to set type for uniform %s.\nReason: This uniform already has a type!\n\n", mName_.c_str());
 			}
 			else {
 				mType_ = type;
-			}
+			} */
 		}
 
 		bool error() const { return mError_; }
@@ -124,4 +129,4 @@ namespace ShaderInterface {
 
 } //namespace ShaderInterface
 
-#endif //#ifndef UNIFORM_LOCATION_BUCKET
+#endif //#ifndef UNIFORM_LOCATION_BUCKET_H_

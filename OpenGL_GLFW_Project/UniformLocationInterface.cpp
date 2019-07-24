@@ -67,13 +67,6 @@ namespace ShaderInterface {
 		return 0u;
 	}
 
-	size_t UniformLocationInterface::getNumberOfCachedUniforms() const {
-		if (mActivated_) {
-			return mUniformLocationTracker_->getNumberOfCachedUniforms();
-		}
-		return 0u;
-	}
-
 	GLuint UniformLocationInterface::getProgramID() const {
 		if (mActivated_) {
 			return mUniformLocationTracker_->getProgramID();
