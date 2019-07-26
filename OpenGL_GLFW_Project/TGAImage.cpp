@@ -15,47 +15,60 @@
 #include "TGASDK/include/TGAFile.h"
 #include "TGASDK/include/TGAError.hpp"
 
+/*                    TGA SDK Image File Loader Class
+X -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~- X
+|      The TGA SDK library's sample code uses this following class for        |
+|      performing file I/O. Advantage is taken of having access to this       |
+|      already implemented and [presumably] correct class by first            |
+|      slightly modifying it to conform with modern standards [as             |
+|      described next] then simply reusing it as part of TGAImage's           |
+|      implementation to serve as the file loader. This is ideal because      |
+|      the TGA SDK is able to construct its parser object directly from       |
+|      any TGAFileImpl which has successfully acquired file data.             |
+X -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~-  -~-~- X 
+*/
 
-
-//I wound up having to slightly modify this following third party code to get
-//it up to Visual Studio's standards. The modifications were necessary because 
-//the c-function 'fopen()' won't compile in modern visual studio without first  
-//disabling some security features. Instead the safe version 'fopen_s()' is
-//used. The difference with 'fopen_s()' is instead of returning a FILE*, it 
-//now returns a errno_t based upon the result of attempting to open the file. 
-//The FILE* is now passed back to the application using a pointer to it as the 
-//first argument to 'fopen_s()'. To get this errno_t back out to the 
-//TGAImageImpl code, an additional parameter is passed to the constructor which
-//is a pointer to an errno_t. The result of opening the file will be written 
-//to this pointer. If the pointer is NULL, no information about the operation
-//will be returned.
+///////////////////////////////////////////////////////////////////////////////
+////         MODIFICATION REQUIRED TO COMPLY WITH MODERN STANDARDS         ////
+///////////////////////////////////////////////////////////////////////////////
+////     To allow the 'TGAFileImpl' class to function within a Modern      ////
+////     Visual Studio project, a modification to its constructor was      ////
+////     necessary. This is because the unmodified implementation uses     ////
+////       the old traditional C-function 'fopen()'. Unfortunately         ////
+////     'fopen()' is so ancient that it suffers from potential buffer     ////
+////        overflows which in modern computers is a major security        //// 
+////     vulnerability. Thus 'fopen()' has been deprecated by Microsoft    ////
+////      and will fail to compile in modern Visual Studio [unless the     ////
+////        code explicitly disables some of its security features].       ////
+////                                                                       ////
+////        To allow code reliant upon 'fopen()' a viable alternative,     ////
+////    Microsoft has introduced their custom safe version 'fopen_s()'.    ////
+////   The difference with 'fopen_s()' is instead of returning a FILE*,    ////
+////   it now returns an errno_t based upon the result of attempting to    ////
+////   open the file. The FILE* is now passed back to the calling code     ////
+////   through the usage of a pointer to the FILE* which will be set to    ////
+////   the open FILE handle on success. To get this errno_t back out to    ////
+////   the TGAImageImpl code, an additional parameter is passed to the     ////
+////     constructor which is a pointer to an errno_t. The result of       ////
+////      opening the file will be written to this pointer. If the         ////
+//// pointer is NULL, no information about the operation will be returned. ////
+///////////////////////////////////////////////////////////////////////////////
 
 //To keep the distinction clear between my code and not my code, I implement
-//my changes all behind a macro
+//my changes all behind this macro
 #define REPLACEMENT_CONSTRUCTOR                                               \
 TGAFileImpl(const char* file, errno_t* result)                                \
 {                                                                             \
     const errno_t fileOpeningError = fopen_s(&m_hFile, file, "r");            \
     if (result)                                                               \
-        * result = fileOpeningError;                                          \
+        *result = fileOpeningError;                                           \
 }
 
 //----------------------------------------------------------------------------\
 //////////////////////////////////////////////////////////////////////////////|
 ////////////////////////       THIRD PARTY CODE       ////////////////////////|
 //////////////////////////////////////////////////////////////////////////////|
-//      The TGA SDK library's sample code uses this following class for     //|
-//      performing file I/O. Advantage is taken of having access to this    //|
-//      already implemented and [presumably] correct class by first         //|
-//      slightly modifying it to conform with modern standards then simply  //|
-//      reusing it as the loader for TGAImage.
-//      with the loader library by by slightly
-//      first slightly modifying it to replace its usage   //|
-//      of the unsafe deprecated 
-//      of this  implementation For this class's purposes //|
-//      file. for ussage with       //|
-//     all of the necessary operations needed to  with the rest of the library so to         //|
-//         save time and effort it  by using it ourselves.            //|
+//                                                                          //|
 class TGAFileImpl : public ITGAStream                                       //|
 {                                                                           //|
     FILE* m_hFile;                                                          //|
