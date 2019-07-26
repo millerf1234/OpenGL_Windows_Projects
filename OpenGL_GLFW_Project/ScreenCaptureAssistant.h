@@ -46,7 +46,6 @@
 enum class IMAGE_FILE_FORMAT { TGA, JPEG, PNG, TIFF };
 
 
-
 typedef void(*ProcessScreenshotResultCallback)();
 
 
@@ -79,6 +78,7 @@ public:
                               ||          ScreenCapture Functionality          ||
     \*                        \\===============================================//                        */
 
+   //Needs to be implemented still...
    // std::unique_ptr<ScreenCapture> getScreenCapture();
 
     

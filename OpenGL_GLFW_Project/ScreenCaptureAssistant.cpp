@@ -22,11 +22,22 @@ ScreenCaptureAssistant::ScreenCaptureAssistant() : mWindowContext_(glfwGetCurren
             "and the sole purpose of this class is to record rendered output, it\n"
             "is kinda sorta a major major issue that there is no context!\n"));
     }
-    const std::string screenshotsDirStr(FILEPATH_TO_SCREENSHOTS);
-    FilesystemDirectory screenshotsDir(screenshotsDirStr);
+    
+    //Originally this class would handle creating the Screenshots directory as follows:
+    //  const std::string screenshotsDirStr(FILEPATH_TO_SCREENSHOTS);
+    //  FilesystemDirectory screenshotsDir(screenshotsDirStr);
+    //But I have since made global the creation-of and access-to these directories 
+    //all within the "RelativeFilepathsToResources.h" header
+    FilesystemDirectory* screenshotsDir = screenshotsDirectory();
 
-    for (int i = 0; i < 12; i++) {
-        auto name = screenshotsDir.getNextUniqueFilenameFor(SCREENSHOT_NAME_TEMPLATE);
+    assert(screenshotsDir);
+        
+    //This is just creating dummy text files for now since I have yet to finish implementing
+    //screenshots
+    for (int i = 0; i < 1; i++) {
+        auto name = screenshotsDir->getNextUniqueFilenameFor(SCREENSHOT_NAME_TEMPLATE);
+        //Remove any Filesystem delimiter characters ('\\' and '/') 
+        //from the end of the filename 
         auto nameStr = name.string();
         auto nameStringIter = nameStr.cend();
         bool removeChar = true;

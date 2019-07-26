@@ -10,6 +10,7 @@
 #include "FilesystemDirectory.h"
 #include "LoggingMessageTargets.h"
 
+//Class DirMemberNames used internally 
 class FilesystemDirectory::DirMemberNames {
 public:
     DirMemberNames() = delete;
@@ -25,6 +26,9 @@ public:
     std::set<std::filesystem::path> members;
     std::set<std::filesystem::path> memberFiles;
 
+    //Causes this object to flush all of its locally-stored
+    //data then replenishes its datastores by rebuilding itself
+    //from the OS.
     void refresh() {
         iterateDirectoryToGetEntryNames();
     }
@@ -33,7 +37,9 @@ private:
     std::filesystem::path mDirPath_;
 
     void iterateDirectoryToGetEntryNames() {
-        for (auto entry : std::filesystem::directory_iterator(mDirPath_)) {
+        memberFiles.clear(); //Best way to clear a set 
+        members.clear();
+        for (auto& entry : std::filesystem::directory_iterator(mDirPath_)) {
             std::filesystem::path entryPath = entry.path();
             if (entry.is_regular_file()) {
                 entryPath = entryPath.filename();
@@ -144,7 +150,12 @@ std::filesystem::path FilesystemDirectory::getNextUniqueFilenameFor(std::string_
     else 
         newUniqueFileName.append(std::to_string(nameMatchCounter));
 
-    auto returnedPath = mPath_.string() + newUniqueFileName;
+    char delimiterChar = *(mPath_.string().crbegin());
+    
+    auto returnedPath = mPath_.string();
+    if ((delimiterChar != '\\') && (delimiterChar != '/'))
+        returnedPath += "\\";
+    returnedPath += newUniqueFileName;
 
     return returnedPath;
 }

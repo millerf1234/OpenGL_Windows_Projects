@@ -38,7 +38,7 @@ public:
 
     //Determines a new unique filename based upon a base pattern. Does not create
     //this file. Does not add a filepath to the name. The name does not include 
-    //any directories. Not thread safe. 
+    //any directories. Not thread safe. May Throw Exceptions
     std::filesystem::path getNextUniqueFilenameFor(std::string_view baseName);
     
 private:
