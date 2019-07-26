@@ -86,7 +86,9 @@ void main() {
 
     processed_vertex.position = MVP * ModelPosition;
 
-    gl_Position = processed_vertex.position + vec4(.05*inst*sin(3.04*inst), .075*inst*cos(1.14*inst), 0.001*inst, zoom);
+    gl_Position = processed_vertex.position + vec4(1.25*inst*sin(2.04*inst), 1.975*inst*cos(1.14*inst), 0.0, zoom);
+
+    gl_PointSize = vertMod / (2.0 - 0.025*float(customParameter1));
 }
 
 #endif 

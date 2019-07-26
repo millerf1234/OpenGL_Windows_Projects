@@ -100,15 +100,16 @@ void main() {
     vec3 instanceDisplacement = vec3(0.0);
 
     if (gl_InstanceID != 0) {
-        const float instanceDistanceAmplitude = 8. * inst; // max( 0.25, abs(log2(noiseAmpl * snoise(time*0.005*vec2(cross(vec3(ModelTexCoord, inst), ModelNormal)))) + float(gl_InstanceID)));
-        const vec3 instanceDisplacementVector = vec3(cos(1.75*(time * (0.1*pow(1.05, inst-1.)))),
-                                                     sin(1.25*(time * (0.01*pNoise(vec2(inst-1., exp(inst)), int(customParameter3))))),
-                                                     0.33);
+        const float instanceDistanceAmplitude = 0.45 * inst; // max( 0.25, abs(log2(noiseAmpl * snoise(time*0.005*vec2(cross(vec3(ModelTexCoord, inst), ModelNormal)))) + float(gl_InstanceID)));
+        const vec3 instanceDisplacementVector = vec3(cos(1.75*(time * (0.31*pow(1.05, inst-1.)))),
+                                                     sin(1.25*(time * (0.1*pNoise(vec2(inst-1., exp(inst)), int(customParameter3))))),
+                                                     0.033);
         instanceDisplacement = instanceDistanceAmplitude * instanceDisplacementVector; 
     }
 	processed_vertex.position = MVP * (ModelPosition + vec4(instanceDisplacement, zoom));
 
-    gl_Position = processed_vertex.position;
+    gl_Position = (1. + 0.001*inst)*processed_vertex.position;
+    gl_Position.z = clamp(gl_Position.z, -1.0, 1.0);
 //	gl_Position = MVP * processed_vertex.position;
 
     gl_PointSize = max(1.0, abs(1.0/vertMod + cos(vertMod*time*max(1.0, pow(vertMod, noiseAmpl))) * (cnoise(2.0*vec4(2.5*processed_vertex.position.xy, 5.0 * sin(0.25*(time + vertMod)), cos(0.25*(time + vertMod * 3.14/2.0)))))));
