@@ -10,7 +10,7 @@
 #include <array>
 #include "SupportedWindowResolutions.h"
 
-
+//I have only tested the code with a single monitor  
 static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of available monitors
 
 
@@ -20,7 +20,7 @@ static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of a
 //is different from running the Application in Windowed-Fullscreen mode. Windowed-Fullscreen
 //mode simply has the Application run with whatever configuration the Operating System is
 //using, which allows for quicker switching between this Application and other open windows.
-static constexpr const bool USE_FULLSCREEN = false;
+static constexpr const bool USE_FULLSCREEN = true;
 
 
 //Pretty much always want this to be true 

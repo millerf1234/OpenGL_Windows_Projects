@@ -172,6 +172,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ImageData.cpp" />
+    <ClCompile Include="ImageDataLoader.cpp" />
+    <ClCompile Include="ImageLoadingStrategy.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
@@ -262,6 +265,9 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationConstantSettings.h" />
+    <ClInclude Include="ImageData.h" />
+    <ClInclude Include="ImageDataLoader.h" />
+    <ClInclude Include="ImageLoadingStrategy.h" />
     <ClInclude Include="PipelineObserver.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="AsciiAsset.h" />

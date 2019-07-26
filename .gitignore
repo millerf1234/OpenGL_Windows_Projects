@@ -260,3 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 /OpenGL_GLFW_Project/Screenshots
+/OpenGL_GLFW_Project/DebugOutput/DefaultTextureGenerationReport_00.txt
+/OpenGL_GLFW_Project/DebugOutput/DefaultTextureGenerationReport_01.txt
+/OpenGL_GLFW_Project/DebugOutput/DefaultTextureGenerationReport_02.txt
+/OpenGL_GLFW_Project/ScreenshotsScreenCapture_00.txt

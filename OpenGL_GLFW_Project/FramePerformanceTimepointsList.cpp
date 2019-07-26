@@ -63,12 +63,41 @@ const FramePerformanceTimepoints* FramePerformanceTimepointsList::allocateFrameP
         framePerformanceListSize++;
         return framePerformanceListCurrent;
     }
-    catch (const std::bad_alloc& e) {
+    catch (const std::bad_alloc& e) { //'new' is unsuccessful
         fprintf(ERRLOG, "\nDetected a Bad Allocation!\n[MSG: %s]\n", e.what());
+        fprintf(ERRLOG, "Of Course This Means The Application Must Now Crash!\n");
+        std::exit(EXIT_FAILURE);
     }
-    catch (...) {
+    catch (const std::exception& e) { //Something went wrong
+        static const std::string localCopy(sv);
+        fprintf(ERRLOG, "\nTEST ABC    svLocalCopy is %s\n", localCopy.data());
+        fprintf(ERRLOG, "\n\n\n\n\t\t\t\tException Was Thrown!\n"
+            "While Allocating Memory in FramePerforanceTimepointList\'s Member Function\n"
+            "\'allocateFramePerfTimepointAndAssignToCurrent(frameNumber, //unsigned long long\n"
+            "                                                 sv )\'      //string_view\n");
+        fprintf(ERRLOG, "  \t\t(which was called with the parameters:\n"
+            "\t\t        Object Pointer: 0x%p \n"
+            "\t\t        frameNumber:    %d \n"
+            "\t\t        sv:             %s     )\n\n"
+            "The Exception Provides The Following Description Message: \n\t \'%s\' \n",
+            static_cast<void*>(&(*this)),
+            static_cast<int>(frameNumber),
+            localCopy.c_str(),
+            e.what()
+        );
+        fprintf(ERRLOG, "\nThe Application Was Not Expecting This Exception.\n"
+            "It will thus now crash!\n");
+
+        fprintf(ERRLOG, "\nFYI FUN FACT: EXITING WITH \"CODE 1\" MEANS THE EXECUTABLE\n"
+            "ENDED ITS EXISTENCE WITH THE OPERATING SYSTEM BY REPORTING\n"
+            "ITS REASON FOR TERMINATION AS \"EXIT_FAILURE\".    [i.e. The Program Crashed]");
+        std::exit(EXIT_FAILURE);
+    }
+    catch (...) { //Gotta catch 'em all
         fprintf(ERRLOG, "\nCaught an unidentified exception while attempting\n"
             "to allocate memory for a new \'FramePerformanceTimepoints\'\n"
             "object");
+        fprintf(ERRLOG, "\nNothing left to do at this point other then crash...\n");
+        std::exit(EXIT_FAILURE);
     }
 }

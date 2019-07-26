@@ -166,7 +166,8 @@
 //#include <future>
 #include "AssetLoadingDemo.h"
 
-#include "TGAImage.h"
+#include "TGAImage.h" //For testing purposes
+#include "ImageData.h" //For testing purposes
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
@@ -176,7 +177,7 @@ constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 8.5f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 10.5f);
 const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
@@ -254,7 +255,8 @@ void AssetLoadingDemo::initialize() {
     pitch = 0.0f;
     roll = 0.0f;
     //Calculate rotation matrix
-    rotation = glm::mat4(1.0f);    //Initialize the rotation matrix to 4x4 identity matrix (it will be set to a real rotation matrix later)
+    rotation = glm::mat4(1.0f);   //Initialize the rotation matrix to 4x4 identity matrix
+    //                            //(it will be set to a real rotation matrix later)
 
     //Keep an extra zoom parameter
     zoom = 1.0f; //Higher number means farther away
@@ -313,6 +315,8 @@ AssetLoadingDemo::~AssetLoadingDemo() noexcept {
     if (triangleOutlineEBO != 0u)
         glDeleteBuffers(1, &triangleOutlineEBO);
 
+    if (ourTexture)
+        glDeleteTextures(1, &ourTexture);
 }
 
 
@@ -487,7 +491,10 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 }
 
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
-    assert(quadTextureTestShader); 
+    assert(quadTextureTestShader);
+
+#ifdef LOAD_FROM_TGA
+
     quadTextureTestShader->use();
     TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
     //TGAImage testTexture(R"(C:\Users\Forrest\Documents\GitHub\TGA\datatest\rgb32_top_left_rle.tga)");
@@ -513,6 +520,52 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 
     glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
     return true;
+
+#else 
+    
+    ImageData testDefaultImage;
+
+    assert(testDefaultImage.valid());
+    
+    assert(testDefaultImage.internalFormat() == GL_RGBA8);
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
+    //Specify Storage To Be Used For The Texture
+    glTextureStorage2D(ourTexture,
+                       1,
+                       testDefaultImage.internalFormat(),
+                       testDefaultImage.width(),
+                       testDefaultImage.height());
+    glBindTexture(GL_TEXTURE_2D, ourTexture);
+
+
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    glTextureSubImage2D(ourTexture,
+                        0,
+                        0,
+                        0,
+                        testDefaultImage.width(),
+                        testDefaultImage.height(),
+                        testDefaultImage.format(),
+                        testDefaultImage.dataType(),
+                        testDefaultImage.dataVector().data());
+    return true;
+    
+
+#endif 
 }
 
 
@@ -593,7 +646,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    //worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -603,7 +656,7 @@ void AssetLoadingDemo::loadModels() {
     //A very simple large sphere -0
     //worldMeshName = "LargeSphere.obj";
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -611,7 +664,7 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
@@ -620,7 +673,7 @@ void AssetLoadingDemo::loadModels() {
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
     //for (int i = 0; i < 10; i++)
-        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
@@ -1868,7 +1921,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 
 
 void AssetLoadingDemo::updateBaseUniforms() noexcept {
-    quadTextureTestShader = nullptr;
+    //quadTextureTestShader = nullptr;
     if (quadTextureTestShader) {
         quadTextureTestShader->use();
         //Update the quadTextureTestShader uniforms
@@ -1888,6 +1941,10 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
         
         quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
         
+        quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+        quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+        quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+
         return;
     }
     
@@ -2084,13 +2141,26 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {     
         sceneSize += (*objIter)->mVertices_.size();             
     }
+    
 	
 	//Reserve that much space
 	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
 	sceneBuffer.reserve(sceneSize); 
 
+    if (sceneSize == 0)
+        return;
+
+    //Get an iterator to the first member of the sceneObject vector
+    auto sceneObjIter = sceneObjects.cbegin();
+    //Place the first object in the scene at the origin
+    addObject(sceneObjIter, glm::vec3(0.0f, 0.0f, 0.0f));
+    sceneObjIter++;
+    objectCounter++;
+    fprintf(MSGLOG, "\tAdding Object 0 to scene...\n");
+    fprintf(MSGLOG, "\t\tPosition of Object 0:   <0.0f, 0.0f, 0.0f>\n");
+
 	//Iterate through each object in the sceneObjects vector
-	for (auto sceneObjIter = sceneObjects.cbegin(); sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
+	for ( ; sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
 		objectCounter++;
 
 		//Objects missing Normal and/or Texture Coordinates will need to have data generated for them
@@ -2099,8 +2169,8 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 		
 
 		//Increment offset to prepare for the next object
-		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-22.0f, 22.0f);
-        objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-16.0f, 16.0f);
+		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-12.0f, 12.0f);
+        objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-6.0f, 6.0f);
         //objectPositionOffset.z += MathFunc::getRandomInRangef(5.0f, 5.0f);
 
         //objectPositionOffset = glm::normalize(objectPositionOffset);

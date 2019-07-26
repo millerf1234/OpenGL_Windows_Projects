@@ -511,17 +511,11 @@
     <Filter Include="Source Files\Utility\Asset Loading\Common">
       <UniqueIdentifier>{c229ddf0-ce1b-468d-b695-aea29ad4d871}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGALoader">
-      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="NotesAndReferences\Profiling">
       <UniqueIdentifier>{e721d8e3-4ad6-49c5-b3ab-57f804b22bfe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\RenderTools\Shader Interface\Framebuffer\Version1[MostlyJustDetectsAFramebuffersStateAndConfig]">
       <UniqueIdentifier>{4a4d314f-295a-45c2-af11-2d353d42af00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Unfinished\ImageLoader">
-      <UniqueIdentifier>{2cb097aa-71e7-4d95-aea1-2f7dcd94561d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\MeshAssets">
       <UniqueIdentifier>{0432b6ba-b9c3-4af6-a210-1303a276a611}</UniqueIdentifier>
@@ -540,6 +534,21 @@
     </Filter>
     <Filter Include="Source Files\Utility\PerformanceProfiling\GPU">
       <UniqueIdentifier>{0e4415b7-e863-4830-8eb5-7f9ba26a88db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGA_Prototype">
+      <UniqueIdentifier>{b709202b-55a2-4c97-a623-94ad2289474f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGA_Prototype\TGALoader">
+      <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader">
+      <UniqueIdentifier>{b33899ac-50b2-4788-a908-a98db5b217d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataGenerator">
+      <UniqueIdentifier>{e8a53999-fbf6-4638-a281-825f5e3a6b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal">
+      <UniqueIdentifier>{ab45a21f-3cd4-45ba-8a2a-509325bd8fa2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -730,7 +739,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClCompile>
     <ClCompile Include="TGAImage.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGA_Prototype\TGALoader</Filter>
     </ClCompile>
     <ClCompile Include="TGASDK\sources\TGA.cpp">
       <Filter>Third Party\TGASDK\source</Filter>
@@ -773,6 +782,15 @@
     </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Source Files\Utility\PerformanceProfiling</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageData.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageDataLoader.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageLoadingStrategy.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1313,7 +1331,7 @@
       <Filter>Source Files\Utility\Filepath</Filter>
     </ClInclude>
     <ClInclude Include="TGAImage.h">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGALoader</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\TGA_Prototype\TGALoader</Filter>
     </ClInclude>
     <ClInclude Include="TGASDK\include\TGA.h">
       <Filter>Third Party\TGASDK\include</Filter>
@@ -1377,6 +1395,15 @@
     </ClInclude>
     <ClInclude Include="PipelineObserver.h">
       <Filter>Source Files\Utility\PerformanceProfiling\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageData.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageDataLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoadingStrategy.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
