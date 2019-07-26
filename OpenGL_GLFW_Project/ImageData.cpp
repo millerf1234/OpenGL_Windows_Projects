@@ -7,7 +7,7 @@
 //  July 24, 2019
 // 
 
-
+#if 0
 #include "ImageData.h"
 
 #include <string>
@@ -405,3 +405,6 @@ ImageData& ImageData::operator=(ImageData&& that) noexcept {
     }
     return *this;
 }
+
+
+#endif //0
