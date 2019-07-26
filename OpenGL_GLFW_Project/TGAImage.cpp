@@ -44,21 +44,28 @@ TGAFileImpl(const char* file, errno_t* result)                                \
 //////////////////////////////////////////////////////////////////////////////|
 ////////////////////////       THIRD PARTY CODE       ////////////////////////|
 //////////////////////////////////////////////////////////////////////////////|
-//      The TGA SDK library's sample code defines this following class      //|
-//      which seems to mesh well with the rest of the library so best       //|
-//         save a lot of time and trouble by using it ourselves.            //|
+//      The TGA SDK library's sample code uses this following class for     //|
+//      performing file I/O. Advantage is taken of having access to this    //|
+//      already implemented and [presumably] correct class by first         //|
+//      slightly modifying it to conform with modern standards then simply  //|
+//      reusing it as the loader for TGAImage.
+//      with the loader library by by slightly
+//      first slightly modifying it to replace its usage   //|
+//      of the unsafe deprecated 
+//      of this  implementation For this class's purposes //|
+//      file. for ussage with       //|
+//     all of the necessary operations needed to  with the rest of the library so to         //|
+//         save time and effort it  by using it ourselves.            //|
 class TGAFileImpl : public ITGAStream                                       //|
 {                                                                           //|
     FILE* m_hFile;                                                          //|
     size_t      m_size;                                                     //|
-public:                                                                     //|
-    /*  ORIGINAL_CONSTRUCOR                                                 //|
+public: /* ORIGINAL_CONSTRUCOR                                              //|
     TGAFileImpl(const char* file)                                           //|
         : m_hFile(0)                                                        //|
     {                                                                       //|
         m_hFile = fopen(file, "r"); //Unsafe version using old C func       //|
-    }                                                                       //|
-    */ REPLACEMENT_CONSTRUCTOR;                                             //|
+    }*/ REPLACEMENT_CONSTRUCTOR;                                            //|
                                                                             //|
     int read(void* pBuffer, int sizeBlock)                                  //|
     {                                                                       //|
@@ -244,7 +251,7 @@ public:
             return;
         }
 
-        catch (...) { //Gotta catch them all 
+        catch (...) { //Gotta catch 'em all 
             mErrReport_ += "[ERROR] While Attempting To Load The TGA file \"";
             mErrReport_ += tgaFilepath.string();
             mErrReport_ += "\"\n        an unknown exception was thrown!\n";

@@ -59,7 +59,6 @@ void TGAImageData::readRLE(void* pBuf)
       {
         repeat = head - 127;
         int r = m_pFile->read(vBlock, sizeBlock);
-        printf("vBlock is %d, %d, %d\n", vBlock[0], vBlock[1], vBlock[2]);
         if (r != sizeBlock)
           throw  TGAError("TGA FAILURE: readRLE failed [Code 2]", eTGAResult_BadStructure);
       }
