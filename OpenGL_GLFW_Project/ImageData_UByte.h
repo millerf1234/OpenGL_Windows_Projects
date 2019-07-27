@@ -18,6 +18,36 @@
 //                             the data type 'uint8_t').                       
 //                                                                             
 //                                                                             
+// Invariants:                                                                 
+//                                                                             
+//     [INTERNAL DATA REPRESENTATION]      ---> Internal Data Always Is Of Type 
+//                                             8-bit Unsigned Byte [Represented
+//                                                Internally As Type 'uint8_t'] 
+//                                                                             
+//          [ALWAYS VALID]          ---> Objects of this type are guaranteed to
+//                                        always be in a valid state with image
+//                                         data available for use upon request.
+//                                                                             
+//   Requiring these objects to always maintain usable data in a valid state   
+//   necessitates providing them with some reliable method of regaining valid  
+//   data in the face of catastrophe. Thus for ensuring these objects have in  
+//   place a highly-reliable path to recovery is what this next invariant      
+//   provides.                                                                 
+//                                                                             
+// [Error Contingency Response Invariant]     --->  All instances of this class
+//                                              share internally a small static
+//                                               image of checkerboard pattern.
+//
+//   If an operation were to occur at any point in this objects lifetime [well,
+//        maybe besides when the destructor is running] that would render this 
+//       object's state invalid, rather than allow control to return with this 
+//      object invalid these objects will simply flush all of current data and 
+//     instead sets itself from this small static default image. These objects 
+//        provides a method for querying whether their data has been corrupted 
+//             causing them to instead take on this backup image data with the 
+//         function                                                            
+//                                bool IsDefaultImage() const noexcept;        
+//                                                                             
 //                                                                             
 // Dependencies:             Due to the close proximity between this class and 
 //                         the OpenGL API, this class depends on having access 
@@ -26,6 +56,8 @@
 //                                                                             
 //                           The implementation file relies upon the C-library 
 //                          'stb_image' behind the scenes to parse model files.
+//                                                                             
+//                                                                             
 //                                                                             
 // Supported Image Formats:                                                    
 //                              '.jpg'                                         
@@ -42,6 +74,11 @@
 //      [Consult "stb_imaghe.h" for limitations                                
 //         within each of these supported formats]                             
 //                                                                             
+//                                                                             
+//  References:                                                                
+//   https://software.intel.com/en-us/articles/opengl-performance-tips-use-native-formats-for-best-rendering-performance
+//                                                                             
+//   https://www.opengl.org/wiki/Image_Format                                  
 //                                                                             
 // Programmer:                                   Forrest Miller                
 // Date:                                         July 2019                     
@@ -62,13 +99,23 @@
 //       Constants       //
 ///////////////////////////
 
-//Image Dimensions of static image assigned to objects constructed by
-//calling the default constructor
-static constexpr const GLsizei DEFAULT_STATIC_IMAGE_HEIGHT = 8;
-static constexpr const GLsizei DEFAULT_STATIC_IMAGE_WIDTH = 8;
-//Image Dimensions of dynamically generated image data
+
+//Image Dimensions of dynamically generated image data to be used if 
+//custom dimensions were not specified to constructor
 static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_HEIGHT = 64;
 static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
+
+//The ImageData_UByte class is guaranteed to always maintain valid state with,
+//usable data, even when attempts are made to construct it with bogus data.
+//To fulfill this guarantee, an internal default image is generated to be 
+//shared internally by object of this type. These constants control what the 
+//default image will be. Note that these values are still validated and will 
+//be ignored if they violate the restrictions placed upon all images
+static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 8;
+
+//Specify whether the default images 
+static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 45u, 18u, 38u, 255u/20u };
+static const glm::u8vec4 DEFAULT_IMAGE_COLOR_2 = { 165u, 195u, 248u, 225u };
 
 
 // DESCRIPTION
@@ -100,7 +147,6 @@ public:
     //  +---------------------------------------------------------------------+
     //  |                         PUBLIC INTERFACE                            |
     //  +---------------------------------------------------------------------+
-
 
     //~~~~~~~~~~~~~~~~~~
     //  CONSCTRUCTORS
@@ -160,7 +206,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     //Public Member Data Type [This class describes key
-    //information for how to interpret the stored image data]
+    //information for how to interpret stored image data]
     class ImageAttributes final {
     public:
         GLsizei width; //Must be 2 or greater
@@ -176,7 +222,7 @@ public:
                         GLsizei height = 0,
                         GLsizei comp = 0) : width(width),
                                             height(height),
-                                            comp(comp) { assert(comp <= 4); }
+                                            comp(comp) { /*assert(comp <= 4);*/}
         ~ImageAttributes() = default;
         ImageAttributes(const ImageAttributes& that) noexcept = default;
         ImageAttributes(ImageAttributes&& that) noexcept = default;
@@ -184,14 +230,87 @@ public:
         ImageAttributes& operator=(ImageAttributes&& that) noexcept = default;
     };
     
+
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  PUBLIC MEMBER FUNCTIONS
     //~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+    //                      //                             //
+    //                      //  Internal State Accessors   //
+    //                      //                             //
+    
+    //Checks to see if this object had to reset itself with
+    //its default universal back-up image
+    bool isDefaultImage() const noexcept;
+    
     //Returns the attributes describing how to interpret this objects
     //stored array of data as an image
     ImageAttributes getAttributes() const noexcept;
 
+    //Get Each ImageAttribute Individually
+
+    //Returns the width of this object's internal image data
+    GLsizei width() const noexcept;
+
+    //Returns the height of this object's internal image data
+    GLsizei height() const noexcept;
+
+    //Returns the number of components comprise each pixel
+    //in this image
+    GLsizei components() const noexcept;
+
+
+    //Returns the OpenGL enum type corresponding to the
+    //internal format the image data is in. This value will 
+    //need to be provided to the OpenGL API when allocating 
+    //storage for this imageData so it can be used as a 
+    //texture. These GLenum values are determined based 
+    //upon the number of components the image's pixels use
+    //as follows:
+    //    [Components]      |       [Internal Format]     
+    //         1            |            GL_R8            
+    //         2            |            GL_RG8           
+    //         3            |           GL_RGB8    (and maybe GL_SRGB8 ?)   
+    //         4            |           GL_RGBA8  (and maybe GL_SRGB8_ALPHA8 ?)
+    GLenum internalFormat() const noexcept;               
+
+    //Returns the expected color-component ordering of this
+    //objects data so that OpenGL's functions which allow 
+    //texture data to be supplied to the GPU know how they
+    //should interpret the data.
+    GLenum externalFormat() const noexcept;
     
+    //Will return the type used internally to represent the
+    //data, which will always be GL_UNSIGNED_BYTE.
+    GLenum dataRepresentation() const noexcept;
+
+
+    //                      //                             //
+    //                      //  Internal State Modifiers   //
+    //                      //                             //
+
+    //Modifies the way this object reports its internal data 
+    //with regard to whether the first byte is assigned to the
+    //red or blue channel. While this object will try to get this
+    //correct on its own, it is possible to swap the red and 
+    //blue channels using this function.
+    //Calling this function on an image with less than 3 components
+    //has no effect.
+    //
+    // Return Value Meanings
+    //
+    //    TRUE   -->  Blue channel is represented by the first byte
+    //                and Red channel is represented by the third byte.
+    //
+    //   FALSE   -->  Red channel is represented by the first byte
+    //                and Blue channel is represented by the third byte.
+    bool swapRedAndBlueChannels() noexcept;
+
+    
+
+
     //  +---------------------------------------------------------------------+
     //  |                     BOILERPLATE HOUSE KEEPING                       |
     //  +---------------------------------------------------------------------+
@@ -240,10 +359,13 @@ public:
     //  can be passed to this function which is a pointer 
     //  to a std::string object that an error message can 
     //  be written to. 
-    ImageData_UByte(GLsizei width,
-                    GLsizei height,
-                    GLsizei comp,
-                    std::string* errMsg = nullptr) 
+    ImageData_UByte(GLsizei width,       //Requires  width >= 2
+                    GLsizei height,      //Requires height >= 2
+                    GLsizei comp,        //Requires 1 <= components <= 4
+                    GLenum internalFormat, //Must be a valid internal format for 'comp'
+                    GLenum externalFormat, //Must be a valid external format
+                    std::vector<uint8_t> data, //Must contain enough data to match attributes
+                    std::string* errMsg = nullptr); 
 };
 
 #endif //IMAGE_DATA_UBYTE_H_

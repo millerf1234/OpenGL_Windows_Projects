@@ -1,4 +1,5 @@
 
+#if 0
 
 #include "ImageFileLoader.h"
 #include <cstdio>
@@ -155,3 +156,7 @@ ImageFileLoader::~ImageFileLoader() noexcept {
     if (pImpl_) 
         delete pImpl_;
 }
+
+
+
+#endif //0

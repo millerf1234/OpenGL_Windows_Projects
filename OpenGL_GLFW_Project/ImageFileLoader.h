@@ -7,7 +7,7 @@
 
 #pragma once
 
-#ifndef IMAGE_FILE_LOADER_H_
+#ifdef IMAGE_FILE_LOADER_H_
 #define IMAGE_FILE_LOADER_H_
 
 #include <filesystem>
