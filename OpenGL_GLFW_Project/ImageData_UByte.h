@@ -57,6 +57,7 @@
 #include <functional>
 #include "GlobalIncludes.h"    //For including 'glad.h' 
 
+
 ///////////////////////////
 //       Constants       //
 ///////////////////////////
@@ -89,8 +90,7 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 //                0 <= output < 255
 typedef std::function<uint8_t(GLsizei x,
                               GLsizei y,
-                              GLsizei compIndx)> generateImgDataCallback;
-
+                              GLsizei compIndx)> generateImgDataCallbackFunc;
 
 
 
@@ -100,6 +100,7 @@ public:
     //  +---------------------------------------------------------------------+
     //  |                         PUBLIC INTERFACE                            |
     //  +---------------------------------------------------------------------+
+
 
     //~~~~~~~~~~~~~~~~~~
     //  CONSCTRUCTORS
@@ -116,10 +117,21 @@ public:
     //by calling its constructor with a value to use as the
     //random seed for the data generation. Optionally custom
     //image widths and heights can be specified too, with 
-    //each dimension being at least 2 pixels
+    //each dimension being at least 2 pixels. 
+    //
+    //While implementing the internal data generation algorithm
+    //used by this constructor I was curious about how the 
+    //breakdown of the various data paths looked like, so I 
+    //created a way to print details looking into how the 
+    //image data is assigned out to a file. I decided this 
+    //feature was interesting enough to leave it optional
+    //for public usage. PLEASE UPDATE DOCUMENTATION HERE ONCE
+    //IT BECOMES CLEAR WHERE THIS REPORT FILE WILL GET SAVED AND
+    //WHAT NAME IT WILL HAVE.
     ImageData_UByte(float randSeed,
                     GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
-                    GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT);
+                    GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT,
+                    bool writeAnalysisOfGeneratedDataToFile = false);
 
     //  DYNAMIC CONSTRUCTOR  --  CUSTOM IMAGE GENERATION 
     //Allows for a custom generation function to be 
@@ -130,7 +142,7 @@ public:
     //are minimally required to be at least 2, 
     //specifying smaller values will be ignored and their
     //dimension set to 2.
-    ImageData_UByte(generateImgDataCallback generator,
+    ImageData_UByte(generateImgDataCallbackFunc generator,
                     GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
                     GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT);
 
@@ -142,15 +154,47 @@ public:
     ImageData_UByte(const std::filesystem::path& imageFile);
 
 
-    //~~~~~~~~~~~~~~~~~~
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //  PUBLIC MEMBER DATA TYPES
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+    //Public Member Data Type [This class describes key
+    //information for how to interpret the stored image data]
+    class ImageAttributes final {
+    public:
+        GLsizei width; //Must be 2 or greater
+        GLsizei height; //Must be 2 or greater
+        GLsizei comp; //Number of components per pixel
+        //Returns the number of bytes in total are expected
+        //in an image matching these attributes
+        GLsizei sizeInBytes() const noexcept {
+            return (width * height * comp);
+        }
+        //Construct image attributes
+        ImageAttributes(GLsizei width = 0,
+                        GLsizei height = 0,
+                        GLsizei comp = 0) : width(width),
+                                            height(height),
+                                            comp(comp) { assert(comp <= 4); }
+        ~ImageAttributes() = default;
+        ImageAttributes(const ImageAttributes& that) noexcept = default;
+        ImageAttributes(ImageAttributes&& that) noexcept = default;
+        ImageAttributes& operator=(const ImageAttributes& that) noexcept = default;
+        ImageAttributes& operator=(ImageAttributes&& that) noexcept = default;
+    };
+    
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  PUBLIC MEMBER FUNCTIONS
-    //~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~~~~~~~~~~~
+    //Returns the attributes describing how to interpret this objects
+    //stored array of data as an image
+    ImageAttributes getAttributes() const noexcept;
+
     
-    // DISCLAIMER: The documentation on these is currently not up to par with
-    //             the rest of this document.
-    
-    
-    
+    //  +---------------------------------------------------------------------+
+    //  |                     BOILERPLATE HOUSE KEEPING                       |
+    //  +---------------------------------------------------------------------+
     
     //~~~~~~~~~~~~~~~~
     //  DESCTRUCTOR
@@ -173,8 +217,33 @@ public:
     ImageData_UByte& operator=(ImageData_UByte&& that) noexcept;
     
 private:
+    //The implementation is hidden
     class ImageDataImpl;
     std::unique_ptr<ImageDataImpl> pImpl_;
+
+
+
+public:  
+    //      ~~~~~ SSSHH THIS IS SUPPOSED TO BE A SECRET ~~~~~
+    //  UTILITY CONSTRUCTOR  --  TAP INTO THE TEXTURING DATAPATH 
+    //                           DIRECTLY WITH YOUR OWN CUSTOM DATA.
+    //       [Please Use This Wisely]
+    //  Ensure that the data you provide meets the
+    //  constraints listed for each parameter. 
+    //  Failure to satisfy the constraints of any
+    //  parameter will result in none of your data being
+    //  used and the object reverting to constructing 
+    //  itself from the static test pattern assigned 
+    //  to these objects when they are default constructed.
+    //
+    //  To check for failures, an optional extra parameter 
+    //  can be passed to this function which is a pointer 
+    //  to a std::string object that an error message can 
+    //  be written to. 
+    ImageData_UByte(GLsizei width,
+                    GLsizei height,
+                    GLsizei comp,
+                    std::string* errMsg = nullptr) 
 };
 
 #endif //IMAGE_DATA_UBYTE_H_
