@@ -528,7 +528,7 @@ ImageData_UByte::ImageData_UByte(GLsizei width,
                                  GLenum internalFormat, 
                                  GLenum externalFormat, 
                                  std::vector<uint8_t> data,
-                                 std::string* errMsg = nullptr) 
+                                 std::string* errMsg) 
     : pImpl_(nullptr) {
     try {
         pImpl_ = std::make_unique<ImageDataImpl>(width, height, comp,
