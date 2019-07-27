@@ -1,17 +1,28 @@
-//
+//                                                                             
 //  File:                                                            TGAImage.h
-//
+//                                                                             
+//                                                                             
+//-----------------------------------------------------------------------------
+//                                                                             
+//___       x-----------------------------------------------x                  
+//X$X\,,,,,/   WARNINGH! THIS CLASS HAS BEEN DEPRECATED!   /                   
+//_X_|_~~~~} == == == == == == == == == == == == == == == {                    
+//X$/``````\   Please Load '.tga' Files With Class  '____' \   [CLASS NAME TBD]
+//$/        x-----------------------------------------------x                  
+//`                                                                            
+//-----------------------------------------------------------------------------
+//                                                                             
 //  Description:                    Inputs a TGA file at construction and wraps
-//                                                        the files image data
-//
+//                                                        the files image data 
+//                                                                             
 //                                           Written to meet the C++17 standard
-//
+//                                                                             
 //  Dependencies:    TGA SDK  --  "a free and small library to read TGA images"
-//                    https://github.com/paulusmas/TGA
-//
-//  Forrest Miller
-//  July 20, 2019
-//
+//                    https://github.com/paulusmas/TGA                         
+//                                                                             
+//  Forrest Miller                                                             
+//  July 20, 2019                                                              
+//                                                                             
 
 #pragma once
 
