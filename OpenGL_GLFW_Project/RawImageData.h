@@ -50,7 +50,8 @@ namespace ImageDataInternal {
     class RawImageData final {
     public:
         RawImageData() = delete;
-        RawImageData(ImageDataFormat format) : 
+        RawImageData(ImageDataFormat format);
+
         ~RawImageData() noexcept = default;
         
 

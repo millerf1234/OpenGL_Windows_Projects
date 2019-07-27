@@ -1,0 +1,13 @@
+
+Title:              Severnaya Zemlya Archipelago
+Sensor(s):          Landsat 8 - OLI
+Data Date:          August 9, 2018
+Visualization Date: September 28, 2018
+
+
+Downloaded on 7/26/2019 
+From: https://landsat.visibleearth.nasa.gov/view.php?id=92827
+
+I do not claim any rights over these images. I have been using them
+simply as samples to test out my image-file-to-texture C++/OpenGL 
+code. 

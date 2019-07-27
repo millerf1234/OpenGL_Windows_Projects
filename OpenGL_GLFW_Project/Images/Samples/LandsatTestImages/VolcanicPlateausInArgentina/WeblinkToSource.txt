@@ -1,0 +1,13 @@
+
+Title:              Volcanic Plateaus In Argentina
+Sensor(s):          Landsat 8 - OLI
+Data Date:          August 20, 2018
+Visualization Date: November 26, 2018
+
+
+Downloaded on 7/26/2019 
+From: https://landsat.visibleearth.nasa.gov/view.php?id=144304
+
+I do not claim any rights over these images. I have been using them
+simply as samples to test out my image-file-to-texture C++/OpenGL 
+code. 

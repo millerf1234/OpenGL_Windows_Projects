@@ -1,0 +1,12 @@
+
+Title: Lava Lake Discovered on Mount Michael
+Data Date: January 31, 2018
+Visualization Date: July 17, 2019
+
+
+Downloaded on 7/26/2019 
+From: https://landsat.visibleearth.nasa.gov/view.php?id=145328
+
+I do not claim any rights over these images. I have been using them
+simply as samples to test out my image-file-to-texture C++/OpenGL 
+code. 

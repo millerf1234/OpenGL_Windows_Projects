@@ -1,0 +1,13 @@
+
+Title:              Etna Awakens On Its Side
+Sensor(s):          Landsat 8 - OLI
+                    Landsat 8 - TIRS
+Data Date:          December 28, 2018
+Visualization Date: January 29, 2019
+
+Downloaded on 7/26/2019 
+From: https://landsat.visibleearth.nasa.gov/view.php?id=144493
+
+I do not claim any rights over these images. I have been using them
+simply as samples to test out my image-file-to-texture C++/OpenGL 
+code. 
