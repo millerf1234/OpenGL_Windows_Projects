@@ -491,11 +491,15 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
     return quadTextureTestShader->checkIfLinked();
 }
 
+
+///Random note on differences between traditional and bindless OpenGL APIs. 
+///All texture functions in the traditional API use the word 'tex' in their
+///name, while the newer bindless API uses the word 'texture' instead.
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
     assert(quadTextureTestShader);
 
     //ImageFileLoader loadTGA(R"(spire_lf.png)");
-    ImageFileLoader loadTGA2(R"(Inkedspire_lf2.jpg)");
+    //ImageFileLoader loadTGA2(R"(Inkedspire_lf2.jpg)");
 
    // ImageFileLoader loadTGA(R"(Images\Cubemap\green\green_lf.tga)");
 
@@ -508,9 +512,9 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 #ifndef LOAD_FROM_TGA
 
     quadTextureTestShader->use();
-    TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
+    //TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
     //TGAImage testTexture(R"(C:\Users\Forrest\Documents\GitHub\TGA\datatest\rgb32_top_left_rle.tga)");
-    //TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\spire\spire_ft.tga)");
+    TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\spire\spire_ft.tga)");
 
 
     const GLenum internalFormat = (testTexture.components() == 3) ? GL_RGB8 : GL_RGBA8;
