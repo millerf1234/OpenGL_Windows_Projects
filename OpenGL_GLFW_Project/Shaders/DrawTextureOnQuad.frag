@@ -67,7 +67,7 @@ void main() {
                                        .75 - .01*processed_vertex.instanceID);  //A
 
     const vec4 computedTexture = oneMinusDiffuseMag * texture(tex_object,
-                                                              processed_vertex.instanceID*processed_vertex.texCoord + vec2(.01*processed_vertex.instanceID*time));
+                                                              processed_vertex.instanceID*processed_vertex.texCoord + vec2(.01*processed_vertex.instanceID*time + sin(processed_vertex.vertID * 17. / 43. * 3.14)));
         
         
     vec4 computedColor = computedDiffuse + computedTexture;

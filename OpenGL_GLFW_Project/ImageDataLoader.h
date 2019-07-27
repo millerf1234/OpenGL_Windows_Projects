@@ -14,7 +14,7 @@
 
 #pragma once
 
-#ifndef IMAGE_DATA_LOADER_H_
+#ifdef IMAGE_DATA_LOADER_H_
 #define IMAGE_DATA_LOADER_H_
 
 namespace ImageLoadingInternal {

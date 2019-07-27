@@ -2,14 +2,14 @@
 //
 //  FILE:                                                  ImageLoadingStrategy.h
 //
-//  Description:                               Abstract base class that serves as 
-//                                       the interface that loaders for specific 
+//  Description:                                 Abstract base class that defines  
+//                                        the interface that loaders for specific 
 //                                      formats can derive themselves from this.
 //
 
 #pragma once
 
-#ifndef IMAGE_LOADING_STRATEGY_H_
+#ifdef IMAGE_LOADING_STRATEGY_H_
 #define IMAGE_LOADING_STRATEGY_H_
 
 #include <string>

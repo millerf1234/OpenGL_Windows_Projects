@@ -294,8 +294,8 @@ ImageData::ImageData() : mDataType_(GL_UNSIGNED_BYTE) {
     mErrorMessage_ = "";
     mName_ = "DefaultImage_";
     mName_ += std::to_string(NEXT_DEFAULT_IMAGE_NAME++);
-    mWidth_ = DEFAULT_IMAGE_WIDTH;
-    mHeight_ = DEFAULT_IMAGE_HEIGHT;
+    mWidth_ = DEFAULT_GENERATED_IMAGE_WIDTH;
+    mHeight_ = DEFAULT_GENERATED_IMAGE_HEIGHT;
     mComponents_ = 4;
     mFormat_ = GL_BGRA;
     mInternalFormat_ = GL_RGBA8;

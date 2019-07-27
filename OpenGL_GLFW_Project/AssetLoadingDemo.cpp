@@ -168,6 +168,7 @@
 
 #include "TGAImage.h" //For testing purposes
 #include "ImageData.h" //For testing purposes
+#include "ImageFileLoader.h" //For Testing Purposes
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
@@ -493,7 +494,18 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
     assert(quadTextureTestShader);
 
-#ifdef LOAD_FROM_TGA
+    //ImageFileLoader loadTGA(R"(spire_lf.png)");
+    ImageFileLoader loadTGA2(R"(Inkedspire_lf2.jpg)");
+
+   // ImageFileLoader loadTGA(R"(Images\Cubemap\green\green_lf.tga)");
+
+   // ImageFileLoader hdrTest(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4940.jpg)");
+   // ImageFileLoader hdrTest2(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4941.jpg)");
+
+  //  ImageFileLoader hdrTest3(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4943.jpg)");
+
+
+#ifndef LOAD_FROM_TGA
 
     quadTextureTestShader->use();
     TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");

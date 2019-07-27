@@ -1,7 +1,11 @@
 //
 //  FILE:                                         ImageData.h
 //
-//  Description Forthcoming. 
+//  [Please Forgive The Current State Of Comments,
+//   Eventually A Formatted And Organized Rewrite 
+//   Is Planned To Occur]  
+//
+//
 //    (This class is very straightforward though, the only
 //     thing to be aware of is that this class supports 
 //     construction with either loading image data from a file
@@ -13,17 +17,22 @@
 //  wears multiple hats.
 //
 //      It is perhaps needless to say that the number of different
-//  options available when dealing with images, file-formats and 
-//  textures parameters, it is quite easy to get overwhelmed.
-//      To keep things simple from both an implementation and a
-//  simple interface point of view [and because "stb_image.h" makes
+//  options available when dealing with images, image-file-formats,
+//  and OpenGL's (and perhaps other 3D API's) texture API, it is 
+//  quite easy to get overwhelmed. Fortunately it is quite possible
+//  to accomplish most tasks through a small subset of the data. This
+//  is accomplished through class invariants.
+//  
+//  to keep things on the simple side, this class conforms to the
+//  following invariants: [maybe]
+//  
 //  the same 
 //
 //  July 24, 2019
 
 #pragma once
 
-#ifndef IMAGE_DATA_H_
+#ifdef IMAGE_DATA_H_
 #define IMAGE_DATA_H_
 
 #include <memory>
@@ -31,8 +40,8 @@
 #include <filesystem>
 #include "GlobalIncludes.h"   //glad.h for OpenGL 
 
-static constexpr const GLsizei DEFAULT_IMAGE_HEIGHT = 64;
-static constexpr const GLsizei DEFAULT_IMAGE_WIDTH = 64;
+static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_HEIGHT = 64;
+static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 
 class ImageData final {
 public:
@@ -40,7 +49,7 @@ public:
     ImageData();
     //The default constructor uses an internally-defined
     //Image Generation algorithm that creates a texture of
-    //size DEFAULT_IMAGE_HEIGHT by DEFAULT_IMAGE_WIDTH
+    //size DEFAULT_GENERATED_IMAGE_HEIGHT by DEFAULT_GENERATED_IMAGE_WIDTH
     //(defined above). This algorithm is seeded with values
     //that are updated as the algorithm runs, causing it to 
     //produce different outcomes each time it is called.
@@ -52,8 +61,8 @@ public:
     //height to get this object to use its generator to generate
     //itself with texture data of  size
     ImageData(std::string name,
-              GLsizei width = DEFAULT_IMAGE_WIDTH,
-              GLsizei height = DEFAULT_IMAGE_HEIGHT,
+              GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
+              GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT,
               GLenum format = GL_BGRA,
               GLenum internalFormat = GL_RGBA8,
               std::vector<uint8_t>* data = nullptr);
@@ -195,8 +204,8 @@ private:
 #include <filesystem>
 #include "GlobalIncludes.h"   //glad.h for OpenGL 
 
-static constexpr const GLsizei DEFAULT_IMAGE_HEIGHT = 64;
-static constexpr const GLsizei DEFAULT_IMAGE_WIDTH = 64;
+static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_HEIGHT = 64;
+static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 
 class ImageData {
 public:
@@ -205,7 +214,7 @@ public:
 
     //The default constructor uses an internally-defined
     //Image Generation algorithm that creates a texture of
-    //size DEFAULT_IMAGE_HEIGHT by DEFAULT_IMAGE_WIDTH
+    //size DEFAULT_GENERATED_IMAGE_HEIGHT by DEFAULT_GENERATED_IMAGE_WIDTH
     //(defined above). This algorithm is seeded with values
     //that are updated as the algorithm runs, causing it to 
     //produce different outcomes each time it is called.
@@ -217,8 +226,8 @@ public:
     //Upload your own image data. Or just specify a width and height to get
     //this object to 
     ImageData(std::string name,
-              GLsizei width = DEFAULT_IMAGE_WIDTH,
-              GLsizei height = DEFAULT_IMAGE_HEIGHT,
+              GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
+              GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT,
               GLenum format = GL_BGRA,
               GLenum internalFormat = GL_RGBA8,
               std::vector<uint8_t>* data = nullptr);

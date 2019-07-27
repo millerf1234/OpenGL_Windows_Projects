@@ -41,6 +41,9 @@ public:
     //any directories. Not thread safe. May Throw Exceptions
     std::filesystem::path getNextUniqueFilenameFor(std::string_view baseName);
     
+
+    //Perhaps In The Near Future More Public Member Functions Will Be Added
+    
 private:
     std::filesystem::path mPath_;
     

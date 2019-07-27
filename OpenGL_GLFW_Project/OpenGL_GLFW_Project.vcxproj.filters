@@ -277,12 +277,6 @@
     <Filter Include="Resource Files\Shaders\RenderProjects\FlyingCameraDemo">
       <UniqueIdentifier>{b4fb4891-f386-46ee-a470-4887f9aa3313}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\Temp">
-      <UniqueIdentifier>{25bc1157-0e20-40a5-944b-1acd3b537ff5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\Temp\CameraClass_FromNonEuclidean">
-      <UniqueIdentifier>{8feb3188-06f1-4f58-970b-eccc2a4e6954}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes">
       <UniqueIdentifier>{306b8a4c-eda1-46c8-9467-23cca3cbf6b3}</UniqueIdentifier>
     </Filter>
@@ -541,14 +535,32 @@
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\TGA_Prototype\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader">
+    <Filter Include="Third Party\Temp">
+      <UniqueIdentifier>{25bc1157-0e20-40a5-944b-1acd3b537ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\Temp\CameraClass_FromNonEuclidean">
+      <UniqueIdentifier>{8feb3188-06f1-4f58-970b-eccc2a4e6954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused">
+      <UniqueIdentifier>{ed411dca-95a3-4845-959a-f85b5ee09557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataLoadingInternal">
+      <UniqueIdentifier>{ab45a21f-3cd4-45ba-8a2a-509325bd8fa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataLoader">
       <UniqueIdentifier>{b33899ac-50b2-4788-a908-a98db5b217d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataGenerator">
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataGenerator">
       <UniqueIdentifier>{e8a53999-fbf6-4638-a281-825f5e3a6b83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal">
-      <UniqueIdentifier>{ab45a21f-3cd4-45ba-8a2a-509325bd8fa2}</UniqueIdentifier>
+    <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\ImageDataInternal">
+      <UniqueIdentifier>{2128c2ca-ff40-4876-882e-770ed962e3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\FormatTestFiles">
+      <UniqueIdentifier>{d8792b5e-77c8-4e11-974c-5dd8c51311bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\FormatTestFiles\HDR">
+      <UniqueIdentifier>{3908616a-303d-4ad4-b7e3-7de844a691fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -786,11 +798,17 @@
     <ClCompile Include="ImageData.cpp">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
     </ClCompile>
-    <ClCompile Include="ImageDataLoader.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader</Filter>
-    </ClCompile>
     <ClCompile Include="ImageLoadingStrategy.cpp">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataLoadingInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageDataLoader.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="RawImageData.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataInternal</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFileLoader.cpp">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataInternal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1399,11 +1417,17 @@
     <ClInclude Include="ImageData.h">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
     </ClInclude>
-    <ClInclude Include="ImageDataLoader.h">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader</Filter>
-    </ClInclude>
     <ClInclude Include="ImageLoadingStrategy.h">
-      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataLoader\ImageDataLoadingInternal</Filter>
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataLoadingInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageDataLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="RawImageData.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataInternal</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFileLoader.h">
+      <Filter>Source Files\Utility\Asset Loading\ImageAssets\ImageDataInternal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
