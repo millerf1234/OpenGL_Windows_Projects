@@ -1,16 +1,11 @@
 //
-//  FILE:                                         ImageData.h
-//
-//  [Please Forgive The Current State Of Comments,
-//   Eventually A Formatted And Organized Rewrite 
-//   Is Planned To Occur]  
-//
+//  FILE:                                                           ImageData.h
 //
 //    (This class is very straightforward though, the only
 //     thing to be aware of is that this class supports 
 //     construction with either loading image data from a file
 //     or generating its own data programmatically. See constructors
-//    for details.
+//    for details)
 //
 //  Ideally in the future this class will have its responsibilities
 //  divided up into several distinct classes since it currently 
@@ -23,16 +18,16 @@
 //  to accomplish most tasks through a small subset of the data. This
 //  is accomplished through class invariants.
 //  
-//  to keep things on the simple side, this class conforms to the
-//  following invariants: [maybe]
 //  
-//  the same 
-//
+//  
+//  
+//   
+//  
 //  July 24, 2019
 
 #pragma once
 
-#ifdef IMAGE_DATA_H_
+#ifndef IMAGE_DATA_H_
 #define IMAGE_DATA_H_
 
 #include <memory>
@@ -40,22 +35,29 @@
 #include <filesystem>
 #include "GlobalIncludes.h"   //glad.h for OpenGL 
 
+static constexpr const GLsizei DEFAULT_STATIC_IMAGE_HEIGHT = 8;
+static constexpr const GLsizei DEFAULT_STATIC_IMAGE_WIDTH = 8;
+
+
 static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_HEIGHT = 64;
 static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 
 class ImageData final {
 public:
-    //Sets itself to 
+    //Creates an ImageData object containing a basic  image 
+    //of a static test checkerboard pattern [unless during
+    //development the size is changed
     ImageData();
-    //The default constructor uses an internally-defined
+
+
+
+    //Creates an 
     //Image Generation algorithm that creates a texture of
     //size DEFAULT_GENERATED_IMAGE_HEIGHT by DEFAULT_GENERATED_IMAGE_WIDTH
     //(defined above). This algorithm is seeded with values
     //that are updated as the algorithm runs, causing it to 
     //produce different outcomes each time it is called.
-    //Please note that this means it is probably not a good
-    //idea to default construct a large number of these objects
-    //
+
 
     //Upload your own image data. Or just specify a width and
     //height to get this object to use its generator to generate
@@ -116,20 +118,20 @@ public:
     //generated if not specified at construction.
     std::string name() const noexcept { return mName_; }
 
-    GLsizei width() const noexcept { return mWidth_; }
-    GLsizei height() const noexcept { return mHeight_; }
-    GLint components() const noexcept { return mComponents_; }
+    GLsizei width() const noexcept { return mFields_.mWidth_; }
+    GLsizei height() const noexcept { return mFields_.mHeight_; }
+    GLint components() const noexcept { return mFields_.mComponents_; }
     //Returns the type the image data represents
-    GLenum dataType() const noexcept { return mDataType_; }
+    //GLenum dataType() const noexcept { return mDataType_; }
     //Returns the format of the image data
-    GLenum format() const noexcept { return mFormat_; }
-    //Returns the internal format of the image data
-    GLenum internalFormat() const noexcept { return mInternalFormat_; }
+    //GLenum format() const noexcept { return mFormat_; }
+    ////Returns the internal format of the image data
+    //GLenum internalFormat() const noexcept { return mInternalFormat_; }
     //Returns a reference to this object's internal data vector
-    std::vector<uint8_t>& dataVector() noexcept { return mData_; }
+    //std::vector<uint8_t>& dataVector() noexcept { return mData_; }
     //Returns a pointer to the first element of this object's data vector. Please
     //check 
-    void* dataPtr() noexcept;
+    //void* dataPtr() noexcept;
 
 
 private:
@@ -142,12 +144,12 @@ private:
         GLenum mFormat_;
         GLenum mInternalFormat_;
     } GLFields;
-
+    GLFields mFields_;
 
     bool mValid_;
     std::string mErrorMessage_;
     std::string mName_;
-    ImgDataFormat mDataFormat_;
+    ///ImgDataFormat mDataFormat_;
     //This may be a bad idea, but... 
     typedef union AvailableImgDataFormats {
         std::vector<uint8_t> ui8;
