@@ -1,0 +1,68 @@
+# Blender MTL File: 'Experimental_SkyboxMesh_Completed2_NoTurbulentGround.blend'
+# Material Count: 6
+
+newmtl CubeBottom
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_dn.tga
+
+newmtl CubeFrontMaterial
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_ft.tga
+
+newmtl CubeLeft
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_lf.tga
+
+newmtl CubeRear
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_bk.tga
+
+newmtl CubeRightMaterial
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_rt.tga
+
+newmtl CubeTopMaterial
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Forrest\\Desktop\\3DModeling\\Skyboxes\\muad_spire\\spire_up.tga
