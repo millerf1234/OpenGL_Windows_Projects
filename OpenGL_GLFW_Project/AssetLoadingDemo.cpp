@@ -167,8 +167,7 @@
 #include "AssetLoadingDemo.h"
 
 #include "TGAImage.h" //For testing purposes
-#include "ImageData.h" //For testing purposes
-#include "ImageFileLoader.h" //For Testing Purposes
+#include "ImageData_UByte.h"
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
 //The first model loaded is translated by the vector:
@@ -498,6 +497,56 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
     assert(quadTextureTestShader);
 
+    ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
+    //Specify Storage To Be Used For The Texture
+    glTextureStorage2D(ourTexture,
+                       1,
+                       testDefaultImage.internalFormat(),
+                       testDefaultImage.width(),
+                       testDefaultImage.height());
+    glBindTexture(GL_TEXTURE_2D, ourTexture);
+
+
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    
+    /*
+    glTextureSubImage2D(ourTexture,
+                        0,
+                        0,
+                        0,
+                        testDefaultImage.width(),
+                        testDefaultImage.height(),
+                        testDefaultImage.externalFormat(),
+                        testDefaultImage.dataRepresentation(),
+                        testDefaultImage.data());
+    */
+    testDefaultImage.swapRedAndBlueChannels();
+    testDefaultImage.uploadDataTo2DTexture(ourTexture);
+    return true;
+
+
+
+
+
+#ifdef PRACTICE_IMAGE_LOADING
+
+    //Use ImageData to create a texture...
+
     //ImageFileLoader loadTGA(R"(spire_lf.png)");
     //ImageFileLoader loadTGA2(R"(Inkedspire_lf2.jpg)");
 
@@ -508,6 +557,7 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 
   //  ImageFileLoader hdrTest3(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4943.jpg)");
 
+#endif
 
 #ifndef LOAD_FROM_TGA
 
@@ -535,6 +585,8 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
     glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
+ 
+
     return true;
 
 #else 
@@ -681,7 +733,7 @@ void AssetLoadingDemo::loadModels() {
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
@@ -689,7 +741,7 @@ void AssetLoadingDemo::loadModels() {
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
     //for (int i = 0; i < 10; i++)
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+        ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
@@ -721,7 +773,7 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));

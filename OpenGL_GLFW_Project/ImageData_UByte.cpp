@@ -143,13 +143,51 @@ bool verifyIsInternalFormat(GLenum internalFormat) noexcept;
 //internalFormat makes sense with respect to the provided image attributes, 
 //and false if there is a mismatch between them
 bool verifyInternalFormatMatchesImageAttributes(GLenum internalFormat,
-    ImgAttrib attributes) noexcept;
+                                                ImgAttrib attributes) noexcept;
 
 //Gets the preferred internal format for images and textures from the 
 //OpenGL implementation. 
-GLenum getPreferedImageFormatForImplementation(GLenum textureTarget,
-                                               GLenum internalFormat);
+GLenum checkIfInternalFormatIsPreferredByImplementationForTextureTarget(GLenum textureTarget,
+                                                                        GLenum internalFormat) noexcept;
+ 
+//Returns the implementation-reported maximum width for the specified internalFormat 
+//and texture binding target
+GLsizei getMaximumWidthForInternalFormat(GLenum textureTarget, 
+                                         GLenum internalFormat) noexcept;
 
+//Returns the implementation-reported maximum height for the specified internalFormat 
+//and texture binding target
+GLsizei getMaximumHeightForInternalFormat(GLenum textureTarget,
+                                          GLenum internalFormat) noexcept;
+
+//Returns the implementation-reported maximum layers for the specified internalFormat 
+//and texture binding target
+GLsizei getMaximumLayersForInternalFormat(GLenum textureTarget,
+                                          GLenum internalFormat) noexcept;
+
+//Returns the implementation-reported maximum depth for the specified internalFormat 
+//and texture binding target
+GLsizei getMaximumDepthForInternalFormat(GLenum textureTarget,
+                                         GLenum internalFormat) noexcept;
+
+//"the maximum combined dimensions of a texture of the specified internal format" is 
+//what the OpenGL standard says the query performed by this function returns. Do with
+//that as you will... 
+GLsizei getMaximumCombinedForInternalFormat(GLenum textureTarget,
+                                            GLenum internalFormat) noexcept;
+
+
+//THIS ONE IS JUST FOR EXPERIMENTAL PURPOSES
+//Returns the Image Pixel Format preferred for the given texture target 
+//and internal format 
+GLenum getPreferredImagePixelFormatForInternalFormat(GLenum textureTarget,
+                                                     GLenum internalFormat) noexcept;
+
+//THIS ONE IS JUST FOR EXPERIMENTAL PURPOSES
+//Returns the Image Pixel Type preferred for the given texture target 
+//and internal format  
+GLenum getPreferredImagePixelTypeForInternalFormat(GLenum textureTarget,
+                                                   GLenum internalFormat) noexcept;
 
 //-----------------------------------------------------------------------------
 
@@ -284,7 +322,10 @@ public:
     GLsizei components() const noexcept { return mAttributes_.comp; }
     GLenum internalFormat() const noexcept { return mInternalFormat_; }
     GLenum externalFormat() const noexcept { return mExternalFormat_; }
-    GLenum dataRepresentation() const noexcept { mDataType_; }
+    GLenum dataRepresentation() const noexcept { return mDataType_; }
+    uint8_t* data() noexcept { return mImgData_.data(); }
+    void uploadDataTo2DTexture(GLuint textureName,
+                               GLint level) const noexcept;
 
     bool swapRedAndBlueChannels() noexcept;
 
@@ -297,10 +338,20 @@ private:
     GLenum mExternalFormat_; //Used With 'glTextureSubImage2D()'
     const GLenum mDataType_;
 
+    //Utility Functions
+
+    //Checks with the implementation to see if any of this object's current image 
+    //attributes exceed the maximums supported by the implementation. 
+    bool checkIfImageDimensionsExceedImplementationMaximum() const noexcept;
+
     //Sets this objects internal format to the correct type
     //based off the number of components are listed in the 
     //ImageAttributes member struct
     void setInternalFormatFromAttributes() noexcept;
+    //Call This After calling setInternalFormatFromAttributes() only.
+    //Queries the implementation to see if there is a preference, then
+    //decides on the External Format the use.
+    void selectAnExternalFormat() noexcept; 
 };
 
 
@@ -318,19 +369,124 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(float randSeed,
                                               GLsizei height,
                                               bool writeAnalysisOfGeneratedDataToFile)
     : mDataType_(GL_UNSIGNED_BYTE) {
+    
     //todo
+
+    printf("\nConstructor not yet implemented! Reverting to\n"
+        "default construction!\n");
+    resetSelfFromInternalDefaultImage();
 }
 
 ImageData_UByte::ImageDataImpl::ImageDataImpl(generateImgDataCallbackFunc generator,
                                               GLsizei width,
                                               GLsizei height)
     : mDataType_(GL_UNSIGNED_BYTE) {
+    
     //todo
+
+    printf("\nConstructor not yet implemented! Reverting to\n"
+        "default construction!\n");
+    resetSelfFromInternalDefaultImage();
 }
 
 ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& imageFile)
     : mDataType_(GL_UNSIGNED_BYTE) {
-    //todo
+   
+    assert(!imageFile.empty());
+    
+    try {    
+        if (!std::filesystem::exists(imageFile)) {
+            throw std::exception("Dude what are you doing!\n"
+                "That file doesn't exist!\n");
+        }
+
+        
+#if defined(_MSC_VER) && _MSC_VER >= 1400
+
+        const wchar_t* cstrFilenameWide = imageFile.c_str();
+        static constexpr const size_t FILENAME_CONVERSION_BUFFER_SIZE = 2048;
+        char cstrFilename[FILENAME_CONVERSION_BUFFER_SIZE] = { '\0' };
+        int conversionResult = stbi_convert_wchar_to_utf8(cstrFilename,                   
+                                                          FILENAME_CONVERSION_BUFFER_SIZE,
+                                                          cstrFilenameWide);
+
+
+#else 
+#pragma error("Open File Functionality Not Implemented On Non-Windows Platforms Yet...\n")
+        //Currently not implemented so what you will need to do if you
+        //are not on Windows is quickly write in here your platforms C
+        //API function for opening a FILE* from a filepath
+#endif 
+
+
+//This implementation that varies depending on a number of different circumstances 
+//was getting pretty complicated and there is no reason for it to need to be. Thus
+//rather than implementing multiple different paths through this function, now the
+//most general implementation is taken in pretty much all cases
+#if 0
+        //'stb_image' has a maximum filepath length it supports for parsing files.
+        //If the requested filepath this function gets called with exceeds this 
+        //length, then we will need to adjust our implementation by handling opening
+        //and closing the file handle ourselves
+        if (imageFile.string().length() >= FILENAME_MAX) {
+            FILE* imageFileHandle = nullptr; 
+            //An inner try-catch block is used here to ensure
+            //file handle gets closed
+            try { 
+#if defined(_MSC_VER) && _MSC_VER >= 1400
+                if (0 != fopen_s(&imageFileHandle, imageFile.string().c_str(), "r")) {
+                    imageFileHandle = nullptr;
+                    throw std::exception("Error! Unable to open image file!\n");
+                }
+                
+#else 
+
+#endif 
+            }
+            catch (const std::exception& e) {
+                if (imageFileHandle) {
+                    fclose(imageFileHandle);
+                    imageFileHandle = nullptr;
+                } //Throw e out to the next layer of catch statements
+                throw e;
+            }
+        }
+
+
+        //See if we need to worry about wide character filepaths since we will be 
+        //interacting with 'stb_image' to load the data, which is a C library and 
+        //thus requires us to do more work on our end to make sure we are interacting
+        //with it appropriately.
+#ifdef _MSC_VER 
+#ifdef STBI_WINDOWS_UTF8
+        //This is way plenty
+        static constexpr const size_t BUFFER_FOR_CONVERTED_FILEPATH_SIZE = 2048; 
+#else
+
+#endif //STBI_WINDOWS_UTF8
+#else 
+        //Platform is not windows, so no need to worry about wide strings
+
+#endif 
+#endif //IF 0
+    }
+    catch (const std::exception& e) {
+        fprintf(WRNLOG, "\nCaught an exception while loading the "
+            "image file\n\t\"%s\"\n"
+            "All Dependent TextureS will be loaded using the ugly"
+            " default image!\n"
+            "Exception Message: %s\n\n",
+            imageFile.string().c_str());
+        resetSelfFromInternalDefaultImage();
+    }
+    catch (...) {
+        fprintf(WRNLOG, "\nCaught an unanticipated exception while loading the "
+            "image file\n\t\"%s\"\n"
+            "All Dependent TextureS will be loaded using the ugly"
+            " default image!\n\n",
+            imageFile.string().c_str());
+        resetSelfFromInternalDefaultImage();
+    }
 }
 
 ImageData_UByte::ImageDataImpl::ImageDataImpl(GLsizei width,       
@@ -339,10 +495,14 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(GLsizei width,
                                               GLenum internalFormat, 
                                               GLenum externalFormat, 
                                               std::vector<uint8_t> data,
-                                              std::string* errMsg = nullptr) 
+                                              std::string* errMsg) 
     : mDataType_(GL_UNSIGNED_BYTE) {
+    
     //todo
 
+    printf("\nConstructor not yet implemented! Reverting to\n"
+        "default construction!\n");
+    resetSelfFromInternalDefaultImage();
 }
 
 ImageData_UByte::ImageDataImpl::~ImageDataImpl() {
@@ -354,6 +514,7 @@ void ImageData_UByte::ImageDataImpl::resetSelfFromInternalDefaultImage() noexcep
     getDefaultImage(&mImgData_, &mAttributes_);
     mWasResetToDefault_ = true;
     setInternalFormatFromAttributes();
+    selectAnExternalFormat();
 }
 
 ImageData_UByte::ImageDataImpl::ImageDataImpl(const ImageDataImpl& that) noexcept 
@@ -375,6 +536,21 @@ ImageData_UByte::ImageDataImpl& ImageData_UByte::ImageDataImpl::operator=(ImageD
         //todo
     }
     return *this;
+}
+
+void ImageData_UByte::ImageDataImpl::uploadDataTo2DTexture(GLuint textureName,
+                                                           GLint level) const noexcept {
+    assert(textureName != 0u);
+    
+    glTextureSubImage2D(textureName,              //GLuint textureHandle
+                        level,                    //GLint layers
+                        0,                        //GLsizei xOffset  
+                        0,                        //GLsizei yOffset
+                        mAttributes_.width,       //Image Data Width
+                        mAttributes_.height,      //Image Data Height
+                        mExternalFormat_,         //How OpenGL Should Interpret pixel data
+                        mDataType_,               //GLenum data type
+                        mImgData_.data());        //Pointer to array of image data
 }
 
 bool ImageData_UByte::ImageDataImpl::swapRedAndBlueChannels() noexcept {
@@ -417,6 +593,69 @@ bool ImageData_UByte::ImageDataImpl::swapRedAndBlueChannels() noexcept {
     return mFlipRedAndBlueEnabled_;
 }
 
+//Checks with the implementation to see if any of this object's current image 
+//attributes exceed the maximums supported by the implementation. 
+bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationMaximum() const noexcept {
+
+    //Check Width
+    static const auto MaxSupportedWidth =
+        getMaximumWidthForInternalFormat(GL_TEXTURE_2D,
+                                         mInternalFormat_);
+    if (MaxSupportedWidth > mAttributes_.width) {
+        fprintf(WRNLOG, "\nWarning! The Requested Image\n"
+            "exceeds this implementation's reported maximum supported width\n"
+            "for 2D textures!\n"
+            "One day this Application may be able to break your image down\n"
+            "into more manageable chunks, but for now it must simply fail at\n"
+            "loading thus reseting itself using the default image...\n");
+        return false;
+    }
+    
+    //Check Height
+    static const auto MaxSupportedHeight =
+        getMaximumHeightForInternalFormat(GL_TEXTURE_2D, 
+                                          mInternalFormat_);
+    if (MaxSupportedHeight > mAttributes_.height) {
+        fprintf(WRNLOG, "\nWarning! The Requested Image\n"
+            "exceeds this implementation's reported maximum supported height\n"
+            "for 2D textures!\n"
+            "One day this Application may be able to break your image down\n"
+            "into more manageable chunks, but for now it must simply fail at\n"
+            "loading thus reseting itself using the default image...\n");
+        return false;
+    }
+
+    //Check Depth          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH DEPTH
+    static const auto MaxSupportedDepth =
+        getMaximumDepthForInternalFormat(GL_TEXTURE_2D,
+                                         mInternalFormat_);
+    //if (MaxSupportedDepth > mAttributes_.depth) {
+    //    fprintf(WRNLOG, "\nWarning! The Requested Image\n"
+    //        "exceeds this implementation's reported maximum supported depth\n"
+    //        "for 2D textures!\n"
+    //        "One day this Application may be able to break your image down\n"
+    //        "into more manageable chunks, but for now it must simply fail at\n"
+    //        "loading thus reseting itself using the default image...\n");
+    //    return false;
+    //}
+
+
+    //Check Layers          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH DEPTH
+    static const auto MaxSupportedLayers =
+        getMaximumLayersForInternalFormat(GL_TEXTURE_2D,
+                                          mInternalFormat_);
+    //if (MaxSupportedLayers > mAttributes_.layers) {
+    //    fprintf(WRNLOG, "\nWarning! The Requested Image\n"
+    //        "exceeds this implementation's reported maximum supported height\n"
+    //        "for 2D textures!\n"
+    //        "One day this Application may be able to break your image down\n"
+    //        "into more manageable chunks, but for now it must simply fail at\n"
+    //        "loading thus reseting itself using the default image...\n");
+    //    return false;
+    //}
+
+    return true;
+}
 
 void ImageData_UByte::ImageDataImpl::setInternalFormatFromAttributes() noexcept {
     assert(mAttributes_.comp != 0);
@@ -438,6 +677,69 @@ void ImageData_UByte::ImageDataImpl::setInternalFormatFromAttributes() noexcept 
         break;
     }
 }
+
+
+void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() noexcept {
+        //const GLenum recommendedByImplementation =
+        //   checkIfInternalFormatIsPreferredByImplementationForTextureTarget(GL_TEXTURE_2D,
+        //                                                                    mInternalFormat_);
+        //fprintf(MSGLOG, "\nPreferred External Format for TEXTURE_2D is %s\n",
+        //    convertGLEnumToString(recommendedByImplementation).c_str());
+
+        const GLenum preferredImagePixelFormat =
+            getPreferredImagePixelFormatForInternalFormat(GL_TEXTURE_2D, 
+                                                          mInternalFormat_);
+        const GLenum preferredImagePixelType = 
+        getPreferredImagePixelTypeForInternalFormat(GL_TEXTURE_2D, 
+                                                    mInternalFormat_);
+        
+        if (preferredImagePixelFormat != preferredImagePixelType) {
+            fprintf(MSGLOG, "\n\n"
+                "FYI! Alert! For internal image data format %s,\n"
+                "the following has occurred: \n"
+                "\tThe preferred image pixel type and\n"
+                "\tpreferred image pixel format obtained\n"
+                "from querying the implementation are\n"
+                "different!\n"
+                "\t\tPreferred Image Pixel Format is %#x [%s]\n"
+                "\t\tPreferred Image Pixel Type is %#x [%s]\n"
+                "Investigate further if interested!\n\n)",
+                convertGLEnumToString(mInternalFormat_).c_str(),
+                preferredImagePixelFormat,
+                convertGLEnumToString(preferredImagePixelFormat).c_str(),
+                preferredImagePixelType,
+                convertGLEnumToString(preferredImagePixelType).c_str());
+        }
+        else {
+            fprintf(MSGLOG, "\nDEBUG: Choosing External Format \"%s\" for\n"
+                "Texture2D downloads of data in internal format \"%s\"\n\n",
+                convertGLEnumToString(mExternalFormat_).c_str(),
+                convertGLEnumToString(mInternalFormat_).c_str());
+        }
+
+        if (mAttributes_.comp < 3)
+            return;
+        else {
+            
+            //NEED TO BE AWARE OF SWAPPED RED AND BLUE CHANNELS 
+            //Since the public interface function 'swapRedAndBlueChannels' 
+            //affects what external format is to be used, it may be necessary
+            //to disable this feature to set the next ExternalFormat. This way 
+            //turning the Red and Blue swap back on will keep a consistent state
+            //across all objects. 
+            const bool redAndBlueFlipActive = mFlipRedAndBlueEnabled_;
+            if (redAndBlueFlipActive) 
+                swapRedAndBlueChannels(); //Disable the flip 
+            
+
+            mExternalFormat_ = preferredImagePixelFormat;
+ 
+            //If we turned off the Red/Blue flip, turn it back on
+            if (redAndBlueFlipActive) 
+                swapRedAndBlueChannels();
+            
+        }
+    }
 
 
 
@@ -566,6 +868,13 @@ GLenum ImageData_UByte::externalFormat() const noexcept {
 }
 GLenum ImageData_UByte::dataRepresentation() const noexcept {
     return pImpl_->dataRepresentation();
+}
+uint8_t* ImageData_UByte::data() noexcept {
+    return pImpl_->data();
+}
+void ImageData_UByte::uploadDataTo2DTexture(GLuint textureName,
+                                            GLint level) const noexcept {
+    return pImpl_->uploadDataTo2DTexture(textureName, level);
 }
 bool ImageData_UByte::swapRedAndBlueChannels() noexcept {
     return pImpl_->swapRedAndBlueChannels();
@@ -846,14 +1155,14 @@ bool verifyInternalFormatMatchesImageAttributes(GLenum internalFormat,
         parametersAgree = (GL_RG8 == internalFormat);
         break;
     case (3):
-        parametersAgree == ((GL_RGB8 == internalFormat) ||
-                            (GL_RGB8_SNORM == internalFormat) ||
-                            (GL_SRGB8 == internalFormat));
+        parametersAgree = ((GL_RGB8 == internalFormat) ||
+                           (GL_RGB8_SNORM == internalFormat) ||
+                           (GL_SRGB8 == internalFormat));
         break;
     case (4):
         parametersAgree = ((GL_RGBA8 == internalFormat) ||
-                            (GL_RGBA8_SNORM == internalFormat) ||
-                            (GL_SRGB8_ALPHA8 == internalFormat));
+                           (GL_RGBA8_SNORM == internalFormat) ||
+                           (GL_SRGB8_ALPHA8 == internalFormat));
         break;
     }
     return parametersAgree;
@@ -861,8 +1170,8 @@ bool verifyInternalFormatMatchesImageAttributes(GLenum internalFormat,
 
 //Gets the preferred internal format for images and textures from the 
 //OpenGL implementation. 
-GLenum getPreferedImageFormatForImplementation(GLenum textureTarget,
-                                               GLenum internalFormat) noexcept {
+GLenum checkIfInternalFormatIsPreferredByImplementationForTextureTarget(GLenum textureTarget,
+                                                                        GLenum internalFormat) noexcept {
 
     assert(verifyIsInternalFormat(internalFormat));
 
@@ -872,70 +1181,70 @@ GLenum getPreferedImageFormatForImplementation(GLenum textureTarget,
                                  GLsizei bufSize​,
                                  GLint *params​);*/
 
-    if (textureTarget = GL_TEXTURE_1D) {
-        GLint preferedFormat = 0;
+    if (textureTarget == GL_TEXTURE_1D) {
+        GLint preferredFormat = 0;
         glGetInternalformativ(textureTarget,
                               internalFormat,
                               GL_INTERNALFORMAT_PREFERRED,
                               1,
-                              &preferedFormat);
+                              &preferredFormat);
 
-        const GLenum preferedFormatEnum = static_cast<GLenum>(preferedFormat);
+        const GLenum preferredFormatEnum = static_cast<GLenum>(preferredFormat);
         printf("\nThe preferred image format by this platform for using \'%s\'\n"
             "textures with data in the format \'%s\' is: \'%s\'\n",
             "GL_TEXTURE_1D",
             convertGLEnumToString(internalFormat).c_str(),
-            convertGLEnumToString(preferedFormatEnum));
-        return preferedFormatEnum;
+            convertGLEnumToString(preferredFormatEnum).c_str());
+        return preferredFormatEnum;
 
     }
     else if (textureTarget == GL_TEXTURE_2D) {
-        GLint preferedFormat = 0;
+        GLint preferredFormat = 0;
         glGetInternalformativ(textureTarget,
                               internalFormat,
                               GL_INTERNALFORMAT_PREFERRED,
                               1,
-                              &preferedFormat);
+                              &preferredFormat);
 
-        const GLenum preferedFormatEnum = static_cast<GLenum>(preferedFormat);
+        const GLenum preferredFormatEnum = static_cast<GLenum>(preferredFormat);
         printf("\nThe preferred image format by this platform for using \'%s\'\n"
             "textures with data in the format \'%s\' is: \'%s\'\n",
             "GL_TEXTURE_2D",
             convertGLEnumToString(internalFormat).c_str(),
-            convertGLEnumToString(preferedFormatEnum));
-        return preferedFormatEnum;
+            convertGLEnumToString(preferredFormatEnum).c_str());
+        return preferredFormatEnum;
     }
     else if (textureTarget == GL_TEXTURE_2D_ARRAY) {
-        GLint preferedFormat = 0;
-        glGetInternalformativ(textureTarget,
-            internalFormat,
-            GL_INTERNALFORMAT_PREFERRED,
-            1,
-            &preferedFormat);
-
-        const GLenum preferedFormatEnum = static_cast<GLenum>(preferedFormat);
-        printf("\nThe preferred image format by this platform for using \'%s\'\n"
-            "textures with data in the format \'%s\' is: \'%s\'\n",
-            "GL_TEXTURE_2D_ARRAY",
-            convertGLEnumToString(internalFormat).c_str(),
-            convertGLEnumToString(preferedFormatEnum));
-        return preferedFormatEnum;
-    }
-    else if (textureTarget = GL_TEXTURE_3D) {
-        GLint preferedFormat = 0;
+        GLint preferredFormat = 0;
         glGetInternalformativ(textureTarget,
                               internalFormat,
                               GL_INTERNALFORMAT_PREFERRED,
                               1,
-                              &preferedFormat);
+                              &preferredFormat);
 
-        const GLenum preferedFormatEnum = static_cast<GLenum>(preferedFormat);
+        const GLenum preferredFormatEnum = static_cast<GLenum>(preferredFormat);
+        printf("\nThe preferred image format by this platform for using \'%s\'\n"
+            "textures with data in the format \'%s\' is: \'%s\'\n",
+            "GL_TEXTURE_2D_ARRAY",
+            convertGLEnumToString(internalFormat).c_str(),
+            convertGLEnumToString(preferredFormatEnum).c_str());
+        return preferredFormatEnum;
+    }
+    else if (textureTarget == GL_TEXTURE_3D) {
+        GLint preferredFormat = 0;
+        glGetInternalformativ(textureTarget,
+                              internalFormat,
+                              GL_INTERNALFORMAT_PREFERRED,
+                              1,
+                              &preferredFormat);
+
+        const GLenum preferredFormatEnum = static_cast<GLenum>(preferredFormat);
         printf("\nThe preferred image format by this platform for using \'%s\'\n"
             "textures with data in the format \'%s\' is: \'%s\'\n",
             "GL_TEXTURE_3D",
             convertGLEnumToString(internalFormat).c_str(),
-            convertGLEnumToString(preferedFormatEnum));
-        return preferedFormatEnum;
+            convertGLEnumToString(preferredFormatEnum).c_str());
+        return preferredFormatEnum;
     }
 
     else {
@@ -943,4 +1252,123 @@ GLenum getPreferedImageFormatForImplementation(GLenum textureTarget,
     }
 
     return 0u;
+}
+
+
+
+
+GLsizei getMaximumWidthForInternalFormat(GLenum textureTarget, 
+                                         GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    int32_t maxWidth = -1;
+    glGetInternalformativ(textureTarget, 
+                          internalFormat,
+                          GL_MAX_WIDTH,
+                          1,
+                          &maxWidth);
+    return maxWidth;
+}
+
+
+
+GLsizei getMaximumHeightForInternalFormat(GLenum textureTarget,
+                                          GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    int32_t maxHeight = -1;
+    glGetInternalformativ(textureTarget, 
+                          internalFormat,
+                          GL_MAX_HEIGHT,
+                          1,
+                          &maxHeight);
+    return maxHeight;
+}
+
+
+GLsizei getMaximumLayersForInternalFormat(GLenum textureTarget,
+                                          GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    int32_t maxLayers = -1;
+    glGetInternalformativ(textureTarget,
+                          internalFormat,
+                          GL_MAX_HEIGHT,
+                          1,
+                          &maxLayers);
+    return maxLayers;
+}
+
+
+GLsizei getMaximumDepthForInternalFormat(GLenum textureTarget,
+                                         GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    int32_t maxDepth = -1;
+    glGetInternalformativ(textureTarget, 
+                          internalFormat,
+                          GL_MAX_HEIGHT,
+                          1,
+                          &maxDepth);
+    return maxDepth;
+}
+
+
+GLsizei getMaximumCombinedForInternalFormat(GLenum textureTarget,
+                                            GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    int32_t maxDimensions[10] = { -1 };
+    glGetInternalformativ(textureTarget, 
+                          internalFormat,
+                          GL_MAX_HEIGHT,
+                          10,
+                          &maxDimensions[0]);
+    for (auto i = 0; i < 10; i++)
+        printf("\nmaxDimensions[%d] == %d", i, maxDimensions[i]);
+    printf("\n");
+    return maxDimensions[0];
+}
+
+
+GLenum getPreferredImagePixelFormatForInternalFormat(GLenum textureTarget,
+                                                     GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    GLenum preferredFormat = GL_NONE;
+
+    glGetInternalformativ(textureTarget,
+                          internalFormat,
+                          GL_IMAGE_PIXEL_FORMAT,
+                          1,
+                          (GLint*)&preferredFormat);
+    if (GL_NONE == preferredFormat) {
+        printf("\nQuery to get preferred image pixel format for internal\n"
+            "format %s from implementation has returned GL_NONE!\n"
+            "This means that this internal format and texture target\n"
+            "not supported by this implementation!\n\n",
+            convertGLEnumToString(internalFormat).c_str());
+    } 
+    printf("\nPreferred Format for %s is %#x!\n",
+        convertGLEnumToString(internalFormat).c_str(), preferredFormat);
+    return preferredFormat;
+}
+
+//THIS ONE IS JUST FOR EXPERIMENTAL PURPOSES
+//Returns the Image Pixel Type preferred for the given texture target 
+//and internal format  
+GLenum getPreferredImagePixelTypeForInternalFormat(GLenum textureTarget,
+                                                    GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    GLenum preferredType = GL_NONE;
+
+    glGetInternalformativ(textureTarget,
+                          internalFormat,
+                          GL_IMAGE_PIXEL_FORMAT,
+                          1,
+                          (GLint*)& preferredType);
+    if (GL_NONE == preferredType) {
+        printf("\nQuery to get preferred image pixel type for internal\n"
+            "format %s from implementation has returned GL_NONE!\n"
+            "This means that this internal format and texture target\n"
+            "not supported by this implementation!\n\n", convertGLEnumToString(internalFormat).c_str());
+    }
+    printf("\nPreferred Type for %s is %#x!\n",
+        convertGLEnumToString(internalFormat).c_str(), preferredType);
+    return preferredType;
+
 }

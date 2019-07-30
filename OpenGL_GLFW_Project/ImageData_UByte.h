@@ -11,11 +11,11 @@
 //                                                                             
 //                                                                             
 // Description:                Designed to serve as an easy-to-use data wrapper
-//                              for working with textures and image files. Each
-//                                 instance of this class contains internally a
+//                         for data when working with textures and image files.
+//                            Each instance of this class contains internally a
 //                             valid block of image data in the format of 8-bit
 //                                 unsigned bytes (internally represented using
-//                             the data type 'uint8_t').                       
+//                                                    the data type 'uint8_t').
 //                                                                             
 //                                                                             
 // Invariants:                                                                 
@@ -76,7 +76,7 @@
 //                                                                             
 //                                                                             
 //  References:                                                                
-//   https://software.intel.com/en-us/articles/opengl-performance-tips-use-native-formats-for-best-rendering-performance
+// https://software.intel.com/en-us/articles/opengl-performance-tips-use-native-formats-for-best-rendering-performance
 //                                                                             
 //   https://www.opengl.org/wiki/Image_Format                                  
 //                                                                             
@@ -111,10 +111,10 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 //shared internally by object of this type. These constants control what the 
 //default image will be. Note that these values are still validated and will 
 //be ignored if they violate the restrictions placed upon all images
-static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 8;
+static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 3;
 
 //Specify whether the default images 
-static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 45u, 18u, 38u, 255u/20u };
+static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 38u, 255u/20u };
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_2 = { 165u, 195u, 248u, 225u };
 
 
@@ -167,8 +167,8 @@ public:
     //
     //While implementing the internal data generation algorithm
     //used by this constructor I was curious about how the 
-    //breakdown of the various data paths looked like, so I 
-    //created a way to print details looking into how the 
+    //breakdown of the various data paths looked, so I 
+    //created a way to print details reporting how the 
     //image data is assigned out to a file. I decided this 
     //feature was interesting enough to leave it optional
     //for public usage. PLEASE UPDATE DOCUMENTATION HERE ONCE
@@ -223,7 +223,7 @@ public:
                         GLsizei comp = 0) : width(width),
                                             height(height),
                                             comp(comp) { /*assert(comp <= 4);*/}
-        ~ImageAttributes() = default;
+        ~ImageAttributes() noexcept = default;
         ImageAttributes(const ImageAttributes& that) noexcept = default;
         ImageAttributes(ImageAttributes&& that) noexcept = default;
         ImageAttributes& operator=(const ImageAttributes& that) noexcept = default;
@@ -285,6 +285,22 @@ public:
     //Will return the type used internally to represent the
     //data, which will always be GL_UNSIGNED_BYTE.
     GLenum dataRepresentation() const noexcept;
+    
+
+    //Returns a pointer to the start of the stored internal data.
+    //This pointer is necessary for sending data to GPU with
+    //OpenGL's C API. As such it is impossible for this object to
+    //know if you modify the data in any way through this pointer.
+    //So please don't do that.
+    uint8_t* data() noexcept;
+
+
+    //Provides the safest way to have this object transfer its internal
+    //data to OpenGL. This object handles all the tricky parameter matching
+    //while also attempts to match the preferred format types preferred by 
+    //the implementation to automatically achieve optimum performance
+    void uploadDataTo2DTexture(GLuint textureName, 
+                               GLint level = 0) const noexcept;
 
 
     //                      //                             //
