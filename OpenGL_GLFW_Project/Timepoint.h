@@ -43,6 +43,9 @@ public:
         else
             timepoint = 0.0;
     }
+    double operator-(const LocalTimepoint& that) const noexcept {
+        return (timepoint - that.timepoint);
+    }
 };
 
 

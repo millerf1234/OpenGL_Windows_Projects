@@ -43,6 +43,49 @@ float computeCustom2(in const uint seed, in const float seed2) {
 
 void main() {
 
+#if 1
+
+color = texture(tex_object, processed_vertex.texCoord) - vec4(.2, 0., 0., .5);
+
+#elif 0
+
+const vec4 ambient = vec4(.11, .11, .11, .11);
+
+
+const vec4 textureColor = texture(tex_object, processed_vertex.texCoord);
+
+
+vec3 lightDirection = normalize(vec3(10.*cos(0.35*time), 12. * -sin(time - 2.14), 2.0 * cos(time)));
+float diffuseStrength = dot(lightDirection, processed_vertex.normal);
+diffuseStrength = clamp(diffuseStrength, 0.0, 1.0);
+vec4 diffuse = diffuseStrength * textureColor;
+
+
+color = normalize(ambient + diffuse);
+
+
+#elif 0
+
+const float theta = 3.141593*1.5;
+const mat2 rotation = mat2(cos(theta), -sin(theta), sin(theta), cos(theta));
+
+vec4 texColor = vec4(0.8 + (0.2 + 0.01*processed_vertex.instanceID) * cos(time),
+             0.5 + cosh(1.51 + 0.45*sin(time * processed_vertex.instanceID)),
+             0.33 + abs(0.66 * sin(cos(sin(time)))),
+             1.);
+texColor = texColor - length(texColor)*texture(tex_object, (processed_vertex.texCoord * 2.) - 1.);
+
+if (length(texColor.rgb) > length(vec3(1.0, 1.0, 1.0))) {
+    color = mix(vec4(abs(cos(time + 1.22634*processed_vertex.instanceID-cos(time)))),
+                texColor, 0.5 + 0.5 * cos(0.25*time));
+    color.r *= max(abs((color.g - color.b)), 0.45);
+    color.a = 0.66;
+ 
+}
+else 
+    color = texColor;
+#else 
+
     //Declare some variables that depend on the customParameters
     const float custom1 = computeCustom1(customParameter1);
     
@@ -143,4 +186,5 @@ void main() {
     finalColor.a = clamp(finalColor.a, .235, 2.);
     color = finalColor;
 
+    #endif 
 }

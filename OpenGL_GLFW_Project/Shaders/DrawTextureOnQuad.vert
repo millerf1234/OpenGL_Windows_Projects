@@ -73,6 +73,11 @@ int getVertIDMod(in int vertexID) {
     return (vertexID % int(VERTEX_ID_MOD_VALUE)) + 1;
 }
 
+vec2 rotate2(const in vec2 v, const in float theta) {
+    const mat2 rotation = mat2(cos(theta), sin(theta), -sin(theta), cos(theta));
+    return rotation * v;
+}
+
 
 
 #if defined BASIC_VERT
@@ -81,12 +86,12 @@ void main() {
     processed_vertex.vertID = vert;
     processed_vertex.vertIDMod = vertMod;
     processed_vertex.instanceID = inst;
-    processed_vertex.texCoord = ModelTexCoord;
-	processed_vertex.normal = mat3(rotation) * ModelNormal;
 
+    processed_vertex.normal = mat3(rotation) * ModelNormal;
+    processed_vertex.texCoord = ModelTexCoord;
     processed_vertex.position = MVP * ModelPosition;
 
-    gl_Position = processed_vertex.position + vec4(1.25*inst*sin(2.04*inst), 1.975*inst*cos(1.14*inst), 0.0, zoom);
+    gl_Position = processed_vertex.position + vec4(1.025*inst*sin(2.04*inst), 1.2975*inst*cos(1.14*inst), 0.0, zoom);
 
     gl_PointSize = vertMod / (2.0 - 0.025*float(customParameter1));
 }

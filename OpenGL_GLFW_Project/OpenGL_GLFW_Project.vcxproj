@@ -494,6 +494,7 @@
     <None Include="obj\2DTexturedQuadPlane.mtl" />
     <None Include="obj\3D_Arrow.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
+    <None Include="obj\AlienWorldSkybox.mtl" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
@@ -680,6 +681,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_albedo.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_AmbientOcclusion.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_diffuse.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_emissive.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_glossiness.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_normal_map.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_roughness.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_Specular.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_SpecularTint.png" />
+    <Image Include="Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png" />
     <Image Include="Images\Cubemap\green\green_bk.tga" />
     <Image Include="Images\Cubemap\green\green_dn.tga" />
     <Image Include="Images\Cubemap\green\green_ft.tga" />
@@ -770,6 +781,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Interceptor00.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\AlienWorldSkybox.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

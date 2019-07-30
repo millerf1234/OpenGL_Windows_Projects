@@ -565,6 +565,9 @@
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Deprecated\TGA_PrototypeLoader\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox">
+      <UniqueIdentifier>{23a3b117-9120-4599-b212-26338857c1d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1759,6 +1762,12 @@
     <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt">
       <Filter>NotesAndReferences\Profiling</Filter>
     </None>
+    <None Include="obj\AlienWorldSkybox.mtl">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+    </None>
+    <None Include="obj\AlienWorldSkybox.obj">
+      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1861,9 +1870,6 @@
     <Image Include="obj\RocketEngine_UV.png">
       <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
     </Image>
-    <Image Include="obj\BeveledCube.png">
-      <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
-    </Image>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
       <Filter>NotesAndReferences</Filter>
     </Image>
@@ -1956,6 +1962,39 @@
     </Image>
     <Image Include="Images\Cubemap\spire\spire_up.tga">
       <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+    </Image>
+    <Image Include="obj\BeveledCube.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_glossiness.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_albedo.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_AmbientOcclusion.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_diffuse.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_emissive.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_normal_map.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_roughness.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_Specular.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_SpecularTint.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png">
+      <Filter>Resource Files\Images\Texture2D\png</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

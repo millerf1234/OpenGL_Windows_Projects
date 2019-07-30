@@ -110,7 +110,8 @@ protected: //private:
     GLuint vao; //Only 1 VertexArrayObject is required because all buffers share a common data layout.
     GLuint triangleOutlineEBO;
     GLuint sceneBufferVBO;//primarySceneBufferVBO, alternateSceneBufferVBO; 
-    GLuint ourTexture;
+    GLuint practiceTexture;
+    std::vector<GLuint> practiceTextureSet;
 
 	//Variables that are modifiable by input from the user
 	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;

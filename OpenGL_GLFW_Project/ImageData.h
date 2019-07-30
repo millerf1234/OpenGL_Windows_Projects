@@ -82,15 +82,15 @@ public:
     //                appropriate type, the vector size matches 
     //                width*height*components, 
     ImageData(bool valid,
-        std::string errorMessage,
-        std::string name,
-        GLsizei width,
-        GLsizei height,
-        GLint components,
-        GLenum dataType,
-        GLenum format,
-        GLenum internalFormat,
-        std::vector<uint8_t> data);
+              std::string errorMessage,
+              std::string name,
+              GLsizei width,
+              GLsizei height,
+              GLint components,
+              GLenum dataType,
+              GLenum format,
+              GLenum internalFormat,
+              std::vector<uint8_t> data);
 
     //Please ensure the image file has a proper file extension which matches 
     //one of the expected formats.Accepted formats currently are: [None] 

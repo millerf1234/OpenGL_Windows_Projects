@@ -213,7 +213,7 @@ void AssetLoadingDemo::initialize() {
     vao = 0U;
     sceneBufferVBO = 0U;
     triangleOutlineEBO = 0U;
-    ourTexture = 0u;
+    practiceTexture = 0u;
 
 
     //Set the starting input primitive type
@@ -315,8 +315,8 @@ AssetLoadingDemo::~AssetLoadingDemo() noexcept {
     if (triangleOutlineEBO != 0u)
         glDeleteBuffers(1, &triangleOutlineEBO);
 
-    if (ourTexture)
-        glDeleteTextures(1, &ourTexture);
+    if (practiceTexture)
+        glDeleteTextures(1, &practiceTexture);
 }
 
 
@@ -497,35 +497,53 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 bool AssetLoadingDemo::loadTexture2DFromTGA() {
     assert(quadTextureTestShader);
 
-    ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+
+    Timepoint imageLoadStart("Image Load Start!\n");
+   // ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\severnayazemlya_oli_2018221_lrg.jpg)");
+    
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
+
+    ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+
+    Timepoint imageLoadEnd("Image Load End!\n");
+
+    fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
 
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
     //Specify Storage To Be Used For The Texture
-    glTextureStorage2D(ourTexture,
+    glTextureStorage2D(practiceTexture,
                        1,
                        testDefaultImage.internalFormat(),
                        testDefaultImage.width(),
                        testDefaultImage.height());
-    glBindTexture(GL_TEXTURE_2D, ourTexture);
+    glBindTexture(GL_TEXTURE_2D, practiceTexture);
 
 
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
+
     
     /*
-    glTextureSubImage2D(ourTexture,
+    glTextureSubImage2D(practiceTexture,
                         0,
                         0,
                         0,
@@ -535,8 +553,8 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
                         testDefaultImage.dataRepresentation(),
                         testDefaultImage.data());
     */
-    testDefaultImage.swapRedAndBlueChannels();
-    testDefaultImage.uploadDataTo2DTexture(ourTexture);
+//    testDefaultImage.swapRedAndBlueChannels();
+    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
     return true;
 
 
@@ -570,9 +588,9 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     const GLenum internalFormat = (testTexture.components() == 3) ? GL_RGB8 : GL_RGBA8;
     const GLenum dataFormat = (internalFormat == GL_RGB8) ? GL_BGR : GL_BGRA;
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
-    glTextureStorage2D(ourTexture, 1, internalFormat, testTexture.width(), testTexture.height());
-    glBindTexture(GL_TEXTURE_2D, ourTexture);
+    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
+    glTextureStorage2D(practiceTexture, 1, internalFormat, testTexture.width(), testTexture.height());
+    glBindTexture(GL_TEXTURE_2D, practiceTexture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -584,7 +602,7 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
-    glTextureSubImage2D(ourTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
+    glTextureSubImage2D(practiceTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
  
 
     return true;
@@ -597,14 +615,14 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     
     assert(testDefaultImage.internalFormat() == GL_RGBA8);
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &ourTexture);
+    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
     //Specify Storage To Be Used For The Texture
-    glTextureStorage2D(ourTexture,
+    glTextureStorage2D(practiceTexture,
                        1,
                        testDefaultImage.internalFormat(),
                        testDefaultImage.width(),
                        testDefaultImage.height());
-    glBindTexture(GL_TEXTURE_2D, ourTexture);
+    glBindTexture(GL_TEXTURE_2D, practiceTexture);
 
 
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -621,7 +639,7 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
-    glTextureSubImage2D(ourTexture,
+    glTextureSubImage2D(practiceTexture,
                         0,
                         0,
                         0,
@@ -732,8 +750,10 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+    
+    // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
@@ -773,7 +793,7 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));

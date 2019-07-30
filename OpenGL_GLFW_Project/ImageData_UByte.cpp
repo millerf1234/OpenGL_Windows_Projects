@@ -177,17 +177,37 @@ GLsizei getMaximumCombinedForInternalFormat(GLenum textureTarget,
                                             GLenum internalFormat) noexcept;
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+////     TO GET THE CORRECT PARAMETERS TO USE FOR CALLS TO FUNCTIONS SUCH       ////
+////     AS 'glTexImage2D()' (AND RELATED), USE THE FOLLOWING STATIC FUNCTIONS  ////
+////        WHICH QUERY THE IMPLEMENTATION TO GET A SUPPORTED VALUE FOR EACH    ////
+////////////////////////////////////////////////////////////////////////////////
+
+
+GLenum getSuitableExternalFormatForTexture(GLenum textureTarget,
+                                           GLenum internalFormat) noexcept;
+GLenum getSuitableDataTypeForTexture(GLenum textureTarget, 
+                                     GLenum internalFormat) noexcept;
+
+
+
+//////////////////////////////////////////////////////////////////////
+// THESE TWO ARE WHAT THE IMPLEMENTATION USES INTERNALLY [I THINK]  //
+//     There is no  //
+//////////////////////////////////////////////////////////////////////
 //THIS ONE IS JUST FOR EXPERIMENTAL PURPOSES
 //Returns the Image Pixel Format preferred for the given texture target 
 //and internal format 
 GLenum getPreferredImagePixelFormatForInternalFormat(GLenum textureTarget,
                                                      GLenum internalFormat) noexcept;
-
 //THIS ONE IS JUST FOR EXPERIMENTAL PURPOSES
 //Returns the Image Pixel Type preferred for the given texture target 
 //and internal format  
 GLenum getPreferredImagePixelTypeForInternalFormat(GLenum textureTarget,
                                                    GLenum internalFormat) noexcept;
+
+
 
 //-----------------------------------------------------------------------------
 
@@ -352,6 +372,7 @@ private:
     //Queries the implementation to see if there is a preference, then
     //decides on the External Format the use.
     void selectAnExternalFormat() noexcept; 
+
 };
 
 
@@ -368,7 +389,8 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(float randSeed,
                                               GLsizei width,
                                               GLsizei height,
                                               bool writeAnalysisOfGeneratedDataToFile)
-    : mDataType_(GL_UNSIGNED_BYTE) {
+    : mDataType_(GL_UNSIGNED_BYTE),
+      mFlipRedAndBlueEnabled_(false) {
     
     //todo
 
@@ -380,7 +402,9 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(float randSeed,
 ImageData_UByte::ImageDataImpl::ImageDataImpl(generateImgDataCallbackFunc generator,
                                               GLsizei width,
                                               GLsizei height)
-    : mDataType_(GL_UNSIGNED_BYTE) {
+    : mDataType_(GL_UNSIGNED_BYTE),
+      mFlipRedAndBlueEnabled_(false) {
+        
     
     //todo
 
@@ -390,85 +414,82 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(generateImgDataCallbackFunc genera
 }
 
 ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& imageFile)
-    : mDataType_(GL_UNSIGNED_BYTE) {
-   
+    : mDataType_(GL_UNSIGNED_BYTE),
+      mFlipRedAndBlueEnabled_(false) {
+         
     assert(!imageFile.empty());
     
-    try {    
+    static constexpr const int REQUESTED_COMPONENTS = 0;
+
+    try {
         if (!std::filesystem::exists(imageFile)) {
             throw std::exception("Dude what are you doing!\n"
                 "That file doesn't exist!\n");
         }
 
-        
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+        //We must figure out a way to open this FILE* to then
+        //pass it to stb_image
+        FILE* fileHandle = nullptr;
 
+#if defined(_MSC_VER) && _MSC_VER >= 1400
+#if defined(STBI_WINDOWS_UTF8)
         const wchar_t* cstrFilenameWide = imageFile.c_str();
         static constexpr const size_t FILENAME_CONVERSION_BUFFER_SIZE = 2048;
         char cstrFilename[FILENAME_CONVERSION_BUFFER_SIZE] = { '\0' };
-        int conversionResult = stbi_convert_wchar_to_utf8(cstrFilename,                   
-                                                          FILENAME_CONVERSION_BUFFER_SIZE,
-                                                          cstrFilenameWide);
+        int conversionResult = stbi_convert_wchar_to_utf8(cstrFilename,
+            FILENAME_CONVERSION_BUFFER_SIZE,
+            cstrFilenameWide);
 
+        const errno_t fileOpeningError = fopen_s(&fileHandle, cstrFilename, "rb");
+        printf("File Open Attempt returned result: %d\n", fileOpeningError);
+        if (fileOpeningError) {
+            fileHandle = nullptr;
+            throw std::exception("Error! Unable to open image file!\n");
+        }
+
+#else 
+        //Windows platform but STBI_WINDOWS_UTF8 wasn't defined
+#pragma error("\nIf you want to turn off \'STBI_WINDOWS_UTF8\', then by all means go ahead.\n"
+        "Just know that no implementation for getting from an image\'s\n"
+        "std::filesystem::path through \'stb_image\' to the loaded image\n"
+            "data vector has not yet been implemented.\n\n")
+
+#endif //STBI_WINDOWS_UTF8
 
 #else 
 #pragma error("Open File Functionality Not Implemented On Non-Windows Platforms Yet...\n")
         //Currently not implemented so what you will need to do if you
         //are not on Windows is quickly write in here your platforms C
         //API function for opening a FILE* from a filepath
-#endif 
+#endif //_MSC_VER
 
+        std::unique_ptr<uint8_t, void(*)(void*)> dataFromStbi(
+            stbi_load_from_file(fileHandle,
+                &mAttributes_.width,
+                &mAttributes_.height,
+                &mAttributes_.comp,
+                REQUESTED_COMPONENTS),
+            stbi_image_free);
+        fclose(fileHandle); //We are done with file, so close it
+        fileHandle = nullptr;
 
-//This implementation that varies depending on a number of different circumstances 
-//was getting pretty complicated and there is no reason for it to need to be. Thus
-//rather than implementing multiple different paths through this function, now the
-//most general implementation is taken in pretty much all cases
-#if 0
-        //'stb_image' has a maximum filepath length it supports for parsing files.
-        //If the requested filepath this function gets called with exceeds this 
-        //length, then we will need to adjust our implementation by handling opening
-        //and closing the file handle ourselves
-        if (imageFile.string().length() >= FILENAME_MAX) {
-            FILE* imageFileHandle = nullptr; 
-            //An inner try-catch block is used here to ensure
-            //file handle gets closed
-            try { 
-#if defined(_MSC_VER) && _MSC_VER >= 1400
-                if (0 != fopen_s(&imageFileHandle, imageFile.string().c_str(), "r")) {
-                    imageFileHandle = nullptr;
-                    throw std::exception("Error! Unable to open image file!\n");
-                }
-                
-#else 
+        if ((!dataFromStbi) || (0 >= mAttributes_.width) ||
+            (0 >= mAttributes_.height) || (0 >= mAttributes_.comp)) {
+            throw std::exception("STB Image Unable to read file!\n");
+    }
 
-#endif 
-            }
-            catch (const std::exception& e) {
-                if (imageFileHandle) {
-                    fclose(imageFileHandle);
-                    imageFileHandle = nullptr;
-                } //Throw e out to the next layer of catch statements
-                throw e;
-            }
+        mImgData_.resize(mAttributes_.sizeInBytes());
+        std::memcpy(mImgData_.data(), dataFromStbi.get(), mAttributes_.sizeInBytes());
+        printf("\nLoaded Successfully!\n");
+
+        setInternalFormatFromAttributes();
+        selectAnExternalFormat();
+
+        const bool imgExceedsLimits = checkIfImageDimensionsExceedImplementationMaximum(); //dataExceedsImplementationTextureSizeLimitsFor(GL_TEXTURE_2D);
+
+        if (imgExceedsLimits) {
+            throw std::exception("\nImage is too big! It Exceeds Implementations Maximums\n");
         }
-
-
-        //See if we need to worry about wide character filepaths since we will be 
-        //interacting with 'stb_image' to load the data, which is a C library and 
-        //thus requires us to do more work on our end to make sure we are interacting
-        //with it appropriately.
-#ifdef _MSC_VER 
-#ifdef STBI_WINDOWS_UTF8
-        //This is way plenty
-        static constexpr const size_t BUFFER_FOR_CONVERTED_FILEPATH_SIZE = 2048; 
-#else
-
-#endif //STBI_WINDOWS_UTF8
-#else 
-        //Platform is not windows, so no need to worry about wide strings
-
-#endif 
-#endif //IF 0
     }
     catch (const std::exception& e) {
         fprintf(WRNLOG, "\nCaught an exception while loading the "
@@ -476,7 +497,7 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& image
             "All Dependent TextureS will be loaded using the ugly"
             " default image!\n"
             "Exception Message: %s\n\n",
-            imageFile.string().c_str());
+            imageFile.string().c_str(), e.what());
         resetSelfFromInternalDefaultImage();
     }
     catch (...) {
@@ -496,7 +517,8 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(GLsizei width,
                                               GLenum externalFormat, 
                                               std::vector<uint8_t> data,
                                               std::string* errMsg) 
-    : mDataType_(GL_UNSIGNED_BYTE) {
+    : mDataType_(GL_UNSIGNED_BYTE),
+      mFlipRedAndBlueEnabled_(false) {
     
     //todo
 
@@ -686,37 +708,50 @@ void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() noexcept {
         //fprintf(MSGLOG, "\nPreferred External Format for TEXTURE_2D is %s\n",
         //    convertGLEnumToString(recommendedByImplementation).c_str());
 
-        const GLenum preferredImagePixelFormat =
-            getPreferredImagePixelFormatForInternalFormat(GL_TEXTURE_2D, 
-                                                          mInternalFormat_);
-        const GLenum preferredImagePixelType = 
-        getPreferredImagePixelTypeForInternalFormat(GL_TEXTURE_2D, 
-                                                    mInternalFormat_);
+        //const GLenum preferredImagePixelFormat =
+        //    getPreferredImagePixelFormatForInternalFormat(GL_TEXTURE_2D, 
+        //                                                  mInternalFormat_);
+        //const GLenum preferredImagePixelType = 
+        //getPreferredImagePixelTypeForInternalFormat(GL_TEXTURE_2D, 
+        //                                            mInternalFormat_);
+        //
+        //fprintf(MSGLOG, "\nDEBUG: Choosing External Format \"%s\" for\n"
+        //        "Texture2D downloads of data in internal format \"%s\"\n\n",
+        //        convertGLEnumToString(mExternalFormat_).c_str(),
+        //        convertGLEnumToString(mInternalFormat_).c_str());
         
-        if (preferredImagePixelFormat != preferredImagePixelType) {
-            fprintf(MSGLOG, "\n\n"
-                "FYI! Alert! For internal image data format %s,\n"
-                "the following has occurred: \n"
-                "\tThe preferred image pixel type and\n"
-                "\tpreferred image pixel format obtained\n"
-                "from querying the implementation are\n"
-                "different!\n"
-                "\t\tPreferred Image Pixel Format is %#x [%s]\n"
-                "\t\tPreferred Image Pixel Type is %#x [%s]\n"
-                "Investigate further if interested!\n\n)",
-                convertGLEnumToString(mInternalFormat_).c_str(),
-                preferredImagePixelFormat,
-                convertGLEnumToString(preferredImagePixelFormat).c_str(),
-                preferredImagePixelType,
-                convertGLEnumToString(preferredImagePixelType).c_str());
+
+
+    GLenum externalFormat = getSuitableExternalFormatForTexture(GL_TEXTURE_2D,
+                                                                mInternalFormat_);
+            
+    //If the implementation is being dumb, just select the most common external 
+    //format for the number of components per pixel there are in the image data.
+    if (externalFormat == GL_NONE) {
+        if (1 == mAttributes_.comp) {
+            externalFormat = GL_RED;
         }
-        else {
+        else if (2 == mAttributes_.comp) {
+            externalFormat = GL_RG;
+        }
+        else if (3 == mAttributes_.comp) {
+            externalFormat = GL_RGB;
+        }
+        else if (4 == mAttributes_.comp) {
+            externalFormat = GL_RGBA;
+        }
+        else
+            throw std::exception("Unsupported number of components per pixel!");
+    }
+
             fprintf(MSGLOG, "\nDEBUG: Choosing External Format \"%s\" for\n"
                 "Texture2D downloads of data in internal format \"%s\"\n\n",
-                convertGLEnumToString(mExternalFormat_).c_str(),
+                convertGLEnumToString(externalFormat).c_str(),
                 convertGLEnumToString(mInternalFormat_).c_str());
-        }
 
+        //Only need to worry about swapping red and blue channels if 
+        //enough channels exist in the data for a 'red' and a 'blue'
+        //channel make sense
         if (mAttributes_.comp < 3)
             return;
         else {
@@ -732,7 +767,7 @@ void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() noexcept {
                 swapRedAndBlueChannels(); //Disable the flip 
             
 
-            mExternalFormat_ = preferredImagePixelFormat;
+            mExternalFormat_ = externalFormat;
  
             //If we turned off the Red/Blue flip, turn it back on
             if (redAndBlueFlipActive) 
@@ -740,7 +775,6 @@ void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() noexcept {
             
         }
     }
-
 
 
 //-----------------------------------------------------------------------------
@@ -1326,6 +1360,52 @@ GLsizei getMaximumCombinedForInternalFormat(GLenum textureTarget,
 }
 
 
+/////////////////////////////////////////////////////////////
+////   IMPLEMENTATION OF THE 2 USEFUL STATIC FUNCTIONS   ////
+
+GLenum getSuitableExternalFormatForTexture(GLenum textureTarget,
+                                           GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    GLenum suitableExternalFormat = GL_NONE;
+
+    glGetInternalformativ(textureTarget,
+                          internalFormat,
+                          GL_TEXTURE_IMAGE_FORMAT,
+                          1,
+                          (GLint*)& suitableExternalFormat);
+    if (GL_NONE == suitableExternalFormat) {
+        fprintf(WRNLOG, "\nQuery to get a suitable external texture image format\n"
+            "from the internal format %\'s\' has returned GL_NONE!\n"
+            "This means that this internal format and texture target\n"
+            "not supported by this implementation!\n\n",
+            convertGLEnumToString(internalFormat).c_str());
+    }
+    return suitableExternalFormat;
+}
+GLenum getSuitableDataTypeForTexture(GLenum textureTarget,
+                                     GLenum internalFormat) noexcept {
+    assert(verifyIsInternalFormat(internalFormat));
+    GLenum suitableDataType = GL_NONE;
+
+    glGetInternalformativ(textureTarget,
+                          internalFormat,
+                          GL_TEXTURE_IMAGE_TYPE,
+                          1,
+                          (GLint*)& suitableDataType);
+    if (GL_NONE == suitableDataType) {
+        fprintf(WRNLOG, "\nQuery to get a suitable external texture image format\n"
+            "from the internal format %\'s\' has returned GL_NONE!\n"
+            "This means that this internal format and texture target\n"
+            "not supported by this implementation!\n\n",
+            convertGLEnumToString(internalFormat).c_str());
+    }
+    return suitableDataType;
+}
+
+
+/////////////////////////////////////////////////////////////////
+////   IMPLEMENTATION OF THE 2 NOT-USEFUL STATIC FUNCTIONS   ////
+
 GLenum getPreferredImagePixelFormatForInternalFormat(GLenum textureTarget,
                                                      GLenum internalFormat) noexcept {
     assert(verifyIsInternalFormat(internalFormat));
@@ -1352,13 +1432,13 @@ GLenum getPreferredImagePixelFormatForInternalFormat(GLenum textureTarget,
 //Returns the Image Pixel Type preferred for the given texture target 
 //and internal format  
 GLenum getPreferredImagePixelTypeForInternalFormat(GLenum textureTarget,
-                                                    GLenum internalFormat) noexcept {
+                                                   GLenum internalFormat) noexcept {
     assert(verifyIsInternalFormat(internalFormat));
     GLenum preferredType = GL_NONE;
 
     glGetInternalformativ(textureTarget,
                           internalFormat,
-                          GL_IMAGE_PIXEL_FORMAT,
+                          GL_IMAGE_PIXEL_TYPE,
                           1,
                           (GLint*)& preferredType);
     if (GL_NONE == preferredType) {
