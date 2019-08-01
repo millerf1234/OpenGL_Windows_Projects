@@ -41,6 +41,14 @@ float computeCustom2(in const uint seed, in const float seed2) {
 
 
 
+//My own noise functions defined in 'PracticeNoise.glsl'
+float fsmJankyPolarNoiseF_00(vec3 samplePoint,float freq,float jankyness); 
+vec3 fsmJankyPolarNoiseV3_00(vec3 samplePoint,float freq,float jankyness); 
+
+
+
+
+
 void main() {
 
 #if 1
@@ -49,14 +57,34 @@ color = texture(tex_object, processed_vertex.texCoord) - vec4(.2, 0., 0., .5);
 
 #elif 0
 
-const vec4 ambient = vec4(.11, .11, .11, .11);
+//These here are for playing around with the noise function I wrote in 
+//the GLSL file "PracticeNoise.glsl"
+
+color = mix(texture(tex_object, processed_vertex.texCoord),
+            vec4(fsmJankyPolarNoiseV3_00(processed_vertex.position.xyz, 17.4, .77 + .31*cos(time)), .45),
+            0.25 + .25*sin(time));
+
+//const float noiseVal1 = fsmJankyPolarNoiseF_00(processed_vertex.position.xyz, 17.4, .13);
+//color = vec4(noiseVal1, 1. - noiseVal1, .5 + .5*noiseVal1, .45);
+
+
+#elif 0
+
+//Hmm this was just an experiment but I can't see any effect...
+vec2 dPdx = 5.*vec2(cos(time + float(customParameter3)), sin(time));
+vec2 dPdy = -1. * dPdx;
+color = textureGrad(tex_object, processed_vertex.texCoord, dPdx, dPdy);
+
+#elif 0
+
+const vec4 ambient = vec4(.0511, .0311, .0911, .107);
 
 
 const vec4 textureColor = texture(tex_object, processed_vertex.texCoord);
 
 
 vec3 lightDirection = normalize(vec3(10.*cos(0.35*time), 12. * -sin(time - 2.14), 2.0 * cos(time)));
-float diffuseStrength = dot(lightDirection, processed_vertex.normal);
+float diffuseStrength = dot(lightDirection, normalize(processed_vertex.normal));
 diffuseStrength = clamp(diffuseStrength, 0.0, 1.0);
 vec4 diffuse = diffuseStrength * textureColor;
 
@@ -110,7 +138,7 @@ else
                                        .75 - .01*processed_vertex.instanceID);  //A
 
     const vec4 computedTexture = oneMinusDiffuseMag * texture(tex_object,
-                                                              processed_vertex.instanceID*processed_vertex.texCoord + vec2(.01*processed_vertex.instanceID*time + sin(processed_vertex.vertID * 17. / 43. * 3.14)));
+                                                              processed_vertex.instanceID*processed_vertex.texCoord); //+ vec2(.01*processed_vertex.instanceID*time + sin(processed_vertex.vertID * 17. / 43. * 3.14)));
         
         
     vec4 computedColor = computedDiffuse + computedTexture;

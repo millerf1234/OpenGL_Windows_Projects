@@ -177,13 +177,13 @@ constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
 
 //Camera Parameters
-const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 10.5f);
+const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 8.0f);
 const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
-const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
+const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, -1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
 constexpr const float CAMERA_MAXIMUM_FOV = 3.14159f;
 constexpr const float CAMERA_MINIMUM_FOV = -3.14159f;
-constexpr const float CAMERA_Z_PLANE_NEAR = 0.5f;
+constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
 constexpr const float CAMERA_Z_PLANE_FAR = 1000.0f;
 
 constexpr const unsigned long long FRAMES_BETWEEN_PERFORMANCE_REPORT = 180ULL;
@@ -381,9 +381,10 @@ void AssetLoadingDemo::loadAssets() {
             "\n                                        <<  Exception Message  >>\n"
             "%s\n\n", e.what());
     }
-    catch (...) {
+    catch (...) { //Gotta catch 'em all
         error = true;
-        fprintf(ERRLOG, "\nCaught an unidentified exception while loading assets!\n");
+        fprintf(ERRLOG, "\nCaught an unidentified exception while loading assets "
+            "in AssetLoadingDemo!\n");
     }
 }
 
@@ -486,6 +487,11 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
     quadTextureTestShader = std::make_unique<ShaderProgram>(); 
     quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
     quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
+    //Need to attach a secondary...
+    std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
+        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
+    fragmentNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
     quadTextureTestShader->link();
     return quadTextureTestShader->checkIfLinked();
 }
@@ -502,11 +508,11 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     Timepoint imageLoadStart("Image Load Start!\n");
    // ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\severnayazemlya_oli_2018221_lrg.jpg)");
     
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
 
-    ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+    //ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
 
     Timepoint imageLoadEnd("Image Load End!\n");
 
@@ -637,7 +643,7 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
 
     glTextureSubImage2D(practiceTexture,
                         0,
@@ -742,7 +748,12 @@ void AssetLoadingDemo::loadModels() {
     //A very simple large sphere -0
     //worldMeshName = "LargeSphere.obj";
 
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+
+
+    //My First Attempt at a skybox cube 
+    worldMeshName = "AlienWorldSkybox.obj";
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -750,10 +761,10 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
     
-    // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
@@ -835,7 +846,8 @@ void AssetLoadingDemo::prepareScene() {
 	fprintf(MSGLOG, "Uploading scene buffer to GPU...\n");
 	uploadSceneBufferToGPU(sceneBufferVBO, sceneBuffer);
 	configureVertexArrayAttributes(); 
-    uploadTriangleOutlineElementOrderingBufferToGPU(triangleOutlineEBO, triangleOutlineElementOrdering);
+    uploadTriangleOutlineElementOrderingBufferToGPU(triangleOutlineEBO,
+                                                    triangleOutlineElementOrdering);
 }
 
 
@@ -848,6 +860,10 @@ void AssetLoadingDemo::renderLoop() {
 
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
         
+        if (!mainRenderWindow || (glfwGetCurrentContext() != mainRenderWindow)) {
+            fprintf(ERRLOG, "\nERROR! mainRenderWindow is not valid");
+            std::exit(EXIT_FAILURE);
+        }
         framePerformance.recordLoopStartTimepoint(frameNumber);
         ////////////////////////
         //Check Input
