@@ -495,6 +495,7 @@
     <None Include="obj\3D_Arrow.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\AlienWorldSkybox.mtl" />
+    <None Include="obj\AlienWorldSkybox.obj.vsspell" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />

@@ -1768,6 +1768,7 @@
     <None Include="obj\AlienWorldSkybox.obj">
       <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
     </None>
+    <None Include="obj\AlienWorldSkybox.obj.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
