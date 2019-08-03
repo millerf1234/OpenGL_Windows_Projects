@@ -508,11 +508,14 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     Timepoint imageLoadStart("Image Load Start!\n");
    // ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\severnayazemlya_oli_2018221_lrg.jpg)");
     
-    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
 
     //ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+
+    ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
+
 
     Timepoint imageLoadEnd("Image Load End!\n");
 
@@ -521,105 +524,6 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
 
-
-    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
-    //Specify Storage To Be Used For The Texture
-    glTextureStorage2D(practiceTexture,
-                       1,
-                       testDefaultImage.internalFormat(),
-                       testDefaultImage.width(),
-                       testDefaultImage.height());
-    glBindTexture(GL_TEXTURE_2D, practiceTexture);
-
-
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
-
-    
-    /*
-    glTextureSubImage2D(practiceTexture,
-                        0,
-                        0,
-                        0,
-                        testDefaultImage.width(),
-                        testDefaultImage.height(),
-                        testDefaultImage.externalFormat(),
-                        testDefaultImage.dataRepresentation(),
-                        testDefaultImage.data());
-    */
-//    testDefaultImage.swapRedAndBlueChannels();
-    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
-    return true;
-
-
-
-
-
-#ifdef PRACTICE_IMAGE_LOADING
-
-    //Use ImageData to create a texture...
-
-    //ImageFileLoader loadTGA(R"(spire_lf.png)");
-    //ImageFileLoader loadTGA2(R"(Inkedspire_lf2.jpg)");
-
-   // ImageFileLoader loadTGA(R"(Images\Cubemap\green\green_lf.tga)");
-
-   // ImageFileLoader hdrTest(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4940.jpg)");
-   // ImageFileLoader hdrTest2(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4941.jpg)");
-
-  //  ImageFileLoader hdrTest3(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\HDR\BambooForest_WojciechToman\_X3A4943.jpg)");
-
-#endif
-
-#ifndef LOAD_FROM_TGA
-
-    quadTextureTestShader->use();
-    //TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\green\green_lf.tga)");
-    //TGAImage testTexture(R"(C:\Users\Forrest\Documents\GitHub\TGA\datatest\rgb32_top_left_rle.tga)");
-    TGAImage testTexture(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Cubemap\spire\spire_ft.tga)");
-
-
-    const GLenum internalFormat = (testTexture.components() == 3) ? GL_RGB8 : GL_RGBA8;
-    const GLenum dataFormat = (internalFormat == GL_RGB8) ? GL_BGR : GL_BGRA;
-
-    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
-    glTextureStorage2D(practiceTexture, 1, internalFormat, testTexture.width(), testTexture.height());
-    glBindTexture(GL_TEXTURE_2D, practiceTexture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-    glTextureSubImage2D(practiceTexture, 0, 0, 0, testTexture.width(), testTexture.height(), dataFormat, GL_UNSIGNED_BYTE, testTexture.dataVector().data());
- 
-
-    return true;
-
-#else 
-    
-    ImageData testDefaultImage;
-
-    assert(testDefaultImage.valid());
-    
-    assert(testDefaultImage.internalFormat() == GL_RGBA8);
 
     glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
     //Specify Storage To Be Used For The Texture
@@ -643,21 +547,25 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
 
+    
+    /*
     glTextureSubImage2D(practiceTexture,
                         0,
                         0,
                         0,
                         testDefaultImage.width(),
                         testDefaultImage.height(),
-                        testDefaultImage.format(),
-                        testDefaultImage.dataType(),
-                        testDefaultImage.dataVector().data());
+                        testDefaultImage.externalFormat(),
+                        testDefaultImage.dataRepresentation(),
+                        testDefaultImage.data());
+    */
+    testDefaultImage.swapRedAndBlueChannels();
+    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
     return true;
-    
 
-#endif 
 }
 
 

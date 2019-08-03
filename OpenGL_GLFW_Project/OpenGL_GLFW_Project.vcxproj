@@ -236,6 +236,7 @@
     <ClCompile Include="ScreenFramebuffer.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgram2.cpp" />
+    <ClCompile Include="SkyBoxCube.cpp" />
     <ClCompile Include="TeapotExplosionDemo_GenericVertexAttributeSet.cpp" />
     <ClCompile Include="TeapotExplosion.cpp" />
     <ClCompile Include="TessellationControlShader.cpp" />
@@ -330,6 +331,7 @@
     <ClInclude Include="ScreenCaptureOperationParameters.h" />
     <ClInclude Include="ScreenFramebuffer.h" />
     <ClInclude Include="ShaderProgram2.h" />
+    <ClInclude Include="SkyBoxCube.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
     <ClInclude Include="TGAImage.h" />
     <ClInclude Include="TGASDK\include\TGA.h" />
@@ -495,7 +497,6 @@
     <None Include="obj\3D_Arrow.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\AlienWorldSkybox.mtl" />
-    <None Include="obj\AlienWorldSkybox.obj.vsspell" />
     <None Include="obj\BeveledCube.mtl" />
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
@@ -524,7 +525,6 @@
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
-    <None Include="ReportOnProfilingOfOpenGLFunction__glUseProgram.txt.vsspell" />
     <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
       <FileType>Document</FileType>
     </Text>

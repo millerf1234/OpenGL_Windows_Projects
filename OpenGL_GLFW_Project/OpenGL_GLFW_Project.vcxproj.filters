@@ -568,6 +568,9 @@
     <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox">
       <UniqueIdentifier>{23a3b117-9120-4599-b212-26338857c1d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Unfinished\SkyBoxCube">
+      <UniqueIdentifier>{ecfd7970-34be-4846-8cb0-1202ead34e43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -818,6 +821,9 @@
     </ClCompile>
     <ClCompile Include="ImageData_UByte.cpp">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxCube.cpp">
+      <Filter>Source Files\Unfinished\SkyBoxCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1441,6 +1447,9 @@
     <ClInclude Include="ImageData_UByte.h">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBoxCube.h">
+      <Filter>Source Files\Unfinished\SkyBoxCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1758,7 +1767,6 @@
     <None Include="Shaders\DrawTextureOnQuad.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
-    <None Include="ReportOnProfilingOfOpenGLFunction__glUseProgram.txt.vsspell" />
     <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt">
       <Filter>NotesAndReferences\Profiling</Filter>
     </None>
@@ -1768,7 +1776,6 @@
     <None Include="obj\AlienWorldSkybox.obj">
       <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
     </None>
-    <None Include="obj\AlienWorldSkybox.obj.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
