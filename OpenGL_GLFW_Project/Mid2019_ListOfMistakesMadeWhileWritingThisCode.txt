@@ -1,0 +1,20 @@
+
+
+//I created this file in August 2019, but
+//something like it has existed in my mind 
+//since I began writing this code [Amazing how
+//much I have since learned].
+
+
+//todo...
+//      Make More Readable and Formatted
+
+
+Ideas:
+
+Should have started out in x64, not x86
+
+Should have not relied on int/long/size_t being
+a specific size
+
+
