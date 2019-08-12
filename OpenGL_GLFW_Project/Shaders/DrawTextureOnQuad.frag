@@ -26,8 +26,8 @@ const uint lightingVersion = customParameter1 % 3U;
 
 float computeCustom1(in const uint seed) {
     float custom1 = clamp(tan(float(customParameter1)),
-                                -150.,
-                                150.);
+                    -150.,
+                    150.);
     return custom1;
 }
 
@@ -192,7 +192,7 @@ color = normalize(ambient + diffuse);
 
     finalColor.a *= .244*diffuse;
 
-    finalColor.a = clamp(finalColor.a, .135, .89);
+    finalColor.a = clamp(finalColor.a, .335, .89);
     color = finalColor;
 
     #endif 

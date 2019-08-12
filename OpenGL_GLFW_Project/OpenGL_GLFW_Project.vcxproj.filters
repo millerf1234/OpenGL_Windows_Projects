@@ -1873,6 +1873,9 @@
     <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
       <Filter>NotesAndReferences\Profiling</Filter>
     </Text>
+    <Text Include="Mid2019_ListOfMistakesMadeWhileWritingThisCode.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">

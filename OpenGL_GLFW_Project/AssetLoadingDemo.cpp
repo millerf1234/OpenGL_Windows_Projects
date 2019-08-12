@@ -166,7 +166,7 @@
 //#include <future>
 #include "AssetLoadingDemo.h"
 
-#include "TGAImage.h" //For testing purposes
+//#include "TGAImage.h" //For testing purposes
 #include "ImageData_UByte.h"
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
@@ -409,7 +409,7 @@ bool AssetLoadingDemo::loadShaders() {
     sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
 
-//#define USE_RUBYMINE
+#define USE_RUBYMINE
 
 #ifdef USE_RUBYMINE
 	/////////////////////////
