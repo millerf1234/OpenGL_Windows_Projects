@@ -55,14 +55,14 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 	//       appear in the middle of an Application message that is written over multiple 'fprintf' calls.
 
 
-	static constexpr const size_t BUFFER_SIZE_TOTAL = 3*4096u; //This should be big enough to cover all cases [hopefully]
+	static constexpr const GLsizei BUFFER_SIZE_TOTAL = 3*4096; //This should be big enough to cover all cases [hopefully]
 
-	static constexpr const size_t BUFFER_SPACE_REQUIRED_FOR_FORMATTING = 320u;
+	static constexpr const GLsizei BUFFER_SPACE_REQUIRED_FOR_FORMATTING = 320;
 
 
 #define BUFFER_SIZE (BUFFER_SIZE_TOTAL-bufferIter)
 
-	size_t bufferIter = 0u;
+	GLsizei bufferIter = 0;
     char msgBuff[BUFFER_SIZE_TOTAL] = { '\0' };
 
     const GLsizei MAX_MESSAGE_LENGTH = (BUFFER_SIZE - BUFFER_SPACE_REQUIRED_FOR_FORMATTING);
