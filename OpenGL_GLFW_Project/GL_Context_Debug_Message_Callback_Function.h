@@ -24,7 +24,12 @@
 //                        the fprintf calls with snprintf, which prints into a buffer. Then at the end,
 //                        the buffer is printed all at once with a single call to fprintf. The code is 
 //                        somewhat uglier, but should behave better for asynchronus callbacks.
-//
+//                      August 17, 2019
+//                        Changed all variables of 'size_t' to 'GLsizei'. This ensures that all 
+//                        local variables used in the function remain consistent with the data
+//                        types passed in as parameters. Prior to this change, this code was not
+//                        64-bit safe.
+//                        
 
 #pragma once
 
@@ -56,7 +61,6 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 
 	static constexpr const GLsizei BUFFER_SIZE_TOTAL = 3*4096; //This should be big enough to cover all cases [hopefully]
-
 	static constexpr const GLsizei BUFFER_SPACE_REQUIRED_FOR_FORMATTING = 320;
 
 
