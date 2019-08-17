@@ -6,8 +6,8 @@
 //                      convey information to the application. This function must be provided
 //                      to OpenGL through the use of the function glDebugMessageCallback(). 
 //                      Furthermore, debugging must be enabled in the GL Context through the 
-//                      function call glEnable(GL_DEBUG_CONTEXT). Furthmore, for these messages  
-//                      to be synchronus with the events in the application that caused them, 
+//                      function call glEnable(GL_DEBUG_CONTEXT). Furthermore, for these messages  
+//                      to be synchronous with the events in the application that caused them, 
 //                      the function call glEnable(GL_DEBUG_OUTPUT_SYNCHRONUS) must be made.
 //                      There is more to ensuring the GL Context is a debug context than is 
 //                      mentioned here, but those details go beyond the scope of this application.
@@ -23,7 +23,7 @@
 //                        asynchronousity. To remedy this oversight, I have gone in and replaced all of 
 //                        the fprintf calls with snprintf, which prints into a buffer. Then at the end,
 //                        the buffer is printed all at once with a single call to fprintf. The code is 
-//                        somewhat uglier, but should behave better for asynchronus callbacks.
+//                        somewhat uglier, but should behave better for asynchronous callbacks.
 //                      August 17, 2019
 //                        Changed all variables of 'size_t' to 'GLsizei'. This ensures that all 
 //                        local variables used in the function remain consistent with the data
@@ -52,7 +52,7 @@ static void GLAPIENTRY printGraphicsContextMessageCallback(GLenum source,
 
 	//Implementation Detail:
 	//       Due to the possibility that synchronization may be disabled between the application and the graphics context,
-	//       this debug message will forgo the typical use of muliple calls to 'fprintf' for printing its output statement.
+	//       this debug message will forgo the typical use of multiple calls to 'fprintf' for printing its output statement.
 	//       Instead, the function 'snprintf' will be used, which prints each message into a buffer of known size. Once 
 	//       the entire message has been completed into the buffer, the buffer is printed using a single call to 'fprintf'.
 	//       This will prevent logging messages originating from the Application from appearing interlaced with the 
