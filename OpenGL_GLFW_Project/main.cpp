@@ -22,7 +22,7 @@ fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"           
     "the ultra rare, wildly elusive \'std::bad_alloc\'\n"                        \
     "exception! This is the stuff you only read about\n"                         \
     "these days in textbooks! Perhaps you should restart\n"                      \
-    "your computer, but congratualtions on the\n"                                \
+    "your computer, but congratulations on the\n"                                \
     "new story you have for your grandchildren.\n"                               \
     "\n\t[Here is the obligatory exception message]\n\t%s\n\n",                  \
     e.what());                                                                   \

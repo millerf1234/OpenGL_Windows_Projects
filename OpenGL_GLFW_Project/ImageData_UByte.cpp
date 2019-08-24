@@ -371,7 +371,7 @@ private:
     //Call This After calling setInternalFormatFromAttributes() only.
     //Queries the implementation to see if there is a preference, then
     //decides on the External Format the use.
-    void selectAnExternalFormat() noexcept; 
+    void selectAnExternalFormat(); 
 
 };
 
@@ -527,7 +527,7 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(GLsizei width,
     resetSelfFromInternalDefaultImage();
 }
 
-ImageData_UByte::ImageDataImpl::~ImageDataImpl() {
+ImageData_UByte::ImageDataImpl::~ImageDataImpl() noexcept {
     fprintf(MSGLOG, "\nDestroying Image Data!\n");
 }
 
@@ -681,6 +681,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
 
 void ImageData_UByte::ImageDataImpl::setInternalFormatFromAttributes() noexcept {
     assert(mAttributes_.comp != 0);
+    //Set the internal format based off the number of components in the image
     switch (mAttributes_.comp) {
     default:
         assert(false); //This case should never occur
@@ -701,7 +702,7 @@ void ImageData_UByte::ImageDataImpl::setInternalFormatFromAttributes() noexcept 
 }
 
 
-void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() noexcept {
+void ImageData_UByte::ImageDataImpl::selectAnExternalFormat() {
         //const GLenum recommendedByImplementation =
         //   checkIfInternalFormatIsPreferredByImplementationForTextureTarget(GL_TEXTURE_2D,
         //                                                                    mInternalFormat_);
@@ -1375,7 +1376,7 @@ GLenum getSuitableExternalFormatForTexture(GLenum textureTarget,
                           (GLint*)& suitableExternalFormat);
     if (GL_NONE == suitableExternalFormat) {
         fprintf(WRNLOG, "\nQuery to get a suitable external texture image format\n"
-            "from the internal format %\'s\' has returned GL_NONE!\n"
+            "from the internal format \'%s\' has returned GL_NONE!\n"
             "This means that this internal format and texture target\n"
             "not supported by this implementation!\n\n",
             convertGLEnumToString(internalFormat).c_str());
@@ -1392,9 +1393,10 @@ GLenum getSuitableDataTypeForTexture(GLenum textureTarget,
                           GL_TEXTURE_IMAGE_TYPE,
                           1,
                           (GLint*)& suitableDataType);
+
     if (GL_NONE == suitableDataType) {
         fprintf(WRNLOG, "\nQuery to get a suitable external texture image format\n"
-            "from the internal format %\'s\' has returned GL_NONE!\n"
+            "from the internal format \'%s\' has returned GL_NONE!\n"
             "This means that this internal format and texture target\n"
             "not supported by this implementation!\n\n",
             convertGLEnumToString(internalFormat).c_str());

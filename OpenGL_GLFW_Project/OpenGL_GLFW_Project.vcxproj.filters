@@ -571,6 +571,12 @@
     <Filter Include="Source Files\Unfinished\SkyBoxCube">
       <UniqueIdentifier>{ecfd7970-34be-4846-8cb0-1202ead34e43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Projects\RenderDemos\Generation 1">
+      <UniqueIdentifier>{e72d51d6-5eb9-4424-be59-6ebee579915b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\OuterSpaceScreenshots">
+      <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1518,9 +1524,6 @@
     <None Include="obj\Thing.obj">
       <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
     </None>
-    <None Include="obj\BlockThing_Triangulated01.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
-    </None>
     <None Include="obj\Spaceship.obj">
       <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
     </None>
@@ -1761,9 +1764,6 @@
     <None Include="obj\LargeSphere.obj">
       <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
     </None>
-    <None Include="Shaders\DrawTextureOnQuad.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
-    </None>
     <None Include="Shaders\DrawTextureOnQuad.vert">
       <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
@@ -1875,6 +1875,12 @@
     </Text>
     <Text Include="Mid2019_ListOfMistakesMadeWhileWritingThisCode.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="HowToWriteAClass.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="Shaders\DrawTextureOnQuad.frag">
+      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -2006,6 +2012,165 @@
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png">
       <Filter>Resource Files\Images\Texture2D\png</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00000.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00001.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00002.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00003.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00004.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00005.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00006.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00007.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00008.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00009.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00010.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00011.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00012.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00013.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00014.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00015.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00016.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00017.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00018.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00019.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00020.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00020.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00021.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00022.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00022.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00023.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00024.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00025.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00026.tga">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00041.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00043.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00057.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00062.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00070.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00080.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00088.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00098.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00111.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00135.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00156.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00157.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00163.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00173.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00176.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00177.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00207.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00209.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00228.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00243.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00249.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00253.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg">
+      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
