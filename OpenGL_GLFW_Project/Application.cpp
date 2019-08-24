@@ -11,6 +11,8 @@
 
 #include "OpenGLEnumToString.h"   //Needed to convert OpenGL query results to strings
 
+#include "Timepoint.h" //Used for timing of various aspects of the Application
+
 //The renderdemos are included in the order that they were written. As such, the 
 //level of complexity in each project increases accordingly. 
 #include "TeapotExplosion.h"
@@ -174,6 +176,11 @@ void Application::launch() {
 
         fprintf(MSGLOG, "Application is ready to load a specific program...\n");
 
+
+        ////////////////////////////////////////////////////////////////////////////
+        /////    IF U WANT TO RUN SOME OPENGL EXPERIMENTS, CALL FOLLOWING FUNCTION
+        ////////////////////////////////////////////////////////////////////////////
+        runOpenGLSandboxExperiments();
 
 
         //fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
@@ -402,8 +409,15 @@ void Application::checkMSAA() const {
 }
 
 
-void Application::playIntroMovie() {
+void Application::playIntroMovie() noexcept {
 	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
+}
+
+
+void Application::runOpenGLSandboxExperiments() {
+
+
+
 }
 
 

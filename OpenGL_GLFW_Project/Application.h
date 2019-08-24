@@ -39,6 +39,7 @@
 #include "RenderDemoBase.h"
 
 
+
 class Application final {
 public:
 	Application() noexcept;
@@ -69,8 +70,12 @@ private:
 	void setInitialGLState();
 	void checkMSAA() const; //Prints MSAA config to MSGLOG
 	
-	void playIntroMovie();
+	void playIntroMovie() noexcept;
 
+
+
+    //Run Theoretical OpenGL Sandbox Experiment Demo
+    void runOpenGLSandboxExperiments();
 
 	
 	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
