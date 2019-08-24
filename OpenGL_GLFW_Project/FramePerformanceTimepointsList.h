@@ -21,7 +21,10 @@ public:
 
 
     void prepareToEnterRenderLoop() {
-
+        //Need to have a valid node already existing at 'head' when we enter
+        //the render loop so we create a valid but meaningless placeholder node and
+        //assign it as the head. This allows us to assume the list will never be empty
+        //and allows for simpler logic once program is in a renderloop 
         constexpr const char decoyMsg[] = "Frame 0 Decoy";
         allocateFramePerfTimepointsAndAssignToCurrent(0ull, decoyMsg);
         assert(framePerformanceListCurrent);
@@ -54,7 +57,8 @@ public:
    
 
 private: 
-    const FramePerformanceTimepoints* allocateFramePerfTimepointsAndAssignToCurrent(const unsigned long long frameNumber, std::string_view sv) noexcept;
+    const FramePerformanceTimepoints* allocateFramePerfTimepointsAndAssignToCurrent(const uint64_t frameNumber,
+                                                                                    std::string_view         sv);
 };
 
 

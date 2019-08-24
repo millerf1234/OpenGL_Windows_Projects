@@ -51,7 +51,8 @@ FramePerformanceTimepointsList::~FramePerformanceTimepointsList() noexcept {
 }
 
 
-const FramePerformanceTimepoints* FramePerformanceTimepointsList::allocateFramePerfTimepointsAndAssignToCurrent(const unsigned long long frameNumber, std::string_view sv) noexcept {
+const FramePerformanceTimepoints* FramePerformanceTimepointsList::allocateFramePerfTimepointsAndAssignToCurrent(const uint64_t frameNumber,
+                                                                                                                std::string_view sv) {
     try {
         if (framePerformanceListCurrent) {
             framePerformanceListCurrent->next = new FramePerformanceTimepoints(frameNumber, Timepoint(sv.empty() ? "NO_CONTENT" : sv));
@@ -80,11 +81,10 @@ const FramePerformanceTimepoints* FramePerformanceTimepointsList::allocateFrameP
             "\t\t        frameNumber:    %d \n"
             "\t\t        sv:             %s     )\n\n"
             "The Exception Provides The Following Description Message: \n\t \'%s\' \n",
-            static_cast<void*>(&(*this)),
+            this, //static_cast<void*>(&(*this)),
             static_cast<int>(frameNumber),
             localCopy.c_str(),
-            e.what()
-        );
+            e.what());
         fprintf(ERRLOG, "\nThe Application Was Not Expecting This Exception.\n"
             "It will thus now crash!\n");
 
