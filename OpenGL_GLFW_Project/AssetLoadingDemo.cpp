@@ -166,6 +166,9 @@
 //#include <future>
 #include "AssetLoadingDemo.h"
 
+//ProjectWide Header File Defining Asset Data Directories
+#include "RelativeFilepathsToResources.h"
+
 //#include "TGAImage.h" //For testing purposes
 #include "ImageData_UByte.h"
 
@@ -400,7 +403,7 @@ bool AssetLoadingDemo::loadShaders() {
         std::exit(EXIT_FAILURE);
     }
     else {
-        if (!loadTexture2DFromTGA()) {
+        if (!loadTexture2DFromImageFile()) {
             fprintf(ERRLOG, "\nError loading texture from TGA file!\n");
             std::exit(EXIT_FAILURE);
         }
@@ -500,9 +503,10 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
 ///Random note on differences between traditional and bindless OpenGL APIs. 
 ///All texture functions in the traditional API use the word 'tex' in their
 ///name, while the newer bindless API uses the word 'texture' instead.
-bool AssetLoadingDemo::loadTexture2DFromTGA() {
+bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     assert(quadTextureTestShader);
-
+     
+    auto pathToImages = FILEPATH_TO_IMAGES;
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
 
     Timepoint imageLoadStart("Image Load Start!\n");
@@ -512,10 +516,19 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
 
-    //ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+    ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
 
-    ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
+    //ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
+
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
+    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
 
     Timepoint imageLoadEnd("Image Load End!\n");
 
@@ -562,7 +575,7 @@ bool AssetLoadingDemo::loadTexture2DFromTGA() {
                         testDefaultImage.dataRepresentation(),
                         testDefaultImage.data());
     */
-    testDefaultImage.swapRedAndBlueChannels();
+    //testDefaultImage.swapRedAndBlueChannels();
     testDefaultImage.uploadDataTo2DTexture(practiceTexture);
     return true;
 
@@ -581,13 +594,13 @@ void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
     std::vector<GLuint> emptyOrder;
     
 
-    const size_t numberOfVerticesInSceneBuffer = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
+    const GLsizei numberOfVerticesInSceneBuffer = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
     //The number of elements required is always twice the number of vertices in the sceneBuffer
-    const size_t elementsToGenerate = 2u * numberOfVerticesInSceneBuffer;
+    const GLsizei elementsToGenerate = 2u * numberOfVerticesInSceneBuffer;
     try {
         emptyOrder.reserve(elementsToGenerate);
-        for (size_t i = 0u; i < elementsToGenerate; i += 3) {//numberOfVerticesInSceneBuffer; i += TRIANGLE_SIDES_AMOUNTAGE) {
+        for (GLsizei i = 0; i < elementsToGenerate; i += 3) {//numberOfVerticesInSceneBuffer; i += TRIANGLE_SIDES_AMOUNTAGE) {
 
             //Triangle side 1
             emptyOrder.push_back(i);
@@ -603,7 +616,9 @@ void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
         }
     }
     catch (const std::exception& e) {
-        fprintf(ERRLOG, "\nCaught Exception: %s!\n", e.what());
+        try { //Compiler was griping that 'e.what()' might throw an exception
+            fprintf(ERRLOG, "\nCaught Exception: %s!\n", e.what());
+        } catch (...) { fprintf(ERRLOG, "\nError printing error message!\n"); std::exit(EXIT_FAILURE); }
     }
 
     //Once generated, swap order out with AssetLoadingDemo's member
@@ -620,11 +635,11 @@ void AssetLoadingDemo::loadModels() {
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
 	//Initial Scale values for the objects
-	float blockThing_QuadsScale = 1.0f;
-	float beveledCubeScale = 1.0f;
-	float blockShipScale = 1.0f;
-	float subdivisionCubeScale = 1.0f;
-	float abstractShapeScale = 1.0f;
+	constexpr float blockThing_QuadsScale = 1.0f;
+	constexpr float beveledCubeScale = 1.0f;
+	constexpr float blockShipScale = 1.0f;
+	constexpr float subdivisionCubeScale = 1.0f;
+	constexpr float abstractShapeScale = 1.0f;
 
     ///////////////////////////////////////////////////////////////////////////////////////////// 
 	//                             Load one or more models                                     //  
@@ -669,16 +684,17 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
     
-     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
+     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
+
     //for (int i = 0; i < 10; i++)
         ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
@@ -691,6 +707,8 @@ void AssetLoadingDemo::loadModels() {
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
@@ -2278,7 +2296,7 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
         "Target destination on GPU is set to use Array Buffer ID %u.\n", targetVBO);
 
     fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
-    fprintf(MSGLOG, "There are %u vertices total in the scene, or %u 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
+    fprintf(MSGLOG, "There are %d vertices total in the scene, or %d 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
 
 	glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
 
