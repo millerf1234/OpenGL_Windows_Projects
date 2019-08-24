@@ -1,9 +1,51 @@
 
-//INCOMPLETE!
+//
+// WARNING!!!     WARNING!!!     WARNING!!!     WARNING!!!     WARNING!!!    
+//   ____________________________________________________________________
+//  |__                        *************                           __|
+//  |__>--------------------->  INCOMPLETE!  <------------------------<__|
+//   \                         *************                          /   
+//    \______________________________________________________________/    
+//                                                                        
+//   This class has not yet been fully implemented.                       
+//                             Please do not use it at this time.         
 
-//REQUIRES OPENGL 4.6 TO WORK PROPERLY. PREVIOUS VERSIONS OF 
-//OPENGL REQUIRE THE EXTENSION GL_ARB_pipeline_statistics to 
-//be available on the platform.
+
+
+// todo:     Having gotten this far, I realize my design needs reworking.
+//       Currently the constexpr constants* at the top of this file serve
+//       no purpose and can be removed.
+//                                                    *the constants 
+//      'PRIMITIVES_GENERATED_QUERY'
+//                           through to
+//                                'CLIPPING_OUTPUT_PRIMITIVES_QUERY'
+//       are unnecessary.
+
+
+
+// todo: Guidelines for a rewrite of this class:
+// 
+//       --) This class should support all Copy/Move operations
+//
+//       --) When reworking this class please do not be lazy and write
+//         everything in the header. Ideally there should be a clear,
+//         concise and intuitive API found neatly organized within 
+//         the class's definition, and then simply a private forward-
+//         declared implementation class (i.e. a 'pImpl' class) followed
+//         by an opaque unique_ptr to an instance of the 'pImpl'.
+
+
+
+// NOTE THAT PIPELINE QUERIES ARE A RELATIVLY NEW OPENGL FEATURE. TO 
+// FULLY USE THIS CLASS REQUIRES OPENGL 4.6 MINIMUM. PREVIOUS VERSIONS 
+// OF OPENGL MAY BE ABLE TO IMPLEMENT SIMILAR FUNCTIONALITY, BUT THIS 
+// REQUIRES THE EXTENSION 'GL_ARB_pipeline_statistics' TO BE AVAILABLE.
+// THIS EXTENSION HAS A DIFFERENT SET OF API FUNCTION CALLS COMPLETE WITH
+// ITS OWN SEPERATE ENUM VALUES. SINCE OPENGL 4.6 IS ASSUMED BY THIS
+// PROJECT, NO SUPPORT FOR OLDER CONTEXTS HAS BEEN BUILT INTO THIS CLASS. 
+// For more information on this extension, see:
+// https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_pipeline_statistics_query.txt
+
 
 #pragma once
 
@@ -16,24 +58,27 @@
 #include <string>
 #include <vector>
 
+//Not Necessary...
 static constexpr const int NUM_PIPELINE_QUERY_TYPES = 12;
 
-constexpr const size_t PRIMITIVES_GENERATED_QUERY = 0u;
-constexpr const size_t VERTICES_SUBMITTED_QUERY = 1U;
-constexpr const size_t PRIMITIVES_SUBMITTED_QUERY = 2U;
-constexpr const size_t VERTEX_SHADER_INVOCATIONS_QUERY = 3u;
-constexpr const size_t TESS_CONTROL_SHADER_PATCHES_QUERY = 4u;
-constexpr const size_t TESS_EVAL_SHADER_INVOCATIONS_QUERY = 5u;
-constexpr const size_t GEOMETRY_SHADER_INVOCATIONS_QUERY = 6u;
-constexpr const size_t GEOMETRY_SHADER_PRIMITIVES_EMITTED_QUERY = 7u;
-constexpr const size_t FRAGMENT_SHADER_INVOCATIONS = 8u;
-constexpr const size_t COMPUTE_SHADER_INVOCATIONS_QUERY = 9u;
-constexpr const size_t CLIPPING_INPUT_PRIMITIVES_QUERY = 10u;
-constexpr const size_t CLIPPING_OUTPUT_PRIMITIVES_QUERY = 11u;
+
+//See Above 'to-do' message. Then remove these unnecessary constants 
+constexpr const uint64_t PRIMITIVES_GENERATED_QUERY = 0u;
+constexpr const uint64_t VERTICES_SUBMITTED_QUERY = 1U;
+constexpr const uint64_t PRIMITIVES_SUBMITTED_QUERY = 2U;
+constexpr const uint64_t VERTEX_SHADER_INVOCATIONS_QUERY = 3u;
+constexpr const uint64_t TESS_CONTROL_SHADER_PATCHES_QUERY = 4u;
+constexpr const uint64_t TESS_EVAL_SHADER_INVOCATIONS_QUERY = 5u;
+constexpr const uint64_t GEOMETRY_SHADER_INVOCATIONS_QUERY = 6u;
+constexpr const uint64_t GEOMETRY_SHADER_PRIMITIVES_EMITTED_QUERY = 7u;
+constexpr const uint64_t FRAGMENT_SHADER_INVOCATIONS = 8u;
+constexpr const uint64_t COMPUTE_SHADER_INVOCATIONS_QUERY = 9u;
+constexpr const uint64_t CLIPPING_INPUT_PRIMITIVES_QUERY = 10u;
+constexpr const uint64_t CLIPPING_OUTPUT_PRIMITIVES_QUERY = 11u;
 
 
 typedef struct PipelineQuery {
-    size_t queryType;
+    uint64_t queryType;
     bool enabled;
 } PQuery;
 
@@ -42,6 +87,20 @@ typedef struct PipelineQuery {
 //draw calls, then call its 'retrieve()' method 
 //after all draw calls to observe have been made
 class PipelineObserver {
+
+private:
+    bool mInvalid_;
+    //C-Array used for creating and destroying the queries
+    GLuint mQueries_[NUM_PIPELINE_QUERY_TYPES];
+
+    typedef struct ActivePipelineQuery {
+        GLenum type;
+        bool valid;
+        GLuint queryResult;
+    } ActiveQuery;
+
+    std::vector<ActiveQuery> mActiveQueries_;
+
 public:
 
     //These following 12 public static structs determine 
@@ -63,7 +122,7 @@ public:
 
 
     PipelineObserver() : mInvalid_(false),
-                         mQueries_{ 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u } {
+                         mQueries_{ 0u } {
         
        
 
@@ -80,7 +139,7 @@ public:
             mActiveQueries_.push_back({ GL_VERTEX_SHADER_INVOCATIONS, false, 0u });
         }
         if (tessControlShaderPatches.enabled) {
-            //todo
+            mActiveQueries_.push_back({ GL_TESS_CONTROL_SHADER_PATCHES, false, 0u });
         }
         if (geomInvocations.enabled) {
             //todo
@@ -174,7 +233,7 @@ public:
         */
     }
 
-    ~PipelineObserver() {
+    ~PipelineObserver() noexcept {
         if (mQueries_[0] != 0u)
             glDeleteQueries(static_cast<GLsizei>(mActiveQueries_.size()), &(mQueries_[0]));
        //Reseting Array Members is not necessary in destructor
@@ -226,20 +285,6 @@ public:
 
     }
 
-
-
-private:
-    bool mInvalid_;
-    //C-Array used for creating and destroying the queries
-    GLuint mQueries_[NUM_PIPELINE_QUERY_TYPES];  
-
-    typedef struct ActivePipelineQuery {
-        GLenum type;
-        bool valid;
-        GLuint queryResult;
-    } ActiveQuery;
-
-    std::vector<ActiveQuery> mActiveQueries_;
 };
 
 PQuery PipelineObserver::primitivesGenerated = { PRIMITIVES_GENERATED_QUERY, true };
