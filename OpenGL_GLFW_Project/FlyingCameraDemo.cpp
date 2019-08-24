@@ -4,7 +4,7 @@
 
 #include "FlyingCameraDemo.h"
 
-
+#include "RelativeFilepathsToResources.h"
 #include "Timepoint.h"
 
 FlyingCameraDemo::FlyingCameraDemo(InitReport* initReport) : AssetLoadingDemo(initReport) {
