@@ -22,33 +22,33 @@
 #ifndef FSM_ERROR_CALLBACK_H_
 #define FSM_ERROR_CALLBACK_H_
 
-#include "LoggingMessageTargets.h" 
-#include <sstream>
-
-//Callback function for GLFW error reporting. Unlike [almost*] every other GLFW callback function,             
-//this function is set globally for the entire library as opposed to on a per-window basis.                               *Joystick and Monitor callbacks are exceptions
-namespace FSMEngineInternal {
-	inline void FSMErrorCallbackFunction(int error, const char* description) {
-
-		//Build a formated error message printout
-		std::stringstream errorMessage;
-		errorMessage << "\n\n";
-		for (int i = 0; i < 80; i++) {
-			errorMessage << "^";
-		}
-		
-		errorMessage << "\n\tGLFW Error " << error << "!\n";
-		errorMessage << "\tERROR DESCRIPTION: " << description << "\n";
-
-		for (int i = 0; i < 80; i++) {
-			errorMessage << "v";
-		}
-		errorMessage << "\n\n";
-
-		//Print the message to the ERRLOG
-		fprintf(ERRLOG, "%s", errorMessage.str().c_str());
-	}
-} //namespace FSMEngineInternal
+//#include "LoggingMessageTargets.h" 
+//#include <sstream>
+//
+////Callback function for GLFW error reporting. Unlike [almost*] every other GLFW callback function,             
+////this function is set globally for the entire library as opposed to on a per-window basis.                               *Joystick and Monitor callbacks are exceptions
+//namespace FSMEngineInternal {
+//	inline void FSMErrorCallbackFunction(int error, const char* description) {
+//
+//		//Build a formated error message printout
+//		std::stringstream errorMessage;
+//		errorMessage << "\n\n";
+//		for (int i = 0; i < 80; i++) {
+//			errorMessage << "^";
+//		}
+//		
+//		errorMessage << "\n\tGLFW Error " << error << "!\n";
+//		errorMessage << "\tERROR DESCRIPTION: " << description << "\n";
+//
+//		for (int i = 0; i < 80; i++) {
+//			errorMessage << "v";
+//		}
+//		errorMessage << "\n\n";
+//
+//		//Print the message to the ERRLOG
+//		fprintf(ERRLOG, "%s", errorMessage.str().c_str());
+//	}
+//} //namespace FSMEngineInternal
 
 
 
