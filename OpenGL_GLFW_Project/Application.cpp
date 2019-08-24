@@ -30,7 +30,7 @@ void Application::initialize() {
 
     //If Application is built with macro USE_DEBUG_ defined, we will report more 
     //details during start-up about the Runtime Environment's configuration and
-    //this Application's state.
+    //this Application's state
     if constexpr (USE_DEBUG) {
         //fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
         
@@ -39,11 +39,13 @@ void Application::initialize() {
         std::ostringstream threadIDString;
         threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x" << std::hex << threadID;
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
-
-
-        fprintf(MSGLOG, "[ ~DEBUG~ ] Maximum number of bytes in a multibyte character on this platform: %d\n", MB_CUR_MAX);
-
-        fprintf(MSGLOG, "\n");
+#ifdef MB_CUR_MAX
+        static const int MAX_BYTES_IN_A_MULTIBYTE_CHAR = MB_CUR_MAX;
+        fprintf(MSGLOG,
+                "[ ~DEBUG~ ] Maximum number of bytes allowed in a multibyte\n"
+                "            character on this platform:    %d\n",
+                MAX_BYTES_IN_A_MULTIBYTE_CHAR);
+#endif //MB_CUR_MAX
     }
 
 
