@@ -38,7 +38,8 @@
 #include "GLFW_Init.h"
 #include "RenderDemoBase.h"
 
-
+//Forward declare the Timepoint class
+class Timepoint;
 
 class Application final {
 public:
@@ -95,6 +96,30 @@ private:
     void runFlyingCameraDemo(); 
 
 
+
+    //                        +---------------------------+                    
+    //                        |  ERROR HANDLING FUNCTION  |                    
+    //                        +---------------------------+                    
+    // Description:          Call this function to initiate a controlled crash.
+    //
+    // WARNING:                    This function should only be called when the
+    //                       Application has completed writing all data and has
+    //                          done all it can to prepare itself for oblivion.
+    //                              Instead of returning, this function's final
+    //                           instruction is a call to std::exit() (with the
+    //                             status of 'EXIT_FAILURE'). In doing so, this
+    //                            function permanently relinquish's all further
+    //                               control of the process by entering into an
+    //                           internal exit sequence in which every 'atexit'
+    //                         callback function is called in the reverse order
+    //                              from which each was assigned [i.e. 'atexit'
+    //                            callback functions are assigned onto a stack,
+    //                            which is then emptied when 'std::exit()' gets
+    //                            called]. THIS PREVENTS ANY FURTHER ACTION NOT
+    //                                HANDLED BY AN 'atexit' CALLBACK FROM EVER
+    //                                      AGAIN HAVE A CHANCE TO BE PERFORMED
+    //                                         (at least on the current thread)
+    [[noreturn]] static void handleCrash() noexcept;
 
 };
 

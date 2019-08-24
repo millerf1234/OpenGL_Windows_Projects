@@ -13,14 +13,14 @@
 
 #include "Timepoint.h" //Used for timing of various aspects of the Application
 
-//The renderdemos are included in the order that they were written. As such, the 
+//The RenderFemos are included in the order that they were written. As such, the 
 //level of complexity in each project increases accordingly. 
-#include "TeapotExplosion.h"
+#include "TeapotExplosion.h" 
 //At this point I found it easier to piggy-back off of AssetLoadingDemo, so these
 //RenderDemoes are all heavily built atop AssetLoadingDemo
 #include "LightsourceTestDemo.h"
 #include "AssetLoadingDemo.h"
-#include "FlyingCameraDemo.h"
+#include "FlyingCameraDemo.h" //This one is built on top of 'AssetLoadingDemo'
 
 
 void Application::initialize() {
@@ -122,45 +122,58 @@ void Application::initialize() {
 
 
 Application::Application() noexcept {
-    
-    try {
-        initialize();
-        if (!mApplicationValid) {
-            fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
-            std::cin.get(); //Need this on Windows to keep the terminal window open
-        }
-        else { //Else we are successfully initialized and can restore the window
-            GLFWwindow* currentWindow = glfwGetCurrentContext();
-            if (currentWindow) 
-                glfwRestoreWindow(currentWindow);
-        }
-    }
 
-    catch (const std::system_error& e) {
+    //The catch blocks for the inner try statement contain operations which 
+    //may throw exceptions. Thus the need for the double layered exception
+    //handling
+    try {
+        try {
+            initialize();
+            if (!mApplicationValid) {
+                fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
+                std::cin.get(); //Need this on Windows to keep the terminal window open
+            }
+            else { //Else we are successfully initialized and can restore the window
+                GLFWwindow* currentWindow = glfwGetCurrentContext();
+                if (currentWindow)
+                    glfwRestoreWindow(currentWindow);
+            }
+        }
+
+        catch (const std::system_error & e) {
+            mApplicationValid = false;
             fprintf(ERRLOG, "\nCaught a system error exception:\n\t%s\n", e.what());
             fprintf(ERRLOG, "\n\n  [Well this is kinda awkward... For once it appears\n"
                 "   as though the reason for crashing is not due to poor\n"
                 "   work by the Application programmer but in fact a system\n"
                 "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
                 "   [Even if you are running this on Linux].\n");
-    }
-    catch (const std::exception& e) {
-        fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! Exception Encountered!\n"
-            "EXCEPTION MSG: %s\n\n", e.what());
-        assert(false);
-    }
+        }
+        catch (const std::exception & e) {
+            mApplicationValid = false;
+            fprintf(ERRLOG, "\n\n\n\t\t[In Application's Constructor]\n\t"
+                "Error! Exception Encountered!\n"
+                "EXCEPTION MSG: \n\t%s\n\n",
+                e.what());
+            assert(false);
+            
+        }
 
+        catch (...) {
+            fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
+            assert(false);
+        }
+    }
     catch (...) {
-        fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
-        assert(false);
+
     }
 }
 
 
 Application::~Application() noexcept {
-	if (glfwInitializer) {
-		glfwInitializer->terminate();  
-	}
+    //if (glfwInitializer) {
+    //    glfwInitializer->terminate();  
+    //}
 }
 
 
@@ -483,4 +496,36 @@ void Application::runLightsourceTestDemo() {
 void Application::runTeapotExplosionDemo() {
 	std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(initReport.get());
 	runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
+}
+
+
+
+
+//
+//  Call this function to crash the Application in a controlled manner.
+//
+//                    IMPLEMENTATION NOTE 
+// This function is expecting for the following 'cleanup' steps to each
+// be performed by their own 'atexit' callback functions.
+//                   - 
+//                   This way each 'atexit'
+//                           callback can be specified only once the
+//                     component in question which needs cleanup has
+//                        been created/allocated by the Application.
+//                   
+void Application::handleCrash() noexcept {
+    try {
+        fprintf(ERRLOG, "\n\n"
+            "An event occurred which has caused this Application\n"
+            "to enter into a Controlled Crash Protocol Sequence!\n\n"
+            "      [Press Enter To Acknowledge And Abort]");
+        //Have the user acknowledge that there is an issue before terminating
+        std::cin.get(); 
+        fprintf(ERRLOG, "\n\n\nBeginning Controlled Exit Procedure...\n");
+    }
+    catch (...) {
+        fprintf(ERRLOG, "\n\n"
+            "An Error Occurred While Preparing For A Controlled Crash\n");
+    }
+    std::exit(EXIT_FAILURE);
 }
