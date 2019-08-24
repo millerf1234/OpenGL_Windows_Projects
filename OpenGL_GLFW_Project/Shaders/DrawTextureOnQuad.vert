@@ -88,7 +88,7 @@ void main() {
     processed_vertex.instanceID = inst;
 
     processed_vertex.normal = mat3(rotation) * ModelNormal;
-    processed_vertex.texCoord = ModelTexCoord;
+    processed_vertex.texCoord.xy = rotate2(ModelTexCoord, 0.);
     processed_vertex.position = MVP * ModelPosition;
 
     gl_Position = processed_vertex.position + vec4(2.025*inst*sin(2.04*inst), 2.112975*inst*cos(1.14*inst), 0.0, zoom);

@@ -52,7 +52,7 @@ vec3 fsmJankyPolarNoiseV3_00(vec3 samplePoint,float freq,float jankyness);
 void main() {
 
 //This first one is the best one so far for demonstrating a solid texture mapped model
-#if 0
+#if 1
 
 color = texture(tex_object, processed_vertex.texCoord) - vec4(.2, 0., 0., .5);
 
@@ -104,13 +104,13 @@ color = normalize(ambient + diffuse);
     //Set-up a fake light source to compute diffuse lighting
     const vec3 lightPos = vec3(15. * sin(time), 17. * cos(time * 1.171), 5. * sin(time+cos(.25*time)));
 
-    const vec3 lightColor = vec3( .795 + .381*cos(time - time*(17./37.)),
-                                    .595 + .4*cos(time + (3.1415 / 1.5)),
-                                    .667 + .3*sin(.781*time));
+    const vec3 lightColor = vec3( .5795 + .381*cos(time - time*(17./37.)),
+                                  .3595 + .4*cos(time + (3.1415 / 1.5)),
+                                  .4667 + .3*sin(.781*time));
 
     const float diffuse = dot(normalize(processed_vertex.position.xyz),
                               normalize(lightPos));
-    const float diffuseMag = .335;
+    const float diffuseMag = .4335;
     const float oneMinusDiffuseMag = 1. - diffuseMag;
     
 
