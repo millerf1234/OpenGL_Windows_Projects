@@ -32,7 +32,7 @@
 
 #include "GlobalIncludes.h"
 #include "GlobalConstants.h"
-#include "RelativeFilepathsToResources.h"
+//#include "RelativeFilepathsToResources.h"
 #include "MathFunctions.h"
 #include "MeshFunctions.h"
 #include "GLFW_Init.h"
@@ -62,7 +62,7 @@ static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5;
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
 //RenderDemo and try to change settings  [unfortunately this constant has not yet been 
 //universally implemented for all controls]
-static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15ULL;
+static constexpr const uint64_t FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15;
 
 
 
@@ -73,9 +73,9 @@ static constexpr const unsigned long long FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 1
 //////    Global Invariants  [Do Not Modify]    //////
 //////////////////////////////////////////////////////
 
-static constexpr const unsigned long long FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60ULL;
-static constexpr const size_t NUM_VERTEX_COMPONENTS = 9u;
-static constexpr const size_t TRIANGLE_SIDES_AMOUNTAGE = 3u;
+static constexpr const uint64_t FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60;
+static constexpr const GLsizei NUM_VERTEX_COMPONENTS = 9;
+static constexpr const GLsizei TRIANGLE_SIDES_AMOUNTAGE = 3;
 
 
 
@@ -330,7 +330,7 @@ protected: //private:
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
     bool buildQuadTextureTestShader();
-    bool loadTexture2DFromTGA();
+    bool loadTexture2DFromImageFile();
 
     //This function expects each vertex in the passed-in sceneBuffer to be exactly
     //9 components.
