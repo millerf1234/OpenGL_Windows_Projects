@@ -1,25 +1,32 @@
-//File:       RenderDemoBase.h
-//Class:      RenderDemoBase
-//Namespace:  N/A 
-//Programmer: Forrest Miller
-//Date(s):    10/4/2018
-//
-//  Description:    This file contains the definition for the abstract base 
-//                  class RenderDemoBase. RenderDemoBase provides an interface 
-//					that can be called by an application to reduce the amount of
-//					code duplication within an application that may run multi RenderDemos.
-//					There are 3 key pieces of functionality used within every render demo 
-//					project, which are:
-//										(i)   Construction 
-//									    (ii)  Loading of Assets (including shader compilation)
-//										(iii) Run Demo  
-//					
-//			
+//File:                                                        RenderDemoBase.h
+//Class:                                                         RenderDemoBase
+//Namespace:                                                                N/A 
+//Programmer:                                                    Forrest Miller
+//Dates:                                                                       
+//             File Created                               10/4/2018            
+//          Under Development                       10/4/2018 - Present        
+//                                                                           
+//  Description:    This file contains the definition for the abstract base    
+//                  class RenderDemoBase. RenderDemoBase provides a common     
+//                  public interface built to allow for a standardized 3-step  
+//                  invocation process for loading and running a RenderDemo    
+//                  project. This allows for any Application using RenderDemo  
+//                  objects to be able to invoke any demo without requiring any
+//                  modification to the invocation (well, aside from selecting 
+//                  the name of the RenderDemo object to construct). 
+//                                                            
+//                  There are 3 key pieces of functionality used within every  
+//                  render demo project, which are:
+//                          (i)  Construction 
+//                         (ii)  Loading of Assets (including building shaders)
+//                         (iii) Run Demo  
+//  
+//  
 //Notes:			-All Render Projects inheriting from this class must implement the two required
 //					 functions. It is meant to be assumed that the calling application will construct 
 //				     an instance of an object derived from this class, will check for error, then will
 //                   call load(), check for errors and then will call run(). It is up to objects derived
-//					 from this class to handle all of the user's input (except for maybe window resizing)
+//					 from this class to handle all of the user's input (except for maybe window resizing?)
 //                   and to provide an exit condition for the program. It is not yet known whether this 
 //				     exit will constitute the termination of the entire application or if the application
 //					 will provide a menu system to switch between Render Demos.  
@@ -49,7 +56,14 @@
 #include "JoystickStatePrinter.h"
 #include "FramebufferPreferredUsage.h"
 
-enum class PIPELINE_PRIMITIVE_INPUT_TYPE {POINTS, DISCRETE_TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, LINE, TRIANGLE_OUTLINE, LINE_STRIP }; 
+enum class PIPELINE_PRIMITIVE_INPUT_TYPE {POINTS,
+                                          DISCRETE_TRIANGLES,
+                                          TRIANGLE_STRIP,
+                                          TRIANGLE_FAN,
+                                          LINE,
+                                          TRIANGLE_OUTLINE,
+                                          LINE_STRIP }; 
+
 
 class RenderDemoBase {
 public:
