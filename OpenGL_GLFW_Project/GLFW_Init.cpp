@@ -153,11 +153,23 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 	
     //Set the GLFW error callback function
     fprintf(MSGLOG, "\nSetting GLFW Error Callback Function...");
-    // 'glfwSetErrorCallback()' returns nullptr on failure
-    if (glfwSetErrorCallback(errorCallbackFunctionForGLFW))
+    
+    //      SET THE GLFW ERROR CALLBACK FUNC
+    //==========================  [MOVE THIS TO IT's OWN FUNCTION?] ===============================
+    //It seems as though setting the error callback function cannot fail. 
+    //'glfwSetErrorCallback()' returns NULL if no error callback had been previously set, 
+    //or returns a pointer to the previously set error callback function if one had been set
+    //previously. 
+    const auto prevErrorCBFunc = glfwSetErrorCallback(errorCallbackFunctionForGLFW); 
+    if (!prevErrorCBFunc) //If there was no error callback function already in place
         fprintf(MSGLOG, "DONE\n");
-    else
-        fprintf(WRNLOG, "FAIL\n\n\tWARNING!\nUNABLE TO SET GLFW ERROR CB FUNC!\n");
+    else {
+        fprintf(WRNLOG, "\nWarning! While setting up the error callback function\n"
+            "for GLFW Application has detected that it replaced a\n"
+            "previously specified error callback function!\n"
+            "Please investigate this further because it is unexpected!\n");
+    }
+    //==============================================================================================
 
     fprintf(MSGLOG, "Initializing GLFW..."); 
 	if (!glfwInit()) {

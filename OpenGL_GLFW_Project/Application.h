@@ -119,7 +119,7 @@ private:
     //                                HANDLED BY AN 'atexit' CALLBACK FROM EVER
     //                                      AGAIN HAVE A CHANCE TO BE PERFORMED
     //                                         (at least on the current thread)
-    [[noreturn]] static void handleCrash() noexcept;
+    [[noreturn]] static void safeCrash() noexcept;
 
 };
 

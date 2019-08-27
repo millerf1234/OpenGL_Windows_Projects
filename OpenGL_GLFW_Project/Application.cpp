@@ -37,14 +37,14 @@ void Application::initialize() {
         //fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
         
         //Print the ID for this thread (the Application's main thread)
-        auto threadID = std::this_thread::get_id();
+        const auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
         threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x" << std::hex << threadID;
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
 #ifdef MB_CUR_MAX
         static const int MAX_BYTES_IN_A_MULTIBYTE_CHAR = MB_CUR_MAX;
         fprintf(MSGLOG,
-                "[ ~DEBUG~ ] Maximum number of bytes allowed in a multibyte\n"
+                "[ ~DEBUG~ ] Maximum number of bytes allowed in a multi-byte\n"
                 "            character on this platform:    %d\n",
                 MAX_BYTES_IN_A_MULTIBYTE_CHAR);
 #endif //MB_CUR_MAX
@@ -85,8 +85,8 @@ void Application::initialize() {
             "        (Please Ensure You Have An OpenGL %d.%d Compatible Graphics\n"
             "               Driver Installed And Updated To Its Most Recent Version)\n\n"
             "\t[Press ENTER to end the process]\n\n",
-            DEFAULT_OPENGL_VERSION_MAJOR,
-            DEFAULT_OPENGL_VERSION_MINOR);
+                        DEFAULT_OPENGL_VERSION_MAJOR,
+                        DEFAULT_OPENGL_VERSION_MINOR);
         std::cin.get();
         return;
 	}
@@ -130,13 +130,16 @@ Application::Application() noexcept {
         try {
             initialize();
             if (!mApplicationValid) {
-                fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
-                std::cin.get(); //Need this on Windows to keep the terminal window open
+                //fprintf(MSGLOG, "\n\t[Press Enter to abort]\t");
+                //std::cin.get(); //Need this on Windows to keep the terminal window open
+                safeCrash();
             }
             else { //Else we are successfully initialized and can restore the window
                 GLFWwindow* currentWindow = glfwGetCurrentContext();
                 if (currentWindow)
                     glfwRestoreWindow(currentWindow);
+                else
+                    safeCrash();
             }
         }
 
@@ -148,24 +151,29 @@ Application::Application() noexcept {
                 "   work by the Application programmer but in fact a system\n"
                 "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
                 "   [Even if you are running this on Linux].\n");
+            safeCrash();
         }
         catch (const std::exception & e) {
             mApplicationValid = false;
-            fprintf(ERRLOG, "\n\n\n\t\t[In Application's Constructor]\n\t"
+            fprintf(ERRLOG, "\n\n\n\t[In Application's Constructor]\n\t"
                 "Error! Exception Encountered!\n"
                 "EXCEPTION MSG: \n\t%s\n\n",
                 e.what());
-            assert(false);
-            
+            //assert(false);
+            safeCrash();
         }
 
         catch (...) {
-            fprintf(ERRLOG, "\n\n\n\t\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
-            assert(false);
+            fprintf(ERRLOG, "\n\n\n\t[In Application Constructor]\n\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n");
+            //assert(false);
+            safeCrash();
         }
     }
     catch (...) {
-
+        fprintf(ERRLOG, "\n\nCaught an exception while handling a previously\n"
+            "caught exception thrown during the Application's\n"
+            "construction.\n");
+        safeCrash();
     }
 }
 
@@ -193,7 +201,7 @@ void Application::launch() {
         ////////////////////////////////////////////////////////////////////////////
         /////    IF U WANT TO RUN SOME OPENGL EXPERIMENTS, CALL FOLLOWING FUNCTION
         ////////////////////////////////////////////////////////////////////////////
-        runOpenGLSandboxExperiments();
+        //runOpenGLSandboxExperiments();
 
 
         //fprintf(MSGLOG, "\n\n[Here will eventually be a list of available demos to load and run]\n\n");
@@ -222,20 +230,21 @@ void Application::launch() {
             "   work by the Application programmer but in fact a system\n"
             "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
             "   [Even if you are running this on Linux].\n");
+        safeCrash();
     }
 
     catch (const std::exception& e) {
-        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t\t[In Application's \'run()\' function]\n"
-            "\n\t\tError! Exception Encountered!\n"
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n[In Application's \'run()\' function]\n"
+            "\n\tError! Exception Encountered!\n"
             "EXCEPTION MSG: %s\n\n\n\n", e.what());
-        assert(false);
+        safeCrash();
     }
 
 
     catch (...) {
-        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t\t[In Application's \'run()\' function]\n"
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t[In Application's \'run()\' function]\n"
             "\n\t\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n\n\n\n");
-        assert(false);
+        safeCrash();
     }
 
 }
@@ -428,8 +437,76 @@ void Application::playIntroMovie() noexcept {
 
 
 void Application::runOpenGLSandboxExperiments() {
+    assert(initReport);
+    assert(initReport->windowContext.window.window);
+    
+    GLFWwindow* window = initReport->windowContext.window.window;
+
+    glfwIconifyWindow(window);
+
+    //For ideas, see:
+    //           https://learnopengl.com/Advanced-OpenGL/Advanced-Data
+
+    static constexpr const size_t DATA1_SIZE = 50000;      //500,00
+    static constexpr const size_t DATA2_SIZE = 800000;   //8,000,00
+    static constexpr const size_t DATA3_SIZE = 2000000; //20,000,00
+
+    fprintf(MSGLOG, "\n\n\nStart of the OpenGL Sandbox Experiments!\n");
+    fprintf(MSGLOG, "\nFor Our Setup We Need To Generate Some Large Data Sets...\n");
+    LocalTimepoint dataGenStart("Start Data Generation");
+
+    std::vector<GLfloat> largeData1, largeData2, largeData3;
+    largeData1.reserve(DATA1_SIZE);
+    largeData2.reserve(DATA2_SIZE);
+    largeData3.reserve(DATA3_SIZE);
+
+    fprintf(MSGLOG, "Memory Allocated!\n");
+
+    LocalTimepoint memAllocated("Memory For Data Allocated");
+
+    for (auto i = 0; i < DATA1_SIZE; i++) {
+        largeData1.push_back(MathFunc::getRandomInRangef(-1.0f, 1.0f));
+    }
+    LocalTimepoint data1Ready("Data Set 1 Ready!\n");
+
+    for (auto i = 0; i < DATA2_SIZE; i++) {
+        if (i < DATA1_SIZE)
+            largeData2.push_back(largeData1.at(i));
+        else
+            largeData2.push_back(MathFunc::getRandomInRangef(-1.0f, 1.0f));
+    }
+    LocalTimepoint data2Ready("Data Set 2 Ready!\n");
+
+    for (auto i = 0; i < DATA3_SIZE; i++) {
+        if (i < DATA2_SIZE) 
+            largeData3.push_back(largeData2.at(i));
+        else
+            largeData3.push_back(MathFunc::getRandomInRangef(-2.0f, 2.0f));
+    }
+    LocalTimepoint data3Ready("Data Set 3 Ready!\n");
 
 
+    fprintf(MSGLOG, "\nTotal Time Spent Generating Data:  %f sec\n", data3Ready - dataGenStart);
+
+    fprintf(MSGLOG, "\nTime Spent Allocating Memory:  %f  sec\n", memAllocated - dataGenStart);
+
+    fprintf(MSGLOG, "\nTime Spent on Generating:\n"
+                    "\t\tD1:  %f  sec\n"
+                    "\t\tD2:  %f  sec\n"
+                    "\t\tD3:  %f  sec\n",
+                    data1Ready - memAllocated,
+                    data2Ready - data1Ready,
+                    data3Ready - data2Ready);
+
+
+
+
+
+
+    fprintf(MSGLOG, "\n\n\n\t[Press Enter To Continue To A Render Demo]");
+    std::cin.get();
+    glfwRestoreWindow(window);
+    //glfwFocusWindow(window); //Not necessary
 
 }
 
@@ -461,10 +538,10 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, co
 	}
 	//Else proceed with loading and launching the RenderDemo
     else {
-
         if (demoHasNameProvided) {
             fprintf(MSGLOG, "Loading %s... \n", name);
         }
+        
         try {
             renderDemo->loadAssets();
             renderDemo->run();
@@ -513,11 +590,21 @@ void Application::runTeapotExplosionDemo() {
 //                     component in question which needs cleanup has
 //                        been created/allocated by the Application.
 //                   
-void Application::handleCrash() noexcept {
+void Application::safeCrash() noexcept {
     try {
+
+        //First, attempt to iconify (minimize) any Application window 
+        //so that it isn't in the way of allowing our console error messages
+        //to be displayed
+        GLFWwindow* potentiallyFullscreenWindow = glfwGetCurrentContext();
+        if (potentiallyFullscreenWindow)
+            glfwIconifyWindow(potentiallyFullscreenWindow);
+            
+        //Now we can proceed with reporting our error messages and crashing...
+
         fprintf(ERRLOG, "\n\n"
             "An event occurred which has caused this Application\n"
-            "to enter into a Controlled Crash Protocol Sequence!\n\n"
+            "to enter into a Controlled Crash Protocol Sequence!\n\n\n\n"
             "      [Press Enter To Acknowledge And Abort]");
         //Have the user acknowledge that there is an issue before terminating
         std::cin.get(); 
