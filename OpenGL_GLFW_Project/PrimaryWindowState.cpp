@@ -9,6 +9,6 @@ PrimaryWindowState::PrimaryWindowState() {
 }
 
 
-PrimaryWindowState::~PrimaryWindowState() {
+PrimaryWindowState::~PrimaryWindowState() noexcept {
 
 }

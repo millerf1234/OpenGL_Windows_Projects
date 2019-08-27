@@ -10,19 +10,22 @@
 #include "PrimaryWindowCallbackFunctions.h"
 #include "WindowCurserState.h"
 
+//
+static constexpr size_t SCREEN_DIMENSIONS = 2U;
+
 struct CurserPositionState {
-	bool curserOnScreen = false;
-	std::array<double, 2> scrollDelta = { 0.0, 0.0 };
-	std::array<double, 2> curserPosition = { 0.0, 0.0 }; //Most recently reported curser position
-	std::array<double, 2> previousPosition = { 0.0, 0.0 }; //Position of curser prior to most recent report
-	std::array<double, 2> curserStartPosition = { 0.0, 0.0 }; //Curser's initial position 
+    bool curserOnScreen = false;
+    std::array<double, SCREEN_DIMENSIONS> scrollDelta = { 0.0, 0.0 };
+    std::array<double, SCREEN_DIMENSIONS> curserPosition = { 0.0, 0.0 }; //Most recently reported cursor position
+    std::array<double, SCREEN_DIMENSIONS> previousPosition = { 0.0, 0.0 }; //Position of cursor prior to most recent report
+    std::array<double, SCREEN_DIMENSIONS> cursorStartPosition = { 0.0, 0.0 }; //Cursor's initial position
 };
 
 
 class PrimaryWindowState final{
 public:
-	PrimaryWindowState();
-	~PrimaryWindowState();
+    PrimaryWindowState();
+    ~PrimaryWindowState() noexcept;
 
 
 
