@@ -221,7 +221,6 @@
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
     <ClCompile Include="OffscreenFramebuffer.cpp" />
@@ -447,7 +446,6 @@
     <ClInclude Include="LightsourceTest.h" />
     <ClInclude Include="LightsourceTestDemo.h" />
     <ClInclude Include="Line.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="LoggingMessageTargets.h" />
     <ClInclude Include="MathFunctions.h" />
     <ClInclude Include="MeshFunctions.h" />

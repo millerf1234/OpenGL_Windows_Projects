@@ -262,9 +262,6 @@
     <Filter Include="Source Files\Unfinished\EntityComponents">
       <UniqueIdentifier>{0dfbfc85-f03b-441f-9cd3-8bbee7a5d1a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Unfinished\EntityComponents\Mesh">
-      <UniqueIdentifier>{652b5ccd-e9d6-4564-b565-e0119f2128d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Unfinished\EntityComponents\Phong Shading Parameters">
       <UniqueIdentifier>{8314169b-a586-4a48-b507-2b5367f6f5db}</UniqueIdentifier>
     </Filter>
@@ -571,9 +568,6 @@
     <Filter Include="Source Files\Unfinished\SkyBoxCube">
       <UniqueIdentifier>{ecfd7970-34be-4846-8cb0-1202ead34e43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projects\RenderDemos\Generation 1">
-      <UniqueIdentifier>{e72d51d6-5eb9-4424-be59-6ebee579915b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Images\OuterSpaceScreenshots">
       <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
@@ -605,9 +599,6 @@
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\Utility\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Unfinished\EntityComponents\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
@@ -1038,9 +1029,6 @@
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Source Files\Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Unfinished\EntityComponents\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="AssetLoadingDemo.h">
       <Filter>Source Files\Projects\RenderDemos\AssetLoading</Filter>
