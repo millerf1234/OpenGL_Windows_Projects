@@ -15,7 +15,7 @@
 //
 //        Implementation Details:
 //             This class relies heavily on several classes beneath it to do the brunt of
-//             the work. This class uses an instance of the AsciiAsset class to aquire and 
+//             the work. This class uses an instance of the AsciiAsset class to acquire and 
 //             process the file from a filepath. Also used are the classes Line and Face,
 //             which are each stored in their own vector and are used to store Line and Face 
 //             data from the Obj file. Note that the actual parsing of the data is done by these
@@ -57,12 +57,17 @@ public:
 	//hasTexCoords() and hasNormals() to determine what was loaded from the file. Each loaded vertex will
 	//consist of 4 position components plus 2 texture components (if texture coordinates were part of the loaded 
 	//data) and 3 normal components (if normals were loaded). These values are all interleaved. 
-	QuickObj(std::string filepath, float scale = 1.0f, bool generateMissingComponents = true);
+	QuickObj(const std::string filepath, float scale = 1.0f, bool generateMissingComponents = true);
 	//Tries to parse and load the '.obj' resource file into this object's memory. If the object is missing either normal and/or 
 	//texture-coordinate data, appropriate data will be loaded in their place. Normals are computed on a triangle-by-triangle basis. 
 	//Texture coordinates can either be randomly assigned from within the closed interval [0.0, 1.0] or all assigned the same value as 
 	//determined by the parameters s and t. 
-	QuickObj(std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords = true, float s = 0.5f, float t = 0.5f);
+	QuickObj(const std::string filepath,
+             const float scale,
+             const bool generateMissingComponents,
+             const bool randomizeTextureCoords = true,
+             const float s = 0.5f,
+             const float t = 0.5f);
 
 
 	//////////////////////////
@@ -81,7 +86,7 @@ public:
 
 	bool error() const { return mError_; }
 
-	//Returns the scale [the 'w' component of each vertice's position] of the model.
+	//Returns the scale [the 'w' component of each vertex position] of the model.
 	float getScale() const { return mScale_; }
 
 	//The vertices will be public information for fast/easy access. Quick and dirty.
@@ -114,7 +119,7 @@ private:
 	//Helper functions (borrowed from subclasses 'Face' and 'Line'):
 	//Checks to see if a string character is between '0' (i.e. 48u in ASCII) and '9' (i.e. 57u in ASCII) (i.e. if it's a number)
 	inline bool isNumber(const char * c) const { return ((*c >= static_cast<char>(48u)) && (*c <= static_cast<char>(57u))); }
-	//Checks to see if a character is the number '0'  (to make sure a face that might look like "10/0/3" is marked invalid)
+	//Checks to see if a character is the number '0'  (to make sure a face that might look like "10/0/3" is marked invalid) 
 	inline bool isZero(const char * c) const { return (*c == static_cast<char>(48u)); }
 
     //TODO verify if this function actually works as intended
@@ -149,7 +154,7 @@ private:
 	//exist for each vertex in mVertices_.
 	void generateMissingTextureCoordsAndNormals(bool randomizeTextureCoords, float s, float t);
 
-    void addParsedLinePrimitivesToEndOfMeshData() noexcept;
+    void addParsedLinePrimitivesToEndOfMeshData();
 
     void addLineEndpointToVertexData(Vertex p, size_t expectedVertexComponents) noexcept;
 };

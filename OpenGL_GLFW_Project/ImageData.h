@@ -27,6 +27,8 @@
 
 #pragma once
 
+#if 0 //corresponding '#endif' is located near line 175
+
 #ifndef IMAGE_DATA_H_
 #define IMAGE_DATA_H_
 
@@ -169,7 +171,7 @@ private:
 
 
 
-
+#endif //0
 
 
 

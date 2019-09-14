@@ -52,7 +52,7 @@ vec3 fsmJankyPolarNoiseV3_00(vec3 samplePoint,float freq,float jankyness);
 void main() {
 
 //This first one is the best one so far for demonstrating a solid texture mapped model
-#if 1
+#if 0
 
 color = texture(tex_object, processed_vertex.texCoord) - vec4(.2, 0., 0., .5);
 
@@ -190,10 +190,26 @@ color = normalize(ambient + diffuse);
         finalColor.rgb = normalize(finalColor.rgb);
     }
 
+    if (customParameter3 % 3u == 1u) {
+        finalColor.g *= 2.0;
+        finalColor.r *= 0.75;
+        finalColor.b *= 0.75;
+    }
+    else if (customParameter3 % 3u == 2u) {
+        finalColor.g *= (.8 + .15*sin(.1*time));
+        finalColor.r *= max(finalColor.g, finalColor.b);
+        finalColor.b *= 2.75;
+    }
+
+    if (length(finalColor.rb) < (.25 + .17*cos(time + processed_vertex.vertIDMod))) {
+        finalColor.r *= 3.;
+        finalColor.b *= 2.*(1. + abs(finalColor.r - finalColor.g));
+    }
     finalColor.a *= .244*diffuse;
 
     finalColor.a = clamp(finalColor.a, .335, .89);
     color = finalColor;
 
+    color = vec4(1.0, 1.0, 1.0, 1.0);
     #endif 
 }

@@ -225,10 +225,12 @@ GLenum getPreferredImagePixelTypeForInternalFormat(GLenum textureTarget,
 
 void getDefaultImage(std::vector<uint8_t>* dataVecPtr,
                      ImgAttrib* attributesPtr) noexcept {
+    
     //To make sure we are setting a valid dimension, we enforce our declared minimum
-    //supported dimension size on the Default Image. [DEF_IMG_DIM == default image dimension]
-    constexpr auto DEF_IMG_DIM = (DEFAULT_IMAGE_DIMENSIONS >= MINIMUM_IMAGE_DIMENSION_SPAN) ?
-        DEFAULT_IMAGE_DIMENSIONS : MINIMUM_IMAGE_DIMENSION_SPAN;
+    //supported dimension size on the Default Image. [DEFAULT_IMG_DIM == default image dimension]
+    static constexpr auto DEFAULT_IMG_DIM = 
+                    (DEFAULT_IMAGE_DIMENSIONS >= MINIMUM_IMAGE_DIMENSION_SPAN) ?
+                                DEFAULT_IMAGE_DIMENSIONS : MINIMUM_IMAGE_DIMENSION_SPAN;
     
     assert(dataVecPtr); 
     assert(attributesPtr);
@@ -241,7 +243,9 @@ void getDefaultImage(std::vector<uint8_t>* dataVecPtr,
     //------------------
     //IMAGE ATTRIBUTES
     //-----------------
-    const static ImgAttrib defaultImgAttribs(DEF_IMG_DIM, DEF_IMG_DIM, DEFAULT_NUMBER_OF_COMPONENTS);
+    const static ImgAttrib defaultImgAttribs(DEFAULT_IMG_DIM,
+                                             DEFAULT_IMG_DIM,
+                                             DEFAULT_NUMBER_OF_COMPONENTS);
     //We are finished initializing the default Image Attributes data so we 
     //can assign it to its corresponding pointer right away
     *attributesPtr = defaultImgAttribs;
@@ -250,13 +254,13 @@ void getDefaultImage(std::vector<uint8_t>* dataVecPtr,
     //Image Data 
     //------------------
     static bool defaultImageHasBeenSet = false;
-    static uint8_t defaultImage[DEF_IMG_DIM][DEF_IMG_DIM][DEFAULT_NUMBER_OF_COMPONENTS] = { { { 0u } } };
+    static uint8_t defaultImage[DEFAULT_IMG_DIM][DEFAULT_IMG_DIM][DEFAULT_NUMBER_OF_COMPONENTS] = { { { 0u } } };
 
 
     //Create the default image if it hasn't yet been created
     if (!defaultImageHasBeenSet) {
-        for (GLsizei i = 0; i < DEF_IMG_DIM; i++) {
-            for (GLsizei j = 0; j < DEF_IMG_DIM; j++) {
+        for (GLsizei i = 0; i < DEFAULT_IMG_DIM; i++) {
+            for (GLsizei j = 0; j < DEFAULT_IMG_DIM; j++) {
                 for (GLsizei component = 0; component < DEFAULT_NUMBER_OF_COMPONENTS; component++) {
                     if ((i + j) % 2) //Create the checkerboard pattern
                         defaultImage[i][j][component] = DEFAULT_IMAGE_COLOR_1[component];
@@ -271,10 +275,10 @@ void getDefaultImage(std::vector<uint8_t>* dataVecPtr,
 
     //Finish Assigning the image to the vector pointer
     std::vector<uint8_t> defaultImageData;
-    defaultImageData.reserve(DEF_IMG_DIM * DEF_IMG_DIM * DEFAULT_NUMBER_OF_COMPONENTS);
+    defaultImageData.reserve(DEFAULT_IMG_DIM * DEFAULT_IMG_DIM * DEFAULT_NUMBER_OF_COMPONENTS);
     //Copy the default image over into the vector
-    for (GLsizei i = 0; i < DEF_IMG_DIM; i++) {
-        for (GLsizei j = 0; j < DEF_IMG_DIM; j++) {
+    for (GLsizei i = 0; i < DEFAULT_IMG_DIM; i++) {
+        for (GLsizei j = 0; j < DEFAULT_IMG_DIM; j++) {
             for (GLsizei component = 0; component < DEFAULT_NUMBER_OF_COMPONENTS; component++) {
                 defaultImageData.push_back(defaultImage[i][j][component]);
             }

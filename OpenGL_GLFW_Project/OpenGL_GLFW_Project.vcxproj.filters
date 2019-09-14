@@ -571,6 +571,9 @@
     <Filter Include="Resource Files\Images\OuterSpaceScreenshots">
       <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Debug\GLFWEnumToString">
+      <UniqueIdentifier>{fd88637f-8d03-4788-9221-94a4fc3ab853}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">

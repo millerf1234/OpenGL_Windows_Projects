@@ -99,7 +99,6 @@
 //       Constants       //
 ///////////////////////////
 
-
 //Image Dimensions of dynamically generated image data to be used if 
 //custom dimensions were not specified to constructor
 static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_HEIGHT = 64;
@@ -108,13 +107,13 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 //The ImageData_UByte class is guaranteed to always maintain valid state with,
 //usable data, even when attempts are made to construct it with bogus data.
 //To fulfill this guarantee, an internal default image is generated to be 
-//shared internally by object of this type. These constants control what the 
+//shared internally by objects of this type. These constants control what the 
 //default image will be. Note that these values are still validated and will 
-//be ignored if they violate the restrictions placed upon all images
-static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 3;
+//be ignored if they violate the restrictions placed upon all images.
+static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 13;
 
 //Specify whether the default images 
-static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 38u, 255u/20u };
+static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 138u, 255u/201u };
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_2 = { 165u, 195u, 248u, 225u };
 
 

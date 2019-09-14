@@ -342,7 +342,7 @@ protected: //private:
     //glm::vec3 computePositionOffsetForNextObject(const glm::vec3& posOffset = glm::vec3(0.0f, 0.0f, 0.0f)) const noexcept;
 
     //Prints out the name of the currently active primitive type 
-    void printNameOfTheCurrentlyActivePrimitive() const noexcept;
+    void printNameOfTheCurrentlyActivePrimitive() const;
 
     //Checks to see if either left or right shift (or both) are pressed and
     //uses the results to compute a 'boost' value. This is used in some 

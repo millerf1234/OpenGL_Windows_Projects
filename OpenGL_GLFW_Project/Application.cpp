@@ -5,7 +5,7 @@
 //Date:                 July - November(and beyond) 2018
 
 #include <thread>
-#include <cstddef> //NOTE: Might not be necessary anymore to include <cstddef>
+//#include <cstddef> //NOTE: Might not be necessary anymore to include <cstddef>
 
 #include "Application.h"
 
@@ -24,12 +24,12 @@
 
 
 void Application::initialize() {
-
-	mApplicationValid = true;
-	initReport = nullptr;
-	glfwInitializer = nullptr;
-
-
+    
+    mApplicationValid = true;
+    initReport = nullptr;
+    glfwInitializer = nullptr;
+    
+    
     //If Application is built with macro USE_DEBUG_ defined, we will report more 
     //details during start-up about the Runtime Environment's configuration and
     //this Application's state
@@ -49,18 +49,18 @@ void Application::initialize() {
                 MAX_BYTES_IN_A_MULTIBYTE_CHAR);
 #endif //MB_CUR_MAX
     }
-
-
-	fprintf(MSGLOG, "Application is loading...\n");
-
+    
+    
+    fprintf(MSGLOG, "Application is loading...\n");
+    
     // STEP 1     INITIALIZE GLFW, Create an OpenGL Context and Acquire Our
-    //Application's Window 
+    //            Application's Window 
     if ( !setupGLFW() ) {
         mApplicationValid = false;
-
-		fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
-		return;
-	}
+        
+        fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
+        return;
+    }
     else {
         //If GLFW initializes but then we fail later on in the initialization, 
         //we run into a problem that the window we opened with GLFW may not want to relinquish focus
@@ -72,14 +72,14 @@ void Application::initialize() {
             glfwIconifyWindow(currentWindow);
         
     }
-
+    
     // STEP 2      Once GLFW has been successfully initialized, move on to loading 
     //             definitions for the GL function pointers. This is a really tedious
     //             process that we luckily are able to defer to third party library 
     //            'glad'. 
-	if ( !loadGraphicsLanguageFunctions() ) {
+    if ( !loadGraphicsLanguageFunctions() ) {
         mApplicationValid = false;
-
+        
         fprintf(ERRLOG, "\n"
             "The application encountered an error while loading the graphics language!\n"
             "        (Please Ensure You Have An OpenGL %d.%d Compatible Graphics\n"
@@ -89,27 +89,27 @@ void Application::initialize() {
                         DEFAULT_OPENGL_VERSION_MINOR);
         std::cin.get();
         return;
-	}
-
+    }
+    
     //  Step 3        Once GLFW and glad have completed their required initialization procedures,
     //                the Application performs a lot of it's own self-configuration now before it is
     //                ready to return from its constructor. This configuration process involves setting
     //                all of the necessary callback functions and setting the initial state of the 
     //                OpenGL context.
-	configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in Header Files -> SetupAndConfiguration -> Modifiable -> DebugBehavior -> "DebugSettings.h"
-	setInitialGLState();
-
+    configureGraphicsContextDebugCallbackFunctions(); //The behavior of context debugging is set in Header Files -> SetupAndConfiguration -> Modifiable -> DebugBehavior -> "DebugSettings.h"
+    setInitialGLState();
+        
     //Check to see if GLFW supports Raw Mouse Motion Input
     //  (see: https://www.glfw.org/docs/latest/group__input.html#gae4ee0dbd0d256183e1ea4026d897e1c2 )
     if (glfwRawMouseMotionSupported())
         fprintf(MSGLOG, "\n    [Detected that raw mouse input is supported on this platform!\n");
     else 
         fprintf(MSGLOG, "\n    [Detected that raw mouse input is unsupported on this platform!\n");
-
-	//MSAA requires Framebuffer Objects to be used, which I have not yet gotten around to implementing. 
-	//Thus as of right now, checkMSAA() will always return showing no MSAA being used.
-	//checkMSAA(); //See if MSAA is being used as expected
-		
+    
+    //MSAA requires Framebuffer Objects to be used, which I have not yet finished implementing.
+    //As such, this function currently is a no-op until Framebuffers enter into use.
+    checkMSAA(); //See if MSAA is being used as expected
+    
 	if (!mApplicationValid) {
 		fprintf(ERRLOG, "The application encountered an error while loading!\n");
 		return;
@@ -362,8 +362,8 @@ void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
         delete[] supportedCompTexFormats;
         supportedCompTexFormats = nullptr;
     }
-
-
+    
+    
     //EXPERIMENT WITH USING A QUERY OBJECT
     //WARNING! THIS IS NOT HOW TIMESTAMP QUERIES WORK! [See OpenGL SuperBible (7e) P.547]
     //Get a timestamp from the context just to see what happens
@@ -373,7 +373,7 @@ void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
     //GLuint readTimeVal = 0u;
     //glGetQueryObjectuiv(timestampQuery, GL_QUERY_RESULT, &readTimeVal);
     //glDeleteQueries(1, &timestampQuery);
-
+    
     fprintf(MSGLOG, "%s\n", texLimReport.str().c_str());
 }
 
@@ -399,22 +399,26 @@ void Application::configureGraphicsContextDebugCallbackFunctions() const {
 		glDebugMessageCallback(printGraphicsContextMessageCallback, nullptr);
 	}
 	else {
-		fprintf(MSGLOG, "Disabled\n\n");
-	}
+        fprintf(MSGLOG, "Disabled\n\n");
+    }
 }
 
 void Application::setInitialGLState() {
-	fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
-
-	//For options of what can be activated/deactivated
-	//with glEnable()/glDisable(), see:
-	//   https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
-
-	fprintf(MSGLOG, "\tActivating GL depth-test\n");
-	glEnable(GL_DEPTH_TEST); //Depth Test will be used for every draw call, so it is activated globally
+    fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
+    
+    //For options of what can be activated/deactivated
+    //with glEnable()/glDisable(), see:
+    //   https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
+    
+    fprintf(MSGLOG, "\tActivating GL depth-test\n");
+    glEnable(GL_DEPTH_TEST); //Depth Test will be used for every draw call, so it is activated globally
 }
 
 void Application::checkMSAA() const { 
+    
+    //This function's current implementation does not 
+    constexpr bool CHECK_MSAA_IMPLEMENTATION_HAS_BEEN_FIXED = false;
+
 	if (mApplicationValid) {
 		//glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
 		GLint bufs = -1;
@@ -437,6 +441,7 @@ void Application::playIntroMovie() noexcept {
 
 
 void Application::runOpenGLSandboxExperiments() {
+#if 0
     assert(initReport);
     assert(initReport->windowContext.window.window);
     
@@ -507,7 +512,7 @@ void Application::runOpenGLSandboxExperiments() {
     std::cin.get();
     glfwRestoreWindow(window);
     //glfwFocusWindow(window); //Not necessary
-
+#endif //#if 0
 }
 
 

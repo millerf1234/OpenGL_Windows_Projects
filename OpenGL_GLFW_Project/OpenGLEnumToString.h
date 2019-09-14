@@ -56,8 +56,10 @@ namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE {
     private:
         std::unordered_map<GLenum, std::string> mDictionary_;
         
-        //These 2 utility functions are used to build the dictionary
+        //These 2 utility functions are used to build the dictionary.
+        // 'insert()' adds a single GLenum-string pair to the dictionary 
         void insert(GLenum hexEnum, std::string name) noexcept;
+        //'buildDictionary()' calls 'insert()' for many dictionary entries 
         void buildDictionary() noexcept;
     };
 }

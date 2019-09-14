@@ -224,7 +224,7 @@
     <ClCompile Include="MeshFunctions.cpp" />
     <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
     <ClCompile Include="OffscreenFramebuffer.cpp" />
-    <ClCompile Include="OpenAL_Init.cpp" />
+    <ClCompile Include="OpenAL_Context.cpp" />
     <ClCompile Include="OpenGLEnumToString.cpp" />
     <ClCompile Include="PhongShadingParameterSet.cpp" />
     <ClCompile Include="PrimaryRenderWindow.cpp" />
@@ -455,7 +455,7 @@
     <ClInclude Include="OpenAL\efx-creative.h" />
     <ClInclude Include="OpenAL\efx-presets.h" />
     <ClInclude Include="OpenAL\efx.h" />
-    <ClInclude Include="OpenAL_Init.h" />
+    <ClInclude Include="OpenAL_Context.h" />
     <ClInclude Include="PhongShadingParameterSet.h" />
     <ClInclude Include="PrimaryWindowState.h" />
     <ClInclude Include="GlobalConstants.h" />

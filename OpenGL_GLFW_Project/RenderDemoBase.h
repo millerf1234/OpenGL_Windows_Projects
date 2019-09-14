@@ -21,7 +21,11 @@
 //                         (ii)  Loading of Assets (including building shaders)
 //                         (iii) Run Demo  
 //  
-//  
+//           [But Wait, There is More!]
+//                  This class also contains some core shared functionality that 
+//                  is general purpose enough to be worth sharing between every 
+//                  RenderDemo project.
+//
 //Notes:			-All Render Projects inheriting from this class must implement the two required
 //					 functions. It is meant to be assumed that the calling application will construct 
 //				     an instance of an object derived from this class, will check for error, then will
@@ -154,7 +158,7 @@ protected:
 private:
 
 	bool mJoystickStatePrintingEnabled_;
-	unsigned long long mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
+	uint64_t mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
     float mWindowOpaqueness_;
 	JoystickStatePrinter joystickPrinter;
 

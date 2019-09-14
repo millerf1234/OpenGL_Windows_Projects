@@ -8,10 +8,8 @@
 //                     to pay my rent rather than writing the code to fix the issue. 
 //                   
 //                    In a file with multiple objects, it is possible for some to have texture coordinates/normals
-//                     and others to not. The way this class is currently implmented did not account for this possibility,
-//                     and at this point there does not seem to me to be an easy way to remedy this. I really really want
-//                     to but alas I do not make money yet from this project so have not been able to find enough time
-//                     to fix it. 
+//                     and others to not. The way this class is currently implemented did not account for this possibility,
+//                     and at this point there does not seem to me to be an easy way to remedy this.
 //
 // Programmer:          Forrest Miller
 // Date:                November 2018
@@ -54,6 +52,7 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 	mScale_ = scale;
 	mHasTexCoords_ = false;
 	mHasNormals_ = false;
+    //Load the file as an AsciiAsset object
 	mFile_ = std::make_unique<AssetLoadingInternal::AsciiAsset>(filepath);
 
 	if (mFile_->getStoredTextLength() > 0u) {
@@ -80,9 +79,9 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 
 
 //The current implementation here is not the most efficient, since essentially it follows the exact same steps as 
-//the non-texCoord-Normal-generating constructor before filling in the missing data. A better impleplementation would
+//the non-texCoord-Normal-generating constructor before filling in the missing data. A better implementation would
 //fill in the missing data as it goes.
-QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords, float s, float t) {
+QuickObj::QuickObj(const std::string filepath, float scale, bool generateMissingComponents, bool randomizeTextureCoords, float s, float t) {
 	mError_ = false;
 	mScale_ = scale;
 	mHasTexCoords_ = false;
@@ -103,7 +102,7 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
 			addMissingComponents(randomizeTextureCoords, s, t);
 		}
 	}
-
+    
     if (mLines_.size() > 0u)
         addParsedLinePrimitivesToEndOfMeshData();
 
@@ -982,7 +981,7 @@ void QuickObj::generateMissingTextureCoordsAndNormals(bool randomizeTextureCoord
 }
 
 
-void QuickObj::addParsedLinePrimitivesToEndOfMeshData() noexcept {
+void QuickObj::addParsedLinePrimitivesToEndOfMeshData() {
 
     size_t expectedVertexSize = 4u;
     if (mHasTexCoords_)
@@ -996,7 +995,7 @@ void QuickObj::addParsedLinePrimitivesToEndOfMeshData() noexcept {
     //For each parsed line primitive
     for (auto lineIter = mLines_.cbegin(); lineIter != mLines_.cend(); lineIter++) {
         if (lineIter->dataValid()) { //Only add if data is valid
-            auto endpoints = lineIter->get();
+            const auto endpoints = lineIter->get();
             if ((endpoints[0] < MAX_POS_INDEX) && (endpoints[1] < MAX_POS_INDEX)) {
                 Vertex p0 = mPositions_[endpoints[0]];
                 Vertex p1 = mPositions_[endpoints[1]];

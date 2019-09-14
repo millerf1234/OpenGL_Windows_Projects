@@ -177,7 +177,7 @@
 constexpr const glm::vec3 POSITION_FIRST_OBJECT_IN_SCENE(0.0f, 0.0f, 0.0f);
 //Each object after the first has the following translation applied (Note 
 // Z-translation is disabled for your own safety due to Z-Clipping hazards!):
-constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.39599f, 0.0439995f);
+constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.139599f, 0.1439995f);
 
 //Camera Parameters
 const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 8.0f);
@@ -507,20 +507,26 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     assert(quadTextureTestShader);
      
     auto pathToImages = FILEPATH_TO_IMAGES;
+    
+    const Timepoint imageLoadStart("Image Load Start!\n");
+
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
 
-    Timepoint imageLoadStart("Image Load Start!\n");
-   // ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\severnayazemlya_oli_2018221_lrg.jpg)");
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
     
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
+
+
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
 
-    ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
 
-    //ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
+    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)");
+    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
     //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
@@ -528,14 +534,18 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.tga)");
     //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
+
+
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
 
     Timepoint imageLoadEnd("Image Load End!\n");
 
     fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
 
 
-    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+
 
 
     glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
@@ -683,9 +693,9 @@ void AssetLoadingDemo::loadModels() {
     /////////////////////
     //  Well-Behaved models
     /////////////
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
      ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
@@ -693,7 +703,7 @@ void AssetLoadingDemo::loadModels() {
 	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
 
     //for (int i = 0; i < 10; i++)
         ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -701,7 +711,7 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
@@ -726,7 +736,7 @@ void AssetLoadingDemo::loadModels() {
     //       denominator = (std::abs(f0 - denominator)) / (f0 + denominator);
     //    if (denominator > 2.0f)
     //       denominator = 0.5f;
-    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", (1.0f + f0) / denominator ));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", 1.0f)); // denominator ));
     //    */
     //}
 
@@ -788,7 +798,7 @@ void AssetLoadingDemo::renderLoop() {
         
         if (!mainRenderWindow || (glfwGetCurrentContext() != mainRenderWindow)) {
             fprintf(ERRLOG, "\nERROR! mainRenderWindow is not valid");
-            std::exit(EXIT_FAILURE);
+            return;//std::exit(EXIT_FAILURE);
         }
         framePerformance.recordLoopStartTimepoint(frameNumber);
         ////////////////////////
@@ -1431,6 +1441,8 @@ void AssetLoadingDemo::resetCustomShaderParameter3() noexcept {
 
 void AssetLoadingDemo::rotate() noexcept {
 
+    //The Following Constants determine input sensitivity/reactivity
+
     // Pitch 
     static constexpr const float PITCH_DELTA_BASE = 0.045f;
     static constexpr const float PITCH_DELTA_LSHIFT = 0.085f;
@@ -1519,17 +1531,16 @@ void AssetLoadingDemo::rotate() noexcept {
 
 void AssetLoadingDemo::changeZoom() noexcept {
 
-    // Zoom
+    // Zoom Input Sensitivities
     static constexpr const float ZOOM_DELTA_BASE = 0.025f;
     static constexpr const float ZOOM_DELTA_LSHIFT = 0.095f;
     static constexpr const float ZOOM_DELTA_RSHIFT = 0.125f;
     static constexpr const float ZOOM_DELTA_LRSHIFT = 0.25f;
 
-    //Reduce queries to the Renderwindow by polling state of
-    //left and right shift keys only once
     static constexpr const unsigned int NEITHERSHIFTPRESSED = 0u;
     static constexpr const unsigned int LSHIFTVAL = 1u;
     static constexpr const unsigned int RSHIFTVAL = 2u;
+
     int lrShiftState = NEITHERSHIFTPRESSED;
     
     if (NEITHERSHIFTPRESSED == lrShiftState) {
@@ -1689,6 +1700,7 @@ void AssetLoadingDemo::buildNewShader() {
 void AssetLoadingDemo::reportStatistics() noexcept {
     //Make sure we have a large enough sample size to generate an accurate report.
     if (framePerformance.framePerformanceListSize < 10ULL) { return; }
+
     double tBeginSum, tBeginAvg;
     double timeFromLoopBeginToDrawCommandsTotal, timeFromLoopBeginToDrawCommandsAvg;
     double timeFromDrawCommandsToFlipBuffersTotal, timeFromDrawCommandsToFlipBuffersAvg;
@@ -1759,22 +1771,37 @@ void AssetLoadingDemo::propagateTime() noexcept {
     //  Propagate Time
     if (!freezeTimeToggle) { //if time is not frozen
         const float delta = (0.0125f * (1.0f + timeTickRateModifier));
-        ((reverseTimePropogation) ? (counter += delta) : (counter -= delta)); //compute time propagation 
+
+        reverseTimePropogation ?
+            (counter += delta) : (counter -= delta); //compute time propagation 
+    
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
+
+//    [Implementation Note] 
+//  The name of this next function is misleading in that it implies input 
+//  reading and input processing are done as distinct phases (i.e. in sequence 
+//  such that no updates to any program state are made until after the final 
+//  polling of the gamepad's state). The actual implementation is much more 
+//  direct about things, performing modifications to the program state as soon
+//  as an input is read.
+//   (UPDATE) Well actually I thought about it and really it is true that all of
+//            the gamepads state will have been read by GLFW 
 void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput() {
 
-    if (glfwJoystickPresent(0)) {
+    static constexpr const int JOYSTICK_TO_READ = 0;
+
+    if (glfwJoystickPresent(JOYSTICK_TO_READ)) {
         
         //If the Joystick is supported as a Gamepad we can make more broad
         //assumptions regarding its input mapping layout, thus allowing a
         //larger range of user actions to be available
-        if (glfwJoystickIsGamepad(0)) {
+        if (glfwJoystickIsGamepad(JOYSTICK_TO_READ)) {
 
             //-----------------------------------
-            //Try to read the gamepad's state
+            // Try to read the gamepad's state
             //-----------------------------------
             
             //Create a gamepad state object
@@ -1861,9 +1888,11 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             /////////////////////////////////////
             //Process the A, B, X, Y buttons
             /////////////////////////////////////
-            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_A])
-                toggleBlending();
-
+            if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_A]) {
+                if ((frameNumber - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+                    toggleBlending();
+                }
+            }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_B]) {
                 if ((frameNumber - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
                     reverseTime();
@@ -1893,7 +1922,7 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
 
         
         else { //If Joystick 0 is not a gamepad 
-            int buttons;
+            int buttons = 0;
             const unsigned char* buttonStates = glfwGetJoystickButtons(0, &buttons);
             if (buttons > 0) {
                 for (int i = 0; i < buttons; i++) {
@@ -1921,7 +1950,7 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
 
 void AssetLoadingDemo::updateFrameClearColor() {
 	if constexpr (true) {
-		glClearColor(0.0932f, 0.0924f, 0.09135f, 1.0f);
+		glClearColor(0.000932f, 0.000924f, 0.0009135f, 1.0f);
 		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
 	}
 	else /*if constexpr (false)*/ {
@@ -2041,13 +2070,11 @@ void glDrawElementsInstanced(	GLenum mode,
     if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleOutlineEBO);
         if (drawMultipleInstances)
-            glDrawElementsInstanced(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, 0, instanceCount);
+            glDrawElementsInstanced(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, (const void*)0, instanceCount);
         else
-            glDrawElements(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, 0); //Last param is offset into ebo to start with
+            glDrawElements(GL_LINES, 2*BUFFER_SIZE, GL_UNSIGNED_INT, (const void*)0); //Last param is offset into ebo to start with
         return;
     }
-
-
 
 
 	if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
@@ -2101,7 +2128,7 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
 }
 
 
-void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const noexcept {
+void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const {
     fprintf(MSGLOG, "Active Primitive Type Set To:  ");
     std::string primitiveType;
     switch (currentPrimitiveInputType) {

@@ -82,7 +82,7 @@ private:
 	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
 	//newly created, without either of the load() or run() methods having been called. This
 	//function is intended to be called by the more specific run_____Demo() functions below.
-	void runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char* name = "[UNTITLED]");
+	void runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char* name = R"([UNTITLED])");
 
 
 

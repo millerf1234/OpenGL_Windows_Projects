@@ -341,7 +341,11 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 
 			fprintf(MSGLOG, "%s\nOpening Window...\n", displayInfoString.str().c_str());
 
-			mWindow = glfwCreateWindow(width, height, NAME_OF_APPLICATION, monitors[defaultMonitor], nullptr);
+			mWindow = glfwCreateWindow(width,
+                                       height,
+                                       NAME_OF_APPLICATION,
+                                       monitors[defaultMonitor],
+                                       nullptr);
 
 			if (mWindow) {
 				fprintf(MSGLOG, "Window Successfully Created!\n\n");

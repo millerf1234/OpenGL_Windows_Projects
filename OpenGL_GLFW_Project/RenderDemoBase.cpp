@@ -16,7 +16,7 @@ RenderDemoBase::RenderDemoBase() {
 
 
 RenderDemoBase::~RenderDemoBase() noexcept {
-
+    fprintf(MSGLOG, "\n\nConfirming that \'~RenderDemoBase()\' has been called!\n\n");
 }
 
 
@@ -38,9 +38,9 @@ bool RenderDemoBase::checkForContextReset() {
 		fprintf(MSGLOG, "This is an unexpected return value for this function call!\n");
 	}
 	*/
-	bool resetDetected;
+    bool resetDetected = false;
 
-	GLenum contextResetStatus = glGetGraphicsResetStatus();
+	const GLenum contextResetStatus = glGetGraphicsResetStatus();
 	switch (contextResetStatus) {
 	case GL_NO_ERROR:
 		//fprintf(MSGLOG, "\nglGetGraphicsResetStatus() returned enum GL_NO_ERROR!\n");

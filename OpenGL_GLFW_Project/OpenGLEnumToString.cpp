@@ -75,7 +75,7 @@ std::string DictionaryOfGLEnums::lookup(GLenum hexEnum) noexcept {
 }
 
 void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) noexcept {
-    auto res = mDictionary_.insert(std::make_pair(hexEnum, name));
+    const auto res = mDictionary_.insert(std::make_pair(hexEnum, name));
     assert(res.second); //This checks the second parameter of the return pair which
     //represents a boolean representing whether our insertion was unique or not.
 }
