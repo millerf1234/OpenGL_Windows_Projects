@@ -59,7 +59,7 @@ const float noiseAmpl = noiseAmpl_A*noiseAmpl_B;
 
 #define vert float(1+gl_VertexID)
 #define vertMod float(getVertIDMod(gl_VertexID))
-#define inst float(gl_InstanceID+1)
+#define inst float((gl_InstanceID/3)+1)
 
 
 
@@ -91,8 +91,11 @@ void main() {
     processed_vertex.texCoord.xy = rotate2(ModelTexCoord, 0.);
     processed_vertex.position = MVP * ModelPosition;
 
-    gl_Position = processed_vertex.position + vec4(2.025*inst*sin(2.04*inst), 2.112975*inst*cos(1.14*inst), 0.0, zoom);
-
+    vec4 intermediate_position = processed_vertex.position + vec4(2.025*inst*sin(2.04*inst), 2.112975*inst*cos(1.14*inst), 0.0, zoom);
+    
+    intermediate_position.xyz *= 1. + (float(gl_InstanceID % 3)*.01 * float(gl_VertexID));
+    gl_Position = intermediate_position;
+    
     gl_PointSize = vertMod / (2.0 - 0.025*float(customParameter1));
 }
 

@@ -169,7 +169,6 @@ color = normalize(ambient + diffuse);
         finalColor.b = smoothstep(min(finalColor.r / 2., finalColor.g / 2.),
                              max(finalColor.r + finalColor.g + .4, length(finalColor)),
                              finalColor.b);
-
     }
     else if (customParameter1 % 4u == 2u) {
         const float temp = finalColor.b;
@@ -207,9 +206,8 @@ color = normalize(ambient + diffuse);
     }
     finalColor.a *= .244*diffuse;
 
-    finalColor.a = clamp(finalColor.a, .335, .89);
+    finalColor.a = clamp(finalColor.a, .135, .92);
+    finalColor.a += .000195*processed_vertex.vertID;
     color = finalColor;
-
-    color = vec4(1.0, 1.0, 1.0, 1.0);
     #endif 
 }
