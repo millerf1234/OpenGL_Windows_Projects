@@ -12,7 +12,8 @@
 
 Ideas:
 
-Should have started out in x64, not x86
+Should have started out in x64, not x86 
+(see: https://www.howtogeek.com/165535/why-the-64-bit-version-of-windows-is-more-secure/)
 
 Should have not relied on int/long/size_t being
 a specific size
