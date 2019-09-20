@@ -486,246 +486,6 @@ bool AssetLoadingDemo::loadShaders() {
 }
 
 
-bool AssetLoadingDemo::buildQuadTextureTestShader() {
-    quadTextureTestShader = std::make_unique<ShaderProgram>(); 
-    quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
-    quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
-    //Need to attach a secondary...
-    std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
-    fragmentNoiseShader->makeSecondary();
-    quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
-    quadTextureTestShader->link();
-    return quadTextureTestShader->checkIfLinked();
-}
-
-
-///Random note on differences between traditional and bindless OpenGL APIs. 
-///All texture functions in the traditional API use the word 'tex' in their
-///name, while the newer bindless API uses the word 'texture' instead.
-bool AssetLoadingDemo::loadTexture2DFromImageFile() {
-    assert(quadTextureTestShader);
-     
-    auto pathToImages = FILEPATH_TO_IMAGES;
-    
-    const Timepoint imageLoadStart("Image Load Start!\n");
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
-
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
-    
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
-
-
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
-
-    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
-
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
-
-    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
-
-
-    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
-
-    Timepoint imageLoadEnd("Image Load End!\n");
-
-    fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
-
-
-
-
-
-    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
-    //Specify Storage To Be Used For The Texture
-    glTextureStorage2D(practiceTexture,
-                       1,
-                       testDefaultImage.internalFormat(),
-                       testDefaultImage.width(),
-                       testDefaultImage.height());
-    glBindTexture(GL_TEXTURE_2D, practiceTexture);
-
-
-
-
-
-    //           //////////////////////////////////////////////
-    //                        Texture Wrap Behavior 
-    //           //////////////////////////////////////////////
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-
-
-    //           //////////////////////////////////////////////
-    //                         Texture Filtering
-    //           //////////////////////////////////////////////
-    
-    // Note that Texture Filtering in the sRGB color space may not be sRGB correct.
-    // "Generally speaking, all GL 3.x+ hardware will do filtering correctly."
-    // Quote from https://www.khronos.org/opengl/wiki/Sampler_Object under the section 
-    // titled 'Filtering'
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    //Note that there are also:
-    //   -) GL_NEAREST_MIPMAP_NEAREST
-    //   -) GL_LINEAR_MIPMAP_NEAREST
-    //   -) GL_NEAREST_MIPMAP_LINEAR
-    //   -) GL_LINEAR_MIPMAP_LINEAR
-
-
-
-
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
-
-    
-    /*
-    glTextureSubImage2D(practiceTexture,
-                        0,
-                        0,
-                        0,
-                        testDefaultImage.width(),
-                        testDefaultImage.height(),
-                        testDefaultImage.externalFormat(),
-                        testDefaultImage.dataRepresentation(),
-                        testDefaultImage.data());
-    */
-    //testDefaultImage.swapRedAndBlueChannels();
-    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
-    return true;
-
-}
-
-
-GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>& sceneBuffer) const noexcept{
-	static constexpr const GLsizei vertexSize = 4u + 2u + 3u;  //Since each vertex is {x,y,z,w, s,t, nx,ny,nz}  (i.e. 9 components total)
-	return (sceneBuffer.size() / vertexSize);
-}
-
-
-void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
-
-    //For most of the available primitive types in member enum 
-    //'PIPELINE_PRIMITIVE_INPUT_TYPE', the vertex data gets loaded into its vertex
-    //buffer already arranged in the proper ordering to be drawn correctly. The
-    //only exception to this is the primitive type 'TRIANGLE_OUTLINE', which
-    //requires a slightly more involved vertex ordering pattern for drawing [Yes
-    //I at this stage intend to have primitives 'TRIANGLE_STRIP' and 'TRIANGLE_FAN'
-    //both look like that. Believe it or not, although rare, they have each at times
-    //produced some cool results. Plus rearranging the data to accomodate either
-    //of them would be a considerably more involved process]. 
-    
-    //The idea behind this primitive type is to trace along the edges of each triangle
-    //with a line segment, producing an outline of each triangle. To pull this off is 
-    //actually very straight-forward and easily seen from considering the following
-    //diagrans.
-    //   
-    //Consider how each triangle vertex is arranged in the vertex buffer:
-    //
-    //                  ORDERING OF VERTEX DATA IN VERTEX BUFFER                 
-    //                                                                           
-    //                      v0                                 v3                
-    //                     /  \                               /  \               
-    //                    /    \                             /    \              
-    //                   /      \                           /      \             
-    //                  /        \                         /        \            
-    //                 /          \                       /          \           
-    //                /            \                     /            \          
-    //               /  Triangle 0  \                   /  Triangle 1  \         
-    //              /                \                 /                \        
-    //            v1 ---------------- v2             v4 ----------------  v5     
-    //                                                                           
-    //                                                                           
-    //                                                                           
-    //  OpenGL draws line segments from vertex data with the following pattern:  
-    //                                                                           
-    //      v0--------v1     v2--------v3     v4--------v5     v6--------v7      
-    //                                                                           
-    //                                                                           
-    //                                                                           
-    //  Thus rather than drawing straight through the vertex data, it is         
-    //  necessary to create a different vertex ordering so that each triangle's  
-    //  edges are drawn as line segments. Since each vertex will be both a       
-    //  starting point and an endpoint for a line segment, it must be that this  
-    //  new ordering must require using twice the number of total vertices as    
-    //  to completly draw the entire data set.
-    //   
-    //  This new ordering appears as:
-    //
-    //          v0v1 v1v2 v2v0          v3v4 v4v5 v5v3
-    //
-    //  The reason this works should be readily apparent by examining the above 
-    //  triangle and line segment diagrams.
-    //
-
-
-    //  The task of this function is to generate an ascending sequence of numbers 
-    //  following the pattern mentioned above until we have created values        
-    //  twice the size of the vertex data in the vertex buffer.                   
-    //
-
-
-    std::vector<GLuint> vertexOrderingForTriangleOutline;
-    
-
-    const GLsizei numberOfVerticesInSceneBuffer = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
-
-    //The number of elements required is always twice the number of vertices in the sceneBuffer
-    const GLsizei elementsToGenerate = 2u * numberOfVerticesInSceneBuffer;
-    try {
-        vertexOrderingForTriangleOutline.reserve(elementsToGenerate);
-        for (GLsizei i = 0; i < elementsToGenerate; i += 3) {//numberOfVerticesInSceneBuffer; i += TRIANGLE_SIDES_AMOUNTAGE) {
-
-            //Triangle side 1
-            vertexOrderingForTriangleOutline.push_back(i);
-            vertexOrderingForTriangleOutline.push_back(i + 1);
-
-            //Triangle side 2
-            vertexOrderingForTriangleOutline.push_back(i + 1);
-            vertexOrderingForTriangleOutline.push_back(i + 2);
-
-            //Triangle side 3
-            vertexOrderingForTriangleOutline.push_back(i + 2);
-            vertexOrderingForTriangleOutline.push_back(i);
-        }
-    }
-    catch (const std::exception& e) {
-        try { //Compiler was griping that 'e.what()' might throw an exception
-            fprintf(ERRLOG, "\nCaught Exception: %s!\n", e.what());
-        } catch (...) { fprintf(ERRLOG, "\nError printing error message!\n"); std::exit(EXIT_FAILURE); }
-    }
-
-    //Once generated, swap order out with AssetLoadingDemo's member
-    triangleOutlineElementOrdering.swap(vertexOrderingForTriangleOutline);
-}
-
-
 
 void AssetLoadingDemo::loadModels() {
 
@@ -2217,6 +1977,247 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
 	glUseProgram(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+
+bool AssetLoadingDemo::buildQuadTextureTestShader() {
+    quadTextureTestShader = std::make_unique<ShaderProgram>();
+    quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
+    quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
+    //Need to attach a secondary...
+    std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
+        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
+    fragmentNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
+    quadTextureTestShader->link();
+    return quadTextureTestShader->checkIfLinked();
+}
+
+
+///Random note on differences between traditional and bindless OpenGL APIs. 
+///All texture functions in the traditional API use the word 'tex' in their
+///name, while the newer bindless API uses the word 'texture' instead.
+bool AssetLoadingDemo::loadTexture2DFromImageFile() {
+    assert(quadTextureTestShader);
+
+    auto pathToImages = FILEPATH_TO_IMAGES;
+
+    const Timepoint imageLoadStart("Image Load Start!\n");
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
+
+
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
+
+    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+
+    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
+
+    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
+
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
+
+    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
+
+
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+
+    Timepoint imageLoadEnd("Image Load End!\n");
+
+    fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
+
+
+
+
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
+    //Specify Storage To Be Used For The Texture
+    glTextureStorage2D(practiceTexture,
+        1,
+        testDefaultImage.internalFormat(),
+        testDefaultImage.width(),
+        testDefaultImage.height());
+    glBindTexture(GL_TEXTURE_2D, practiceTexture);
+
+
+
+
+
+    //           //////////////////////////////////////////////
+    //                        Texture Wrap Behavior 
+    //           //////////////////////////////////////////////
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+
+
+    //           //////////////////////////////////////////////
+    //                         Texture Filtering
+    //           //////////////////////////////////////////////
+
+    // Note that Texture Filtering in the sRGB color space may not be sRGB correct.
+    // "Generally speaking, all GL 3.x+ hardware will do filtering correctly."
+    // Quote from https://www.khronos.org/opengl/wiki/Sampler_Object under the section 
+    // titled 'Filtering'
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    //Note that there are also:
+    //   -) GL_NEAREST_MIPMAP_NEAREST
+    //   -) GL_LINEAR_MIPMAP_NEAREST
+    //   -) GL_NEAREST_MIPMAP_LINEAR
+    //   -) GL_LINEAR_MIPMAP_LINEAR
+
+
+
+
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+
+
+    /*
+    glTextureSubImage2D(practiceTexture,
+                        0,
+                        0,
+                        0,
+                        testDefaultImage.width(),
+                        testDefaultImage.height(),
+                        testDefaultImage.externalFormat(),
+                        testDefaultImage.dataRepresentation(),
+                        testDefaultImage.data());
+    */
+    //testDefaultImage.swapRedAndBlueChannels();
+    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
+    return true;
+
+}
+
+
+GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector<GLfloat>& sceneBuffer) const noexcept {
+    static constexpr const GLsizei vertexSize = 4u + 2u + 3u;  //Since each vertex is {x,y,z,w, s,t, nx,ny,nz}  (i.e. 9 components total)
+    return (sceneBuffer.size() / vertexSize);
+}
+
+
+void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
+
+    //For most of the available primitive types in member enum 
+    //'PIPELINE_PRIMITIVE_INPUT_TYPE', the vertex data gets loaded into its vertex
+    //buffer already arranged in the proper ordering to be drawn correctly. The
+    //only exception to this is the primitive type 'TRIANGLE_OUTLINE', which
+    //requires a slightly more involved vertex ordering pattern for drawing [Yes
+    //I at this stage intend to have primitives 'TRIANGLE_STRIP' and 'TRIANGLE_FAN'
+    //both look like that. Believe it or not, although rare, they have each at times
+    //produced some cool results. Plus rearranging the data to accomodate either
+    //of them would be a considerably more involved process]. 
+
+    //The idea behind this primitive type is to trace along the edges of each triangle
+    //with a line segment, producing an outline of each triangle. To pull this off is 
+    //actually very straight-forward and easily seen from considering the following
+    //diagrans.
+    //   
+    //Consider how each triangle vertex is arranged in the vertex buffer:
+    //
+    //                  ORDERING OF VERTEX DATA IN VERTEX BUFFER                 
+    //                                                                           
+    //                      v0                                 v3                
+    //                     /  \                               /  \               
+    //                    /    \                             /    \              
+    //                   /      \                           /      \             
+    //                  /        \                         /        \            
+    //                 /          \                       /          \           
+    //                /            \                     /            \          
+    //               /  Triangle 0  \                   /  Triangle 1  \         
+    //              /                \                 /                \        
+    //            v1 ---------------- v2             v4 ----------------  v5     
+    //                                                                           
+    //                                                                           
+    //                                                                           
+    //  OpenGL draws line segments from vertex data with the following pattern:  
+    //                                                                           
+    //      v0--------v1     v2--------v3     v4--------v5     v6--------v7      
+    //                                                                           
+    //                                                                           
+    //                                                                           
+    //  Thus rather than drawing straight through the vertex data, it is         
+    //  necessary to create a different vertex ordering so that each triangle's  
+    //  edges are drawn as line segments. Since each vertex will be both a       
+    //  starting point and an endpoint for a line segment, it must be that this  
+    //  new ordering must require using twice the number of total vertices as    
+    //  to completly draw the entire data set.
+    //   
+    //  This new ordering appears as:
+    //
+    //          v0v1 v1v2 v2v0          v3v4 v4v5 v5v3
+    //
+    //  The reason this works should be readily apparent by examining the above 
+    //  triangle and line segment diagrams.
+    //
+
+    //  The task of this function is to generate an ascending sequence of numbers 
+    //  following the pattern mentioned above until we have created values        
+    //  twice the size of the vertex data in the vertex buffer.                   
+    //
+
+
+    std::vector<GLuint> vertexOrderingForTriangleOutline;
+
+
+    const GLsizei numberOfVerticesInSceneBuffer = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
+
+    //The number of elements required is always twice the number of vertices in the sceneBuffer
+    const GLsizei elementsToGenerate = 2u * numberOfVerticesInSceneBuffer;
+    try {
+        vertexOrderingForTriangleOutline.reserve(elementsToGenerate);
+        for (GLsizei i = 0; i < elementsToGenerate; i += 3) {//numberOfVerticesInSceneBuffer; i += TRIANGLE_SIDES_AMOUNTAGE) {
+
+            //Triangle side 1
+            vertexOrderingForTriangleOutline.push_back(i);
+            vertexOrderingForTriangleOutline.push_back(i + 1);
+
+            //Triangle side 2
+            vertexOrderingForTriangleOutline.push_back(i + 1);
+            vertexOrderingForTriangleOutline.push_back(i + 2);
+
+            //Triangle side 3
+            vertexOrderingForTriangleOutline.push_back(i + 2);
+            vertexOrderingForTriangleOutline.push_back(i);
+        }
+    }
+    catch (const std::exception & e) {
+        try { //Compiler was griping that 'e.what()' might throw an exception
+            fprintf(ERRLOG, "\nCaught Exception: %s!\n", e.what());
+        }
+        catch (...) { fprintf(ERRLOG, "\nError printing error message!\n"); std::exit(EXIT_FAILURE); }
+    }
+
+    //Once generated, swap order out with AssetLoadingDemo's member
+    triangleOutlineElementOrdering.swap(vertexOrderingForTriangleOutline);
+}
+
 
 
 void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const {
