@@ -85,11 +85,11 @@ public:
 	AssetLoadingDemo(InitReport*);
     virtual ~AssetLoadingDemo() noexcept override;// = default;
 
-	virtual void loadAssets() override;
-	virtual void run() override;
+	void loadAssets() override; //By declaring these functions 'override', the usage 
+	void run() override;        //of the keyword 'virtual' becomes superfluous
 	
     
-
+    
     FramePerformanceTimepointsList framePerformance;
 
 
@@ -254,7 +254,7 @@ protected: //private:
     void toggleDepthClamping() noexcept;
     void updateFieldOfView() noexcept;
     void recomputeProjectionMatrix() noexcept;  
-    void changePrimitiveType() noexcept;
+    void changePrimitiveType();
     void changeInstancedDrawingBehavior() noexcept;
     void increaseCustomShaderParameter1() noexcept;
     void increaseCustomShaderParameter2() noexcept;
@@ -346,7 +346,7 @@ protected: //private:
 
     //Checks to see if either left or right shift (or both) are pressed and
     //uses the results to compute a 'boost' value. This is used in some 
-    //of the input logic to allow for faster input rates.
+    //of the input logic to allow for faster input-response rates.
     float getShiftBoost() const noexcept;
 
 	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
