@@ -110,7 +110,7 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 //shared internally by objects of this type. These constants control what the 
 //default image will be. Note that these values are still validated and will 
 //be ignored if they violate the restrictions placed upon all images.
-static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 13;
+static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 4;
 
 //Specify whether the default images 
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 138u, 255u/201u };
