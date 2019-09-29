@@ -213,7 +213,7 @@ public:
         GLsizei comp; //Number of components per pixel
         //Returns the number of bytes in total are expected
         //in an image matching these attributes
-        GLsizei sizeInBytes() const volatile noexcept {
+        GLsizei sizeInBytes() const noexcept {
             return (width * height * comp);
         }
         //Construct image attributes
