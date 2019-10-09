@@ -160,3 +160,30 @@ RANDOM NOTES  (read later to remind self):
 //see: https://github.com/Microsoft/vcpkg/blob/master/README.md  
 
 //On full-program optimization, read the article linked at: https://msdn.microsoft.com/en-us/magazine/dn904673.aspx
+
+
+
+
+
+
+
+
+
+
+
+   
+    // THIS IS A TEMPLATE FOR POSSIBLE FUTURE USE WHEN WRITING COMMENTS
+    //
+    //                                                                           
+    //                      v0                                 v3                
+    //                     /  \                               /  \               
+    //                    /    \                             /    \              
+    //                   /      \                           /      \             
+    //                  /        \                         /        \            
+    //                 /          \                       /          \           
+    //                /            \                     /            \          
+    //               /  Triangle 0  \                   /  Triangle 1  \         
+    //              /                \                 /                \        
+    //            v1 ---------------- v2             v4 ----------------  v5     
+    
+
