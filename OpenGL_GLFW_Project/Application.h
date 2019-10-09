@@ -87,8 +87,9 @@ private:
 
 
 
-	//The following functions are for setting up and running different demo programs. These functions rely on the
-	//runRenderDemo() function above for polymorphic-behavior when calling their overridden virtual functions. 
+    //---------------
+    //  Invoke A Render Demo
+    //---------------
 
     void runTeapotExplosionDemo();
     void runLightsourceTestDemo();
@@ -117,8 +118,8 @@ private:
     //                            which is then emptied when 'std::exit()' gets
     //                            called]. THIS PREVENTS ANY FURTHER ACTION NOT
     //                                HANDLED BY AN 'atexit' CALLBACK FROM EVER
-    //                                      AGAIN HAVE A CHANCE TO BE PERFORMED
-    //                                         (at least on the current thread)
+    //                                    AGAIN HAVING A CHANCE TO BE PERFORMED
+    //                                                  (by the current thread)
     [[noreturn]] static void safeCrash() noexcept;
 
 };
