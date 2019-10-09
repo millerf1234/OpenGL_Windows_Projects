@@ -517,7 +517,7 @@ void Application::runOpenGLSandboxExperiments() {
 
 
 
-void Application::runRenderDemo(std::unique_ptr<RenderDemoBase> & renderDemo, const char * name) {
+void Application::runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char * name) {
 	bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));
 
 	//Perform error check
