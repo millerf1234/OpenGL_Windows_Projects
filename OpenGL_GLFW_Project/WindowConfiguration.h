@@ -7,7 +7,7 @@
 #define WINDOW_CONFIGURATION_H_
 
 
-#include <array>
+//#include <array>
 #include "SupportedWindowResolutions.h"
 
 //I have only tested the code with a single monitor  
@@ -36,11 +36,6 @@ static constexpr const bool USE_VSYNC = true;
 //Not Implemented as of Summer 2019, but if it were the acceptable values 
 //would range from 0-8 (0-16?) (0-32?) 
 static constexpr int DEFAULT_AA_SAMPLES = 4;
-
-
-
-
-
 
 
 
