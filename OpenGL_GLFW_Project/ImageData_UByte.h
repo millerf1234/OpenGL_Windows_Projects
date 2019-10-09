@@ -92,7 +92,7 @@
 #include <memory>
 #include <filesystem>
 #include <functional>
-#include "GlobalIncludes.h"    //For including 'glad.h' 
+#include "GlobalIncludes.h"    //For including OpenGL libraries
 
 
 ///////////////////////////
@@ -112,7 +112,7 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 //be ignored if they violate the restrictions placed upon all images.
 static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 4;
 
-//Specify whether the default images 
+//Specify default image colors that comprise the checkerboard pattern
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 138u, 255u/201u };
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_2 = { 165u, 195u, 248u, 225u };
 
@@ -376,9 +376,9 @@ public:
     //  be written to. 
     ImageData_UByte(GLsizei width,       //Requires  width >= 2
                     GLsizei height,      //Requires height >= 2
-                    GLsizei comp,        //Requires 1 <= components <= 4
-                    GLenum internalFormat, //Must be a valid internal format for 'comp'
-                    GLenum externalFormat, //Must be a valid external format
+                    GLsizei comp,        //Requires 1 <= comp <= 4
+                    GLenum internalFormat,     //Must be a valid internal format for 'comp'
+                    GLenum externalFormat,     //Must be a valid external format
                     std::vector<uint8_t> data, //Must contain enough data to match attributes
                     std::string* errMsg = nullptr); 
 };

@@ -9,13 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Resource Files\Fonts">
-      <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ed0ef0ff-dece-473a-91eb-cf8eb2074bbd}</UniqueIdentifier>
     </Filter>
@@ -27,27 +20,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\Filepath">
       <UniqueIdentifier>{f4167a12-333b-40d8-80cf-7b890a091198}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common">
-      <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\VertexUtility">
-      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects">
-      <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion">
-      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo">
-      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\LightsourceTestDemo">
-      <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Math">
       <UniqueIdentifier>{8c0d421c-755f-49e4-b63e-d49515507c47}</UniqueIdentifier>
@@ -82,17 +54,8 @@
     <Filter Include="Source Files\Utility\Lightsource\HalfFinished">
       <UniqueIdentifier>{243a2fb6-a4a8-40bf-b735-a594431277ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Settings">
-      <UniqueIdentifier>{c34989ef-eb53-4289-a864-8cbdccf57ea5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
-      <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\UI">
       <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
-      <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework">
       <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
@@ -127,72 +90,6 @@
     <Filter Include="Source Files\Utility\Debug\Joystick State Printer">
       <UniqueIdentifier>{385cc002-a531-42b4-90e5-1e92af730cbb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models">
-      <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ">
-      <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample">
-      <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BeveledCube">
-      <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Splines">
-      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing">
-      <UniqueIdentifier>{b27f6ba1-997a-4053-abd2-295730fb77ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads">
-      <UniqueIdentifier>{796caf25-89a3-42cb-8c45-8fcdefe3d0a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated">
-      <UniqueIdentifier>{a4d5854e-8b4e-43f1-8565-7522d1d234e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\MultiPrimitiveTest">
-      <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\ParentedPrimatives">
-      <UniqueIdentifier>{5f3c8f11-43ac-4194-86dd-ebf2270af7be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Experimental Engine">
-      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Thing">
-      <UniqueIdentifier>{c0a6b5bf-70d6-49fc-9f1d-a486e6f5aff0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\Pokemon">
-      <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShape">
-      <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane">
-      <UniqueIdentifier>{3d4f588e-0b60-4a26-b419-af25b7237116}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\AbstractShapeDecimated">
-      <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\3D_Coat Imported">
-      <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships">
-      <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test">
-      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
-      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\StarSuzerian">
-      <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
-      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party">
       <UniqueIdentifier>{1548cd26-21bd-4783-8e4f-070776f8f260}</UniqueIdentifier>
     </Filter>
@@ -220,12 +117,6 @@
     <Filter Include="Third Party\OpenAL">
       <UniqueIdentifier>{8c70782d-c522-4932-968f-333dafd7b7db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\SubdivisionCube">
-      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter">
-      <UniqueIdentifier>{73d7db21-48d4-4fbb-b00e-0b95d24272b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party\glad\debug">
       <UniqueIdentifier>{ff1cd793-0e8d-439d-8d17-e0f9dc53d161}</UniqueIdentifier>
     </Filter>
@@ -237,21 +128,6 @@
     </Filter>
     <Filter Include="Third Party\glad\debug\KHR">
       <UniqueIdentifier>{bf46e63b-d421-4205-8845-8c161abcdb64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample">
-      <UniqueIdentifier>{23e3a8c6-4393-4a9b-aa94-9697a5d0fd99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog">
-      <UniqueIdentifier>{ad643cbd-2af1-4aba-bcea-a0a00bcd9bb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine">
-      <UniqueIdentifier>{62a7bb2a-7429-430a-ab23-f6a584c0201b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\DrillThing">
-      <UniqueIdentifier>{f12e4737-073d-4572-ad58-d4b733372e32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\RockThing">
-      <UniqueIdentifier>{2e16dc8a-6c2c-45d1-9d47-45f76b30394d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Unfinished">
       <UniqueIdentifier>{89da1471-63ef-4d39-860a-6eead3af1e78}</UniqueIdentifier>
@@ -270,36 +146,6 @@
     </Filter>
     <Filter Include="Header Files\SetupAndConfiguration">
       <UniqueIdentifier>{0f74ed4c-d885-46b8-abee-7e19d2afeb87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\FlyingCameraDemo">
-      <UniqueIdentifier>{b4fb4891-f386-46ee-a470-4887f9aa3313}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes">
-      <UniqueIdentifier>{306b8a4c-eda1-46c8-9467-23cca3cbf6b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox">
-      <UniqueIdentifier>{3520e70f-fc97-4a6e-a52b-1fb302b4178c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere">
-      <UniqueIdentifier>{0caa7e57-4edd-4777-8f8c-4fe9825215df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions">
-      <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise">
-      <UniqueIdentifier>{536b2386-9d8a-4848-906d-41e81e76fad9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial">
-      <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\MyOwnPracticeNoiseFunctions">
-      <UniqueIdentifier>{7bd79499-60bb-4c43-a183-96116ca38aed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\BoxCutter">
-      <UniqueIdentifier>{02181657-b21b-48c2-9ca7-3be565066401}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\CargoSpaceship">
-      <UniqueIdentifier>{a9a0ace4-1a71-43ab-a4da-2d9866b19cc3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Projects\RenderDemos\UnfinishedProjects">
       <UniqueIdentifier>{af4261d5-ca00-4ea2-802a-10c5fb5293c2}</UniqueIdentifier>
@@ -324,9 +170,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\MultiThreading">
       <UniqueIdentifier>{3e435b03-2296-4f34-b68b-c3589c018f25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection">
-      <UniqueIdentifier>{464263ab-ffe3-4bfc-93db-4d66ffbec93a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Third Party\GLFW">
       <UniqueIdentifier>{652b198b-6eec-4ad7-9eaf-11d20c4a7f18}</UniqueIdentifier>
@@ -355,12 +198,6 @@
     <Filter Include="Source Files\Utility\Debug\OpenGLEnumToString">
       <UniqueIdentifier>{1219ec74-dc5b-458a-8310-f1d6e783fd7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\ExperimentalText">
-      <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Sample\ScrewTornadoThing">
-      <UniqueIdentifier>{be4b08e1-689a-4046-b90b-95ac966396dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\PerformanceProfiling">
       <UniqueIdentifier>{6367e239-9a61-480d-b9f4-0040431a12c7}</UniqueIdentifier>
     </Filter>
@@ -379,45 +216,6 @@
     <Filter Include="Source Files\Utility\Filepath\Deprecated">
       <UniqueIdentifier>{41e8b6d5-2f4e-47d6-9c57-209294eb84aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere">
-      <UniqueIdentifier>{bd745267-950a-49b9-b089-f56136ff3cba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Interceptor">
-      <UniqueIdentifier>{82105745-b98e-4940-a1dc-74655ccf86f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\Spaceships\Interceptor\00">
-      <UniqueIdentifier>{fec4ad5e-110d-4015-a65e-8dfe1e43ba28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\JetEngine">
-      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\JetEngine\Engine2">
-      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Models\OBJ\JetEngine\CrazyEngine">
-      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images">
-      <UniqueIdentifier>{4897fc50-d48c-46c8-a1b8-1caf9453661a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Texture2D">
-      <UniqueIdentifier>{9cbfb8e8-6ee4-4c02-999a-0de917184b5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Cubemap">
-      <UniqueIdentifier>{6a45dfcb-5766-4329-9e68-1e7808ebf67b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Texture2D\jpeg">
-      <UniqueIdentifier>{63a58731-d5ec-49a9-ae4e-62d299927f32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Cubemap\green">
-      <UniqueIdentifier>{92a424db-5124-43f0-917f-93d57f427e24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Texture2D\png">
-      <UniqueIdentifier>{80b0579c-1ae3-402a-8269-995ba4273491}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Texture2D\tga">
-      <UniqueIdentifier>{e72d4079-66a2-4508-834c-7c7c3fb3f1b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Third Party\TGASDK">
       <UniqueIdentifier>{8cd53d14-428a-47cd-b365-17062a87a145}</UniqueIdentifier>
     </Filter>
@@ -426,18 +224,6 @@
     </Filter>
     <Filter Include="Third Party\TGASDK\include">
       <UniqueIdentifier>{a92f2d5b-f54c-49e7-8a4a-62a29b6f7f31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
-      <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Cubemap\spire">
-      <UniqueIdentifier>{6df3e0b8-5cd1-4d1e-a711-6a6f2da4e7e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Cubemap\spire\tga">
-      <UniqueIdentifier>{4df2c721-6a94-4612-85c2-e037de4a72c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Cubemap\spire\png">
-      <UniqueIdentifier>{8637c818-ffe4-40ad-b9fd-5cdee01c6b22}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Unfinished\TakeScreenshot">
       <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
@@ -544,12 +330,6 @@
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataGenerator">
       <UniqueIdentifier>{e8a53999-fbf6-4638-a281-825f5e3a6b83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Images\FormatTestFiles">
-      <UniqueIdentifier>{d8792b5e-77c8-4e11-974c-5dd8c51311bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\FormatTestFiles\HDR">
-      <UniqueIdentifier>{3908616a-303d-4ad4-b7e3-7de844a691fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused\ImageDataInternal">
       <UniqueIdentifier>{2128c2ca-ff40-4876-882e-770ed962e3a5}</UniqueIdentifier>
     </Filter>
@@ -562,17 +342,237 @@
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Deprecated\TGA_PrototypeLoader\TGALoader">
       <UniqueIdentifier>{2b38b33e-1a58-4a49-b165-abcdc6b3dd53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox">
-      <UniqueIdentifier>{23a3b117-9120-4599-b212-26338857c1d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Unfinished\SkyBoxCube">
       <UniqueIdentifier>{ecfd7970-34be-4846-8cb0-1202ead34e43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Images\OuterSpaceScreenshots">
-      <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\Debug\GLFWEnumToString">
       <UniqueIdentifier>{fd88637f-8d03-4788-9221-94a4fc3ab853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Asset Files\Fonts">
+      <UniqueIdentifier>{c6968b45-015e-402f-9aa4-d975a94df6c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders">
+      <UniqueIdentifier>{ea8a4740-fd91-4b8c-ae4f-6316a5ee72c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common">
+      <UniqueIdentifier>{4611ffc9-c246-458f-a699-17c2347b719b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\VertexUtility">
+      <UniqueIdentifier>{ef32210c-2977-4da9-ad74-e9ae3ad60d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions">
+      <UniqueIdentifier>{61036fd3-1202-456e-966e-383e55e90a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise">
+      <UniqueIdentifier>{536b2386-9d8a-4848-906d-41e81e76fad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial">
+      <UniqueIdentifier>{c28ddacb-ea7b-430d-9f31-3fc73ae46684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection">
+      <UniqueIdentifier>{464263ab-ffe3-4bfc-93db-4d66ffbec93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\Common\MyOwnPracticeNoiseFunctions">
+      <UniqueIdentifier>{7bd79499-60bb-4c43-a183-96116ca38aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects">
+      <UniqueIdentifier>{3d188f54-9d98-4b12-8522-18835953a87d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\TeapotExplosion">
+      <UniqueIdentifier>{9bb73ee2-b4b9-4230-afa2-ae16b40f37f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility">
+      <UniqueIdentifier>{6b0b134c-2456-49a9-b76e-587244a60edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo">
+      <UniqueIdentifier>{09d5dbe8-04e4-4cf6-a042-71614fd540c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect">
+      <UniqueIdentifier>{8755ef94-63b6-476b-9cb7-a54182087d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample">
+      <UniqueIdentifier>{23e3a8c6-4393-4a9b-aa94-9697a5d0fd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog">
+      <UniqueIdentifier>{ad643cbd-2af1-4aba-bcea-a0a00bcd9bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine">
+      <UniqueIdentifier>{62a7bb2a-7429-430a-ab23-f6a584c0201b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
+      <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\LightsourceTestDemo">
+      <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\FlyingCameraDemo">
+      <UniqueIdentifier>{b4fb4891-f386-46ee-a470-4887f9aa3313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Settings">
+      <UniqueIdentifier>{c34989ef-eb53-4289-a864-8cbdccf57ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models">
+      <UniqueIdentifier>{1b72e998-2f8b-4078-88df-8f9e89eef99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ">
+      <UniqueIdentifier>{26d52c66-07f5-495f-af2d-e131805f59ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample">
+      <UniqueIdentifier>{a4df8b52-0b59-4213-8af8-a442bde0aabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\BeveledCube">
+      <UniqueIdentifier>{35c80556-93bd-4c0b-8fb5-6a5027f1b768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\Splines">
+      <UniqueIdentifier>{4c5781ef-8201-4805-83e3-83ce0a40f064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\BlockThing">
+      <UniqueIdentifier>{b27f6ba1-997a-4053-abd2-295730fb77ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads">
+      <UniqueIdentifier>{796caf25-89a3-42cb-8c45-8fcdefe3d0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated">
+      <UniqueIdentifier>{a4d5854e-8b4e-43f1-8565-7522d1d234e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\MultiPrimitiveTest">
+      <UniqueIdentifier>{9e1765b1-3e57-49d2-a1ad-0fc56d6bfe66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\ParentedPrimatives">
+      <UniqueIdentifier>{5f3c8f11-43ac-4194-86dd-ebf2270af7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\Experimental Engine">
+      <UniqueIdentifier>{5761e0bf-eff9-4795-a930-5bbcf184f596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\Thing">
+      <UniqueIdentifier>{c0a6b5bf-70d6-49fc-9f1d-a486e6f5aff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\Pokemon">
+      <UniqueIdentifier>{8c86192f-ce6c-4ef3-a6b7-8806b6e5d0be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\AbstractShape">
+      <UniqueIdentifier>{03f6b95a-1526-4060-a9b0-748d422ac0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\2DTexturedQuadPlane">
+      <UniqueIdentifier>{3d4f588e-0b60-4a26-b419-af25b7237116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\AbstractShapeDecimated">
+      <UniqueIdentifier>{b3b277cb-b20f-4b5b-9232-7b24d863d98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\SubdivisionCube">
+      <UniqueIdentifier>{d197d4ef-84bf-4310-87c1-29d9ffeca7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\DrillThing">
+      <UniqueIdentifier>{f12e4737-073d-4572-ad58-d4b733372e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\RockThing">
+      <UniqueIdentifier>{2e16dc8a-6c2c-45d1-9d47-45f76b30394d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\BoxCutter">
+      <UniqueIdentifier>{02181657-b21b-48c2-9ca7-3be565066401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\ScrewTornadoThing">
+      <UniqueIdentifier>{be4b08e1-689a-4046-b90b-95ac966396dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\3D_Coat Imported">
+      <UniqueIdentifier>{c92fc5ed-59b1-4335-a09d-73e0e9e43e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships">
+      <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\Test">
+      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
+      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\StarSuzerian">
+      <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
+      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter">
+      <UniqueIdentifier>{73d7db21-48d4-4fbb-b00e-0b95d24272b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\CargoSpaceship">
+      <UniqueIdentifier>{a9a0ace4-1a71-43ab-a4da-2d9866b19cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\Interceptor">
+      <UniqueIdentifier>{82105745-b98e-4940-a1dc-74655ccf86f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Spaceships\Interceptor\00">
+      <UniqueIdentifier>{fec4ad5e-110d-4015-a65e-8dfe1e43ba28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\DemoRenderScenes">
+      <UniqueIdentifier>{306b8a4c-eda1-46c8-9467-23cca3cbf6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox">
+      <UniqueIdentifier>{3520e70f-fc97-4a6e-a52b-1fb302b4178c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere">
+      <UniqueIdentifier>{0caa7e57-4edd-4777-8f8c-4fe9825215df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\DemoRenderScenes\LargeSphere">
+      <UniqueIdentifier>{bd745267-950a-49b9-b089-f56136ff3cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox">
+      <UniqueIdentifier>{23a3b117-9120-4599-b212-26338857c1d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\ExperimentalText">
+      <UniqueIdentifier>{f5627a35-4a20-4fb8-acdc-e334611a9d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\JetEngine">
+      <UniqueIdentifier>{6d4c7c7d-37c7-4d13-8a45-9747f299d321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\JetEngine\Engine2">
+      <UniqueIdentifier>{d9b6543b-8636-4775-92b3-841c5293a4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\JetEngine\CrazyEngine">
+      <UniqueIdentifier>{b0ba5388-de81-4644-8722-68c053efe4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images">
+      <UniqueIdentifier>{4897fc50-d48c-46c8-a1b8-1caf9453661a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Texture2D">
+      <UniqueIdentifier>{9cbfb8e8-6ee4-4c02-999a-0de917184b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Texture2D\jpeg">
+      <UniqueIdentifier>{63a58731-d5ec-49a9-ae4e-62d299927f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Texture2D\png">
+      <UniqueIdentifier>{80b0579c-1ae3-402a-8269-995ba4273491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Texture2D\tga">
+      <UniqueIdentifier>{e72d4079-66a2-4508-834c-7c7c3fb3f1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Cubemap">
+      <UniqueIdentifier>{6a45dfcb-5766-4329-9e68-1e7808ebf67b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Cubemap\green">
+      <UniqueIdentifier>{92a424db-5124-43f0-917f-93d57f427e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Cubemap\spire">
+      <UniqueIdentifier>{6df3e0b8-5cd1-4d1e-a711-6a6f2da4e7e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Cubemap\spire\tga">
+      <UniqueIdentifier>{4df2c721-6a94-4612-85c2-e037de4a72c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\Cubemap\spire\png">
+      <UniqueIdentifier>{8637c818-ffe4-40ad-b9fd-5cdee01c6b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\FormatTestFiles">
+      <UniqueIdentifier>{d8792b5e-77c8-4e11-974c-5dd8c51311bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\FormatTestFiles\HDR">
+      <UniqueIdentifier>{3908616a-303d-4ad4-b7e3-7de844a691fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\OuterSpaceScreenshots">
+      <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -614,9 +614,6 @@
     </ClCompile>
     <ClCompile Include="Lightsource.cpp">
       <Filter>Source Files\Utility\Lightsource\HalfFinished</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenAL_Init.cpp">
-      <Filter>Source Files\Unfinished\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
@@ -824,6 +821,9 @@
     </ClCompile>
     <ClCompile Include="SkyBoxCube.cpp">
       <Filter>Source Files\Unfinished\SkyBoxCube</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL_Context.cpp">
+      <Filter>Source Files\Unfinished\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1147,9 +1147,6 @@
     <ClInclude Include="OpenAL\efx-presets.h">
       <Filter>Third Party\OpenAL</Filter>
     </ClInclude>
-    <ClInclude Include="OpenAL_Init.h">
-      <Filter>Source Files\Unfinished\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="TeapotExplosionDemo_GenericVertexAttributeSet.h">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion\VertexAttributeSetTest</Filter>
     </ClInclude>
@@ -1447,82 +1444,85 @@
     <ClInclude Include="SkyBoxCube.h">
       <Filter>Source Files\Unfinished\SkyBoxCube</Filter>
     </ClInclude>
+    <ClInclude Include="OpenAL_Context.h">
+      <Filter>Source Files\Unfinished\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
       <Filter>Third Party\FreeType</Filter>
     </None>
     <None Include="obj\Engine2_Textured.mtl">
-      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
+      <Filter>Asset Files\Models\OBJ\JetEngine\Engine2</Filter>
     </None>
     <None Include="obj\BeveledCube.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BeveledCube</Filter>
     </None>
     <None Include="obj\BeveledCube.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\BeveledCube</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BeveledCube</Filter>
     </None>
     <None Include="obj\SubdivisionCube.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\SubdivisionCube</Filter>
     </None>
     <None Include="obj\SubdivisionCube.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\SubdivisionCube</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\SubdivisionCube</Filter>
     </None>
     <None Include="obj\Splines.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Splines</Filter>
     </None>
     <None Include="obj\Splines.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\Splines</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Splines</Filter>
     </None>
     <None Include="obj\BlockThing_Quads.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
     </None>
     <None Include="obj\BlockThing_Quads.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Quads</Filter>
     </None>
     <None Include="obj\BlockThing_Triangulated.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
     </None>
     <None Include="obj\BlockThing_Triangulated.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BlockThing\BlockThing_Triangulated</Filter>
     </None>
     <None Include="obj\MultiPrimitiveTest.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
     </None>
     <None Include="obj\MultiPrimitiveTest.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\MultiPrimitiveTest</Filter>
     </None>
     <None Include="obj\ExperimentalEngine.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\Experimental Engine</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Experimental Engine</Filter>
     </None>
     <None Include="obj\ExperimentalEngine.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\Experimental Engine</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Experimental Engine</Filter>
     </None>
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
-      <Filter>Resource Files\Models\OBJ\3D_Coat Imported</Filter>
+      <Filter>Asset Files\Models\OBJ\3D_Coat Imported</Filter>
     </None>
     <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.obj">
-      <Filter>Resource Files\Models\OBJ\3D_Coat Imported</Filter>
+      <Filter>Asset Files\Models\OBJ\3D_Coat Imported</Filter>
     </None>
     <None Include="obj\ParentedPrimatives.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
     </None>
     <None Include="obj\ParentedPrimatives.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
     </None>
     <None Include="obj\Thing.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Thing</Filter>
     </None>
     <None Include="obj\Thing.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\Thing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Thing</Filter>
     </None>
     <None Include="obj\Spaceship.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\StarSuzerian</Filter>
     </None>
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf">
       <Filter>NotesAndReferences</Filter>
     </None>
     <None Include="obj\Pokemon.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\Pokemon</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\Pokemon</Filter>
     </None>
     <None Include="OpenAL\OpenAL32.dll">
       <Filter>Third Party\OpenAL</Filter>
@@ -1540,175 +1540,175 @@
       <Filter>NotesAndReferences\mtl file Documentation</Filter>
     </None>
     <None Include="Shaders\VertMath.vert">
-      <Filter>Resource Files\Shaders\Common\VertexUtility</Filter>
+      <Filter>Asset Files\Shaders\Common\VertexUtility</Filter>
     </None>
     <None Include="Shaders\LightsourceTestDemo.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
     </None>
     <None Include="Shaders\LightsourceTestDemo.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\LightsourceTestDemo</Filter>
     </None>
     <None Include="Shaders\TeapotExplosion.geom">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="Shaders\AssetLoadingDemo.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </None>
     <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </None>
     <None Include="obj\AbstractShape.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\AbstractShape</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\AbstractShape</Filter>
     </None>
     <None Include="Shaders\ColorTransforms.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\TeapotExplosion\FragmentUtility</Filter>
     </None>
     <None Include="Shaders\ShaderNoiseFunctions.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions</Filter>
     </None>
     <None Include="Shaders\VoronoiNoise.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\VoronoiNoise\NonCommercial</Filter>
     </None>
     <None Include="obj\2DTexturedQuadPlane.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
     </None>
     <None Include="obj\2DTexturedQuadPlane.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
     </None>
     <None Include="obj\AbstractShapeDecimated.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
     </None>
     <None Include="obj\AbstractShapeDecimated.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\AbstractShapeDecimated</Filter>
     </None>
     <None Include="obj\CrazyJetEngine.mtl">
-      <Filter>Resource Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
+      <Filter>Asset Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
     </None>
     <None Include="obj\CrazyJetEngine.obj">
-      <Filter>Resource Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
+      <Filter>Asset Files\Models\OBJ\JetEngine\CrazyEngine</Filter>
     </None>
     <None Include="AssetLoadingDemo_CoolEffect.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
     </None>
     <None Include="Shaders\AssetLoadingDemo.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
     <None Include="AssetLoadingDemo_CoolEffect.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
     </None>
     <None Include="obj\NewOrderTie_Triangulated.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </None>
     <None Include="obj\3D_Arrow.mtl">
-      <Filter>Resource Files\Models\OBJ</Filter>
+      <Filter>Asset Files\Models\OBJ</Filter>
     </None>
     <None Include="Shaders\Sample\RubyMine.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
     </None>
     <None Include="Shaders\Sample\RubyMine.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
     </None>
     <None Include="obj\ViperMKIV_Fighter.mtl">
-      <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
     <None Include="obj\ViperMKIV_Fighter.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
     <None Include="obj\Engine2_Textured.obj">
-      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
+      <Filter>Asset Files\Models\OBJ\JetEngine\Engine2</Filter>
     </None>
     <None Include="obj\DrillThing00.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\DrillThing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\DrillThing</Filter>
     </None>
     <None Include="obj\RockThing.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\RockThing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\RockThing</Filter>
     </None>
     <None Include="Shaders\TeapotExplosion.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="Shaders\TeapotExplosion.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\TeapotExplosion</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
     <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html">
       <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
     </None>
     <None Include="Shaders\FlyingCameraDemo.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
     </None>
     <None Include="Shaders\FlyingCameraDemo.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
     </None>
     <None Include="obj\DemoSceneInsideABox00.mtl">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
     </None>
     <None Include="obj\SimpleSkyDome.mtl">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
     </None>
     <None Include="obj\SimpleSkyDome_ReExport.mtl">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
     </None>
     <None Include="Shaders\PracticeNoise.glsl">
-      <Filter>Resource Files\Shaders\Common\MyOwnPracticeNoiseFunctions</Filter>
+      <Filter>Asset Files\Shaders\Common\MyOwnPracticeNoiseFunctions</Filter>
     </None>
     <None Include="obj\box_cutter.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\BoxCutter</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BoxCutter</Filter>
     </None>
     <None Include="obj\DemoSceneInsideABox00.obj">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\DemoSceneInsideABox</Filter>
     </None>
     <None Include="obj\SimpleSkyDome.obj">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
     </None>
     <None Include="obj\SimpleSkyDome_ReExport.obj">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\BasicGenericSkySphere</Filter>
     </None>
     <None Include="obj\CargoSpaceshipIdeaThing02.mtl">
-      <Filter>Resource Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
     </None>
     <None Include="obj\CargoSpaceshipIdeaThing02.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\CargoSpaceship</Filter>
     </None>
     <None Include="obj\box_cutter.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\BoxCutter</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\BoxCutter</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2x2.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular3D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise2D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise3D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\classicnoise4D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\noise2D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\noise3D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\noise3Dgrad.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\noise4D.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="Shaders\AshimaArts_NoiseCollection\psrdnoise.glsl">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </None>
     <None Include="glfw3.dll">
       <Filter>Third Party\GLFW</Filter>
@@ -1723,110 +1723,110 @@
       <Filter>Third Party\GLFW</Filter>
     </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.mtl">
-      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+      <Filter>Asset Files\Models\OBJ\ExperimentalText</Filter>
     </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj">
-      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+      <Filter>Asset Files\Models\OBJ\ExperimentalText</Filter>
     </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell">
-      <Filter>Resource Files\Models\OBJ\ExperimentalText</Filter>
+      <Filter>Asset Files\Models\OBJ\ExperimentalText</Filter>
     </None>
     <None Include="Shaders\FlyingCameraDemo2.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
     </None>
     <None Include="obj\ScrewTornadoThing.mtl">
-      <Filter>Resource Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
     </None>
     <None Include="obj\ScrewTornadoThing.obj">
-      <Filter>Resource Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\ScrewTornadoThing</Filter>
     </None>
     <None Include="obj\LargeSphere.mtl">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
     </None>
     <None Include="obj\Interceptor00.mtl">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
     </None>
     <None Include="Images\Cubemap\green\hw_green.shader">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </None>
     <None Include="obj\Interceptor00.obj">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Interceptor\00</Filter>
     </None>
     <None Include="obj\LargeSphere.obj">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
     </None>
     <None Include="Shaders\DrawTextureOnQuad.vert">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
     <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt">
       <Filter>NotesAndReferences\Profiling</Filter>
     </None>
     <None Include="obj\AlienWorldSkybox.mtl">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
     </None>
     <None Include="obj\AlienWorldSkybox.obj">
-      <Filter>Resource Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+      <Filter>Asset Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-BlackItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Bold.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-BoldItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-Bold.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-BoldItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-Italic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-Light.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-LightItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\RobotoCondensed-Regular.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Italic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Light.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-LightItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Medium.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-MediumItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Regular.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-Thin.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
     <Font Include="Fonts\Roboto-ThinItalic.ttf">
-      <Filter>Resource Files\Fonts</Filter>
+      <Filter>Asset Files\Fonts</Filter>
     </Font>
   </ItemGroup>
   <ItemGroup>
     <Text Include="NewTieFighterNotice.txt">
-      <Filter>Resource Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
     </Text>
     <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt">
       <Filter>NotesAndReferences</Filter>
@@ -1850,13 +1850,13 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="NoteOnVisualStudioGLSLTextColoring.txt">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Asset Files\Shaders</Filter>
     </Text>
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt">
-      <Filter>Resource Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
+      <Filter>Asset Files\Shaders\Common\ThirdPartyShaderNoiseFunctions\AshimaArtsNoiseCollection</Filter>
     </Text>
     <Text Include="Images\Cubemap\green\license.txt">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Text>
     <Text Include="TGASDK_GithubLink.txt">
       <Filter>Third Party\TGASDK</Filter>
@@ -1871,302 +1871,302 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="Shaders\DrawTextureOnQuad.frag">
-      <Filter>Resource Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">
-      <Filter>Resource Files\Models\OBJ\JetEngine\Engine2</Filter>
+      <Filter>Asset Files\Models\OBJ\JetEngine\Engine2</Filter>
     </Image>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
       <Filter>NotesAndReferences</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_emissive.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_glossiness.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_normal_map.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_roughness.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_Specular.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_SpecularTint.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png">
-      <Filter>Resource Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
+      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="obj\2DTexturedQuadPlaneTexture.png">
-      <Filter>Resource Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
     </Image>
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png">
       <Filter>NotesAndReferences</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_bk.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_dn.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_ft.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_lf.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_rt.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\green\green_up.tga">
-      <Filter>Resource Files\Images\Cubemap\green</Filter>
+      <Filter>Asset Files\Images\Cubemap\green</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_bk.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_dn.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_ft.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_lf.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_rt.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_up.png">
-      <Filter>Resource Files\Images\Cubemap\spire\png</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\png</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_bk.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_dn.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_ft.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_lf.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_rt.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="Images\Cubemap\spire\spire_up.tga">
-      <Filter>Resource Files\Images\Cubemap\spire\tga</Filter>
+      <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
     <Image Include="obj\BeveledCube.png">
-      <Filter>Resource Files\Images</Filter>
+      <Filter>Asset Files\Images</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_glossiness.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_albedo.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_AmbientOcclusion.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_diffuse.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_emissive.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_normal_map.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_roughness.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_Specular.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_SpecularTint.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png">
-      <Filter>Resource Files\Images\Texture2D\png</Filter>
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00000.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00001.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00002.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00003.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00004.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00005.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00006.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00007.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00008.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00009.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00010.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00011.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00012.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00013.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00014.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00015.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00016.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00017.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00018.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00019.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00020.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00020.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00021.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00022.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00022.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00023.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00024.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00025.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00026.tga">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00041.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00043.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00057.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00062.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00070.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00080.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00088.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00098.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00111.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00135.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00156.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00157.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00163.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00173.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00176.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00177.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00207.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00209.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00228.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00243.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00249.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00253.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg">
-      <Filter>Resource Files\Images\OuterSpaceScreenshots</Filter>
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenGL_GLFW_Project.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Asset Files</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

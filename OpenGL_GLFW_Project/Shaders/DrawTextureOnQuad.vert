@@ -93,7 +93,7 @@ void main() {
 
     vec4 intermediate_position = processed_vertex.position + vec4(2.025*inst*sin(2.04*inst), 2.112975*inst*cos(1.14*inst), 0.0, zoom);
     
-    intermediate_position.xyz *= 1. + (float(gl_InstanceID % 3)*.01 * float(gl_VertexID));
+    intermediate_position.xyz *= 1. + (float(gl_InstanceID % 2)*.005 * float(gl_VertexID));
     gl_Position = intermediate_position;
     
     gl_PointSize = vertMod / (2.0 - 0.025*float(customParameter1));

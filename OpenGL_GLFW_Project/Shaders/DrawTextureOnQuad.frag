@@ -190,9 +190,16 @@ color = normalize(ambient + diffuse);
     }
 
     if (customParameter3 % 3u == 1u) {
-        finalColor.g *= 2.0;
-        finalColor.r *= 0.75;
-        finalColor.b *= 0.75;
+        if (finalColor.g < finalColor.r) {
+            finalColor.g *= 2.0;
+            finalColor.r *= 0.75;
+            finalColor.b *= 0.75;
+        }
+        else {
+            finalColor.r *= 2.0;
+            finalColor.g *= 0.75;
+            finalColor.b *= 0.75;
+        }
     }
     else if (customParameter3 % 3u == 2u) {
         finalColor.g *= (.8 + .15*sin(.1*time));

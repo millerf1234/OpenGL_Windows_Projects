@@ -486,6 +486,131 @@ bool AssetLoadingDemo::loadShaders() {
 }
 
 
+///Random note on differences between traditional and bindless OpenGL APIs. 
+///All texture functions in the traditional API use the word 'tex' in their
+///name, while the newer bindless API uses the word 'texture' instead.
+bool AssetLoadingDemo::loadTexture2DFromImageFile() {
+    assert(quadTextureTestShader);
+
+    auto pathToImages = FILEPATH_TO_IMAGES;
+
+    const Timepoint imageLoadStart("Image Load Start!\n");
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
+
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
+
+
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
+
+    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+
+    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
+
+    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
+
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
+
+    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
+
+
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+
+    Timepoint imageLoadEnd("Image Load End!\n");
+
+    fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
+
+
+
+
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
+    //Specify Storage To Be Used For The Texture
+    glTextureStorage2D(practiceTexture,
+        1,
+        testDefaultImage.internalFormat(),
+        testDefaultImage.width(),
+        testDefaultImage.height());
+    glBindTexture(GL_TEXTURE_2D, practiceTexture);
+
+
+
+
+
+    //           //////////////////////////////////////////////
+    //                        Texture Wrap Behavior 
+    //           //////////////////////////////////////////////
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+
+
+    //           //////////////////////////////////////////////
+    //                         Texture Filtering
+    //           //////////////////////////////////////////////
+
+    // Note that Texture Filtering in the sRGB color space may not be sRGB correct.
+    // "Generally speaking, all GL 3.x+ hardware will do filtering correctly."
+    // Quote from https://www.khronos.org/opengl/wiki/Sampler_Object under the section 
+    // titled 'Filtering'
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    //Note that there are also:
+    //   -) GL_NEAREST_MIPMAP_NEAREST
+    //   -) GL_LINEAR_MIPMAP_NEAREST
+    //   -) GL_NEAREST_MIPMAP_LINEAR
+    //   -) GL_LINEAR_MIPMAP_LINEAR
+
+
+
+
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+
+
+    /*
+    glTextureSubImage2D(practiceTexture,
+                        0,
+                        0,
+                        0,
+                        testDefaultImage.width(),
+                        testDefaultImage.height(),
+                        testDefaultImage.externalFormat(),
+                        testDefaultImage.dataRepresentation(),
+                        testDefaultImage.data());
+    */
+    //testDefaultImage.swapRedAndBlueChannels();
+    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
+    return true;
+
+}
+
+
+
 
 void AssetLoadingDemo::loadModels() {
 
@@ -494,7 +619,8 @@ void AssetLoadingDemo::loadModels() {
 	//[RFP == Relative File Path]
 	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
-	//Initial Scale values for the objects
+	//              Initial Scale values for the objects
+    //[These should all be 1.0f always to preserve scale between models]
 	constexpr float blockThing_QuadsScale = 1.0f;
 	constexpr float beveledCubeScale = 1.0f;
 	constexpr float blockShipScale = 1.0f;
@@ -521,11 +647,11 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    //worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    //worldMeshName = "SimpleSkyDome_ReExport.obj";
+    worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     //A very simple large sphere -0
@@ -548,8 +674,8 @@ void AssetLoadingDemo::loadModels() {
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
      ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
@@ -1990,129 +2116,6 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
     quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
     quadTextureTestShader->link();
     return quadTextureTestShader->checkIfLinked();
-}
-
-
-///Random note on differences between traditional and bindless OpenGL APIs. 
-///All texture functions in the traditional API use the word 'tex' in their
-///name, while the newer bindless API uses the word 'texture' instead.
-bool AssetLoadingDemo::loadTexture2DFromImageFile() {
-    assert(quadTextureTestShader);
-
-    auto pathToImages = FILEPATH_TO_IMAGES;
-
-    const Timepoint imageLoadStart("Image Load Start!\n");
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
-
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
-
-
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
-
-    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
-
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
-
-    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
-
-
-    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
-
-    Timepoint imageLoadEnd("Image Load End!\n");
-
-    fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
-
-
-
-
-
-    glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
-    //Specify Storage To Be Used For The Texture
-    glTextureStorage2D(practiceTexture,
-        1,
-        testDefaultImage.internalFormat(),
-        testDefaultImage.width(),
-        testDefaultImage.height());
-    glBindTexture(GL_TEXTURE_2D, practiceTexture);
-
-
-
-
-
-    //           //////////////////////////////////////////////
-    //                        Texture Wrap Behavior 
-    //           //////////////////////////////////////////////
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-
-
-    //           //////////////////////////////////////////////
-    //                         Texture Filtering
-    //           //////////////////////////////////////////////
-
-    // Note that Texture Filtering in the sRGB color space may not be sRGB correct.
-    // "Generally speaking, all GL 3.x+ hardware will do filtering correctly."
-    // Quote from https://www.khronos.org/opengl/wiki/Sampler_Object under the section 
-    // titled 'Filtering'
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    //Note that there are also:
-    //   -) GL_NEAREST_MIPMAP_NEAREST
-    //   -) GL_LINEAR_MIPMAP_NEAREST
-    //   -) GL_NEAREST_MIPMAP_LINEAR
-    //   -) GL_LINEAR_MIPMAP_LINEAR
-
-
-
-
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-
-
-    /*
-    glTextureSubImage2D(practiceTexture,
-                        0,
-                        0,
-                        0,
-                        testDefaultImage.width(),
-                        testDefaultImage.height(),
-                        testDefaultImage.externalFormat(),
-                        testDefaultImage.dataRepresentation(),
-                        testDefaultImage.data());
-    */
-    //testDefaultImage.swapRedAndBlueChannels();
-    testDefaultImage.uploadDataTo2DTexture(practiceTexture);
-    return true;
-
 }
 
 

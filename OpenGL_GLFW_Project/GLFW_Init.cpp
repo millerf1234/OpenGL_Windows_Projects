@@ -172,6 +172,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
     //==============================================================================================
 
     fprintf(MSGLOG, "Initializing GLFW..."); 
+    fprintf(MSGLOG, "    (This may take some time)\n"); //Sometimes DLLs load too slow
 	if (!glfwInit()) {
 		fprintf(ERRLOG, "\nError initializing GLFW!\n");
         GLFW_INIT_INTERNAL::GLFW_IS_INIT() = false;

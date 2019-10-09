@@ -53,7 +53,6 @@
 
 #include "GlobalIncludes.h"         //For GLFWwindow*
 #include "GLFW_Init.h"              //For the MonitorData struct
-//#include "MissingAsset.h"         //For assets that are missing
 
 //Global RenderDemo utilities
 #include "ScreenCaptureAssistant.h"
@@ -73,7 +72,7 @@ class RenderDemoBase {
 public:
 
 	//Deleted Functionality 
-	RenderDemoBase() /*= delete */;
+	RenderDemoBase() /*= delete */; //No Longer Deleted
 	RenderDemoBase(const RenderDemoBase&) = delete;
 	RenderDemoBase& operator=(const RenderDemoBase&) = delete;
 
@@ -135,10 +134,11 @@ protected:
 	GLFWwindow* mainRenderWindow; //Pointer to target rendering window (Application's running this demo
     //                              must provide this)
 
+    //                  ------------[NOT YET IMPLEMENTED]------------
     //Is able to take screenshots of the current render window output. Only call from a
     //thread that has the active context first.
     ScreenCaptureAssistant screenshotAssistant;
-
+    //
 
 
 	//Performs input-handling and logic configuration on the shared members of every RenderDemo object.
@@ -159,7 +159,7 @@ private:
 
 	bool mJoystickStatePrintingEnabled_;
 	uint64_t mIterationsSinceLastJoystickStatePrintingLastModified_; //Please rename this variable when less tired and can think...
-    float mWindowOpaqueness_;
+    float mWindowOpaqueness_; //Window Opaqueness disabled for Fullscreen windows
 	JoystickStatePrinter joystickPrinter;
 
     std::unique_ptr<FramebufferPreferredUsage> mFBInfo_;
