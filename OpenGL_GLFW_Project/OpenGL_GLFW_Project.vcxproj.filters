@@ -1911,9 +1911,6 @@
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png">
       <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
-    <Image Include="obj\2DTexturedQuadPlaneTexture.png">
-      <Filter>Asset Files\Models\OBJ\Sample\2DTexturedQuadPlane</Filter>
-    </Image>
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png">
       <Filter>NotesAndReferences</Filter>
     </Image>
@@ -2162,6 +2159,9 @@
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="obj\2DTexturedQuadPlaneTexture.png">
+      <Filter>Asset Files\Images\Texture2D</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

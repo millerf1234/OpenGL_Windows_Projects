@@ -55,7 +55,7 @@
 //                               library (such as 'glad') in order to function.
 //                                                                             
 //                           The implementation file relies upon the C-library 
-//                          'stb_image' behind the scenes to parse model files.
+//                          'stb_image' behind the scenes to parse image files.
 //                                                                             
 //                                                                             
 //                                                                             
@@ -76,7 +76,7 @@
 //                                                                             
 //                                                                             
 //  References:                                                                
-// https://software.intel.com/en-us/articles/opengl-performance-tips-use-native-formats-for-best-rendering-performance
+//   https://software.intel.com/en-us/articles/opengl-performance-tips-use-native-formats-for-best-rendering-performance
 //                                                                             
 //   https://www.opengl.org/wiki/Image_Format                                  
 //                                                                             
@@ -174,7 +174,7 @@ public:
     //IT BECOMES CLEAR WHERE THIS REPORT FILE WILL GET SAVED AND
     //WHAT NAME IT WILL HAVE.
     ImageData_UByte(float randSeed,
-                    GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
+                    GLsizei width  = DEFAULT_GENERATED_IMAGE_WIDTH,
                     GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT,
                     bool writeAnalysisOfGeneratedDataToFile = false);
 
@@ -188,7 +188,7 @@ public:
     //specifying smaller values will be ignored and their
     //dimension set to 2.
     ImageData_UByte(generateImgDataCallbackFunc generator,
-                    GLsizei width = DEFAULT_GENERATED_IMAGE_WIDTH,
+                    GLsizei width  = DEFAULT_GENERATED_IMAGE_WIDTH,
                     GLsizei height = DEFAULT_GENERATED_IMAGE_HEIGHT);
 
     //  DYNAMIC CONSTRUCTOR  --  LOAD IMAGE DATA FROM IMAGE FILE
@@ -370,7 +370,7 @@ public:
     //  itself from the static test pattern assigned 
     //  to these objects when they are default constructed.
     //
-    //  To check for failures, an optional extra parameter 
+    //  To check for failures, an optional final parameter 
     //  can be passed to this function which is a pointer 
     //  to a std::string object that an error message can 
     //  be written to. 
