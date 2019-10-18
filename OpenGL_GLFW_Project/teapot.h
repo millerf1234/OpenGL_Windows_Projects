@@ -1,8 +1,9 @@
+
 #pragma once
 
-#define teapot_count 5184 
+constexpr const size_t TEAPOT_COUNT = 5184U;
 
-const float teapot[teapot_count] = {
+const float teapot[TEAPOT_COUNT] = {
 	0.700000f, -1.200000f, 0.000000f,
 	0.605600f, -1.200000f, -0.355700f,
 	0.598800f, -1.243700f, -0.351700f,
