@@ -214,9 +214,9 @@ void Application::launch() {
         runAssetLoadingDemo();
         return;
 
-        //fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
-        //runLightsourceTestDemo();
-        //return;
+       // fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
+       // runLightsourceTestDemo();
+       // return;
 
         //fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
         //runTeapotExplosionDemo();
@@ -225,16 +225,16 @@ void Application::launch() {
     }
     catch (const std::system_error& e) {
         fprintf(stderr, "\nCaught a system error exception:\n\t%s\n", e.what());
-        fprintf(stderr, "\n\n  [Well this is kinda awkward... For once it appears\n"
+        fprintf(stderr, "\n\n"
+            "  [Well this is kinda awkward... For once it appears\n"
             "   as though the reason for crashing is not due to poor\n"
             "   work by the Application programmer but in fact a system\n"
-            "   error. Best Just Do What Everyone Else Does And Blame Windows\n"
-            "   [Even if you are running this on Linux].\n");
+            "   error. Best Just Do What Everyone Else Does And Blame Windows]\n");
         safeCrash();
     }
 
     catch (const std::exception& e) {
-        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n[In Application's \'run()\' function]\n"
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n[In Application's 'run()' function]\n"
             "\n\tError! Exception Encountered!\n"
             "EXCEPTION MSG: %s\n\n\n\n", e.what());
         safeCrash();
@@ -242,7 +242,7 @@ void Application::launch() {
 
 
     catch (...) {
-        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t[In Application's \'run()\' function]\n"
+        fprintf(ERRLOG, "\n\n\n\n\n\n\n\n\t[In Application's 'run()' function]\n"
             "\n\t\tError! UNKNOWN EXCEPTION ENCOUNTERED!\n\n\n\n");
         safeCrash();
     }
