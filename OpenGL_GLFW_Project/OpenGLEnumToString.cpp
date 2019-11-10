@@ -35,15 +35,20 @@ using namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE;
 
 
 std::string convertGLEnumToString(GLenum hexEnum) noexcept {
-    static DictionaryOfGLEnums dictionary;
-
-    std::string enumName = dictionary.lookup(hexEnum);
+    std::string enumName;
+    try {
+        static DictionaryOfGLEnums dictionary;
+        enumName = dictionary.lookup(hexEnum);
+    }
+    catch (...) {
+        enumName = "[ErrorFormingGLDictionary]";
+    }
     return enumName;
 }
 
 
 
-DictionaryOfGLEnums::DictionaryOfGLEnums() noexcept {
+DictionaryOfGLEnums::DictionaryOfGLEnums() {
     float loadFactor;
     if constexpr (TARGET_MAXIMUM_LOAD_FACTOR < 0.5f)
         loadFactor = 0.5f;
@@ -74,7 +79,7 @@ std::string DictionaryOfGLEnums::lookup(GLenum hexEnum) noexcept {
     return UNKNOWN_GLENUM_NAME;
 }
 
-void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) noexcept {
+void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) {
     const auto res = mDictionary_.insert(std::make_pair(hexEnum, name));
     assert(res.second); //This checks the second parameter of the return pair which
     //represents a boolean representing whether our insertion was unique or not.
@@ -85,7 +90,7 @@ void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) noexcept {
 
 
 
-void DictionaryOfGLEnums::buildDictionary() noexcept {
+void DictionaryOfGLEnums::buildDictionary()  {
 
     //The first 2 we insert are special because there are multiple GLenums that
     //share the same value. All five enums in the set {GL_FALSE, GL_ZERO,
@@ -299,6 +304,57 @@ void DictionaryOfGLEnums::buildDictionary() noexcept {
     insert(GL_FLOAT_MAT3x4,            "GL_FLOAT_MAT3x4");            //0x8B68
     insert(GL_FLOAT_MAT4x2,            "GL_FLOAT_MAT4x2");            //0x8B69
     insert(GL_FLOAT_MAT4x3,            "GL_FLOAT_MAT4x3");            //0x8B6A
+
+    //   ...
+
+    //  Note: This next group is all from
+    //  https://www.khronos.org/registry/OpenGL/extensions/OES/OES_compressed_paletted_texture.txt
+    // (Please also note that every member of this group is listed as a supported 
+    //  compressed texture format by my NVIDIA 1080ti. These formats date back to
+    //  the early 2000s though and should be considered obsolete)
+#ifndef GL_PALETTE4_RGB8_OES     
+#define GL_PALETTE4_RGB8_OES     0x8B90
+#endif                           
+#ifndef GL_PALETTE4_RGBA8_OES    
+#define GL_PALETTE4_RGBA8_OES    0x8B91
+#endif                           
+#ifndef GL_PALETTE4_R5_G6_B5_OES 
+#define GL_PALETTE4_R5_G6_B5_OES 0x8B92
+#endif                           
+#ifndef GL_PALETTE4_RGBA4_OES    
+#define GL_PALETTE4_RGBA4_OES    0x8B93
+#endif                           
+#ifndef GL_PALETTE4_RGB5_A1_OES  
+#define GL_PALETTE4_RGB5_A1_OES  0x8B94
+#endif                           
+#ifndef GL_PALETTE8_RGB8_OES     
+#define GL_PALETTE8_RGB8_OES     0x8B95
+#endif                           
+#ifndef GL_PALETTE8_RGBA8_OES    
+#define GL_PALETTE8_RGBA8_OES    0x8B96
+#endif                           
+#ifndef GL_PALETTE8_R5_G6_B5_OES 
+#define GL_PALETTE8_R5_G6_B5_OES 0x8B97
+#endif                           
+#ifndef GL_PALETTE8_RGBA4_OES    
+#define GL_PALETTE8_RGBA4_OES    0x8B98
+#endif                           
+#ifndef GL_PALETTE8_RGB5_A1_OES  
+#define GL_PALETTE8_RGB5_A1_OES  0x8B99
+#endif                           
+    insert(GL_PALETTE4_RGB8_OES,       "GL_PALETTE4_RGB8_OES");       //0x8B90
+    insert(GL_PALETTE4_RGBA8_OES,      "GL_PALETTE4_RGBA8_OES");      //0x8B91
+    insert(GL_PALETTE4_R5_G6_B5_OES,   "GL_PALETTE4_R5_G6_B5_OES");   //0x8B92
+    insert(GL_PALETTE4_RGBA4_OES,      "GL_PALETTE4_RGBA4_OES");      //0x8B93
+    insert(GL_PALETTE4_RGB5_A1_OES,    "GL_PALETTE4_RGB5_A1_OES");    //0x8B94
+    insert(GL_PALETTE8_RGB8_OES,       "GL_PALETTE8_RGB8_OES");       //0x8B95
+    insert(GL_PALETTE8_RGBA8_OES,      "GL_PALETTE8_RGBA8_OES");      //0x8B96
+    insert(GL_PALETTE8_R5_G6_B5_OES,   "GL_PALETTE8_R5_G6_B5_OES");   //0x8B97
+    insert(GL_PALETTE8_RGBA4_OES,      "GL_PALETTE8_RGBA4_OES");      //0x8B98
+    insert(GL_PALETTE8_RGB5_A1_OES,    "GL_PALETTE8_RGB5_A1_OES");    //0x8B99
+
+    //   ...
+
     insert(GL_SRGB,                    "GL_SRGB");                    //0x8C40
     insert(GL_SRGB8,                   "GL_SRGB8");                   //0x8C41
     insert(GL_SRGB_ALPHA,              "GL_SRGB_ALPHA");              //0x8C42
@@ -470,9 +526,9 @@ void DictionaryOfGLEnums::buildDictionary() noexcept {
 
 
 
-    /////////////////////////////////////////////////////
-    //  Requires OpenGL 4.6 or newer below this point  //  
-    /////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    //  Requires OpenGL 4.6 or newer for the next few groups  //  
+    ////////////////////////////////////////////////////////////
     //The following macro should be defined in 'glad.h' if using OpenGL 4.6
 #ifdef GL_VERSION_4_6
     
@@ -577,8 +633,79 @@ void DictionaryOfGLEnums::buildDictionary() noexcept {
                             "GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT");//0x8C4E
     insert(GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT,
                             "GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT");//0x8C4F
+
 #endif //GL_VERSION_4_6
 
+    ////////////////////////////////////////////////////////////
+    //           End of OpenGL 4.6 Specific Enums             //  
+    ////////////////////////////////////////////////////////////
+
+
+
+    //This next section covers values reported by my NVidia 1080ti that 
+    //may not be part of the project already. If they are not, then the 
+    //GL_KHG_texture_compression_astc_hdr macro will not have yet been 
+    //defined. We can provide it ourselves here as follows 
+#ifndef GL_KHR_texture_compression_astc_hdr
+#define GL_KHR_texture_compression_astc_hdr 1
+#define GL_COMPRESSED_RGBA_ASTC_4x4_KHR           0x93B0
+#define GL_COMPRESSED_RGBA_ASTC_5x4_KHR           0x93B1
+#define GL_COMPRESSED_RGBA_ASTC_5x5_KHR           0x93B2
+#define GL_COMPRESSED_RGBA_ASTC_6x5_KHR           0x93B3
+#define GL_COMPRESSED_RGBA_ASTC_6x6_KHR           0x93B4
+#define GL_COMPRESSED_RGBA_ASTC_8x5_KHR           0x93B5
+#define GL_COMPRESSED_RGBA_ASTC_8x6_KHR           0x93B6
+#define GL_COMPRESSED_RGBA_ASTC_8x8_KHR           0x93B7
+#define GL_COMPRESSED_RGBA_ASTC_10x5_KHR          0x93B8
+#define GL_COMPRESSED_RGBA_ASTC_10x6_KHR          0x93B9
+#define GL_COMPRESSED_RGBA_ASTC_10x8_KHR          0x93BA
+#define GL_COMPRESSED_RGBA_ASTC_10x10_KHR         0x93BB
+#define GL_COMPRESSED_RGBA_ASTC_12x10_KHR         0x93BC
+#define GL_COMPRESSED_RGBA_ASTC_12x12_KHR         0x93BD
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR   0x93D0
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR   0x93D1
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR   0x93D2
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR   0x93D3
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR   0x93D4
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR   0x93D5
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR   0x93D6
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR   0x93D7
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR  0x93D8
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR  0x93D9
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR  0x93DA
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR 0x93DB
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR 0x93DC
+#define GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR 0x93DD
+#endif /* GL_KHR_texture_compression_astc_hdr */
+    insert(GL_COMPRESSED_RGBA_ASTC_4x4_KHR,   "GL_COMPRESSED_RGBA_ASTC_4x4_KHR");           //0x93B0
+    insert(GL_COMPRESSED_RGBA_ASTC_5x4_KHR,   "GL_COMPRESSED_RGBA_ASTC_5x4_KHR");           //0x93B1
+    insert(GL_COMPRESSED_RGBA_ASTC_5x5_KHR,   "GL_COMPRESSED_RGBA_ASTC_5x5_KHR");           //0x93B2
+    insert(GL_COMPRESSED_RGBA_ASTC_6x5_KHR,   "GL_COMPRESSED_RGBA_ASTC_6x5_KHR");           //0x93B3
+    insert(GL_COMPRESSED_RGBA_ASTC_6x6_KHR,   "GL_COMPRESSED_RGBA_ASTC_6x6_KHR");           //0x93B4
+    insert(GL_COMPRESSED_RGBA_ASTC_8x5_KHR,   "GL_COMPRESSED_RGBA_ASTC_8x5_KHR");           //0x93B5
+    insert(GL_COMPRESSED_RGBA_ASTC_8x6_KHR,   "GL_COMPRESSED_RGBA_ASTC_8x6_KHR");           //0x93B6
+    insert(GL_COMPRESSED_RGBA_ASTC_8x8_KHR,   "GL_COMPRESSED_RGBA_ASTC_8x8_KHR");           //0x93B7
+    insert(GL_COMPRESSED_RGBA_ASTC_10x5_KHR,  "GL_COMPRESSED_RGBA_ASTC_10x5_KHR");          //0x93B8
+    insert(GL_COMPRESSED_RGBA_ASTC_10x6_KHR,  "GL_COMPRESSED_RGBA_ASTC_10x6_KHR");          //0x93B9
+    insert(GL_COMPRESSED_RGBA_ASTC_10x8_KHR,  "GL_COMPRESSED_RGBA_ASTC_10x8_KHR");          //0x93BA
+    insert(GL_COMPRESSED_RGBA_ASTC_10x10_KHR, "GL_COMPRESSED_RGBA_ASTC_10x10_KHR");         //0x93BB
+    insert(GL_COMPRESSED_RGBA_ASTC_12x10_KHR, "GL_COMPRESSED_RGBA_ASTC_12x10_KHR");         //0x93BC
+    insert(GL_COMPRESSED_RGBA_ASTC_12x12_KHR, "GL_COMPRESSED_RGBA_ASTC_12x12_KHR");         //0x93BD
+
+    insert(GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR,   "GL_COMPRESSED_SRGB8_ALPHA8_4x4_KHR");     //0x93D0
+/*    insert(GL_COMPRESSED_RGBA_ASTC_5x4_KHR, "GL_COMPRESSED_RGBA_ASTC_5x4_KHR");           //0x93B1
+    insert(GL_COMPRESSED_RGBA_ASTC_5x5_KHR, "GL_COMPRESSED_RGBA_ASTC_5x5_KHR");           //0x93B2
+    insert(GL_COMPRESSED_RGBA_ASTC_6x5_KHR, "GL_COMPRESSED_RGBA_ASTC_6x5_KHR");           //0x93B3
+    insert(GL_COMPRESSED_RGBA_ASTC_6x6_KHR, "GL_COMPRESSED_RGBA_ASTC_6x6_KHR");           //0x93B4
+    insert(GL_COMPRESSED_RGBA_ASTC_8x5_KHR, "GL_COMPRESSED_RGBA_ASTC_8x5_KHR");           //0x93B5
+    insert(GL_COMPRESSED_RGBA_ASTC_8x6_KHR, "GL_COMPRESSED_RGBA_ASTC_8x6_KHR");           //0x93B6
+    insert(GL_COMPRESSED_RGBA_ASTC_8x8_KHR, "GL_COMPRESSED_RGBA_ASTC_8x8_KHR");           //0x93B7
+    insert(GL_COMPRESSED_RGBA_ASTC_10x5_KHR, "GL_COMPRESSED_RGBA_ASTC_10x5_KHR");          //0x93B8
+    insert(GL_COMPRESSED_RGBA_ASTC_10x6_KHR, "GL_COMPRESSED_RGBA_ASTC_10x6_KHR");          //0x93B9
+    insert(GL_COMPRESSED_RGBA_ASTC_10x8_KHR, "GL_COMPRESSED_RGBA_ASTC_10x8_KHR");          //0x93BA
+    insert(GL_COMPRESSED_RGBA_ASTC_10x10_KHR, "GL_COMPRESSED_RGBA_ASTC_10x10_KHR");         //0x93BB
+    insert(GL_COMPRESSED_RGBA_ASTC_12x10_KHR, "GL_COMPRESSED_RGBA_ASTC_12x10_KHR");         //0x93BC
+    insert(GL_COMPRESSED_RGBA_ASTC_12x12_KHR, "GL_COMPRESSED_RGBA_ASTC_12x12_KHR");         //0x93BD  */
 }
 
 

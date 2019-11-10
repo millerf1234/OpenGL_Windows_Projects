@@ -34,8 +34,6 @@
 //                          //(hopefully) constant lookup time.
 #include "GlobalIncludes.h"
 
-
-
 constexpr const char* UNKNOWN_GLENUM_NAME = "UNKNOWN";
 
 //Creates a std::string object based on the requested hexEnum value.
@@ -48,8 +46,14 @@ std::string convertGLEnumToString(GLenum hexEnum) noexcept;
 namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE {
     class DictionaryOfGLEnums {
     public:
-        DictionaryOfGLEnums() noexcept;
+        DictionaryOfGLEnums();
         ~DictionaryOfGLEnums() noexcept;
+
+        DictionaryOfGLEnums(const DictionaryOfGLEnums&) = delete;
+        DictionaryOfGLEnums(DictionaryOfGLEnums&& that) noexcept = default;
+        DictionaryOfGLEnums& operator=(const DictionaryOfGLEnums&) = delete;
+        DictionaryOfGLEnums& operator=(DictionaryOfGLEnums&&)& = default;
+        DictionaryOfGLEnums& operator=(DictionaryOfGLEnums&&)&& = default;
 
         std::string lookup(GLenum hexEnum) noexcept;
 
@@ -58,9 +62,9 @@ namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE {
         
         //These 2 utility functions are used to build the dictionary.
         // 'insert()' adds a single GLenum-string pair to the dictionary 
-        void insert(GLenum hexEnum, std::string name) noexcept;
+        void insert(GLenum hexEnum, std::string name);
         //'buildDictionary()' calls 'insert()' for many dictionary entries 
-        void buildDictionary() noexcept;
+        void buildDictionary();
     };
 }
 
