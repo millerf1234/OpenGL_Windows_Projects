@@ -574,6 +574,9 @@
     <Filter Include="Asset Files\Images\OuterSpaceScreenshots">
       <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party\optick">
+      <UniqueIdentifier>{ba8521f0-4b53-4bf4-b8a9-81647ed67b23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">

@@ -33,6 +33,7 @@
 #include <fstream>  //Gotta have that fstream
 #include <system_error> //Probably best to be aware of any system exceptions
 
+
 #include "GlobalConstants.h"
 #include "ApplicationConstantSettings.h"
 #include "GLFW_Init.h"
@@ -43,46 +44,46 @@ class Timepoint;
 
 class Application final {
 public:
-	Application() noexcept;
-	~Application() noexcept;
-	void launch();
+    Application() noexcept;
+    ~Application() noexcept;
+    void launch();
 
-	//No Copying or Moving allowed
-	Application(const Application&) = delete;
-	Application(Application&&) = delete;
-	Application& operator=(const Application&) = delete;
-	Application& operator=(Application&&) = delete;
+    //No Copying or Moving allowed
+    Application(const Application&) = delete;
+    Application(Application&&) = delete;
+    Application& operator=(const Application&) = delete;
+    Application& operator=(Application&&) = delete;
 
 private:
-	bool mApplicationValid;
-	std::unique_ptr<InitReport> initReport;
-	std::unique_ptr<GLFW_Init> glfwInitializer;
-	
+    bool mApplicationValid;
+    std::unique_ptr<InitReport> initReport;
+    std::unique_ptr<GLFW_Init> glfwInitializer;
 
-	void initialize();
 
-	bool setupGLFW(); //Loads the GLFW library
-	bool loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
+    void initialize();
+
+    bool setupGLFW(); //Loads the GLFW library
+    bool loadGraphicsLanguageFunctions(); //(Well actually load their pointers) (This uses 'glad' to load Graphics Language)
     //Call this function once the Graphics Language Functions have all been loaded to announce to the 
     //console what specifics the platforms OpenGL implementation is operating with.
-    void reportDetailsFromGLImplementation(); 
+    void reportDetailsFromGLImplementation();
     void reportDetailsFromGLImplementationOnTextureUnitLimitations();
-	void configureGraphicsContextDebugCallbackFunctions() const; //The callback function is provided by Application and is found in its own header file 
-	void setInitialGLState();
-	void checkMSAA() const; //Prints MSAA config to MSGLOG
-	
-	void playIntroMovie() noexcept;
+    void configureGraphicsContextDebugCallbackFunctions() const; //The callback function is provided by Application and is found in its own header file 
+    void setInitialGLState();
+    void checkMSAA() const; //Prints MSAA config to MSGLOG
+
+    void playIntroMovie() noexcept;
 
 
 
     //Run Theoretical OpenGL Sandbox Experiment Demo
     void runOpenGLSandboxExperiments();
 
-	
-	//Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
-	//newly created, without either of the load() or run() methods having been called. This
-	//function is intended to be called by the more specific run_____Demo() functions below.
-	void runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char* name = R"([UNTITLED])");
+
+    //Function to run a RenderDemo. The provided unique pointer for the renderDemo should be 
+    //newly created, without either of the load() or run() methods having been called. This
+    //function is intended to be called by the more specific run_____Demo() functions below.
+    void runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char* name = R"([UNTITLED])");
 
 
 
@@ -94,7 +95,7 @@ private:
     void runTeapotExplosionDemo();
     void runLightsourceTestDemo();
     void runAssetLoadingDemo();
-    void runFlyingCameraDemo(); 
+    void runFlyingCameraDemo();
 
 
 
