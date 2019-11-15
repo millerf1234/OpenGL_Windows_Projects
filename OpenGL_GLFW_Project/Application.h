@@ -33,8 +33,6 @@
 #include <fstream>  //Gotta have that fstream
 #include <system_error> //Probably best to be aware of any system exceptions
 
-#include "optick.h";
-
 #include "GlobalConstants.h"
 #include "ApplicationConstantSettings.h"
 #include "GLFW_Init.h"

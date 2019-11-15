@@ -33,7 +33,7 @@ fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"           
 
 
 
-int main(int argc, char** argv) {
+int main(int argc, char * argv[]) {
     SAFETY
 	std::unique_ptr<Application> app = std::make_unique<Application>(); 
 	app->launch();
