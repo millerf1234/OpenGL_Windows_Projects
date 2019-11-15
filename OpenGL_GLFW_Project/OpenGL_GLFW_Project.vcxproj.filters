@@ -577,6 +577,9 @@
     <Filter Include="Third Party\optick">
       <UniqueIdentifier>{ba8521f0-4b53-4bf4-b8a9-81647ed67b23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party\optick\src">
+      <UniqueIdentifier>{9f9e35eb-1703-4759-b753-cad713fe601a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -827,6 +830,30 @@
     </ClCompile>
     <ClCompile Include="OpenAL_Context.cpp">
       <Filter>Source Files\Unfinished\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_core.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.d3d12.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.vulkan.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_message.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_miniz.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_serialization.cpp">
+      <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_server.cpp">
+      <Filter>Third Party\optick\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1450,6 +1477,51 @@
     <ClInclude Include="OpenAL_Context.h">
       <Filter>Source Files\Unfinished\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="optick\src\optick.config.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_common.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.freebsd.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.linux.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.macos.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.platform.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.win.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_gpu.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_memory.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_message.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_miniz.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_serialization.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_server.h">
+      <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1769,6 +1841,12 @@
     </None>
     <None Include="obj\AlienWorldSkybox.obj">
       <Filter>Asset Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+    </None>
+    <None Include="optick\LICENSE">
+      <Filter>Third Party\optick</Filter>
+    </None>
+    <None Include="optick\README.md">
+      <Filter>Third Party\optick</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

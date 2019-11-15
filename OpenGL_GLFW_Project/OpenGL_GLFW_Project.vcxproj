@@ -181,6 +181,14 @@
     <ClCompile Include="ImageData_UByte.cpp" />
     <ClCompile Include="ImageFileLoader.cpp" />
     <ClCompile Include="ImageLoadingStrategy.cpp" />
+    <ClCompile Include="optick\src\optick_core.cpp" />
+    <ClCompile Include="optick\src\optick_gpu.cpp" />
+    <ClCompile Include="optick\src\optick_gpu.d3d12.cpp" />
+    <ClCompile Include="optick\src\optick_gpu.vulkan.cpp" />
+    <ClCompile Include="optick\src\optick_message.cpp" />
+    <ClCompile Include="optick\src\optick_miniz.cpp" />
+    <ClCompile Include="optick\src\optick_serialization.cpp" />
+    <ClCompile Include="optick\src\optick_server.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
@@ -277,6 +285,21 @@
     <ClInclude Include="ImageData_UByte.h" />
     <ClInclude Include="ImageFileLoader.h" />
     <ClInclude Include="ImageLoadingStrategy.h" />
+    <ClInclude Include="optick\src\optick.config.h" />
+    <ClInclude Include="optick\src\optick.h" />
+    <ClInclude Include="optick\src\optick_common.h" />
+    <ClInclude Include="optick\src\optick_core.freebsd.h" />
+    <ClInclude Include="optick\src\optick_core.h" />
+    <ClInclude Include="optick\src\optick_core.linux.h" />
+    <ClInclude Include="optick\src\optick_core.macos.h" />
+    <ClInclude Include="optick\src\optick_core.platform.h" />
+    <ClInclude Include="optick\src\optick_core.win.h" />
+    <ClInclude Include="optick\src\optick_gpu.h" />
+    <ClInclude Include="optick\src\optick_memory.h" />
+    <ClInclude Include="optick\src\optick_message.h" />
+    <ClInclude Include="optick\src\optick_miniz.h" />
+    <ClInclude Include="optick\src\optick_serialization.h" />
+    <ClInclude Include="optick\src\optick_server.h" />
     <ClInclude Include="PipelineObserver.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="AsciiAsset.h" />
@@ -532,6 +555,8 @@
     <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
       <FileType>Document</FileType>
     </Text>
+    <None Include="optick\LICENSE" />
+    <None Include="optick\README.md" />
     <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt" />
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2D.glsl" />
     <None Include="Shaders\AshimaArts_NoiseCollection\cellular2x2.glsl" />

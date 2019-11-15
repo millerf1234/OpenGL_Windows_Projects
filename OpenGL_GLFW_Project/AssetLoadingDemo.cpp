@@ -779,9 +779,13 @@ void AssetLoadingDemo::renderLoop() {
         
         if (!mainRenderWindow || (glfwGetCurrentContext() != mainRenderWindow)) {
             fprintf(ERRLOG, "\nERROR! mainRenderWindow is not valid");
-            return;//std::exit(EXIT_FAILURE);
+            return;
         }
+
+        //Record timepoint for frame start 
         framePerformance.recordLoopStartTimepoint(frameNumber);
+        //Call Optick's per-frame 
+        OPTICK_FRAME("MainThread");
 
         ////////////////////////
         //Check Input
