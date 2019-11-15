@@ -574,6 +574,12 @@
     <Filter Include="Asset Files\Images\OuterSpaceScreenshots">
       <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party\Optick">
+      <UniqueIdentifier>{32880a98-59c8-458b-a08c-af94bceb21ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\Optick\src">
+      <UniqueIdentifier>{9541c697-ed43-41c2-b570-88f91de1cb26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -824,6 +830,30 @@
     </ClCompile>
     <ClCompile Include="OpenAL_Context.cpp">
       <Filter>Source Files\Unfinished\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_core.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.d3d12.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_gpu.vulkan.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_message.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_miniz.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_serialization.cpp">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="optick\src\optick_server.cpp">
+      <Filter>Third Party\Optick\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1447,6 +1477,51 @@
     <ClInclude Include="OpenAL_Context.h">
       <Filter>Source Files\Unfinished\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="optick\src\optick.config.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_common.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.freebsd.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.linux.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.macos.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.platform.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_core.win.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_gpu.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_memory.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_message.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_miniz.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_serialization.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_server.h">
+      <Filter>Third Party\Optick\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.dll">
@@ -1766,6 +1841,12 @@
     </None>
     <None Include="obj\AlienWorldSkybox.obj">
       <Filter>Asset Files\Models\OBJ\DemoRenderScenes\AlienWorldSkybox</Filter>
+    </None>
+    <None Include="optick\LICENSE">
+      <Filter>Third Party\Optick</Filter>
+    </None>
+    <None Include="optick\README.md">
+      <Filter>Third Party\Optick</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
