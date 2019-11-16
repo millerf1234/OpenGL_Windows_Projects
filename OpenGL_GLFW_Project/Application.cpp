@@ -25,6 +25,23 @@
 
 void Application::initialize() {
     
+#if (defined USE_OPTICK && (USE_OPTICK == 1))
+    fprintf(MSGLOG, "  OPTICK PROFILING ENABLED!\n");
+    OPTICK_START_CAPTURE(/*Optick::Mode::AUTOSAMPLING*/);
+    OPTICK_EVENT("Capture Begun");
+    //Set the path for where to save optick capture
+    globalOptickState.captureActive = true;
+    auto currentPath = std::filesystem::current_path();
+    currentPath.append("optickCaptures");
+    globalOptickState.pathToSaveCapture = std::filesystem::absolute(currentPath);
+    std::cout << "\n\nSaving Capture to: \n\t\"" << 
+        globalOptickState.pathToSaveCapture << "\"\n\n\n";
+
+    OPTICK_CATEGORY("InitializeApplication", Optick::Category::Scene);
+
+#endif //USE_OPTICK == 1
+
+
     mApplicationValid = true;
     initReport = nullptr;
     glfwInitializer = nullptr;
@@ -121,7 +138,7 @@ void Application::initialize() {
 }
 
 
-Application::Application() noexcept {
+Application::Application() {
 
     //The catch blocks for the inner try statement contain operations which 
     //may throw exceptions. Thus the need for the double layered exception
@@ -179,13 +196,31 @@ Application::Application() noexcept {
 
 
 Application::~Application() noexcept {
+#if (defined USE_OPTICK && (USE_OPTICK == 1))
+    try {
+        if (globalOptickState.captureActive) {
+            OPTICK_STOP_CAPTURE();
+            OPTICK_SAVE_CAPTURE((globalOptickState.pathToSaveCapture.string() + std::string(R"(\)")).c_str());
+            fprintf(MSGLOG, "\n\t\t[OPTICK CAPTURE SAVED]\n\n");
+        }
+    }
+    catch (...) {
+        fprintf(ERRLOG, "\nCapture Failed!\n");
+    }
+#endif //USE_OPTICK == 1
+    
     //if (glfwInitializer) {
     //    glfwInitializer->terminate();  
     //}
+
 }
 
 
 void Application::launch() {
+
+    OPTICK_CATEGORY("LaunchApplication", Optick::Category::Camera);
+    OPTICK_EVENT();
+
     try {
         if (!mApplicationValid) {
             fprintf(ERRLOG, "\nError launching Application, Application is invalid!\n");
@@ -250,7 +285,9 @@ void Application::launch() {
 }
 
 
+
 bool Application::setupGLFW() {
+    OPTICK_EVENT();
 	fprintf(MSGLOG, "Loading GLFW...\n");
    
 	glfwInitializer = std::make_unique<GLFW_Init>();
@@ -270,6 +307,7 @@ bool Application::setupGLFW() {
 }
 
 bool Application::loadGraphicsLanguageFunctions() {
+    OPTICK_EVENT();
 	//Load OpenGL functions once window context has been set
 	fprintf(MSGLOG, "Loading Graphics Language Functions...\n");
 	int success = gladLoadGL();
@@ -285,7 +323,7 @@ bool Application::loadGraphicsLanguageFunctions() {
 }
 
 void Application::reportDetailsFromGLImplementation() {
-
+    OPTICK_EVENT();
     //if (GLAD_GL_EXT_framebuffer_multisample) {
     //	// GL_EXT_framebuffer_multisample is supported 
     //}
@@ -303,6 +341,7 @@ void Application::reportDetailsFromGLImplementation() {
 }
 
 void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
+    OPTICK_EVENT();
 
     std::ostringstream texLimReport;
 
@@ -380,6 +419,7 @@ void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
 
 
 void Application::configureGraphicsContextDebugCallbackFunctions() const {
+    OPTICK_EVENT();
 	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
 	if (USE_DEBUG) {   //set in ProjectParameters.h
 		fprintf(MSGLOG, "Enabled\n");
@@ -404,6 +444,7 @@ void Application::configureGraphicsContextDebugCallbackFunctions() const {
 }
 
 void Application::setInitialGLState() {
+    OPTICK_EVENT();
     fprintf(MSGLOG, "\nInitializing GL StateMachine...\n");
     
     //For options of what can be activated/deactivated
@@ -519,7 +560,8 @@ void Application::runOpenGLSandboxExperiments() {
 
 void Application::runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char * name) {
 	bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));
-
+    OPTICK_CATEGORY("RenderDemoSelected", Optick::Category::Navigation )
+    OPTICK_EVENT("ErrorCheckingRenderDemo");
 	//Perform error check
 	if (renderDemo == nullptr) {
 		if (demoHasNameProvided) {
@@ -548,7 +590,9 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, con
         }
         
         try {
+            OPTICK_EVENT("LoadingRenderDemoAssets");
             renderDemo->loadAssets();
+            OPTICK_EVENT("AllAssetsLoaded");
             renderDemo->run();
         }
         catch (const std::exception& e) {
@@ -561,22 +605,26 @@ void Application::runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, con
 }
 
 void Application::runFlyingCameraDemo() {
+    OPTICK_EVENT();
     std::unique_ptr<RenderDemoBase> flyingCameraDemo = std::make_unique<FlyingCameraDemo>(initReport.get());
     runRenderDemo(flyingCameraDemo, "Asset Loading Demo");
 }
 
 void Application::runAssetLoadingDemo() {
-	std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(initReport.get());
+    OPTICK_EVENT();
+    std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(initReport.get());
 	runRenderDemo(assetLoadingDemo, "Asset Loading Demo");
 }
 
 void Application::runLightsourceTestDemo() {
-	std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(initReport.get());
+    OPTICK_EVENT();
+    std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(initReport.get());
 	runRenderDemo(lightsourceTestDemo, "Lightsource Test Demo");
 }
 
 void Application::runTeapotExplosionDemo() {
-	std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(initReport.get());
+    OPTICK_EVENT();
+    std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(initReport.get());
 	runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
 }
 
@@ -596,6 +644,7 @@ void Application::runTeapotExplosionDemo() {
 //                        been created/allocated by the Application.
 //                   
 void Application::safeCrash() noexcept {
+    OPTICK_EVENT("SafeCrashInitiated");
     try {
 
         //First, attempt to iconify (minimize) any Application window 

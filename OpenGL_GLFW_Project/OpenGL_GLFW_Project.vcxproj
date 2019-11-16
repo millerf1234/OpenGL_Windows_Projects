@@ -93,11 +93,15 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\sources;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <AssemblerOutput>All</AssemblerOutput>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <LinkStatus>true</LinkStatus>
+      <Profile>true</Profile>
     </Link>
     <Xdcmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -105,6 +109,9 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
+    <ResourceCompile>
+      <ShowProgress>true</ShowProgress>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -153,6 +160,9 @@
     <Xdcmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Xdcmake>
+    <ResourceCompile>
+      <ShowProgress>true</ShowProgress>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -285,6 +295,7 @@
     <ClInclude Include="ImageData_UByte.h" />
     <ClInclude Include="ImageFileLoader.h" />
     <ClInclude Include="ImageLoadingStrategy.h" />
+    <ClInclude Include="OptickCallbackFunction.h" />
     <ClInclude Include="optick\src\optick.config.h" />
     <ClInclude Include="optick\src\optick.h" />
     <ClInclude Include="optick\src\optick_common.h" />

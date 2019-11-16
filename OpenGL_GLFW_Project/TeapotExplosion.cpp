@@ -165,7 +165,7 @@ void TeapotExplosion::loadTeapot() {
 
 	fprintf(MSGLOG, "\nLoading Teapot Vertices\n");
 	std::vector<GLfloat> teapotVertices;
-	for (int i = 0; i < teapot_count; i++) {
+	for (int i = 0; i < TEAPOT_COUNT; i++) {
 		teapotVertices.push_back(static_cast<GLfloat>(teapot[i]));
 	}
 	fprintf(MSGLOG, "\nTeapot vertices loaded to application.\n"
@@ -184,6 +184,9 @@ void TeapotExplosion::loadTeapot() {
 
 void TeapotExplosion::renderLoop() {
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
+
+        OPTICK_FRAME("Main Thread");
+
 		if (checkToSeeIfShouldCloseWindow()) {
 			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
 			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
@@ -480,13 +483,13 @@ void TeapotExplosion::drawVerts() {
 		vertexAttributes->use();
 
 	if (currentTriangleInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) 
-		glDrawArrays(GL_TRIANGLES, 0, teapot_count / 3); 
+		glDrawArrays(GL_TRIANGLES, 0, TEAPOT_COUNT / 3); 
 	
 	if (currentTriangleInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP) 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, teapot_count / 3);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, TEAPOT_COUNT / 3);
 	
 	if (currentTriangleInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN)
-		glDrawArrays(GL_TRIANGLE_FAN, 0, teapot_count / 3);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, TEAPOT_COUNT / 3);
 
 }
 

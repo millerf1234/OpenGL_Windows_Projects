@@ -191,14 +191,15 @@ constexpr const float CAMERA_Z_PLANE_FAR = 1000.0f;
 
 constexpr const unsigned long long FRAMES_BETWEEN_PERFORMANCE_REPORT = 180ULL;
 
+
 //This function is intended to be called only through this class's constructor and 
 //is in charge of assigning every member field an initial value
 void AssetLoadingDemo::initialize() {
     //Set error flag
     error = false;
 
-    //Set FrameNumber-related variables (Note that these must all be reset in the 'reset()' function as well)
-    frameNumber = 0ULL;
+    //Set FrameCounter-related variables (Note that these must all be reset in the 'reset()' function as well)
+    frameCounter = 0ULL;
     frameUnpaused = 0ULL;
     frameLineTypeLastSwitched = 0ULL;  
     frameInstancedDrawingBehaviorLastToggled = 0ULL;
@@ -324,6 +325,7 @@ AssetLoadingDemo::~AssetLoadingDemo() noexcept {
 
 
 void AssetLoadingDemo::run() {
+    OPTICK_CATEGORY("PreparingToEnterRenderLoop", Optick::Category::Audio);
 	if (error) {
 		fprintf(ERRLOG, "An error occurred while loading AssetLoadingDemo\n");
 		return;
@@ -345,8 +347,8 @@ void AssetLoadingDemo::run() {
 }
 
 
-void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const noexcept {
-
+void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const {
+    OPTICK_EVENT();
 
     glEnable(GL_PROGRAM_POINT_SIZE);
 
@@ -364,6 +366,7 @@ void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const n
 
 
 void AssetLoadingDemo::loadAssets() {
+    OPTICK_EVENT();
     try {
         if (!loadShaders()) //load the GLSL shader code
             return;
@@ -394,6 +397,7 @@ void AssetLoadingDemo::loadAssets() {
 
 
 bool AssetLoadingDemo::loadShaders() { 
+    OPTICK_EVENT();
 	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
@@ -616,7 +620,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
 
 void AssetLoadingDemo::loadModels() {
-
+    OPTICK_EVENT();
 	fprintf(MSGLOG, "\nAcquiring and parsing Model(s) data from file(s)...\n");
 
 	//[RFP == Relative File Path]
@@ -676,15 +680,15 @@ void AssetLoadingDemo::loadModels() {
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
 	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
-     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
+     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
 	
 	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
+	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
     //for (int i = 0; i < 10; i++)
         ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -752,6 +756,8 @@ void AssetLoadingDemo::loadModels() {
 }
 
 void AssetLoadingDemo::prepareScene() {
+    OPTICK_CATEGORY("All Data Loaded Into Memory", Optick::Category::GPU_VFX);
+    OPTICK_EVENT();
 	fprintf(MSGLOG, "\nCreating the primary scene from loaded assets...\n");
 	buildSceneBufferFromLoadedSceneObjects();
     generateTriangleOutlineElementOrdering();
@@ -772,19 +778,31 @@ void AssetLoadingDemo::prepareScene() {
 
 void AssetLoadingDemo::renderLoop() {
   
-    //Call this function to initialize the frame performance profiler object.
+    //Call this function to initialize the frame performance profiler object
     framePerformance.prepareToEnterRenderLoop();
 
+    assert(mainRenderWindow);
+
 	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
-        
-        if (!mainRenderWindow || (glfwGetCurrentContext() != mainRenderWindow)) {
-            fprintf(ERRLOG, "\nERROR! mainRenderWindow is not valid");
+        //Make sure we still have our context
+        if ((glfwGetCurrentContext() != mainRenderWindow)) {
+            fprintf(ERRLOG, 
+                    "\n\n\t\t\t!!!!\t[ERROR OCCURED]\t!!!!\a\n"
+                    "\tCause: Window Lost Graphics Context / Context Is ");
             return;
         }
 
         //Record timepoint for frame start 
-        framePerformance.recordLoopStartTimepoint(frameNumber);
-        //Call Optick's per-frame 
+        framePerformance.recordLoopStartTimepoint(frameCounter);
+        
+        //   !!!!!!!!!!!!!!!!                !!!!!!!!!!!!!!!!   
+        //           !!!!!!!!  [ WARNING! ]  !!!!!!!!           
+        //                                                      
+        //  This Macro Introduces A Variable Of Type 'uint32_t' 
+        //  Named 'frameNumber' Into The Current Scope.         
+        //                                                     
+        //   This Can Cause A Lot Of Problems If Called        
+        
         OPTICK_FRAME("MainThread");
 
         ////////////////////////
@@ -855,22 +873,24 @@ void AssetLoadingDemo::renderLoop() {
         translate();
 
         //Even more input checking 
+
         readJoystick0State_AssumingXInput_AndThenProcessAllInput();
 
 
         ////////////////////////
         //Perform logic 
         ////////////////////////
+        OPTICK_EVENT("logic");
         performRenderDemoSharedInputLogic(); //This is the loop function of the base class
 
         //It is required to call 'reportStatistics()' periodically regardless of whether we are 
         //printing performance statics or not so that the recorded frame Timepoint samples 
         //are periodically flushed. 
-        if ((frameNumber % FRAMES_BETWEEN_PERFORMANCE_REPORT) == 0ULL) {
+        if ((frameCounter % FRAMES_BETWEEN_PERFORMANCE_REPORT) == 0ULL) {
             reportStatistics();
         }
 
-        if ((frameNumber % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
+        if ((frameCounter % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
             (FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
             if (checkForUpdatedShaders()) {
                 buildNewShader();
@@ -879,10 +899,12 @@ void AssetLoadingDemo::renderLoop() {
 
         propagateTime();
 
+        updateTaggedVariablesWithOptick();
 
         ////////////////////////////
         //Set up to draw frame
         ////////////////////////////
+        OPTICK_EVENT("draw");
         framePerformance.recordBeginDrawCommandsTimepoint();
         updateFrameClearColor(); //background color
 
@@ -904,12 +926,14 @@ void AssetLoadingDemo::renderLoop() {
 
         drawVerts();
 
+        OPTICK_EVENT("present");
         ///////////////////////////
         //
         framePerformance.recordReadyToFlipBuffersTimepoint();
         glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
         glfwPollEvents();
 
+        OPTICK_EVENT("prepareForNextFrame");
         //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
         if (checkForContextReset()) {
             fprintf(MSGLOG, "\nContext Reset Required!\n");
@@ -918,9 +942,7 @@ void AssetLoadingDemo::renderLoop() {
             glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
         }
 
-
-
-        frameNumber++; //Increment the frame counter
+        frameCounter++; //Increment the frame counter
         prepareGLContextForNextFrame();
     }
 
@@ -940,7 +962,7 @@ inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const  noexcept {
 }
 
 inline bool AssetLoadingDemo::checkIfShouldTogglePerformanceReporting() const noexcept {
-    if ((framePerformanceReportingLastToggled + FRAMES_TO_WAIT_BETWEEN_INPUT_READS) > frameNumber)
+    if ((framePerformanceReportingLastToggled + FRAMES_TO_WAIT_BETWEEN_INPUT_READS) > frameCounter)
         return reportPerformance;
     bool performanceReportingState = reportPerformance;
     if ((glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ||
@@ -949,7 +971,7 @@ inline bool AssetLoadingDemo::checkIfShouldTogglePerformanceReporting() const no
             performanceReportingState = !performanceReportingState;
             fprintf(MSGLOG, "Performance Reporting %s\n", performanceReportingState ?
                 "Enabled" : "Disabled");
-            framePerformanceReportingLastToggled = frameNumber;
+            framePerformanceReportingLastToggled = frameCounter;
             return performanceReportingState;
         }
     }
@@ -957,7 +979,7 @@ inline bool AssetLoadingDemo::checkIfShouldTogglePerformanceReporting() const no
 }
 
 inline bool AssetLoadingDemo::checkIfShouldPause() const noexcept {
-	if ((frameNumber >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
+	if ((frameCounter >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
 		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
 		return true;
 	}
@@ -972,7 +994,7 @@ inline bool AssetLoadingDemo::checkIfShouldReset() const noexcept {
 }
 
 inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
-	if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+	if ((frameCounter - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS)
             return true;
 	}
@@ -981,7 +1003,7 @@ inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
 
 inline bool AssetLoadingDemo::checkIfShouldReverseDirectionOfTime() const noexcept {
    
-    if ((frameNumber - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_G) == GLFW_PRESS) 
             return true;
     }
@@ -1003,7 +1025,7 @@ inline bool AssetLoadingDemo::checkIfShouldDecreasePassageOfTime() const noexcep
 }
 
 inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const  noexcept {
-	if ((frameNumber - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+	if ((frameCounter - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
 			return true;
 		}
@@ -1020,7 +1042,7 @@ inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept 
     //a bit misleading however, because a more accurate description is it will 'clamp' fragments of depth less than 0 to 0 
     //(causing fragments that should be behind your eye instead map flatly onto your eye) and arbitrarily far away values 
     //will bet clamped to 1, the furthest representable depth.
-    if ((frameNumber - frameDepthClampLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameDepthClampLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_C) == GLFW_PRESS) {
             return true;
         }
@@ -1040,7 +1062,7 @@ inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
 
 
 inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter1() const noexcept {
-    if ((frameNumber - frameThatCustomShaderParameter1LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameThatCustomShaderParameter1LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_5) == GLFW_PRESS) {
             return true;
         }
@@ -1049,7 +1071,7 @@ inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter1() cons
 }
 
 inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter2() const noexcept {
-    if ((frameNumber - frameThatCustomShaderParameter2LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameThatCustomShaderParameter2LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_6) == GLFW_PRESS) {
             return true;
         }
@@ -1058,7 +1080,7 @@ inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter2() cons
 }
 
 inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter3() const noexcept {
-    if ((frameNumber - frameThatCustomShaderParameter3LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameThatCustomShaderParameter3LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_7) == GLFW_PRESS) {
             return true;
         }
@@ -1070,7 +1092,7 @@ inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter3() cons
 //-----------------
 //  It turns out GLFW will only acknowledge 'press' input from each key only once, so what I was 
 //  trying to do here with these following functions each reacting to the same key press input by 
-//  each detecting it seperatly does not work. Instead they are all reset by the function 
+//  each detecting it separately does not work. Instead they are all reset by the function 
 //    'checkIfShouldResetCustomShaderParameters()'
 //-----------------
 //inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameter1() const noexcept {
@@ -1106,7 +1128,7 @@ inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter3() cons
 
 inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameters() const noexcept {
     const uint64_t frameThatMostRecentCustomShaderParameterUpdateOccurred = std::max({ frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified, frameThatCustomShaderParameter3LastModified });
-    if ((frameNumber - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameThatMostRecentCustomShaderParameterUpdateOccurred) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_8) == GLFW_PRESS) {
             return true;
         }
@@ -1117,6 +1139,7 @@ inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameters() const n
 
 
 void AssetLoadingDemo::pause() {
+    OPTICK_EVENT();
 	const auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
 	auto end = std::chrono::high_resolution_clock::now();
 	fprintf(MSGLOG, "PAUSED!\n");
@@ -1131,7 +1154,7 @@ void AssetLoadingDemo::pause() {
 	while (true) {
 		glfwPollEvents();
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			frameUnpaused = frameNumber;
+			frameUnpaused = frameCounter;
 			fprintf(MSGLOG, "UNPAUSED!\n");
 			return;
 		}
@@ -1147,6 +1170,7 @@ void AssetLoadingDemo::pause() {
 
 
 void AssetLoadingDemo::reset() noexcept {
+    OPTICK_EVENT();
 	fprintf(MSGLOG, "\nReseting Demo...\n");
 	counter = 0.0f; //Reset time to 0
     timeTickRateModifier = 0.0f;
@@ -1159,7 +1183,7 @@ void AssetLoadingDemo::reset() noexcept {
 	yTranslation = 0.0f;
     zTranslation = 0.0f;
 	backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
-	frameNumber = 0ull;
+	frameCounter = 0ull;
 	frameUnpaused = 0ull;
 	frameLineTypeLastSwitched = 0ull;
 	frameInstancedDrawingBehaviorLastToggled = 0ull;
@@ -1181,8 +1205,9 @@ void AssetLoadingDemo::reset() noexcept {
 }
 
 void AssetLoadingDemo::toggleTimeFreeze() noexcept {
+    OPTICK_EVENT();
 	//Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
-	frameTimeFreezeLastToggled = frameNumber;
+	frameTimeFreezeLastToggled = frameCounter;
 	freezeTimeToggle = !freezeTimeToggle;
 	if (freezeTimeToggle) 
 		fprintf(MSGLOG, "Time Frozen!\n");
@@ -1193,19 +1218,21 @@ void AssetLoadingDemo::toggleTimeFreeze() noexcept {
 }
 
 void AssetLoadingDemo::reverseTime() noexcept {
-    frameThatTimePropogationWasLastReversed = frameNumber;
+    OPTICK_EVENT();
+    frameThatTimePropogationWasLastReversed = frameCounter;
     reverseTimePropogation = !reverseTimePropogation;
     fprintf(MSGLOG, "Time is now propagating %s\n",
         reverseTimePropogation ? "Backwards" : "Forwards");
 }
 
 void AssetLoadingDemo::increasePassageOfTime() noexcept {
+    OPTICK_EVENT();
     timeTickRateModifier += (0.005f * getShiftBoost());
-    static auto frameUpdateMessageWasLastPrinted = frameNumber;
-    if (frameNumber < frameUpdateMessageWasLastPrinted) //
-        frameUpdateMessageWasLastPrinted = frameNumber;
-    else if (frameNumber >= (15ull + frameUpdateMessageWasLastPrinted))
-        frameUpdateMessageWasLastPrinted = frameNumber;
+    static auto frameUpdateMessageWasLastPrinted = frameCounter;
+    if (frameCounter < frameUpdateMessageWasLastPrinted) //
+        frameUpdateMessageWasLastPrinted = frameCounter;
+    else if (frameCounter >= (15ull + frameUpdateMessageWasLastPrinted))
+        frameUpdateMessageWasLastPrinted = frameCounter;
     else
         return;
     
@@ -1216,21 +1243,26 @@ void AssetLoadingDemo::increasePassageOfTime() noexcept {
 }
 
 void AssetLoadingDemo::decreasePassageToTime() noexcept {
+    OPTICK_EVENT();
     timeTickRateModifier -= (0.005f * getShiftBoost());
-    static auto frameUpdateMessageWasLastPrinted = frameNumber;
-    if (frameNumber < frameUpdateMessageWasLastPrinted) 
-        frameUpdateMessageWasLastPrinted = frameNumber;
-    else if (frameNumber >= (15ull + frameUpdateMessageWasLastPrinted))
-        frameUpdateMessageWasLastPrinted = frameNumber;
+    static auto frameUpdateMessageWasLastPrinted = frameCounter;
+    if (frameCounter < frameUpdateMessageWasLastPrinted) 
+        frameUpdateMessageWasLastPrinted = frameCounter;
+    else if (frameCounter >= (15ull + frameUpdateMessageWasLastPrinted))
+        frameUpdateMessageWasLastPrinted = frameCounter;
     else
         return;
-    fprintf(MSGLOG, "Time now operating at %%%f speed\n", (1.0f+timeTickRateModifier) * 100.0f);
+    float delta = (1.0f + timeTickRateModifier) * 100.0f;
+    if (reverseTimePropogation)
+        delta *= -1.0f;
+    fprintf(MSGLOG, "Time now operating at %%%f speed\n", delta);
 }
 
 
 void AssetLoadingDemo::toggleBlending() noexcept {
+    OPTICK_EVENT();
 	//Note that it is vitally important that 'frameBlendOperationLastToggled' is updated to match the current 'frameNumber'
-	frameBlendOperationLastToggled = frameNumber;
+	frameBlendOperationLastToggled = frameCounter;
 
 	enableBlending = !enableBlending;
 	if (enableBlending) {
@@ -1246,6 +1278,7 @@ void AssetLoadingDemo::toggleBlending() noexcept {
 }
 
 void AssetLoadingDemo::toggleDepthClamping() noexcept {
+    OPTICK_EVENT();
     //See: https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Depth_clamping
     if (!enableDepthClamping) {
         fprintf(MSGLOG, "Depth Clamping Enabled!\n");
@@ -1257,11 +1290,11 @@ void AssetLoadingDemo::toggleDepthClamping() noexcept {
         enableDepthClamping = false;
         glDisable(GL_DEPTH_CLAMP);
     }
-    frameDepthClampLastToggled = frameNumber;
+    frameDepthClampLastToggled = frameCounter;
 }
 
 void AssetLoadingDemo::updateFieldOfView() noexcept {
-    
+    OPTICK_EVENT();
     static constexpr const float FOV_DELTA_PER_FRAME = 0.00831f;
 
     static float lastPrintedFOVUpdate = fov; 
@@ -1290,7 +1323,7 @@ void AssetLoadingDemo::updateFieldOfView() noexcept {
 }
 
 void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
-    
+    OPTICK_EVENT();
     view = glm::lookAt(cameraPos, lookAtOrgin, upDirection);
 
     //Must get value of the window's width and height
@@ -1319,6 +1352,7 @@ void AssetLoadingDemo::recomputeProjectionMatrix() noexcept {
 
 
 void AssetLoadingDemo::changePrimitiveType() {
+    OPTICK_EVENT();
     static PIPELINE_PRIMITIVE_INPUT_TYPE previousPrimitiveInputType = currentPrimitiveInputType;
 
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_1) == GLFW_PRESS)
@@ -1335,11 +1369,11 @@ void AssetLoadingDemo::changePrimitiveType() {
     
     //Pressing the '`' key will toggle between the 3 options for drawing line primitives
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
-        if ((frameNumber - frameLineTypeLastSwitched) < FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
-            frameLineTypeLastSwitched = frameNumber;
+        if ((frameCounter - frameLineTypeLastSwitched) < FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+            frameLineTypeLastSwitched = frameCounter;
         }
         else {
-            frameLineTypeLastSwitched = frameNumber;
+            frameLineTypeLastSwitched = frameCounter;
             if (PIPELINE_PRIMITIVE_INPUT_TYPE::LINE == currentPrimitiveInputType)
                 currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE;
             else if (PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE == currentPrimitiveInputType)
@@ -1357,10 +1391,10 @@ void AssetLoadingDemo::changePrimitiveType() {
 }
 
 void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
-
-	if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    OPTICK_EVENT();
+	if ((frameCounter - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
 		if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
-			frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
+			frameInstancedDrawingBehaviorLastToggled = frameCounter; //Mark the current frame as being the one when instanced drawing behavior was last toggled
 			drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
 			fprintf(MSGLOG, "Instanced Rendering set to: %s",
 				(drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
@@ -1368,16 +1402,16 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 	}
 
 	//Only allow the instance count to be modified every 10 frames (1/6th second)
-	if ((frameNumber - frameInstancedDrawingCountLastModified) > 10ull) {
+	if ((frameCounter - frameInstancedDrawingCountLastModified) > 10ull) {
 		if (drawMultipleInstances) {
 			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
-				frameInstancedDrawingBehaviorLastToggled = frameNumber; 
+				frameInstancedDrawingBehaviorLastToggled = frameCounter; 
                 instanceCount += static_cast<GLsizei>(1.0f * getShiftBoost());
 				fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
 			}
 			else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
 				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
-					frameInstancedDrawingBehaviorLastToggled = frameNumber;
+					frameInstancedDrawingBehaviorLastToggled = frameCounter;
                     instanceCount -= static_cast<GLsizei>(1.0f * getShiftBoost());
 					fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
 				}
@@ -1392,43 +1426,43 @@ void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
 
 void AssetLoadingDemo::increaseCustomShaderParameter1() noexcept {
     customShaderParameter1++;
-    frameThatCustomShaderParameter1LastModified = frameNumber;
+    frameThatCustomShaderParameter1LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 1 is now %u\n", customShaderParameter1);
 }
 
 void AssetLoadingDemo::increaseCustomShaderParameter2() noexcept {
     customShaderParameter2++;
-    frameThatCustomShaderParameter2LastModified = frameNumber;
+    frameThatCustomShaderParameter2LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 2 is now %u\n", customShaderParameter2);
 }
 
 void AssetLoadingDemo::increaseCustomShaderParameter3() noexcept {
     customShaderParameter3++;
-    frameThatCustomShaderParameter3LastModified = frameNumber;
+    frameThatCustomShaderParameter3LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 3 is now %u\n", customShaderParameter3);
 }
 
 void AssetLoadingDemo::resetCustomShaderParameter1() noexcept {
     customShaderParameter1 = 0U;
-    frameThatCustomShaderParameter1LastModified = frameNumber;
+    frameThatCustomShaderParameter1LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 1 is now %u\n", customShaderParameter1);
 }
 
 void AssetLoadingDemo::resetCustomShaderParameter2() noexcept {
     customShaderParameter2 = 0U;
-    frameThatCustomShaderParameter2LastModified = frameNumber;
+    frameThatCustomShaderParameter2LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 2 is now %u\n", customShaderParameter2);
 }
 
 void AssetLoadingDemo::resetCustomShaderParameter3() noexcept {
     customShaderParameter3 = 0U;
-    frameThatCustomShaderParameter3LastModified = frameNumber;
+    frameThatCustomShaderParameter3LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 3 is now %u\n", customShaderParameter3);
 }
 
 
 void AssetLoadingDemo::rotate() noexcept {
-
+    OPTICK_EVENT();
     //The Following Constants determine input sensitivity/reactivity
 
     // Pitch 
@@ -1518,7 +1552,7 @@ void AssetLoadingDemo::rotate() noexcept {
 }
 
 void AssetLoadingDemo::changeZoom() noexcept {
-
+    OPTICK_EVENT();
     // Zoom Input Sensitivities
     static constexpr const float ZOOM_DELTA_BASE = 0.025f;
     static constexpr const float ZOOM_DELTA_LSHIFT = 0.095f;
@@ -1563,6 +1597,7 @@ void AssetLoadingDemo::changeZoom() noexcept {
 
 
 void AssetLoadingDemo::translate() noexcept {
+    OPTICK_EVENT();
 	float turbo = 1.0f;
 	const float xSpeed = 0.1f;
 	const float ySpeed = 0.1f;
@@ -1605,6 +1640,7 @@ void AssetLoadingDemo::translate() noexcept {
 
 
 bool AssetLoadingDemo::checkForUpdatedShaders() {
+    OPTICK_EVENT();
 	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
 		if (iter->file.hasUpdatedFileAvailable()) {
 			fprintf(MSGLOG, "\nDetected that shader %s has been updated. Rebuilding Shaders...\n", iter->file.filepath().c_str());
@@ -1615,6 +1651,7 @@ bool AssetLoadingDemo::checkForUpdatedShaders() {
 }
 
 void AssetLoadingDemo::buildNewShader() {
+    OPTICK_EVENT();
 	std::string shadersRFP = FILEPATH_TO_SHADERS;
 	//backupSceneShader = nullptr;
 	backupSceneShader = std::make_unique<ShaderProgram>();
@@ -1685,7 +1722,8 @@ void AssetLoadingDemo::buildNewShader() {
 
 //Eventually this ugly implementation logic should get moved to be a member of the
 //FramePerformanceTimepointsList object.
-void AssetLoadingDemo::reportStatistics() noexcept {
+void AssetLoadingDemo::reportStatistics() {
+    OPTICK_EVENT();
     //Make sure we have a large enough sample size to generate an accurate report.
     if (framePerformance.framePerformanceListSize < 10ULL) { return; }
 
@@ -1754,7 +1792,8 @@ void AssetLoadingDemo::reportStatistics() noexcept {
 }
 
 
-void AssetLoadingDemo::propagateTime() noexcept {
+void AssetLoadingDemo::propagateTime()  {
+    OPTICK_EVENT();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Propagate Time
     if (!freezeTimeToggle) { //if time is not frozen
@@ -1768,6 +1807,20 @@ void AssetLoadingDemo::propagateTime() noexcept {
 }
 
 
+void AssetLoadingDemo::updateTaggedVariablesWithOptick() const {
+
+    std::stringstream ss;
+    ss << "0x" << std::hex << mainRenderWindow /*<< std::dec*/;
+
+    OPTICK_TAG("WINDOW HANDLE", ss.str().c_str());
+    OPTICK_TAG("FRAME #", frameCounter);
+    OPTICK_TAG("Time Warp", timeTickRateModifier);
+    OPTICK_TAG("Camera", cameraPos.x, cameraPos.y, cameraPos.z);
+    OPTICK_TAG("Instance Count", (drawMultipleInstances ? instanceCount : (GLsizei)1));
+
+}
+
+
 //    [Implementation Note] 
 //  The name of this next function is misleading in that it implies input 
 //  reading and input processing are done as distinct phases (i.e. in sequence 
@@ -1778,8 +1831,12 @@ void AssetLoadingDemo::propagateTime() noexcept {
 //   (UPDATE) Well actually I thought about it and really it is true that all of
 //            the gamepads state will have been read by GLFW 
 void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput() {
+    OPTICK_EVENT();
+    //Which joystick port to read input from 
+    static constexpr const int JOYSTICK_TO_READ = 0; //Only read from hardcoded joystick port for now
+    //Frequency (in frames elapsed) between repeated echos of warning messages
+    static constexpr const uint32_t REPEAT_WARNING_FREQUENCY = 140U; //Must ALWAYS be 2U or higher
 
-    static constexpr const int JOYSTICK_TO_READ = 0;
 
     if (glfwJoystickPresent(JOYSTICK_TO_READ)) {
         
@@ -1787,16 +1844,14 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
         //assumptions regarding its input mapping layout, thus allowing a
         //larger range of user actions to be available
         if (glfwJoystickIsGamepad(JOYSTICK_TO_READ)) {
-
-            //-----------------------------------
-            // Try to read the gamepad's state
-            //-----------------------------------
             
-            //Create a gamepad state object
-            GLFWgamepadstate gamepadInput;
-            //Initialize the gamepad state object to a neutral state
-            for (unsigned int i = 0U; i < sizeof(gamepadInput.buttons); i++)
-                gamepadInput.buttons[i] = GLFW_RELEASE;//static_cast<unsigned char>('\0');
+            //-----------------------------------
+            // Create and Initialize The Gamepad State Data Structure
+            //-----------------------------------
+            GLFWgamepadstate gamepadInput{};
+            //Initialize the gamepad state object
+            for (auto i = 0; i < sizeof(gamepadInput.buttons); i++)
+                gamepadInput.buttons[i] = GLFW_RELEASE;// = static_cast<unsigned char>('\0');
             //Set the four analog stick axes to read as centered
             gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X] = 0.0f;
             gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] = 0.0f;
@@ -1805,8 +1860,32 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             //Set the triggers to -1.0f
             gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] = -1.0f;
             gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] = -1.0f;
-            if (!glfwGetGamepadState(0, &gamepadInput)) {
-                //assert(false); //Please plug in only xinput gamepads for now 
+            
+
+            //-----------------------------------
+            // Try to read the gamepad's state
+            //-----------------------------------
+            const int success = glfwGetGamepadState(JOYSTICK_TO_READ, &gamepadInput);
+            if (GLFW_TRUE != success) {
+                static bool firstFailureToReadGamepadFlag = true;
+                bool printWarningMsgFlag = false;
+                if (firstFailureToReadGamepadFlag) {
+                    firstFailureToReadGamepadFlag = false;
+                    printWarningMsgFlag = true;
+                }
+                else {
+                    assert(REPEAT_WARNING_FREQUENCY > 2U);
+                    if ((frameCounter % REPEAT_WARNING_FREQUENCY) == (REPEAT_WARNING_FREQUENCY - 1U))
+                        printWarningMsgFlag = true;
+                }
+                if (printWarningMsgFlag) {
+                    fprintf(WRNLOG, "\n\n"
+                        "\t\t\t\t   WARNING!\a\n"
+                        "        "
+                        "FAILED TO READ STATE OF GAMEPAD CONNECTED TO JOYSTICK PORT %-2d!"
+                        "        \n\n",
+                            JOYSTICK_TO_READ);
+                }
                 return;
             }
 
@@ -1877,21 +1956,21 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             //Process the A, B, X, Y buttons
             /////////////////////////////////////
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_A]) {
-                if ((frameNumber - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+                if ((frameCounter - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
                     toggleBlending();
                 }
             }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_B]) {
-                if ((frameNumber - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
+                if ((frameCounter - frameThatTimePropogationWasLastReversed) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
                     reverseTime();
             }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_X]) {
-                if ((frameNumber - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
+                if ((frameCounter - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
                     toggleTimeFreeze();
             }
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
-                if ((frameNumber - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
-                    frameInstancedDrawingBehaviorLastToggled = frameNumber; //Mark the current frame as being the one when instanced drawing behavior was last toggled
+                if ((frameCounter - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+                    frameInstancedDrawingBehaviorLastToggled = frameCounter; //Mark the current frame as being the one when instanced drawing behavior was last toggled
                     drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
                     fprintf(MSGLOG, "Instanced Rendering set to: %s",
                         (drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
@@ -1937,6 +2016,7 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
 
 
 void AssetLoadingDemo::updateFrameClearColor() {
+    OPTICK_EVENT();
 	if constexpr (true) {
 		glClearColor(0.000932f, 0.000924f, 0.0009135f, 1.0f);
 		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
@@ -1968,6 +2048,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 
 
 void AssetLoadingDemo::updateBaseUniforms() noexcept {
+    OPTICK_EVENT();
     //quadTextureTestShader = nullptr;
     if (quadTextureTestShader) {
         quadTextureTestShader->use();
@@ -2030,7 +2111,7 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
 
 
 void AssetLoadingDemo::drawVerts() {
-    
+    OPTICK_EVENT();
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
 	//if (sceneShader)
@@ -2117,6 +2198,7 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
 
 
 bool AssetLoadingDemo::buildQuadTextureTestShader() {
+    OPTICK_EVENT();
     quadTextureTestShader = std::make_unique<ShaderProgram>();
     quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
     quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
@@ -2137,7 +2219,7 @@ GLsizei AssetLoadingDemo::computeNumberOfVerticesInSceneBuffer(const std::vector
 
 
 void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
-
+    OPTICK_EVENT();
     //For most of the available primitive types in member enum 
     //'PIPELINE_PRIMITIVE_INPUT_TYPE', the vertex data gets loaded into its vertex
     //buffer already arranged in the proper ordering to be drawn correctly. The
@@ -2181,7 +2263,7 @@ void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
     //  edges are drawn as line segments. Since each vertex will be both a       
     //  starting point and an endpoint for a line segment, it must be that this  
     //  new ordering must require using twice the number of total vertices as    
-    //  to completly draw the entire data set.
+    //  to completely draw the entire data set.
     //   
     //  This new ordering appears as:
     //
@@ -2235,6 +2317,7 @@ void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
 
 
 void AssetLoadingDemo::printNameOfTheCurrentlyActivePrimitive() const {
+    OPTICK_EVENT();
     fprintf(MSGLOG, "Active Primitive Type Set To:  ");
     std::string primitiveType;
     switch (currentPrimitiveInputType) {
@@ -2287,7 +2370,7 @@ float AssetLoadingDemo::getShiftBoost() const noexcept {
 
 
 void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
-
+    OPTICK_EVENT();
     //  Background and Description
     //In the loadModels() function, a vector of unique pointer to QuickObjects 
     //is created. Each of these QuickObjects contains mesh data for a model,
@@ -2354,7 +2437,7 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 //the object's position
 void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
 	const glm::vec3& objPos) {
-
+    OPTICK_EVENT();
 	int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
 
 	auto vertsEnd = (*object)->mVertices_.cend(); //Create a variable for loop exit condition
@@ -2398,7 +2481,7 @@ void AssetLoadingDemo::createTriangleOutlineEBO() noexcept {
 
 
 void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept {
-
+    OPTICK_EVENT();
     //if (sceneBuf.size() == 0u)
     //    return;
     if (0u == targetVBO) {
@@ -2436,7 +2519,7 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
 }
 
 void AssetLoadingDemo::uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& ebo, const std::vector<GLuint>& eboData) noexcept {
-
+    OPTICK_EVENT();
     if (0u == ebo) {
         fprintf(WRNLOG, "\n\tWARNING!\nUnable to Upload Element Ordering Buffer to GPU because EBO was\n"
             "never created with GL context!\n");
@@ -2461,7 +2544,7 @@ void AssetLoadingDemo::uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& e
 
 
 void AssetLoadingDemo::configureVertexArrayAttributes() noexcept {
-
+    OPTICK_EVENT();
     if (vao == 0u)
 	    glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);

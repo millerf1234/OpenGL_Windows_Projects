@@ -29,8 +29,9 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
-#include <memory>   //Mostly for smart pointers
+#include <memory>   //smart pointers
 #include <fstream>  //Gotta have that fstream
+#include <filesystem> //Take advantage of the modern <filesystem>
 #include <system_error> //Probably best to be aware of any system exceptions
 
 
@@ -44,7 +45,7 @@ class Timepoint;
 
 class Application final {
 public:
-    Application() noexcept;
+    Application();
     ~Application() noexcept;
     void launch();
 
@@ -55,10 +56,19 @@ public:
     Application& operator=(Application&&) = delete;
 
 private:
-    bool mApplicationValid;
+    bool                        mApplicationValid;
     std::unique_ptr<InitReport> initReport;
-    std::unique_ptr<GLFW_Init> glfwInitializer;
+    std::unique_ptr<GLFW_Init>  glfwInitializer;
 
+#if (defined USE_OPTICK && (USE_OPTICK == 1))
+    //All data relevant to the 'optick' profiler is stored together 
+    typedef struct OptickState {
+        bool captureActive;
+        std::filesystem::path pathToSaveCapture;
+    } OptickState;
+
+    OptickState globalOptickState; 
+#endif //USE_OPTICK == 1
 
     void initialize();
 

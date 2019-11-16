@@ -580,6 +580,9 @@
     <Filter Include="Third Party\optick\src">
       <UniqueIdentifier>{9f9e35eb-1703-4759-b753-cad713fe601a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Unfinished\Optick Callbacks">
+      <UniqueIdentifier>{0e3e6547-b89a-4ed2-9af9-f189b6c8ff12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1521,6 +1524,9 @@
     </ClInclude>
     <ClInclude Include="optick\src\optick_server.h">
       <Filter>Third Party\optick\src</Filter>
+    </ClInclude>
+    <ClInclude Include="OptickCallbackFunction.h">
+      <Filter>Source Files\Unfinished\Optick Callbacks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

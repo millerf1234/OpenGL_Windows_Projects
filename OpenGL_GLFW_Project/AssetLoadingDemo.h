@@ -66,9 +66,6 @@ static constexpr const uint64_t FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15;
 
 
 
-
-
-
 //////////////////////////////////////////////////////
 //////    Global Invariants  [Do Not Modify]    //////
 //////////////////////////////////////////////////////
@@ -97,13 +94,13 @@ protected: //private:
 	bool error;
 	//float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
     float timeTickRateModifier;
-	unsigned long long frameNumber;
-    unsigned long long frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
+    uint32_t frameCounter;
+    uint32_t frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
         frameDepthClampLastToggled, frameThatTimePropogationWasLastReversed, 
         frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified,
         frameThatCustomShaderParameter3LastModified;
-    mutable unsigned long long framePerformanceReportingLastToggled;
+    mutable uint32_t framePerformanceReportingLastToggled;
 
 	glm::vec3 backgroundColor;
 
@@ -185,7 +182,7 @@ protected: //private:
     //while it was creating the window and loading the OpenGL function pointers) 
     //[If in the future it is decided to use the GPU to generate assets,
     //this function will need to be called after that has taken place]
-    void setAssetLoadingDemoSpecificGlobalGLContextState() const noexcept;
+    void setAssetLoadingDemoSpecificGlobalGLContextState() const;
 
     //Loads all required GLSL shader file assets, compiles them and
     //links them into ShaderProgram(s). Because valid shaders are 
@@ -215,22 +212,31 @@ protected: //private:
 	//    The Render Loop Consists of the following series of steps    //
 	//-----------------------------------------------------------------//
 
-	/*							+~~~~~~~~~~~~~~~~~~~~~~~~~~+
-								|   (1)  Input Detection   |
-								+~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
-	
-	bool checkToSeeIfShouldCloseWindow() const noexcept; //check 'esc'
+    //Profiling Functions
+    void callOpticksPerFrameTickFunction() const;
+    void recordFrameStartTimepoint() const;
+
+    /*                         +~~~~~~~~~~~~~~~~~~~~~~~~~~+
+                               |   (1)  Input Detection   |
+                               +~~~~~~~~~~~~~~~~~~~~~~~~~~+                                             */
+    
+    //Render Loop simply needs to call this one high level function 
+    void detectInput();
+    void checkKeyboardInput();
+    void checkControllerInput();
+
+    bool checkToSeeIfShouldCloseWindow() const noexcept; //check 'esc'
     bool checkIfShouldTogglePerformanceReporting() const noexcept;
-	bool checkIfShouldPause() const noexcept; //Probably 'space'
-	bool checkIfShouldReset() const noexcept;
-	bool checkIfShouldFreezeTime() const noexcept;
+    bool checkIfShouldPause() const noexcept; //Probably 'space'
+    bool checkIfShouldReset() const noexcept;
+    bool checkIfShouldFreezeTime() const noexcept;
     bool checkIfShouldReverseDirectionOfTime() const noexcept;
     bool checkIfShouldIncreasePassageOfTime() const noexcept;
     bool checkIfShouldDecreasePassageOfTime() const noexcept;
-	bool checkIfShouldToggleBlending() const noexcept;
+    bool checkIfShouldToggleBlending() const noexcept;
     bool checkIfShouldToggleDepthClamping() const noexcept;
     bool checkIfShouldUpdateFieldOfView() const noexcept;
-
+    
     bool checkIfShouldIncreaseCustomShaderParameter1() const noexcept;
     bool checkIfShouldIncreaseCustomShaderParameter2() const noexcept;
     bool checkIfShouldIncreaseCustomShaderParameter3() const noexcept;
@@ -240,9 +246,11 @@ protected: //private:
     bool checkIfShouldResetCustomShaderParameters() const noexcept;
 
 
-	/*						   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-							   |  (2)  Input Processing    |
-							   +~~~~~~~~~~~~~~~~~~~~~~~~~~~+	        								 */
+    void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
+
+    /*                         +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+                               |  (2)  Input Processing    |
+                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                            */
     
     void pause();
     void reset() noexcept;
@@ -274,11 +282,9 @@ protected: //private:
     
     bool checkForUpdatedShaders();
     void buildNewShader();
-    void reportStatistics() noexcept;
-    void propagateTime() noexcept;
-    
-    void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
-    
+    void reportStatistics() ;
+    void propagateTime();
+    void updateTaggedVariablesWithOptick() const;
     
     
     

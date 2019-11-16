@@ -20,7 +20,7 @@ static constexpr const int MONITOR_TO_USE = 0;  //Index of monitor in array of a
 //is different from running the Application in Windowed-Fullscreen mode. Windowed-Fullscreen
 //mode simply has the Application run with whatever configuration the Operating System is
 //using, which allows for quicker switching between this Application and other open windows.
-static constexpr const bool USE_FULLSCREEN = true;
+static constexpr const bool USE_FULLSCREEN = false;
 
 
 //Pretty much always want this to be true 

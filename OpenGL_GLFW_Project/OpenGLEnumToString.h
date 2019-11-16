@@ -53,7 +53,7 @@ namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE {
         DictionaryOfGLEnums(DictionaryOfGLEnums&& that) noexcept = default;
         DictionaryOfGLEnums& operator=(const DictionaryOfGLEnums&) = delete;
         DictionaryOfGLEnums& operator=(DictionaryOfGLEnums&&)& = default;
-        DictionaryOfGLEnums& operator=(DictionaryOfGLEnums&&)&& = default;
+        //DictionaryOfGLEnums& operator=(DictionaryOfGLEnums&&)&& = default;
 
         std::string lookup(GLenum hexEnum) noexcept;
 

@@ -1,6 +1,9 @@
 
 #pragma once
 
+#ifndef TEAPOT_H_
+#define TEAPOT_H_
+
 constexpr const size_t TEAPOT_COUNT = 5184U;
 
 const float teapot[TEAPOT_COUNT] = {
@@ -1733,3 +1736,6 @@ const float teapot[TEAPOT_COUNT] = {
 	0.562400f, -1.200000f, 0.330300f,
 	0.458200f, -1.255600f, 0.269100f
 };
+
+
+#endif //TEAPOT_H_

@@ -141,7 +141,7 @@
 
 #pragma message("Failed to Detect Support For OpenGL 4.1 Function 'glProgramUniform()'!\n"  \
 "Please ensure that each ShaderProgram object gets bound to the context\n"                  \
-"[using 'glUseProgram()'] before attempting to update any of its uniforms!\n"                 
+"[using 'glUseProgram()'] before attempting to update any of its uniforms!\n"                 )
 
 #define ASSERT_PROGRAM_ACTIVE GLint activeProgram = 0;                                      \
                               glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgram);            \
