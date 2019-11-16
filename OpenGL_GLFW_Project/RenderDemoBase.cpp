@@ -70,7 +70,7 @@ bool RenderDemoBase::checkForContextReset() {
 
 
 void RenderDemoBase::performRenderDemoSharedInputLogic() {
-	
+    OPTICK_EVENT();
     //screenshotAssistant.upkeepFunctionToBeCalledByRenderDemoBase();
     static int counter = 0;
     counter++;

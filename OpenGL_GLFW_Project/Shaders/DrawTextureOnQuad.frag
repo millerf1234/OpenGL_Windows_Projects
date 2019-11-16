@@ -24,6 +24,27 @@ uniform mat4 rotation;
 uniform uint customParameter1, customParameter2, customParameter3;
 const uint lightingVersion = customParameter1 % 3U;
 
+//*******************************************************
+//External Noise Function Declarations
+float noise(float p);
+float noise(vec2 n);
+float noise(vec3 P);
+//Perlin
+float pNoise(vec2 p, int res);
+//Periodic Perlin
+float cnoise(vec4 P);
+//Classical Periodic Perlin
+float cnoise(vec4 P, vec4 rep);
+//Simple
+float snoise(vec2 v);
+float snoise(vec3 v);
+float snoise(vec4 v);
+//Fractal Brownian Motion
+float fbm(float x);
+float fbm(vec2 x);
+float fbm(vec3 x);
+//******************************************************
+
 float computeCustom1(in const uint seed) {
     float custom1 = clamp(tan(float(customParameter1)),
                     -150.,
@@ -162,7 +183,7 @@ color = normalize(ambient + diffuse);
 
     //PSYCH! We are not quite yet ready
     
-    if (customParameter1 % 4u == 1u) {
+    if (customParameter1 % 5u == 1u) {
         
         finalColor.r = finalColor.g/finalColor.b;
         finalColor.g = finalColor.b/finalColor.r;
@@ -170,16 +191,23 @@ color = normalize(ambient + diffuse);
                              max(finalColor.r + finalColor.g + .4, length(finalColor)),
                              finalColor.b);
     }
-    else if (customParameter1 % 4u == 2u) {
+    else if (customParameter1 % 5u == 2u) {
         const float temp = finalColor.b;
         finalColor.b = finalColor.g;
         finalColor.g = finalColor.r;
         finalColor.r = clamp((temp + finalColor.b + finalColor.g) / 2.75,
                               0., 1.);
     }
-    else if (customParameter1 % 4u == 3u) {
+    else if (customParameter1 % 5u == 3u) {
         finalColor.rgba = finalColor.brag;
     }
+
+    else if (customParameter1 % 5u == 4u) {
+        finalColor.rgb = vec3(0.5 + 0.5 * sin(snoise(vec3(time) + finalColor.rgb)),
+            0.4 + 0.3 * cos(snoise(time * finalColor)),
+            0.8 - abs(cos(sin(snoise(vec2(time, processed_vertex.vertIDMod))))));
+    }
+
     
     if (customParameter2 % 2 == 1) {
         finalColor.r += cos(processed_vertex.position.y + processed_vertex.vertIDMod + time);
@@ -192,13 +220,13 @@ color = normalize(ambient + diffuse);
     if (customParameter3 % 3u == 1u) {
         if (finalColor.g < finalColor.r) {
             finalColor.g *= 2.0;
-            finalColor.r *= 0.75;
-            finalColor.b *= 0.75;
+            finalColor.r *= 0.65;
+            finalColor.b *= 0.65;
         }
         else {
-            finalColor.r *= 2.0;
-            finalColor.g *= 0.75;
-            finalColor.b *= 0.75;
+            finalColor.r *= 2.25;
+            finalColor.g *= 0.65;
+            finalColor.b *= 0.65;
         }
     }
     else if (customParameter3 % 3u == 2u) {

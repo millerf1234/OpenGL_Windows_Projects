@@ -774,8 +774,11 @@ void AssetLoadingDemo::prepareScene() {
 }
 
 
-
-
+//  /////////////////////////////////////////////////////////////////////////////////  //
+//                /////////////////////////////////////////////////////                //
+//                ///////////      The Render Loop      ///////////////                //
+//                /////////////////////////////////////////////////////                //
+//  /////////////////////////////////////////////////////////////////////////////////  //
 void AssetLoadingDemo::renderLoop() {
   
     //Call this function to initialize the frame performance profiler object
@@ -783,176 +786,204 @@ void AssetLoadingDemo::renderLoop() {
 
     assert(mainRenderWindow);
 
-	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
-        //Make sure we still have our context
-        if ((glfwGetCurrentContext() != mainRenderWindow)) {
-            fprintf(ERRLOG, 
-                    "\n\n\t\t\t!!!!\t[ERROR OCCURED]\t!!!!\a\n"
-                    "\tCause: Window Lost Graphics Context / Context Is ");
-            return;
-        }
+    //Make sure we still have a context
+    if ((glfwGetCurrentContext() != mainRenderWindow)) {
+        fprintf(ERRLOG,
+            "\n\n\t\t\t!!!!\t[ERROR OCCURED]\t!!!!\a\n"
+            "\tCause: Window Lost Graphics Context / Context Is ");
+        return;
+    }
 
-        //Record timepoint for frame start 
-        framePerformance.recordLoopStartTimepoint(frameCounter);
-        
+	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
+
+       
+        //------------------------------------------------------
+        //            OPTICK's START-NEW-FRAME FUNCTION         
         //   !!!!!!!!!!!!!!!!                !!!!!!!!!!!!!!!!   
         //           !!!!!!!!  [ WARNING! ]  !!!!!!!!           
+        //   !!!!!!!!!!!!!!!!                !!!!!!!!!!!!!!!!   
         //                                                      
         //  This Macro Introduces A Variable Of Type 'uint32_t' 
         //  Named 'frameNumber' Into The Current Scope.         
-        //                                                     
-        //   This Can Cause A Lot Of Problems If Called        
-        
-        OPTICK_FRAME("MainThread");
+        //                                                      
+        //   This Can Cause A Lot Of Problems If Called From A  
+        //     member function of a class with a field named    
+        //            'frameNumer' as well...                   
+        OPTICK_FRAME("MainThread");                             
+        //------------------------------------------------------
 
+        recordFrameStartTimepoint();
+
+        //        ---------------------------------------------------------------------        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        * * * *                  |  INPUT PHASE  |                    * * * *        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        ---------------------------------------------------------------------        //
         ////////////////////////
         //Check Input
         ////////////////////////
-		if (checkToSeeIfShouldCloseWindow()) {
-			markMainRenderWindowAsReadyToClose();
-			continue; //Skip the rest of this loop iteration to close mainRenderWindow quickly
-		}
-        reportPerformance = checkIfShouldTogglePerformanceReporting();
-		if (checkIfShouldPause()) {
-			pause();
-			continue;
-		}
-		if (checkIfShouldReset()) {
-			if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-				pause();
-				continue;
-			}
-			reset();
-		}
-		if (checkIfShouldFreezeTime()) { //'checkIfShouldFreezeTime()' relies on 'toggleFreezeTime()' to 
-			toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
-        }
+        detectInput();
 
-        if (checkIfShouldReverseDirectionOfTime())
-            reverseTime();
-
-        if (checkIfShouldIncreasePassageOfTime())
-            increasePassageOfTime();
-
-        if (checkIfShouldDecreasePassageOfTime())
-            decreasePassageToTime();
-
-        if (checkIfShouldToggleBlending())
-            toggleBlending();
-
-        if (checkIfShouldToggleDepthClamping())
-            toggleDepthClamping();
-
-        if (checkIfShouldUpdateFieldOfView())
-            updateFieldOfView();
-
-        //CUSTOM SHADER PARAMETERS
-        if (checkIfShouldIncreaseCustomShaderParameter1())
-            increaseCustomShaderParameter1();
-        //if (checkIfShouldResetCustomShaderParameter1())
-        //    resetCustomShaderParameter1();
-        if (checkIfShouldIncreaseCustomShaderParameter2())
-            increaseCustomShaderParameter2();
-        //if (checkIfShouldResetCustomShaderParameter2())
-        //    resetCustomShaderParameter2();
-        if (checkIfShouldIncreaseCustomShaderParameter3())
-            increaseCustomShaderParameter3();
-        //if (checkIfShouldResetCustomShaderParameter3())
-        //    resetCustomShaderParameter3();
-        if (checkIfShouldResetCustomShaderParameters()) {
-            resetCustomShaderParameter1();
-            resetCustomShaderParameter2();
-            resetCustomShaderParameter3();
-        }
-
-        //More Input Checking
-        changePrimitiveType();
-        changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
-        rotate();
-        changeZoom();
-        translate();
-
-        //Even more input checking 
-
-        readJoystick0State_AssumingXInput_AndThenProcessAllInput();
-
-
+        //        ---------------------------------------------------------------------        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        * * * *                  |  LOGIC PHASE  |                    * * * *        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        ---------------------------------------------------------------------        //
         ////////////////////////
         //Perform logic 
         ////////////////////////
-        OPTICK_EVENT("logic");
-        performRenderDemoSharedInputLogic(); //This is the loop function of the base class
-
-        //It is required to call 'reportStatistics()' periodically regardless of whether we are 
-        //printing performance statics or not so that the recorded frame Timepoint samples 
-        //are periodically flushed. 
-        if ((frameCounter % FRAMES_BETWEEN_PERFORMANCE_REPORT) == 0ULL) {
-            reportStatistics();
-        }
-
-        if ((frameCounter % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
-            (FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
-            if (checkForUpdatedShaders()) {
-                buildNewShader();
-            }
-        }
-
-        propagateTime();
-
-        updateTaggedVariablesWithOptick();
-
-        ////////////////////////////
-        //Set up to draw frame
-        ////////////////////////////
-        OPTICK_EVENT("draw");
-        framePerformance.recordBeginDrawCommandsTimepoint();
-        updateFrameClearColor(); //background color
+        computeLogic();
 
 
+        recordBeginRenderCommandsTimepoint();
 
+        //        ---------------------------------------------------------------------        //
+        //        * * * *                  +--------------+                     * * * *        //
+        //        * * * *                  |  DRAW PHASE  |                     * * * *        //
+        //        * * * *                  +--------------+                     * * * *        //
+        //        ---------------------------------------------------------------------        //
         ///////////////////////////
         //Draw frame
         //////////////////////////
-        updateBaseUniforms();
+        renderScene();
         
 
-        //static GLuint queries[4] = { 0u, 0u, 0u, 0u };
-        ////Some Pipeline Statistics Queries Are HardCoded In [For Now]
-        //if ((frameNumber % 60ULL) == 58ULL) {
-        //    glGenQueries(4, &(queries[0]));
 
-        //    
-        //}
+        recordSwapFramebuffersTimepoint();
 
-        drawVerts();
-
-        OPTICK_EVENT("present");
-        ///////////////////////////
-        //
-        framePerformance.recordReadyToFlipBuffersTimepoint();
-        glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
-        glfwPollEvents();
-
-        OPTICK_EVENT("prepareForNextFrame");
-        //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
-        if (checkForContextReset()) {
-            fprintf(MSGLOG, "\nContext Reset Required!\n");
-            fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
-            std::cin.get();
-            glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
-        }
-
-        frameCounter++; //Increment the frame counter
-        prepareGLContextForNextFrame();
+        //        ---------------------------------------------------------------------        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        * * * *                  | PRESENT PHASE |                    * * * *        //
+        //        * * * *                  +---------------+                    * * * *        //
+        //        ---------------------------------------------------------------------        //
+        presentFrame();
+        
+        
     }
 
 }
 
 
+void AssetLoadingDemo::recordFrameStartTimepoint() {
+    //Record timepoint for frame start 
+    framePerformance.recordLoopStartTimepoint(frameCounter);
+}
+
+void AssetLoadingDemo::recordBeginRenderCommandsTimepoint() {
+    framePerformance.recordBeginDrawCommandsTimepoint();
+}
+
+void AssetLoadingDemo::recordSwapFramebuffersTimepoint() {
+    framePerformance.recordReadyToFlipBuffersTimepoint();
+}
+
+void AssetLoadingDemo::detectInput() {
+    OPTICK_EVENT();
+    
+    //   ***\______+============+______/***
+    //       ______|  KEYBOARD  |______
+    //   ***/      +============+      \***
+    //Cap the number of times keyboard input can be reprocessed
+    static constexpr const int MAX_ITERATIONS = 5;
+    int iterations = 0;
+    //Some keyboard inputs may require for all keyboard inputs
+    //detected thus far to be invalid and thus requiring all 
+    //keyboard input for the current frame to be processed again.
+    do {
+        iterations++;
+
+        //TODO This Will Crash Application When Escape Is Held Down, Need To Rewrite
+        if (iterations >= MAX_ITERATIONS) {
+            assert(false);
+            break;
+        }
+    } while (!checkKeyboardInput());
+
+    //   ***\______+============+______/***
+    //       ______|  JOYSTICK  |______
+    //   ***/      +============+      \***
+    checkControllerInput();
+}
 
 
 
+//   ***\______+============+______/***
+//       ______|  KEYBOARD  |______
+//   ***/      +============+      \***
+bool AssetLoadingDemo::checkKeyboardInput() {
+    OPTICK_EVENT();
+    if (checkToSeeIfShouldCloseWindow()) {
+        markMainRenderWindowAsReadyToClose();
+        return false; 
+    }
+    reportPerformance = checkIfShouldTogglePerformanceReporting();
+    if (checkIfShouldPause()) {
+        pause();
+        return false;
+    }
+    if (checkIfShouldReset()) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            pause();
+            return false;
+        }
+        reset();
+    }
+    if (checkIfShouldFreezeTime()) { //'checkIfShouldFreezeTime()' relies on 'toggleFreezeTime()' to 
+        toggleTimeFreeze(); //         update member field 'frameTimeFreezeLastToggled' to value of 'frameNumber' 
+    }
 
+    if (checkIfShouldReverseDirectionOfTime())
+        reverseTime();
+
+    if (checkIfShouldIncreasePassageOfTime())
+        increasePassageOfTime();
+
+    if (checkIfShouldDecreasePassageOfTime())
+        decreasePassageToTime();
+
+    if (checkIfShouldToggleBlending())
+        toggleBlending();
+
+    if (checkIfShouldToggleDepthClamping())
+        toggleDepthClamping();
+
+    if (checkIfShouldUpdateFieldOfView())
+        updateFieldOfView();
+
+    //CUSTOM SHADER PARAMETERS
+    if (checkIfShouldIncreaseCustomShaderParameter1())
+        increaseCustomShaderParameter1();
+    //if (checkIfShouldResetCustomShaderParameter1())
+    //    resetCustomShaderParameter1();
+    if (checkIfShouldIncreaseCustomShaderParameter2())
+        increaseCustomShaderParameter2();
+    //if (checkIfShouldResetCustomShaderParameter2())
+    //    resetCustomShaderParameter2();
+    if (checkIfShouldIncreaseCustomShaderParameter3())
+        increaseCustomShaderParameter3();
+    //if (checkIfShouldResetCustomShaderParameter3())
+    //    resetCustomShaderParameter3();
+    if (checkIfShouldResetCustomShaderParameters()) {
+        resetCustomShaderParameter1();
+        resetCustomShaderParameter2();
+        resetCustomShaderParameter3();
+    }
+
+    //More Input Checking
+    changePrimitiveType();
+    changeInstancedDrawingBehavior(); //Toggle on/off drawing instances
+    rotate();
+    changeZoom();
+    translate();
+}
+
+//   ***\______+============+______/***
+//       ______|  JOYSTICK  |______
+//   ***/      +============+      \***
+void AssetLoadingDemo::checkControllerInput() {
+    OPTICK_EVENT();
+    readJoystick0State_AssumingXInput_AndThenProcessAllInput();
+}
 
 inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const  noexcept {
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -1638,6 +1669,31 @@ void AssetLoadingDemo::translate() noexcept {
 
 
 
+void AssetLoadingDemo::computeLogic() {
+    OPTICK_EVENT();
+
+    performRenderDemoSharedInputLogic(); //This is the loop function of the base class
+
+    //It is required to call 'reportStatistics()' periodically regardless of whether we are 
+    //printing performance statics or not so that the recorded frame Timepoint samples 
+    //are periodically flushed. 
+    if ((frameCounter % FRAMES_BETWEEN_PERFORMANCE_REPORT) == 0ULL) {
+        reportStatistics();
+    }
+
+    if ((frameCounter % FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS) ==
+        (FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS - 1ULL)) { //check every 59th frame (of a 60-frame cycle) for updated shaders
+        if (checkForUpdatedShaders()) {
+            buildNewShader();
+        }
+    }
+
+    propagateTime();
+
+    updateTaggedVariablesWithOptick();
+}
+
+
 
 bool AssetLoadingDemo::checkForUpdatedShaders() {
     OPTICK_EVENT();
@@ -2011,7 +2067,18 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
     }
 
 
+}
 
+
+void AssetLoadingDemo::renderScene() {
+    OPTICK_EVENT();
+    ////////////////////////////
+    //  Set up to draw frame
+    ////////////////////////////
+    updateFrameClearColor(); //background color
+    updateBaseUniforms();
+
+    drawVerts();
 }
 
 
@@ -2134,7 +2201,7 @@ void glDrawElementsInstanced(	GLenum mode,
  	GLsizei count,
  	GLenum type,
  	const void * indices,
- 	GLsizei instancecount);
+ 	GLsizei instanceCount);
     */
     if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleOutlineEBO);
@@ -2189,8 +2256,35 @@ void glDrawElementsInstanced(	GLenum mode,
     }
 }
 
+void AssetLoadingDemo::presentFrame() {
+    OPTICK_EVENT();
+
+
+    glfwSwapBuffers(mainRenderWindow); //Swap the buffer to present image to monitor
+    glfwPollEvents();
+
+    //See RenderDemoBase for description, basically this function should be called once a frame to detect context-reset situations
+    if (checkForContextReset()) {
+        fprintf(MSGLOG, "\nContext Reset Required!\n");
+        fprintf(MSGLOG, "\n\t[Press enter to crash]\n");
+        std::cin.get();
+        glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE); //For now just close the mainRenderWindow
+    }
+
+    frameCounter++; //Increment the frame counter
+    prepareGLContextForNextFrame();
+}
 
 void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
+    OPTICK_EVENT();
+    //Make sure we still have our context
+    if ((glfwGetCurrentContext() != mainRenderWindow)) {
+        fprintf(ERRLOG,
+            "\n\n\t\t\t!!!!\t[ERROR OCCURED]\t!!!!\a\n"
+            "\tCause: Window Lost Graphics Context / Context Is Not Current\n");
+        glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
+        return;
+    }
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -2202,11 +2296,17 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
     quadTextureTestShader = std::make_unique<ShaderProgram>();
     quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
     quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
-    //Need to attach a secondary...
+    //Attach Secondary Vertex Shaders
+
+    //Attach Secondary Fragment Shaders
     std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
+        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\ShaderNoiseFunctions.glsl)");
     fragmentNoiseShader->makeSecondary();
     quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
+    std::unique_ptr<ShaderInterface::FragmentShader> practiceNoiseShader =
+        std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
+    practiceNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryFrag(practiceNoiseShader.get());
     quadTextureTestShader->link();
     return quadTextureTestShader->checkIfLinked();
 }

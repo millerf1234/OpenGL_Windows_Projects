@@ -203,28 +203,98 @@ protected: //private:
 
 
 
-	///////////////////////////////////////////////////////
-	/////////////      The Render Loop      ///////////////
-	///////////////////////////////////////////////////////
-	void renderLoop();
 
-	//-----------------------------------------------------------------//
-	//    The Render Loop Consists of the following series of steps    //
-	//-----------------------------------------------------------------//
 
-    //Profiling Functions
-    void callOpticksPerFrameTickFunction() const;
-    void recordFrameStartTimepoint() const;
-
-    /*                         +~~~~~~~~~~~~~~~~~~~~~~~~~~+
-                               |   (1)  Input Detection   |
-                               +~~~~~~~~~~~~~~~~~~~~~~~~~~+                                             */
-    
-    //Render Loop simply needs to call this one high level function 
+    //  /////////////////////////////////////////////////////////////////////////////////  //
+    //                /////////////////////////////////////////////////////                //
+    //                ///////////      The Render Loop      ///////////////                //
+    //                /////////////////////////////////////////////////////                //
+    //  /////////////////////////////////////////////////////////////////////////////////  //
+    void renderLoop();
+    //       ----------------------------------------------------------------------        //
+    //        \             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                /         //
+    //         \           ~~~~  RENDER LOOP EXECUTION CYCLE  ~~~~              /          //
+    //          \           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~              /           //
+    //          The Render Loop Will Always Be In One of Four Phases Of Execution          //
+    //            While The Application Is Running:                                        //
+    //                                               - INPUT                               //
+    //                                               - LOGIC                               //
+    //                                               - DRAW                                //
+    //                                               - PRESENT                             //
+    //    [ There may also be implicit micro-phases for inserting profiler tags ]          //
+    //                                                                                     //
+    //                                                                                     //
+    //                                                                                     //
+    //                Each Phase Is Contained Within A Single Function Call                //
+    //                                                                                     //
+    //                   Here Are The Functions To Call For Each Phase                     //
+    //                                                                                     //
+    //        ---------------------------------------------------------------------        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        * * * *                  |  INPUT PHASE  |                    * * * *        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        ---------------------------------------------------------------------        //
     void detectInput();
-    void checkKeyboardInput();
+    //        ---------------------------------------------------------------------        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        * * * *                  |  LOGIC PHASE  |                    * * * *        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        ---------------------------------------------------------------------        //
+    void computeLogic();
+    //        ---------------------------------------------------------------------        //
+    //        * * * *                  +--------------+                     * * * *        //
+    //        * * * *                  |  DRAW PHASE  |                     * * * *        //
+    //        * * * *                  +--------------+                     * * * *        //
+    //        ---------------------------------------------------------------------        //
+    void renderScene();
+    //        ---------------------------------------------------------------------        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        * * * *                  | PRESENT PHASE |                    * * * *        //
+    //        * * * *                  +---------------+                    * * * *        //
+    //        ---------------------------------------------------------------------        //
+    void presentFrame();
+    //                                                                                     //
+    //                               (Profiling Functions)                                 //
+    void recordFrameStartTimepoint();
+    void recordBeginRenderCommandsTimepoint();
+    void recordSwapFramebuffersTimepoint();
+    //    -----------------------------------------------------------------------------    //
+    //===}-----------------------------------------------------------------------------{===//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //                                       IMPLEMENTATION
+
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*}~~                               |  (1)  Input Detection     |                                 ~~{*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+                               
+
+    //The high level function 'detectInput()' breaks input detection into two partitions
+    bool checkKeyboardInput();
     void checkControllerInput();
 
+    //These are then all the individual input detection functions
+    //   ***\______+============+______/***
+    //       ______|  KEYBOARD  |______
+    //   ***/      +============+      \***
     bool checkToSeeIfShouldCloseWindow() const noexcept; //check 'esc'
     bool checkIfShouldTogglePerformanceReporting() const noexcept;
     bool checkIfShouldPause() const noexcept; //Probably 'space'
@@ -245,13 +315,19 @@ protected: //private:
     //bool checkIfShouldResetCustomShaderParameter3() const noexcept;
     bool checkIfShouldResetCustomShaderParameters() const noexcept;
 
+    //   ***\______+============+______/***
+    //       ______|  JOYSTICK  |______
+    //   ***/      +============+      \***
 
     void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
 
-    /*                         +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-                               |  (2)  Input Processing    |
-                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                            */
-    
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*}~~                               |  (2)  Input Processing    |                                 ~~{*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
     void pause();
     void reset() noexcept;
     void toggleTimeFreeze() noexcept;
@@ -275,11 +351,15 @@ protected: //private:
     void translate() noexcept;
    
     
-    
-    /*                                  +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-                                        |   (3)   Handle Events     |
-                                        +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                    */
-    
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*}~~                               |   (3)   Handle Events     |                                 ~~{*/
+    /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    //These functions are specific event-handling tasks that can
+    //be called as part of 'computeLogic()' 
+
     bool checkForUpdatedShaders();
     void buildNewShader();
     void reportStatistics() ;
@@ -288,10 +368,11 @@ protected: //private:
     
     
     
-    
-    /*                                   +~~~~~~~~~~~~~~~~~~+
-                                         |   (4) Render     |
-                                         +~~~~~~~~~~~~~~~~~~+                                  */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    /*}~~                                +~~~~~~~~~~~~~~~~~~~~~~~~~+                                   ~~{*/
+    /*}~~                                |   (4)   Render Scene    |                                   ~~{*/
+    /*}~~                                +~~~~~~~~~~~~~~~~~~~~~~~~~+                                   ~~{*/
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     
     /////////////////////////////////////////
     ///  (4-1)  Background Color Update   ///
