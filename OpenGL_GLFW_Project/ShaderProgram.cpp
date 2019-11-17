@@ -948,7 +948,8 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 		}
 		else { //Else figure out what is wrong and print out a message
 			if (mState.mError) {
-				fprintf(ERRLOG, "\nError! Unable to use shader program because of an error encountered while configuring the program!\n");
+				fprintf(ERRLOG, "\nError! Unable to use shader program because of an error \n"
+                                "encountered while configuring the program!\n");
 				glUseProgram(0);
 				return;
 			}
@@ -1037,11 +1038,8 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 	}
 
 	bool ShaderProgram::checkAttachedSecondariesForMatch(const ShaderID& secondaryShaderID) const {
-		auto search = mState.mAttachedSecondaries.find(secondaryShaderID.mID);
-		if (search != mState.mAttachedSecondaries.end()) 
-			return true;
-		else
-			return false;
+		const auto search = mState.mAttachedSecondaries.find(secondaryShaderID.mID);
+        return (search != mState.mAttachedSecondaries.end());
 	}
 
 	//Passing a nullptr to this function will cause a whole lot of problems
