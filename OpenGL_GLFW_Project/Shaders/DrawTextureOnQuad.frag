@@ -203,9 +203,10 @@ color = normalize(ambient + diffuse);
     }
 
     else if (customParameter1 % 5u == 4u) {
-        finalColor.rgb = vec3(0.5 + 0.5 * sin(snoise(vec3(time) + finalColor.rgb)),
-            0.4 + 0.3 * cos(snoise(time * finalColor)),
-            0.8 - abs(cos(sin(snoise(vec2(time, processed_vertex.vertIDMod))))));
+        finalColor.rgb = mix(finalColor.rgb, vec3(0.5 + 0.5 * sin(snoise(vec3(time) + finalColor.rgb)),
+                                                  0.6 - abs(0.4 * cos(snoise(time * finalColor))),
+                                                  0.8 - abs(cos(sin(snoise(vec2(time, processed_vertex.vertIDMod)))))),
+                             0.6 + .4*cos(time + 30.*snoise(gl_FragCoord.xy)));
     }
 
     
