@@ -240,7 +240,7 @@
             GLuint ID() const noexcept { return mProgramID; }
 
             //Deletes this object from the graphics language context
-            void release() {
+            void release() noexcept {
                 if (!mState.mReleased) {
                     glDeleteProgram(mProgramID);
                     mState.mReleased = true;
@@ -302,8 +302,8 @@
             
         private:
             GLuint mProgramID; //GL ShaderProgram ID
-
-            struct ProgramState {
+            class ProgramState {
+            public:
                 bool mValid;
                 bool mLinked;
                 bool mHasVert, mHasGeom, mHasTesse, mHasTessc, mHasFrag, mHasCompute; //These bools represent attached shaders, not cached shaders
@@ -328,7 +328,7 @@
             std::unique_ptr<ShaderInterface::ComputeShader> mComputeShader;
 
         
-            //Private helped functions
+            //Private helper functions
             void initialize();
             void generateGLProgramHandle();
             void initializeUniformLocationTracker();

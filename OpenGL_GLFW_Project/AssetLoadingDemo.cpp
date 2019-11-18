@@ -274,7 +274,7 @@ void AssetLoadingDemo::initialize() {
 
 
 AssetLoadingDemo::AssetLoadingDemo(InitReport* initReport) : RenderDemoBase() {
-	
+    
     initialize();
 
     //Set the initial OpenGL context state (basically consists of calls to glEnable())
@@ -290,16 +290,16 @@ AssetLoadingDemo::AssetLoadingDemo(InitReport* initReport) : RenderDemoBase() {
     //Make sure the context is set to this monitor (and this thread [see glfw documentation])
     if (glfwGetCurrentContext() != initReport->windowContext.window.window) {
         std::ostringstream warning;
-		warning << "\nWARNING!\n[In AssetLoadingDemo's constructor]\n" <<
-			"AssetLoadingDemo detected that the GLFW active context was set" <<
-			"\nto a different monitor or different execution-thread then\n" <<
-			"the one passed to AssetLoadingDemo's constructor!\n";
-		warning << "This means that running AssetLoadingDemo will invalidate\n" <<
-			"the previous context by replacing it with this one, which\n" <<
-			"could (probably) lead to errors! Please ensure that the correct context\n" <<
-			"is being passed to AssetLoadingDemo in the application code!\n";
+        warning << "\nWARNING!\n[In AssetLoadingDemo's constructor]\n" <<
+            "AssetLoadingDemo detected that the GLFW active context was set" <<
+            "\nto a different monitor or different execution-thread then\n" <<
+            "the one passed to AssetLoadingDemo's constructor!\n";
+        warning << "This means that running AssetLoadingDemo will invalidate\n" <<
+            "the previous context by replacing it with this one, which\n" <<
+            "could (probably) lead to errors! Please ensure that the correct context\n" <<
+            "is being passed to AssetLoadingDemo in the application code!\n";
 
-		fprintf(WRNLOG, warning.str().c_str());
+        fprintf(WRNLOG, warning.str().c_str());
         glfwMakeContextCurrent(initReport->windowContext.window.window);
     }
     mainRenderWindow = initReport->windowContext.window.window;
@@ -326,20 +326,20 @@ AssetLoadingDemo::~AssetLoadingDemo() noexcept {
 
 void AssetLoadingDemo::run() {
     OPTICK_CATEGORY("PreparingToEnterRenderLoop", Optick::Category::Audio);
-	if (error) {
-		fprintf(ERRLOG, "An error occurred while loading AssetLoadingDemo\n");
-		return;
-	}
-	fprintf(MSGLOG, "\nAsset Loading Demo project has loaded and will begin running!\n");
+    if (error) {
+        fprintf(ERRLOG, "An error occurred while loading AssetLoadingDemo\n");
+        return;
+    }
+    fprintf(MSGLOG, "\nAsset Loading Demo project has loaded and will begin running!\n");
 
 
-	fprintf(MSGLOG, "\nDemo Starting...!\n");
+    fprintf(MSGLOG, "\nDemo Starting...!\n");
 
 
-	fprintf(MSGLOG, "\nEntering Render Loop...\n");
+    fprintf(MSGLOG, "\nEntering Render Loop...\n");
 
 
-	renderLoop();
+    renderLoop();
 
 
     fprintf(MSGLOG, "\nExited Render Loop!\n");
@@ -398,7 +398,7 @@ void AssetLoadingDemo::loadAssets() {
 
 bool AssetLoadingDemo::loadShaders() { 
     OPTICK_EVENT();
-	const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
+    const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
@@ -419,45 +419,45 @@ bool AssetLoadingDemo::loadShaders() {
 #define USE_RUBYMINE
 
 #ifdef USE_RUBYMINE
-	/////////////////////////
-	////    RubyMine Shader   (from the Internet)
-	/////////////////////////
-	
+    /////////////////////////
+    ////    RubyMine Shader   (from the Internet)
+    /////////////////////////
+    
     //Attach the main shader stages to the sceneShader
-	sceneShader->attachVert(shadersRFP + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
-	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
-	sceneShader->attachFrag(shadersRFP + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
-	shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
-	
+    sceneShader->attachVert(shadersRFP + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
+    shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
+    sceneShader->attachFrag(shadersRFP + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
+    shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
+    
 
 
 #else 
 
-	/////////////////////////
-	////    Normal Shader
-	/////////////////////////
+    /////////////////////////
+    ////    Normal Shader
+    /////////////////////////
 
-	//Attach the main shader stages to the sceneShader
-	sceneShader->attachVert(shadersRFP + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
-	shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.vert", true, ShaderInterface::ShaderType::VERTEX);
-	sceneShader->attachFrag(shadersRFP + "AssetLoadingDemo.frag"); //Attach Fragment shader to scene
-	shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.frag", true, ShaderInterface::ShaderType::FRAGMENT);
+    //Attach the main shader stages to the sceneShader
+    sceneShader->attachVert(shadersRFP + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
+    shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.vert", true, ShaderInterface::ShaderType::VERTEX);
+    sceneShader->attachFrag(shadersRFP + "AssetLoadingDemo.frag"); //Attach Fragment shader to scene
+    shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.frag", true, ShaderInterface::ShaderType::FRAGMENT);
 
-	// [Each shader stage requires its own set of secondary functions]
-	//Create and attach a secondary vertex shader containing implementations for some noise functions
-	std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-		std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
-	vertexNoiseShader->makeSecondary();
-	sceneShader->attachSecondaryVert(vertexNoiseShader.get());
-	shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::VERTEX);
-	///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
+    // [Each shader stage requires its own set of secondary functions]
+    //Create and attach a secondary vertex shader containing implementations for some noise functions
+    std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
+        std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
+    vertexNoiseShader->makeSecondary();
+    sceneShader->attachSecondaryVert(vertexNoiseShader.get());
+    shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::VERTEX);
+    ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
-	//Create and attach a secondary fragment shader containing implementations for some noise functions 
-	std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-		std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
-	fragmentNoiseShader->makeSecondary();
-	sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-	shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+    //Create and attach a secondary fragment shader containing implementations for some noise functions 
+    std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
+        std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+    fragmentNoiseShader->makeSecondary();
+    sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
+    shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
     ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
 #endif //ifdef USE_RUBYMINE or NORMAL
@@ -503,12 +503,12 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
 
 
-    ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
 
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
 
 
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
@@ -517,7 +517,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
-    ///ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
     //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
@@ -621,21 +621,21 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
 void AssetLoadingDemo::loadModels() {
     OPTICK_EVENT();
-	fprintf(MSGLOG, "\nAcquiring and parsing Model(s) data from file(s)...\n");
+    fprintf(MSGLOG, "\nAcquiring and parsing Model(s) data from file(s)...\n");
 
-	//[RFP == Relative File Path]
-	std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
+    //[RFP == Relative File Path]
+    std::string modelsRFP = FILEPATH_TO_MODELS; //Set string to the executable-relative location of Model Files folder
 
-	//              Initial Scale values for the objects
+    //              Initial Scale values for the objects
     //[These should all be 1.0f always to preserve scale between models]
-	constexpr float blockThing_QuadsScale = 1.0f;
-	constexpr float beveledCubeScale = 1.0f;
-	constexpr float blockShipScale = 1.0f;
-	constexpr float subdivisionCubeScale = 1.0f;
-	constexpr float abstractShapeScale = 1.0f;
+    constexpr float blockThing_QuadsScale = 1.0f;
+    constexpr float beveledCubeScale = 1.0f;
+    constexpr float blockShipScale = 1.0f;
+    constexpr float subdivisionCubeScale = 1.0f;
+    constexpr float abstractShapeScale = 1.0f;
 
     ///////////////////////////////////////////////////////////////////////////////////////////// 
-	//                             Load one or more models                                     //  
+    //                             Load one or more models                                     //  
     ///////////////////////////////////////////////////////////////////////////////////////////// 
 
 
@@ -662,12 +662,12 @@ void AssetLoadingDemo::loadModels() {
 
 
     //A very simple large sphere -0
-    worldMeshName = "LargeSphere.obj";
+    //worldMeshName = "LargeSphere.obj";
 
 
 
     //My First Attempt at a skybox cube 
-    //worldMeshName = "AlienWorldSkybox.obj";
+    worldMeshName = "AlienWorldSkybox.obj";
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
@@ -678,27 +678,27 @@ void AssetLoadingDemo::loadModels() {
     /////////////
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
      ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
-	
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
+    
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
    for (int i = 0; i < 10; i++)
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
@@ -725,7 +725,7 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
-	//sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
@@ -739,36 +739,36 @@ void AssetLoadingDemo::loadModels() {
      //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Splines.obj", 1.0f));
      
 
-	//Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
-	///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
+    //Crazy Engine (Takes several minutes to load, model is over 1,000,000 triangles)
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CrazyJetEngine.obj", 4.5f));
 
 
     //Report to console how many models were loaded
-	const size_t loadedModlCount = sceneObjects.size();
-	if (loadedModlCount == 0u) 
-		fprintf(MSGLOG, "\nNo models were loaded!\n");
-	else if (loadedModlCount == 1u) 
-		fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
-	else 
-		fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
-	
+    const size_t loadedModlCount = sceneObjects.size();
+    if (loadedModlCount == 0u) 
+        fprintf(MSGLOG, "\nNo models were loaded!\n");
+    else if (loadedModlCount == 1u) 
+        fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
+    else 
+        fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
+    
 
 }
 
 void AssetLoadingDemo::prepareScene() {
     OPTICK_CATEGORY("All Data Loaded Into Memory", Optick::Category::GPU_VFX);
     OPTICK_EVENT();
-	fprintf(MSGLOG, "\nCreating the primary scene from loaded assets...\n");
-	buildSceneBufferFromLoadedSceneObjects();
+    fprintf(MSGLOG, "\nCreating the primary scene from loaded assets...\n");
+    buildSceneBufferFromLoadedSceneObjects();
     generateTriangleOutlineElementOrdering();
-	fprintf(MSGLOG, "Primary scene creation complete!\n\n");
+    fprintf(MSGLOG, "Primary scene creation complete!\n\n");
 
     createSceneVBO();
     createTriangleOutlineEBO();
 
-	fprintf(MSGLOG, "Uploading scene buffer to GPU...\n");
-	uploadSceneBufferToGPU(sceneBufferVBO, sceneBuffer);
-	configureVertexArrayAttributes(); 
+    fprintf(MSGLOG, "Uploading scene buffer to GPU...\n");
+    uploadSceneBufferToGPU(sceneBufferVBO, sceneBuffer);
+    configureVertexArrayAttributes(); 
     uploadTriangleOutlineElementOrderingBufferToGPU(triangleOutlineEBO,
                                                     triangleOutlineElementOrdering);
 }
@@ -794,7 +794,7 @@ void AssetLoadingDemo::renderLoop() {
         return;
     }
 
-	while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
+    while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
 
        
         //------------------------------------------------------
@@ -1009,26 +1009,26 @@ inline bool AssetLoadingDemo::checkIfShouldTogglePerformanceReporting() const no
 }
 
 inline bool AssetLoadingDemo::checkIfShouldPause() const noexcept {
-	if ((frameCounter >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
-		&& (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
-		return true;
-	}
-	return false;
+    if ((frameCounter >= (frameUnpaused + DELAY_LENGTH_OF_PAUSE_CHECKING_AFTER_UNPAUSE))
+        && (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS)) {
+        return true;
+    }
+    return false;
 }
 
 
 inline bool AssetLoadingDemo::checkIfShouldReset() const noexcept {
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
-		return true;
-	return false;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_R) == GLFW_PRESS)
+        return true;
+    return false;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldFreezeTime() const  noexcept {
-	if ((frameCounter - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+    if ((frameCounter - frameTimeFreezeLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_T) == GLFW_PRESS)
             return true;
-	}
-	return false;
+    }
+    return false;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldReverseDirectionOfTime() const noexcept {
@@ -1055,12 +1055,12 @@ inline bool AssetLoadingDemo::checkIfShouldDecreasePassageOfTime() const noexcep
 }
 
 inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const  noexcept {
-	if ((frameCounter - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
-			return true;
-		}
-	}
-	return false;	
+    if ((frameCounter - frameBlendOperationLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_B) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;	
 }
 
 inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept {
@@ -1170,81 +1170,81 @@ inline bool AssetLoadingDemo::checkIfShouldResetCustomShaderParameters() const n
 
 void AssetLoadingDemo::pause() {
     OPTICK_EVENT();
-	const auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
-	auto end = std::chrono::high_resolution_clock::now();
-	fprintf(MSGLOG, "PAUSED!\n");
-	//Upon first pausing, enter into the following loop for a short period of time before moving on to
-	//the full pause loop. This will prevent unpausing from occurring directly after a pause is initiated. 
-	while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000LL) {
-		std::this_thread::sleep_for(std::chrono::nanoseconds(2000000LL));
-		end = std::chrono::high_resolution_clock::now();
-	}
+    const auto begin = std::chrono::high_resolution_clock::now(); //Time measurement
+    auto end = std::chrono::high_resolution_clock::now();
+    fprintf(MSGLOG, "PAUSED!\n");
+    //Upon first pausing, enter into the following loop for a short period of time before moving on to
+    //the full pause loop. This will prevent unpausing from occurring directly after a pause is initiated. 
+    while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() < 300000000LL) {
+        std::this_thread::sleep_for(std::chrono::nanoseconds(2000000LL));
+        end = std::chrono::high_resolution_clock::now();
+    }
 
-	//Enter an infinite loop checking for the unpause key (or exit key) to be pressed
-	while (true) {
-		glfwPollEvents();
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			frameUnpaused = frameCounter;
-			fprintf(MSGLOG, "UNPAUSED!\n");
-			return;
-		}
-		else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
-			return;
-		}
-		else { //wait for a little bit before polling again
-			std::this_thread::sleep_for(std::chrono::nanoseconds(3333333ll));
-		}
-	}
+    //Enter an infinite loop checking for the unpause key (or exit key) to be pressed
+    while (true) {
+        glfwPollEvents();
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            frameUnpaused = frameCounter;
+            fprintf(MSGLOG, "UNPAUSED!\n");
+            return;
+        }
+        else if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
+            return;
+        }
+        else { //wait for a little bit before polling again
+            std::this_thread::sleep_for(std::chrono::nanoseconds(3333333ll));
+        }
+    }
 }
 
 
 void AssetLoadingDemo::reset() noexcept {
     OPTICK_EVENT();
-	fprintf(MSGLOG, "\nReseting Demo...\n");
-	counter = 0.0f; //Reset time to 0
+    fprintf(MSGLOG, "\nReseting Demo...\n");
+    counter = 0.0f; //Reset time to 0
     timeTickRateModifier = 0.0f;
     fov = CAMERA_DEFAULT_FOV;
-	head = 0.0f; //Reset rotation
-	pitch = 0.0f;
-	roll = 0.0f;
+    head = 0.0f; //Reset rotation
+    pitch = 0.0f;
+    roll = 0.0f;
     cameraPos = CAMERA_POSITION;
-	xTranslation = 0.0f;
-	yTranslation = 0.0f;
+    xTranslation = 0.0f;
+    yTranslation = 0.0f;
     zTranslation = 0.0f;
-	backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
-	frameCounter = 0ull;
-	frameUnpaused = 0ull;
-	frameLineTypeLastSwitched = 0ull;
-	frameInstancedDrawingBehaviorLastToggled = 0ull;
-	frameInstancedDrawingCountLastModified = 0ull;
-	frameTimeFreezeLastToggled = 0ull;
-	frameBlendOperationLastToggled = 0ull;
+    backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
+    frameCounter = 0ull;
+    frameUnpaused = 0ull;
+    frameLineTypeLastSwitched = 0ull;
+    frameInstancedDrawingBehaviorLastToggled = 0ull;
+    frameInstancedDrawingCountLastModified = 0ull;
+    frameTimeFreezeLastToggled = 0ull;
+    frameBlendOperationLastToggled = 0ull;
     frameDepthClampLastToggled = 0ull;
     frameThatTimePropogationWasLastReversed = 0ULL;
     frameThatCustomShaderParameter1LastModified = 0ULL;
     frameThatCustomShaderParameter2LastModified = 0ULL;
     frameThatCustomShaderParameter3LastModified = 0ULL;
     framePerformanceReportingLastToggled = 0ULL;
-	zoom = 1.0f;
-	if (drawMultipleInstances) 
-		instanceCount = STARTING_INSTANCE_COUNT;
-	
+    zoom = 1.0f;
+    if (drawMultipleInstances) 
+        instanceCount = STARTING_INSTANCE_COUNT;
+    
     
     recomputeProjectionMatrix();
 }
 
 void AssetLoadingDemo::toggleTimeFreeze() noexcept {
     OPTICK_EVENT();
-	//Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
-	frameTimeFreezeLastToggled = frameCounter;
-	freezeTimeToggle = !freezeTimeToggle;
-	if (freezeTimeToggle) 
-		fprintf(MSGLOG, "Time Frozen!\n");
-	
-	else 
-		fprintf(MSGLOG, "Time Unfrozen!\n");
-	
+    //Note that it is vitally important that 'frameTimeFreezeLastToggled' is updated to match the current 'frameNumber'
+    frameTimeFreezeLastToggled = frameCounter;
+    freezeTimeToggle = !freezeTimeToggle;
+    if (freezeTimeToggle) 
+        fprintf(MSGLOG, "Time Frozen!\n");
+    
+    else 
+        fprintf(MSGLOG, "Time Unfrozen!\n");
+    
 }
 
 void AssetLoadingDemo::reverseTime() noexcept {
@@ -1291,20 +1291,20 @@ void AssetLoadingDemo::decreasePassageToTime() noexcept {
 
 void AssetLoadingDemo::toggleBlending() noexcept {
     OPTICK_EVENT();
-	//Note that it is vitally important that 'frameBlendOperationLastToggled' is updated to match the current 'frameNumber'
-	frameBlendOperationLastToggled = frameCounter;
+    //Note that it is vitally important that 'frameBlendOperationLastToggled' is updated to match the current 'frameNumber'
+    frameBlendOperationLastToggled = frameCounter;
 
-	enableBlending = !enableBlending;
-	if (enableBlending) {
-		fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to \'ONE_MINUS_SOURCE_ALPHA\' \n");
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-	else {
-		fprintf(MSGLOG, "Blending Disabled!\n");
-		glDisable(GL_BLEND);
-	}
+    enableBlending = !enableBlending;
+    if (enableBlending) {
+        fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to \'ONE_MINUS_SOURCE_ALPHA\' \n");
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    else {
+        fprintf(MSGLOG, "Blending Disabled!\n");
+        glDisable(GL_BLEND);
+    }
 }
 
 void AssetLoadingDemo::toggleDepthClamping() noexcept {
@@ -1422,32 +1422,32 @@ void AssetLoadingDemo::changePrimitiveType() {
 
 void AssetLoadingDemo::changeInstancedDrawingBehavior() noexcept {
     OPTICK_EVENT();
-	if ((frameCounter - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
-		if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
-			frameInstancedDrawingBehaviorLastToggled = frameCounter; //Mark the current frame as being the one when instanced drawing behavior was last toggled
-			drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
-			fprintf(MSGLOG, "Instanced Rendering set to: %s",
-				(drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
-		}
-	}
+    if ((frameCounter - frameInstancedDrawingBehaviorLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_I) == GLFW_PRESS) {
+            frameInstancedDrawingBehaviorLastToggled = frameCounter; //Mark the current frame as being the one when instanced drawing behavior was last toggled
+            drawMultipleInstances = !drawMultipleInstances; //Perform Toggle
+            fprintf(MSGLOG, "Instanced Rendering set to: %s",
+                (drawMultipleInstances ? ("Enabled\n") : ("Disabled\n")));
+        }
+    }
 
-	//Only allow the instance count to be modified every 10 frames (1/6th second)
-	if ((frameCounter - frameInstancedDrawingCountLastModified) > 10ull) {
-		if (drawMultipleInstances) {
-			if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
-				frameInstancedDrawingBehaviorLastToggled = frameCounter; 
+    //Only allow the instance count to be modified every 10 frames (1/6th second)
+    if ((frameCounter - frameInstancedDrawingCountLastModified) > 10ull) {
+        if (drawMultipleInstances) {
+            if (glfwGetKey(mainRenderWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+                frameInstancedDrawingBehaviorLastToggled = frameCounter; 
                 instanceCount += static_cast<GLsizei>(1.0f * getShiftBoost());
-				fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
-			}
-			else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
-				if (instanceCount > 0u) { //Don't decrement unsigned value below 0
-					frameInstancedDrawingBehaviorLastToggled = frameCounter;
+                fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
+            }
+            else if (glfwGetKey(mainRenderWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
+                if (instanceCount > 0u) { //Don't decrement unsigned value below 0
+                    frameInstancedDrawingBehaviorLastToggled = frameCounter;
                     instanceCount -= static_cast<GLsizei>(1.0f * getShiftBoost());
-					fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
-				}
-			}
-		}
-	}
+                    fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
+                }
+            }
+        }
+    }
 
     if (instanceCount < 0)
         instanceCount = 0;
@@ -1565,7 +1565,7 @@ void AssetLoadingDemo::rotate() noexcept {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_E) == GLFW_PRESS)
             head -= HEAD_DELTA_RSHIFT;
     }
-	else {
+    else {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
             pitch += PITCH_DELTA_LRSHIFT;
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
@@ -1628,33 +1628,33 @@ void AssetLoadingDemo::changeZoom() noexcept {
 
 void AssetLoadingDemo::translate() noexcept {
     OPTICK_EVENT();
-	float turbo = 1.0f;
-	const float xSpeed = 0.1f;
-	const float ySpeed = 0.1f;
+    float turbo = 1.0f;
+    const float xSpeed = 0.1f;
+    const float ySpeed = 0.1f;
     const float zSpeed = 0.08f;
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-		turbo = 5.0f;
-	}
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-		turbo *= 4.0f;
-	}
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        turbo = 5.0f;
+    }
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+        turbo *= 4.0f;
+    }
 
-	//UP/Down
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_W) == GLFW_PRESS) {
-		yTranslation += turbo * ySpeed;
-	}
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
-		yTranslation -= turbo * ySpeed;
-	}
+    //UP/Down
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_W) == GLFW_PRESS) {
+        yTranslation += turbo * ySpeed;
+    }
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_S) == GLFW_PRESS) {
+        yTranslation -= turbo * ySpeed;
+    }
 
 
-	//Left/Right
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_A) == GLFW_PRESS) {
-		xTranslation += turbo * xSpeed;
-	}
-	if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
-		xTranslation -= turbo * xSpeed;
-	}
+    //Left/Right
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_A) == GLFW_PRESS) {
+        xTranslation += turbo * xSpeed;
+    }
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_D) == GLFW_PRESS) {
+        xTranslation -= turbo * xSpeed;
+    }
 
     //Forward and backwards
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_KP_ADD) == GLFW_PRESS) {
@@ -1696,83 +1696,83 @@ void AssetLoadingDemo::computeLogic() {
 
 bool AssetLoadingDemo::checkForUpdatedShaders() {
     OPTICK_EVENT();
-	for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
-		if (iter->file.hasUpdatedFileAvailable()) {
-			fprintf(MSGLOG, "\nDetected that shader %s has been updated. Rebuilding Shaders...\n", iter->file.filepath().c_str());
-			return true;
-		}
-	}
-	return false;
+    for (auto iter = shaderSources.begin(); iter != shaderSources.end(); iter++) {
+        if (iter->file.hasUpdatedFileAvailable()) {
+            fprintf(MSGLOG, "\nDetected that shader %s has been updated. Rebuilding Shaders...\n", iter->file.filepath().c_str());
+            return true;
+        }
+    }
+    return false;
 }
 
 void AssetLoadingDemo::buildNewShader() {
     OPTICK_EVENT();
-	std::string shadersRFP = FILEPATH_TO_SHADERS;
-	//backupSceneShader = nullptr;
-	backupSceneShader = std::make_unique<ShaderProgram>();
-	for (auto shaderIterator = shaderSources.begin(); shaderIterator != shaderSources.end(); shaderIterator++) {
-		
-		switch (shaderIterator->type) {
-		case (ShaderInterface::ShaderType::VERTEX):
-			if (shaderIterator->primary)
-				backupSceneShader->attachVert(shaderIterator->file.filepath().c_str());
-			else {
-				std::unique_ptr<ShaderInterface::VertexShader> secondaryVertexShader =
-					std::make_unique<ShaderInterface::VertexShader>(shaderIterator->file.filepath().c_str());
-				secondaryVertexShader->makeSecondary();
-				backupSceneShader->attachSecondaryVert(secondaryVertexShader.get());
-			}
-			break;
+    std::string shadersRFP = FILEPATH_TO_SHADERS;
+    //backupSceneShader = nullptr;
+    backupSceneShader = std::make_unique<ShaderProgram>();
+    for (auto shaderIterator = shaderSources.begin(); shaderIterator != shaderSources.end(); shaderIterator++) {
+        
+        switch (shaderIterator->type) {
+        case (ShaderInterface::ShaderType::VERTEX):
+            if (shaderIterator->primary)
+                backupSceneShader->attachVert(shaderIterator->file.filepath().c_str());
+            else {
+                std::unique_ptr<ShaderInterface::VertexShader> secondaryVertexShader =
+                    std::make_unique<ShaderInterface::VertexShader>(shaderIterator->file.filepath().c_str());
+                secondaryVertexShader->makeSecondary();
+                backupSceneShader->attachSecondaryVert(secondaryVertexShader.get());
+            }
+            break;
 
-		case (ShaderInterface::ShaderType::GEOMETRY):
-			fprintf(MSGLOG, "\nDetected that a geometry shader was updated!\n"
-				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
-			break;
+        case (ShaderInterface::ShaderType::GEOMETRY):
+            fprintf(MSGLOG, "\nDetected that a geometry shader was updated!\n"
+                "Unfortunately that type of shader is not yet supported for dynamic updates!\n");
+            break;
 
-		case (ShaderInterface::ShaderType::TESSELLATION_CONTROL):
-			fprintf(MSGLOG, "\nDetected that a Tessellation Control shader was updated!\n"
-				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
-			break;
+        case (ShaderInterface::ShaderType::TESSELLATION_CONTROL):
+            fprintf(MSGLOG, "\nDetected that a Tessellation Control shader was updated!\n"
+                "Unfortunately that type of shader is not yet supported for dynamic updates!\n");
+            break;
 
-		case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
-			fprintf(MSGLOG, "\nDetected that a Tessellation Evaluation shader was updated!\n"
-				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
-			break;
+        case (ShaderInterface::ShaderType::TESSELATION_EVALUATION):
+            fprintf(MSGLOG, "\nDetected that a Tessellation Evaluation shader was updated!\n"
+                "Unfortunately that type of shader is not yet supported for dynamic updates!\n");
+            break;
 
-		case (ShaderInterface::ShaderType::FRAGMENT):
-			if (shaderIterator->primary)
-				backupSceneShader->attachFrag(shaderIterator->file.filepath().c_str());
-			else {
-				std::unique_ptr<ShaderInterface::FragmentShader> secondaryFragmentShader =
-					std::make_unique<ShaderInterface::FragmentShader>(shaderIterator->file.filepath().c_str());
-				secondaryFragmentShader->makeSecondary();
-				backupSceneShader->attachSecondaryFrag(secondaryFragmentShader.get());
-			}
-			break;
+        case (ShaderInterface::ShaderType::FRAGMENT):
+            if (shaderIterator->primary)
+                backupSceneShader->attachFrag(shaderIterator->file.filepath().c_str());
+            else {
+                std::unique_ptr<ShaderInterface::FragmentShader> secondaryFragmentShader =
+                    std::make_unique<ShaderInterface::FragmentShader>(shaderIterator->file.filepath().c_str());
+                secondaryFragmentShader->makeSecondary();
+                backupSceneShader->attachSecondaryFrag(secondaryFragmentShader.get());
+            }
+            break;
 
-		case (ShaderInterface::ShaderType::COMPUTE):
-			fprintf(MSGLOG, "\nDetected that a Compute shader was updated!\n"
-				"Unfortunately that type of shader is not yet supported for dynamic updates!\n");
-			break;
+        case (ShaderInterface::ShaderType::COMPUTE):
+            fprintf(MSGLOG, "\nDetected that a Compute shader was updated!\n"
+                "Unfortunately that type of shader is not yet supported for dynamic updates!\n");
+            break;
 
-		default: // (Default should never happen so the message to be printed is a bit ridiculous)
-			fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!  What the heck type of shader are you updating?!?!\n");
-			return;
-		}
-	}
-		//Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
-		backupSceneShader->link();
-		if (backupSceneShader->checkIfLinked()) {
-			fprintf(MSGLOG, "New Program Successfully linked!\n");
-			sceneShader.release();
-			sceneShader = std::move(backupSceneShader);
-		}
-		else {
-			fprintf(ERRLOG, "New Shader Program was not successfully linked!\n");
-			//fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n"); //
-			//std::cin.get(); //Hold the mainRenderWindow open if there was an error
-		}
-	
+        default: // (Default should never happen so the message to be printed is a bit ridiculous)
+            fprintf(ERRLOG, "\nERROR!!!!!!!!!!!!!!!!  What the heck type of shader are you updating?!?!\n");
+            return;
+        }
+    }
+        //Now after all the stages to the shader have been created and attached, it is time to link the sceneShader
+        backupSceneShader->link();
+        if (backupSceneShader->checkIfLinked()) {
+            fprintf(MSGLOG, "New Program Successfully linked!\n");
+            sceneShader.release();
+            sceneShader = std::move(backupSceneShader);
+        }
+        else {
+            fprintf(ERRLOG, "New Shader Program was not successfully linked!\n");
+            //fprintf(MSGLOG, "\t[Press 'ENTER' to attempt to continue program execution]\n"); //
+            //std::cin.get(); //Hold the mainRenderWindow open if there was an error
+        }
+    
 }
 
 //Eventually this ugly implementation logic should get moved to be a member of the
@@ -2083,33 +2083,33 @@ void AssetLoadingDemo::renderScene() {
 
 void AssetLoadingDemo::updateFrameClearColor() {
     OPTICK_EVENT();
-	if constexpr (true) {
-		glClearColor(0.000932f, 0.000924f, 0.0009135f, 1.0f);
-		//glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
-	}
-	else /*if constexpr (false)*/ {
-		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
-		backgroundColor.x = abs(sin(counter + backgroundColor.x));
-		backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
-		backgroundColor.z = abs(sin(counter + backgroundColor.y + PI / 2.0f));
+    if constexpr (true) {
+        glClearColor(0.000932f, 0.000924f, 0.0009135f, 1.0f);
+        //glClearColor(0.132f, 0.24f, 0.135f, 1.0f);
+    }
+    else /*if constexpr (false)*/ {
+        glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0);
+        backgroundColor.x = abs(sin(counter + backgroundColor.x));
+        backgroundColor.y = abs(sin(counter + backgroundColor.y + PI / 3.0f));
+        backgroundColor.z = abs(sin(counter + backgroundColor.y + PI / 2.0f));
 
-		
-		backgroundColor /= backgroundColor.length(); //normalize backgroundColor
-		//backgroundColor = glm::normalize(backgroundColor); //Keep background color normalized
+        
+        backgroundColor /= backgroundColor.length(); //normalize backgroundColor
+        //backgroundColor = glm::normalize(backgroundColor); //Keep background color normalized
 
-		/*
-		//Experiment:
-		glm::vec3 divideCalculation = backgroundColor;
-		fprintf(MSGLOG, "Background is:   Red=%f,  Green=%f,   Blue=%f\n", divideCalculation.r, divideCalculation.b, divideCalculation.g);
-		
-		//A second experiment:
-		//glm::vec3 bckgrndColorByGLMNormalization = glm::normalize(backgroundColor);
-		//fprintf(MSGLOG, "\nExperiment:  background color is (%f, %f, %f) and glm::normalize(background) is:  (%f, %f, %f)\n"
-		//	"The difference between the two is thus: (%f, %f, %f) \n", backgroundColor.r, backgroundColor.g, backgroundColor.b, bckgrndColorByGLMNormalization.r, bckgrndColorByGLMNormalization.g, bckgrndColorByGLMNormalization.b, backgroundColor.r - bckgrndColorByGLMNormalization.r, backgroundColor.g - bckgrndColorByGLMNormalization.g, backgroundColor.b - bckgrndColorByGLMNormalization.b);
-		//fprintf(MSGLOG, "For reference, length(background) is: %f\n", backgroundColor.length());
-	    */
+        /*
+        //Experiment:
+        glm::vec3 divideCalculation = backgroundColor;
+        fprintf(MSGLOG, "Background is:   Red=%f,  Green=%f,   Blue=%f\n", divideCalculation.r, divideCalculation.b, divideCalculation.g);
+        
+        //A second experiment:
+        //glm::vec3 bckgrndColorByGLMNormalization = glm::normalize(backgroundColor);
+        //fprintf(MSGLOG, "\nExperiment:  background color is (%f, %f, %f) and glm::normalize(background) is:  (%f, %f, %f)\n"
+        //	"The difference between the two is thus: (%f, %f, %f) \n", backgroundColor.r, backgroundColor.g, backgroundColor.b, bckgrndColorByGLMNormalization.r, bckgrndColorByGLMNormalization.g, bckgrndColorByGLMNormalization.b, backgroundColor.r - bckgrndColorByGLMNormalization.r, backgroundColor.g - bckgrndColorByGLMNormalization.g, backgroundColor.b - bckgrndColorByGLMNormalization.b);
+        //fprintf(MSGLOG, "For reference, length(background) is: %f\n", backgroundColor.length());
+        */
 
-	}
+    }
 }
 
 
@@ -2180,8 +2180,8 @@ void AssetLoadingDemo::drawVerts() {
     OPTICK_EVENT();
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
-	//if (sceneShader)
-	//	sceneShader->use();
+    //if (sceneShader)
+    //	sceneShader->use();
 
     if (quadTextureTestShader)
         quadTextureTestShader->use();
@@ -2197,10 +2197,10 @@ void AssetLoadingDemo::drawVerts() {
     /*
     
 void glDrawElementsInstanced(	GLenum mode,
- 	GLsizei count,
- 	GLenum type,
- 	const void * indices,
- 	GLsizei instanceCount);
+    GLsizei count,
+    GLenum type,
+    const void * indices,
+    GLsizei instanceCount);
     */
     if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleOutlineEBO);
@@ -2212,40 +2212,40 @@ void glDrawElementsInstanced(	GLenum mode,
     }
 
 
-	if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
-		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLES, 0, BUFFER_SIZE, instanceCount);
-		else 
-			glDrawArrays(GL_TRIANGLES, 0, BUFFER_SIZE);
-	}
+    if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_TRIANGLES, 0, BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_TRIANGLES, 0, BUFFER_SIZE);
+    }
 
-	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP) {
-		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE, instanceCount);
-		else 
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE);
-	}
+    else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_STRIP) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, BUFFER_SIZE);
+    }
 
-	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN) {
-		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, BUFFER_SIZE, instanceCount);
-		else 
-			glDrawArrays(GL_TRIANGLE_FAN, 0, BUFFER_SIZE);
-	}
+    else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_FAN) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_TRIANGLE_FAN, 0, BUFFER_SIZE);
+    }
 
-	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) {
-		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_LINES, 0, BUFFER_SIZE, instanceCount);
-		else 
-			glDrawArrays(GL_LINES, 0, BUFFER_SIZE);
-	}
+    else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_LINES, 0, BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_LINES, 0, BUFFER_SIZE);
+    }
 
-	else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) {
-		if (drawMultipleInstances) 
-			glDrawArraysInstanced(GL_LINE_STRIP, 0, BUFFER_SIZE, instanceCount);
-		else 
-			glDrawArrays(GL_LINE_STRIP, 0, BUFFER_SIZE);
-	}
+    else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) {
+        if (drawMultipleInstances) 
+            glDrawArraysInstanced(GL_LINE_STRIP, 0, BUFFER_SIZE, instanceCount);
+        else 
+            glDrawArrays(GL_LINE_STRIP, 0, BUFFER_SIZE);
+    }
 
     else if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::POINTS) {
         if (drawMultipleInstances) 
@@ -2284,9 +2284,9 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
         glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
         return;
     }
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBindVertexArray(0);
+    glUseProgram(0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
@@ -2477,20 +2477,20 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
     //This function's purpose is to take this vector of model meshes (each in its own
     //space) and position them into a single mesh all in world space. 
     
-	glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
-	int objectCounter = 0;
+    glm::vec3 objectPositionOffset = POSITION_FIRST_OBJECT_IN_SCENE;
+    int objectCounter = 0;
 
 
-	//Compute the scene size
-	size_t sceneSize = 0u;
-	for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {     
+    //Compute the scene size
+    size_t sceneSize = 0u;
+    for (auto objIter = sceneObjects.begin(); objIter != sceneObjects.end(); objIter++) {     
         sceneSize += (*objIter)->mVertices_.size();             
     }
     
-	
-	//Reserve that much space
-	fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
-	sceneBuffer.reserve(sceneSize); 
+    
+    //Reserve that much space
+    fprintf(MSGLOG, "\nCalculated the final scene size as being %u floating point values!\n\n", sceneSize);
+    sceneBuffer.reserve(sceneSize); 
 
     if (sceneSize == 0)
         return;
@@ -2504,17 +2504,17 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
     fprintf(MSGLOG, "\tAdding Object 0 to scene...\n");
     fprintf(MSGLOG, "\t\tPosition of Object 0:   <0.0f, 0.0f, 0.0f>\n");
 
-	//Iterate through each object in the sceneObjects vector
-	for ( ; sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
-		objectCounter++;
+    //Iterate through each object in the sceneObjects vector
+    for ( ; sceneObjIter != sceneObjects.cend(); sceneObjIter++) {
+        objectCounter++;
 
-		//Objects missing Normal and/or Texture Coordinates will need to have data generated for them
-		//so that all vertices in the scene share the same format
+        //Objects missing Normal and/or Texture Coordinates will need to have data generated for them
+        //so that all vertices in the scene share the same format
 
-		
+        
 
-		//Increment offset to prepare for the next object
-		objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-12.0f, 12.0f);
+        //Increment offset to prepare for the next object
+        objectPositionOffset.x += CHANGE_BETWEEN_OBJECTS.x + MathFunc::getRandomInRangef(-12.0f, 12.0f);
         objectPositionOffset.y += CHANGE_BETWEEN_OBJECTS.y + MathFunc::getRandomInRangef(-6.0f, 6.0f);
         //objectPositionOffset.z += MathFunc::getRandomInRangef(5.0f, 5.0f);
 
@@ -2523,7 +2523,7 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
         fprintf(MSGLOG, "\tAdding Object %d to scene...\n", objectCounter);
         fprintf(MSGLOG, "\t\tPosition of Object %d:   <%3.3f, %3.3f, %3.3f>\n", objectCounter,
             objectPositionOffset.x, objectPositionOffset.y, objectPositionOffset.z);
-	
+    
         addObject(sceneObjIter, objectPositionOffset);
     }
 
@@ -2535,30 +2535,30 @@ void AssetLoadingDemo::buildSceneBufferFromLoadedSceneObjects() {
 //If the object already has both normals and texCoords, then all that is needed to be modified is 
 //the object's position
 void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-	const glm::vec3& objPos) {
+    const glm::vec3& objPos) {
     OPTICK_EVENT();
-	int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
+    int vertComponentCounter = -1; //variable will be incremented to '0' on start of first loop iteration
 
-	auto vertsEnd = (*object)->mVertices_.cend(); //Create a variable for loop exit condition
-	for (auto vertIter = (*object)->mVertices_.cbegin(); vertIter != vertsEnd; vertIter++) {
-		vertComponentCounter = ((vertComponentCounter + 1) % 9);
-		if (vertComponentCounter == 0) {
-			//Add x offset then add to vector
-			sceneBuffer.push_back(objPos.x + (*vertIter));
-		}
-		else if (vertComponentCounter == 1) {
-			//Add y offset then add to vector
-			sceneBuffer.push_back(objPos.y + (*vertIter));
-		}
-		else if (vertComponentCounter == 2) {
-			//Add z offset then add to vector
-			sceneBuffer.push_back(objPos.z + (*vertIter));
-		}
-		else {
-			//add the vertex data straight to vector
-			sceneBuffer.push_back(*vertIter);
-		}
-	}
+    auto vertsEnd = (*object)->mVertices_.cend(); //Create a variable for loop exit condition
+    for (auto vertIter = (*object)->mVertices_.cbegin(); vertIter != vertsEnd; vertIter++) {
+        vertComponentCounter = ((vertComponentCounter + 1) % 9);
+        if (vertComponentCounter == 0) {
+            //Add x offset then add to vector
+            sceneBuffer.push_back(objPos.x + (*vertIter));
+        }
+        else if (vertComponentCounter == 1) {
+            //Add y offset then add to vector
+            sceneBuffer.push_back(objPos.y + (*vertIter));
+        }
+        else if (vertComponentCounter == 2) {
+            //Add z offset then add to vector
+            sceneBuffer.push_back(objPos.z + (*vertIter));
+        }
+        else {
+            //add the vertex data straight to vector
+            sceneBuffer.push_back(*vertIter);
+        }
+    }
 }
 
 
@@ -2602,18 +2602,18 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
             fprintf(WRNLOG, "A Vertex Buffer Object with ID=%u has been created!\n\n", targetVBO);
     }
 
-	const GLsizei vertexCount = computeNumberOfVerticesInSceneBuffer(sceneBuf);
+    const GLsizei vertexCount = computeNumberOfVerticesInSceneBuffer(sceneBuf);
 
 
-	glBindBuffer(GL_ARRAY_BUFFER, targetVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, targetVBO);
 
-	fprintf(MSGLOG, "\nInitiating transfer of the sceneBuffer data from the Application to the GPU.\n"
+    fprintf(MSGLOG, "\nInitiating transfer of the sceneBuffer data from the Application to the GPU.\n"
         "Target destination on GPU is set to use Array Buffer ID %u.\n", targetVBO);
 
     fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
     fprintf(MSGLOG, "There are %d vertices total in the scene, or %d 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
 
-	glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
 
 }
 
@@ -2645,24 +2645,24 @@ void AssetLoadingDemo::uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& e
 void AssetLoadingDemo::configureVertexArrayAttributes() noexcept {
     OPTICK_EVENT();
     if (vao == 0u)
-	    glCreateVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+        glCreateVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
-	///////////////////////////////////////////////////////////////////////
-	//              //Specify the vertex attribute layout//              //
-	///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    //              //Specify the vertex attribute layout//              //
+    ///////////////////////////////////////////////////////////////////////
     
-	//Location 0    Position       4-components 
-	glEnableVertexArrayAttrib(vao, 0); //Requires OpenGl 4.5 or newer, allows VAO to be specified as param (even though that is not necessary here)
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), static_cast<GLvoid*>(0u));
+    //Location 0    Position       4-components 
+    glEnableVertexArrayAttrib(vao, 0); //Requires OpenGl 4.5 or newer, allows VAO to be specified as param (even though that is not necessary here)
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), static_cast<GLvoid*>(0u));
 
-	//Location 1    TexCoords      2-components
-	glEnableVertexArrayAttrib(vao, 1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), (GLvoid*)(4u * sizeof(GLfloat)));
+    //Location 1    TexCoords      2-components
+    glEnableVertexArrayAttrib(vao, 1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), (GLvoid*)(4u * sizeof(GLfloat)));
 
-	//Location 2    Normals        3-components
-	glEnableVertexArrayAttrib(vao, 2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), (GLvoid*)(6u * sizeof(GLfloat)));
+    //Location 2    Normals        3-components
+    glEnableVertexArrayAttrib(vao, 2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, (9u) * sizeof(GLfloat), (GLvoid*)(6u * sizeof(GLfloat)));
 
 
     //Somewhat unrelated note on sending shader's integer values (from OpenGL Insights page 70) 

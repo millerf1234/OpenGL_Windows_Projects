@@ -1854,6 +1854,9 @@
     <None Include="optick\README.md">
       <Filter>Third Party\optick</Filter>
     </None>
+    <None Include="Shaders\DrawTextureOnQuad.frag">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1956,9 +1959,6 @@
     </Text>
     <Text Include="HowToWriteAClass.txt">
       <Filter>NotesAndReferences</Filter>
-    </Text>
-    <Text Include="Shaders\DrawTextureOnQuad.frag">
-      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

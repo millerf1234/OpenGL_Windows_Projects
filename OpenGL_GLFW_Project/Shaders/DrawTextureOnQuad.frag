@@ -1,9 +1,11 @@
+
+#version 450 core
+
 //Fragment shader for the asset loading demo
 //
 // Programmer:  Forrest Miller
 // Date:        November 28, 2018
 
-#version 450 core
 
 
 in VERTEX_SHADER_OUTPUT {  
@@ -59,6 +61,36 @@ float computeCustom2(in const uint seed, in const float seed2) {
     custom2 = seed2 * sin(2.*cos(3.*tan(1.+8.*sin(cos(tan(1.+5.*sin(cos(tan(trigInput)))))))));
     return custom2;
 }
+
+
+//                          TWO WAVE GENERATOR FUNCTIONS
+//Calculation is inspired by the Fourier expansion of
+//Sawtooth waves. see https://en.wikipedia.org/wiki/Square_wave#Fourier_analysis
+//Calling 'sinePartialSummation( 
+float sinePartialSummation(float angularFreq, //angular frequency is (2 * PI * Frequency)  
+                           int terms, //How many terms in series to compute. Must be 1 or greater 
+                           int harmonicMultiple) {//Distance Between Frequency Multiples) {
+    
+    const float SUMMATION_FACTOR = 2. / 3.14159;
+    const int termsToCompute = max(1, terms);
+    const int harmonicIntervalSpacing = max(1, harmonicMultiple);
+    float summation = sin(angularFreq * time);
+    for (int i = 1; i <= termsToCompute; i++) {
+        const float harmonic = 1. + float(i * harmonicIntervalSpacing);
+        const float sign = pow(1., float(i * harmonicIntervalSpacing));
+        summation += sign*(sin((harmonic*angularFreq)*time) / harmonic);
+    }
+    return  SUMMATION_FACTOR*summation;
+}
+/* DISABLED FOR NOW
+float cosinePartialSummation(float x, int termsToCompute, float harmonicIntervalSpacing) {
+    float summation = cos(x);
+    for (int i = 1; i <= max(1, termsToCompute); i++) {
+        summation += (1. / (2. * i + 1.)) * cos((1. + i * harmonicIntervalSpacing) * x);
+    }
+    return ((4. / 3.1416) * summation);
+} */
+
 
 
 
@@ -183,10 +215,28 @@ color = normalize(ambient + diffuse);
 
     //PSYCH! We are not quite yet ready
     
-    if (customParameter1 % 5u == 1u) {
-        
-        finalColor.r = finalColor.g/finalColor.b;
-        finalColor.g = finalColor.b/finalColor.r;
+    if (customParameter1 % 5u == 1u) { 
+        float instanceFactor = processed_vertex.instanceID + (abs(sin(time - log(min(3., processed_vertex.instanceID)))) / 2.);
+        float vertexFactor = sinePartialSummation(min(log(17.3*processed_vertex.vertID), 2.66),
+                                                  7, 1);
+        float combinedFactor = (instanceFactor + vertexFactor);
+        float trigNoise = abs(sin(time+cnoise(vec4(instanceFactor *(finalColor.g / finalColor.b),
+                                                   vertexFactor * (finalColor.g / finalColor.r),
+                                                   combinedFactor * (finalColor.b / finalColor.g),
+                                                   snoise(time*vec3(instanceFactor+time,
+                                                                    vertexFactor + time,
+                                                                    combinedFactor * time)
+                                                         )
+                                                  )
+                                             )
+                                 )
+                             );
+        finalColor.r = (3. * finalColor.r / 7.);
+        finalColor.r = smoothstep(0.2,
+                                  finalColor.r + (1.-finalColor.r)*abs(cos(time + trigNoise)),
+                                  abs(sinePartialSummation(.1019 + 0.*sqrt(abs(processed_vertex.vertID 
+                                      - sqrt(time*snoise(vec2(cos(time), sin(time)))))), 9, 2)));
+        finalColor.g = (6.0*finalColor.g*abs(sin(trigNoise)) / 7.0);
         finalColor.b = smoothstep(min(finalColor.r / 2., finalColor.g / 2.),
                              max(finalColor.r + finalColor.g + .4, length(finalColor)),
                              finalColor.b);
@@ -199,14 +249,49 @@ color = normalize(ambient + diffuse);
                               0., 1.);
     }
     else if (customParameter1 % 5u == 3u) {
-        finalColor.rgba = finalColor.brag;
+        
+        const float noiseInputAmplitude = 3.;
+        const vec3 trigNoiseInput_Steady = noiseInputAmplitude * vec3( sinePartialSummation(8., 8, 3),
+                                                                       sinePartialSummation(11.4, 8, 1),
+                                                                       sinePartialSummation(27.1, 8, 4));
+        const float rFactor = min(finalColor.r, 1. - finalColor.r);
+        const float gFactor = min(finalColor.g, 1. - finalColor.g);
+        const float bFactor = min(finalColor.b, 1. - finalColor.b);
+
+        const float rNoise = rFactor * clamp(sinePartialSummation(snoise(trigNoiseInput_Steady),5, 7),
+                                             0.0,
+                                             1.0);
+        const float alphaNoise = 0.65 + 0.25 * sin(cos(tan(snoise(trigNoiseInput_Steady))));
+        finalColor.a = .5 * (finalColor.a + alphaNoise);
     }
+
+    /*
+float noise(float p);
+float noise(vec2 n);
+float noise(vec3 P);
+//Perlin
+float pNoise(vec2 p, int res);
+//Periodic Perlin
+float cnoise(vec4 P);
+//Classical Periodic Perlin
+float cnoise(vec4 P, vec4 rep);
+//Simple
+float snoise(vec2 v);
+float snoise(vec3 v);
+float snoise(vec4 v);
+//Fractal Brownian Motion
+float fbm(float x);
+float fbm(vec2 x);
+float fbm(vec3 x);
+    */
+
 
     else if (customParameter1 % 5u == 4u) {
         finalColor.rgb = mix(finalColor.rgb, vec3(0.5 + 0.5 * sin(snoise(vec3(time) + finalColor.rgb)),
                                                   0.6 - abs(0.4 * cos(snoise(time * finalColor))),
                                                   0.8 - abs(cos(sin(snoise(vec2(time, processed_vertex.vertIDMod)))))),
                              0.6 + .4*cos(time + 30.*snoise(gl_FragCoord.xy)));
+
     }
 
     
