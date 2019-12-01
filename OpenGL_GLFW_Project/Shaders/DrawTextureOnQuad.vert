@@ -74,7 +74,8 @@ int getVertIDMod(in int vertexID) {
 }
 
 vec2 rotate2(const in vec2 v, const in float theta) {
-    const mat2 rotation = mat2(cos(theta), sin(theta), -sin(theta), cos(theta));
+    const mat2 rotation = mat2(cos(theta), sin(theta),
+                              -sin(theta), cos(theta));
     return rotation * v;
 }
 
