@@ -75,15 +75,19 @@ void Application::initialize() {
         fprintf(MSGLOG, "\n%s\n", supportedConcurrentThreadsMessage.str().c_str());
 
         //----------------------------------------------------------------
-        // Print the maximum number of bytes a multibyte character may be
+        // Print the maximum number of bytes a multi-byte character may be
         // on this platform (only do so if MB_CUR_MAX is defined)
 #ifdef MB_CUR_MAX
-        static constexpr const int MAX_BYTES_IN_A_MULTIBYTE_CHAR = static_cast<int>(MB_CUR_MAX);
-        fprintf(MSGLOG,
-                "[ ~DEBUG~ ] Maximum number of bytes allowed in a multi-byte\n"
-                "            character on this platform:                      "
-                "      %d\n",
-                MAX_BYTES_IN_A_MULTIBYTE_CHAR);
+        const uint64_t MAX_BYTES_IN_A_MULTIBYTE_CHAR =
+            static_cast<uint64_t>(MB_CUR_MAX);
+        const std::string mbCurMaxMessage = std::string(""
+            "[ ~DEBUG~ ] Maximum number of bytes allowed in a multi-byte\n"
+            "            character on this platform:                     "
+            "      " + std::to_string(MAX_BYTES_IN_A_MULTIBYTE_CHAR));
+        if (MAX_BYTES_IN_A_MULTIBYTE_CHAR > static_cast<uint64_t>(1u))
+            fprintf(MSGLOG, "%s Bytes\n", mbCurMaxMessage.c_str());
+        else 
+            fprintf(MSGLOG, "%s Byte\n", mbCurMaxMessage.c_str());
 #endif //MB_CUR_MAX
 
         //----------------------------------------------------------------
