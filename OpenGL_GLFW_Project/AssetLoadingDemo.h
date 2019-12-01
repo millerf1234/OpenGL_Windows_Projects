@@ -27,7 +27,7 @@
 #define ASSET_LOADING_DEMO_H_
 
 #include <thread>
-#include <math.h>
+#include <cmath> 
 #include <functional>   //std::function
 
 #include "GlobalIncludes.h"
