@@ -9,7 +9,7 @@
 
 
 in VERTEX_SHADER_OUTPUT {  
-    float vertID;
+    float vertID; 
     float vertIDMod;
     float instanceID;
     vec4 position;
@@ -24,7 +24,7 @@ uniform float time;
 uniform mat4 rotation;
 
 uniform uint customParameter1, customParameter2, customParameter3;
-const uint lightingVersion = customParameter1 % 3U;
+const uint lightingVersion = (customParameter1 % 3U);
 
 //*******************************************************
 //External Noise Function Declarations
@@ -38,7 +38,7 @@ float cnoise(vec4 P);
 //Classical Periodic Perlin
 float cnoise(vec4 P, vec4 rep);
 //Simple
-float snoise(vec2 v);
+float snoise(vec2 v); 
 float snoise(vec3 v);
 float snoise(vec4 v);
 //Fractal Brownian Motion
@@ -107,7 +107,7 @@ void main() {
 //This first one is the best one so far for demonstrating a solid texture mapped model
 #if 0
 
-color = texture(tex_object, processed_vertex.texCoord) - vec4(.2, 0., 0., .5);
+color = texture(tex_object, processed_vertex.texCoord); //- vec4(.2, 0., 0., .5);
 
 #elif 0
 
@@ -163,7 +163,7 @@ color = normalize(ambient + diffuse);
 
     const float diffuse = dot(normalize(processed_vertex.position.xyz),
                               normalize(lightPos));
-    const float diffuseMag = .4335;
+    const float diffuseMag = .5335 + 0.092 * sinePartialSummation(.0135+.0195*sin(.05*time), 4, 2);
     const float oneMinusDiffuseMag = 1. - diffuseMag;
     
 
@@ -216,16 +216,17 @@ color = normalize(ambient + diffuse);
     //PSYCH! We are not quite yet ready
     
     if (customParameter1 % 5u == 1u) { 
+    const vec4 finalColorBackup = finalColor;
         float instanceFactor = processed_vertex.instanceID + (abs(sin(time - log(min(3., processed_vertex.instanceID)))) / 2.);
-        float vertexFactor = sinePartialSummation(min(log(17.3*processed_vertex.vertID), 2.66),
-                                                  7, 1);
+        float vertexFactor = sinePartialSummation(1./max(log(17.3*processed_vertex.vertID), 2.66),
+                                                  2*int(processed_vertex.vertIDMod + 1), 1);
         float combinedFactor = (instanceFactor + vertexFactor);
         float trigNoise = abs(sin(time+cnoise(vec4(instanceFactor *(finalColor.g / finalColor.b),
                                                    vertexFactor * (finalColor.g / finalColor.r),
                                                    combinedFactor * (finalColor.b / finalColor.g),
-                                                   snoise(time*vec3(instanceFactor+time,
-                                                                    vertexFactor + time,
-                                                                    combinedFactor * time)
+                                                   snoise(vec3(instanceFactor + time,
+                                                               vertexFactor + 3./7.*time,
+                                                               combinedFactor + 17./36.7*time)
                                                          )
                                                   )
                                              )
@@ -234,12 +235,13 @@ color = normalize(ambient + diffuse);
         finalColor.r = (3. * finalColor.r / 7.);
         finalColor.r = smoothstep(0.2,
                                   finalColor.r + (1.-finalColor.r)*abs(cos(time + trigNoise)),
-                                  abs(sinePartialSummation(.1019 + 0.*sqrt(abs(processed_vertex.vertID 
-                                      - sqrt(time*snoise(vec2(cos(time), sin(time)))))), 9, 2)));
+                                  .6 + .395*sinePartialSummation(.005, 4, 1));
         finalColor.g = (6.0*finalColor.g*abs(sin(trigNoise)) / 7.0);
-        finalColor.b = smoothstep(min(finalColor.r / 2., finalColor.g / 2.),
-                             max(finalColor.r + finalColor.g + .4, length(finalColor)),
+        finalColor.b = smoothstep(.3, 1.,
+                            
                              finalColor.b);
+       finalColor.rgb = (1.+.35*snoise(finalColor))*finalColorBackup.rgb;
+       finalColor.a = finalColor.a / (1. + .5*floor(processed_vertex.vertIDMod / 4.));
     }
     else if (customParameter1 % 5u == 2u) {
         const float temp = finalColor.b;
@@ -290,7 +292,7 @@ float fbm(vec3 x);
         finalColor.rgb = mix(finalColor.rgb, vec3(0.5 + 0.5 * sin(snoise(vec3(time) + finalColor.rgb)),
                                                   0.6 - abs(0.4 * cos(snoise(time * finalColor))),
                                                   0.8 - abs(cos(sin(snoise(vec2(time, processed_vertex.vertIDMod)))))),
-                             0.6 + .4*cos(time + 30.*snoise(gl_FragCoord.xy)));
+                                                  0.64 + .36*cos(time + 30.*snoise(3.*gl_FragCoord.xy)));
 
     }
 
@@ -328,7 +330,7 @@ float fbm(vec3 x);
     finalColor.a *= .244*diffuse;
 
     finalColor.a = clamp(finalColor.a, .135, .92);
-    finalColor.a += .000195*processed_vertex.vertID;
+    //finalColor.a += .000195*processed_vertex.vertID;
     color = finalColor;
     #endif 
 }
