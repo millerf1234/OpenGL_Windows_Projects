@@ -624,9 +624,6 @@
     <ClCompile Include="Lightsource.cpp">
       <Filter>Source Files\Utility\Lightsource\HalfFinished</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LightsourceTestDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\LightsourceTest</Filter>
     </ClCompile>
@@ -857,6 +854,9 @@
     </ClCompile>
     <ClCompile Include="optick\src\optick_server.cpp">
       <Filter>Third Party\optick\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

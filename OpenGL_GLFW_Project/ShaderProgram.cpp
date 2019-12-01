@@ -997,7 +997,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         //                     Excessively. Hence The Nested 'try' Statements Are Needed 
         //                     As A Work Around.
 #ifdef USE_EXCEPTION_NAIVE_IMPL
-        //Look how simple this function could be...
+        //Look how simple this function could be if we didn't care about exceptions...
         uniforms.activateUniformLocationTracker(mProgramID);
 #else 
         std::string exceptionMsg(R"(No Message)"); //Construct a string without allocating data
