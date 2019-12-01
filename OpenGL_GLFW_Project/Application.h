@@ -45,7 +45,7 @@ class Timepoint;
 
 class Application final {
 public:
-    Application();
+    Application() noexcept;
     ~Application() noexcept;
     void launch();
 

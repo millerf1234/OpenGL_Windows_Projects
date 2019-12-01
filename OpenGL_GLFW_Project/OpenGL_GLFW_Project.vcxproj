@@ -584,12 +584,12 @@
     <None Include="Shaders\AssetLoadingDemo.frag" />
     <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
-    <None Include="Shaders\DrawTextureOnQuad.frag">
+    <Text Include="Shaders\DrawTextureOnQuad.frag">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <DeploymentContent>true</DeploymentContent>
-    </None>
+      <DeploymentContent>false</DeploymentContent>
+    </Text>
     <None Include="Shaders\DrawTextureOnQuad.vert" />
     <None Include="Shaders\FlyingCameraDemo.frag" />
     <None Include="Shaders\FlyingCameraDemo.vert" />
@@ -780,6 +780,7 @@
     <Image Include="Images\OuterSpaceScreenshots\scr00024.tga" />
     <Image Include="Images\OuterSpaceScreenshots\scr00025.tga" />
     <Image Include="Images\OuterSpaceScreenshots\scr00026.tga" />
+    <Image Include="Images\OuterSpaceScreenshots\scr00028.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00041.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00043.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg" />
@@ -804,6 +805,7 @@
     <Image Include="Images\OuterSpaceScreenshots\scr00249.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00253.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg" />
+    <Image Include="Images\OuterSpaceScreenshots\scr10011.jpg" />
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
     <Image Include="obj\2DTexturedQuadPlaneTexture.png" />

@@ -163,7 +163,7 @@ color = normalize(ambient + diffuse);
 
     const float diffuse = dot(normalize(processed_vertex.position.xyz),
                               normalize(lightPos));
-    const float diffuseMag = .5335 + 0.092 * sinePartialSummation(.0135+.0195*sin(.05*time), 4, 2);
+    const float diffuseMag = .5335 + 0.192 * sinePartialSummation(.0135+.0195*sin(.05*time), 4, 2);
     const float oneMinusDiffuseMag = 1. - diffuseMag;
     
 

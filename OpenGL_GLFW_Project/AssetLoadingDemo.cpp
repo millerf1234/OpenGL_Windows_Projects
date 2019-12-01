@@ -258,11 +258,11 @@ void AssetLoadingDemo::initialize() {
     head = 0.0f;
     pitch = 0.0f;
     roll = 0.0f;
-    //Calculate rotation matrix
+    //Calculate initial rotation matrix
     rotation = glm::mat4(1.0f);   //Initialize the rotation matrix to 4x4 identity matrix
     //                            //(it will be set to a real rotation matrix later)
 
-    //Keep an extra zoom parameter
+
     zoom = 1.0f; //Higher number means farther away
 
 
@@ -408,8 +408,8 @@ bool AssetLoadingDemo::loadShaders() {
     }
     else {
         if (!loadTexture2DFromImageFile()) {
-            fprintf(ERRLOG, "\nError loading texture from TGA file!\n");
-            std::exit(EXIT_FAILURE);
+            fprintf(ERRLOG, "\nError loading texture from image file!\n");
+            //std::exit(EXIT_FAILURE);
         }
     }
 
@@ -508,7 +508,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
 
 
-    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
@@ -523,6 +523,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
     ///ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
@@ -530,8 +531,9 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
-
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
     //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
 
 
@@ -548,10 +550,10 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     glCreateTextures(GL_TEXTURE_2D, 1, &practiceTexture);
     //Specify Storage To Be Used For The Texture
     glTextureStorage2D(practiceTexture,
-        1,
-        testDefaultImage.internalFormat(),
-        testDefaultImage.width(),
-        testDefaultImage.height());
+                       1,
+                       testDefaultImage.internalFormat(),
+                       testDefaultImage.width(),
+                       testDefaultImage.height());
     glBindTexture(GL_TEXTURE_2D, practiceTexture);
 
 
@@ -658,16 +660,16 @@ void AssetLoadingDemo::loadModels() {
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    //worldMeshName = "SimpleSkyDome_ReExport.obj";
+    worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
-    //A very simple large sphere -0
+    //A very simple large sphere [may take a bit to load]
     //worldMeshName = "LargeSphere.obj";
 
 
 
     //My First Attempt at a skybox cube 
-    worldMeshName = "AlienWorldSkybox.obj";
+    //worldMeshName = "AlienWorldSkybox.obj";
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
@@ -690,7 +692,7 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-   for (int i = 0; i < 10; i++)
+    ///for (int i = 0; i < 3; i++) 
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
@@ -700,7 +702,7 @@ void AssetLoadingDemo::loadModels() {
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -798,7 +800,7 @@ void AssetLoadingDemo::renderLoop() {
 
        
         //------------------------------------------------------
-        //            OPTICK's START-NEW-FRAME FUNCTION         
+        //             OPTICK's PER-FRAME FUNCTION              
         //   !!!!!!!!!!!!!!!!                !!!!!!!!!!!!!!!!   
         //           !!!!!!!!  [ WARNING! ]  !!!!!!!!           
         //   !!!!!!!!!!!!!!!!                !!!!!!!!!!!!!!!!   
@@ -806,9 +808,12 @@ void AssetLoadingDemo::renderLoop() {
         //  This Macro Introduces A Variable Of Type 'uint32_t' 
         //  Named 'frameNumber' Into The Current Scope.         
         //                                                      
-        //   This Can Cause A Lot Of Problems If Called From A  
-        //     member function of a class with a field named    
-        //            'frameNumer' as well...                   
+        //   This Can Cause A Lot Of Problems If Called From    
+        //   Within A Member Function Of A Class Which Also     
+        //   Just So Happens To Define A Field Variable With    
+        //   The Exact Same Name (Don't Ask Me How I Know Or How
+        //   Long It Took Me To Figure This One Out) (Alright   
+        //    fine it actually only took around 3 hours)        
         OPTICK_FRAME("MainThread");                             
         //------------------------------------------------------
 

@@ -403,9 +403,6 @@
     <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine">
       <UniqueIdentifier>{62a7bb2a-7429-430a-ab23-f6a584c0201b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
-      <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Asset Files\Shaders\RenderProjects\LightsourceTestDemo">
       <UniqueIdentifier>{951e0439-af95-4c51-a5fe-75dee24736e3}</UniqueIdentifier>
     </Filter>
@@ -582,6 +579,9 @@
     </Filter>
     <Filter Include="Source Files\Unfinished\Optick Callbacks">
       <UniqueIdentifier>{0e3e6547-b89a-4ed2-9af9-f189b6c8ff12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
+      <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1854,9 +1854,6 @@
     <None Include="optick\README.md">
       <Filter>Third Party\optick</Filter>
     </None>
-    <None Include="Shaders\DrawTextureOnQuad.frag">
-      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1959,6 +1956,9 @@
     </Text>
     <Text Include="HowToWriteAClass.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="Shaders\DrawTextureOnQuad.frag">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -2249,6 +2249,12 @@
     </Image>
     <Image Include="obj\2DTexturedQuadPlaneTexture.png">
       <Filter>Asset Files\Images\Texture2D</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00028.jpg">
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr10011.jpg">
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
