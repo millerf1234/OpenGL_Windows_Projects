@@ -20,7 +20,7 @@
 
 //Determines how many unique VertexID values will be possible 
 //for effects that have a repeating per-vertex pattern
-#define VERTEX_ID_MOD_VALUE 46   
+#define VERTEX_ID_MOD_VALUE 13   
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //////////////////////       End Of Configuration       ///////////////////////////////
