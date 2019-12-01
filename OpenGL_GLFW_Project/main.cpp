@@ -17,17 +17,20 @@
 //Added the following safety features in June 2019. Bring on the Fuzzers!
 //  [see FailMalloc: http://www.nongnu.org/failmalloc/ ]
 #define SAFETY   try {
-#define FIRST } catch (const std::bad_alloc& e) {                                \
-fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"            \
-    "the ultra rare, wildly elusive \'std::bad_alloc\'\n"                        \
-    "exception! This is the stuff you only read about\n"                         \
-    "these days in textbooks! Perhaps you should restart\n"                      \
-    "your computer, but congratulations on the\n"                                \
-    "new story you have for your grandchildren.\n"                               \
-    "\n\t[Here is the obligatory exception message]\n\t%s\n\n",                  \
-    e.what());                                                                   \
-} catch (...) {                          
-
+#define FIRST } catch (const std::bad_alloc& e) {                              \
+fprintf(stderr, "\nWoah! Grab a camera. You have just experienced \n"          \
+    "the ultra rare, wildly elusive \'std::bad_alloc\'\n"                      \
+    "exception! This is the stuff you only read about\n"                       \
+    "these days in textbooks! Perhaps you should restart\n"                    \
+    "your computer, but congratulations on the\n"                              \
+    "new story you have for your grandchildren.\n"                             \
+    "\n\t[Here is the obligatory exception message]\n\t%s\n\n",                \
+    e.what());                                                                 \
+} catch (...) {                                                                \
+fprintf(stderr, "\n\n\n\nOH NO!\n\tAn Unexpected exception of unknown\n"       \
+    "origin was allowed to propogate all the way out to 'main()'!\n"           \
+    "This is very unexpected! Consult the developer please right away\n"       \
+    "if you have encountered this error!\n");                                  \
 }
 
 
