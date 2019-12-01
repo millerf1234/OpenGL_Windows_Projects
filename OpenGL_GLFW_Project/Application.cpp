@@ -53,18 +53,53 @@ void Application::initialize() {
     if constexpr (USE_DEBUG) {
         //fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
         
-        //Print the ID for this thread (the Application's main thread)
+        //----------------------------------------------------------------
+        // Print the ID for this thread (the Application's main thread)
         const auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
-        threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x" << std::hex << threadID;
+        threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x"
+            << std::hex << threadID;
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
+
+        //----------------------------------------------------------------
+        // Print the maximum number of supported concurrent threads this system reports
+        // it supports. This value is meant only to serve as a hint, and on some 
+        // platforms it the returned value may be 0
+        const auto supported_concurrent_threads_count = std::thread::hardware_concurrency();
+        std::ostringstream supportedConcurrentThreadsMessage;
+        supportedConcurrentThreadsMessage << "" 
+            << "[ ~DEBUG~ ] System Reports Its Maximum Supported Number Of Threads \n"
+            << "            That Can [Theoretically] Run Concurrently Is:    "
+            << "     " << supported_concurrent_threads_count << "\n";
+
+        fprintf(MSGLOG, "\n%s\n", supportedConcurrentThreadsMessage.str().c_str());
+
+        //----------------------------------------------------------------
+        // Print the maximum number of bytes a multibyte character may be
+        // on this platform (only do so if MB_CUR_MAX is defined)
 #ifdef MB_CUR_MAX
-        static const int MAX_BYTES_IN_A_MULTIBYTE_CHAR = MB_CUR_MAX;
+        static constexpr const int MAX_BYTES_IN_A_MULTIBYTE_CHAR = static_cast<int>(MB_CUR_MAX);
         fprintf(MSGLOG,
                 "[ ~DEBUG~ ] Maximum number of bytes allowed in a multi-byte\n"
-                "            character on this platform:    %d\n",
+                "            character on this platform:                      "
+                "      %d\n",
                 MAX_BYTES_IN_A_MULTIBYTE_CHAR);
 #endif //MB_CUR_MAX
+
+        //----------------------------------------------------------------
+        // Print the default alignment all dynamic memory allocations made
+        // during runtime on this platform will adhere to (unless a 
+        // non-default alignment is requested using 'std::align_as'.
+        //     (Only do this if __STDCPP_DEFAULT_NEW_ALIGNMENT__ is defined)
+#ifdef __STDCPP_DEFAULT_NEW_ALIGNMENT__
+        static constexpr const uint64_t defaultAlignmentForDynamicMemoryAllocations =
+            static_cast<uint64_t>(__STDCPP_DEFAULT_NEW_ALIGNMENT__);
+        const std::string defaultDynMemAllignmentMessage = std::string(""
+            "[ ~DEBUG~ ] Current Default Alignment Of Every Dynamic Memory\n"
+            "            Allocation Which Doesn't Use 'align_as':          ") +
+            std::to_string(defaultAlignmentForDynamicMemoryAllocations);
+        fprintf(MSGLOG, "\n%s-bits\n", defaultDynMemAllignmentMessage.c_str());
+#endif // __STDCPP_DEFAULT_NEW_ALIGNMENT__
     }
     
     
@@ -127,18 +162,18 @@ void Application::initialize() {
     //As such, this function currently is a no-op until Framebuffers enter into use.
     checkMSAA(); //See if MSAA is being used as expected
     
-	if (!mApplicationValid) {
-		fprintf(ERRLOG, "The application encountered an error while loading!\n");
-		return;
-	}
-	else {
-		fprintf(MSGLOG, "Application loading complete!\nPlaying Intro Movie...\n");
-		playIntroMovie(); 
-	}
+    if (!mApplicationValid) {
+        fprintf(ERRLOG, "The application encountered an error while loading!\n");
+        return;
+    }
+    else {
+        fprintf(MSGLOG, "Application loading complete!\nPlaying Intro Movie...\n");
+        playIntroMovie(); 
+    }
 }
 
 
-Application::Application() {
+Application::Application() noexcept {
 
     //The catch blocks for the inner try statement contain operations which 
     //may throw exceptions. Thus the need for the double layered exception
@@ -288,38 +323,38 @@ void Application::launch() {
 
 bool Application::setupGLFW() {
     OPTICK_EVENT();
-	fprintf(MSGLOG, "Loading GLFW...\n");
+    fprintf(MSGLOG, "Loading GLFW...\n");
    
-	glfwInitializer = std::make_unique<GLFW_Init>();
-	glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
-	initReport = glfwInitializer->initialize();
-	
-	if (!initReport) {
-		fprintf(ERRLOG, "\nAn Error Occurred Setting Up The GLFW Window!\n");
-		mApplicationValid = false;
-		return false;
-	}
-	else {
-		glfwInitializer->specifyWindowCallbackFunctions();
-		//glfwInitializer->setWindowUserPointer(static_cast<void *>(initReport.get())); 
-		return true;
-	}
+    glfwInitializer = std::make_unique<GLFW_Init>();
+    glfwInitializer->setDefaultMonitor(MONITOR_TO_USE);
+    initReport = glfwInitializer->initialize();
+    
+    if (!initReport) {
+        fprintf(ERRLOG, "\nAn Error Occurred Setting Up The GLFW Window!\n");
+        mApplicationValid = false;
+        return false;
+    }
+    else {
+        glfwInitializer->specifyWindowCallbackFunctions();
+        //glfwInitializer->setWindowUserPointer(static_cast<void *>(initReport.get())); 
+        return true;
+    }
 }
 
 bool Application::loadGraphicsLanguageFunctions() {
     OPTICK_EVENT();
-	//Load OpenGL functions once window context has been set
-	fprintf(MSGLOG, "Loading Graphics Language Functions...\n");
-	int success = gladLoadGL();
-	if (!success) {
-		fprintf(ERRLOG, "\nERROR OCCURED LOADING GRAPHICS LANGUAGE FUNCTIONS!\n");
-		mApplicationValid = false;
-		return false;
-	}
+    //Load OpenGL functions once window context has been set
+    fprintf(MSGLOG, "Loading Graphics Language Functions...\n");
+    int success = gladLoadGL();
+    if (!success) {
+        fprintf(ERRLOG, "\nERROR OCCURED LOADING GRAPHICS LANGUAGE FUNCTIONS!\n");
+        mApplicationValid = false;
+        return false;
+    }
 
     reportDetailsFromGLImplementation();
     reportDetailsFromGLImplementationOnTextureUnitLimitations();
-	return true;
+    return true;
 }
 
 void Application::reportDetailsFromGLImplementation() {
@@ -420,25 +455,25 @@ void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
 
 void Application::configureGraphicsContextDebugCallbackFunctions() const {
     OPTICK_EVENT();
-	fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
-	if (USE_DEBUG) {   //set in ProjectParameters.h
-		fprintf(MSGLOG, "Enabled\n");
-		glEnable(GL_DEBUG_OUTPUT);
-		if (FORCE_SYNC_BETWEEN_CONTEXT_AND_APP) {
-			fprintf(MSGLOG, "\t[For now] Forcing Synchronization Between Graphics Context and Application...\n\n");
-			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
-		}
-		else {
-			fprintf(MSGLOG, "\nWARNING! GL Context has been configured as a debug context but without\n"
-				"forced synchronization between the context and the application.\n"
-				"This means Context Callback messages may appear a long time after the\n"
-				"event that caused them!\n"
-				"[Re-enable debug output synchronization or disable debugging to remove this warning!]\n");
-			glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		}
-		glDebugMessageCallback(printGraphicsContextMessageCallback, nullptr);
-	}
-	else {
+    fprintf(MSGLOG, "Graphics Context Debug Output Callback Messaging: ");
+    if (USE_DEBUG) {   //set in ProjectParameters.h
+        fprintf(MSGLOG, "Enabled\n");
+        glEnable(GL_DEBUG_OUTPUT);
+        if (FORCE_SYNC_BETWEEN_CONTEXT_AND_APP) {
+            fprintf(MSGLOG, "\t[For now] Forcing Synchronization Between Graphics Context and Application...\n\n");
+            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); //Might cause problems if context gets multithreaded
+        }
+        else {
+            fprintf(MSGLOG, "\nWARNING! GL Context has been configured as a debug context but without\n"
+                "forced synchronization between the context and the application.\n"
+                "This means Context Callback messages may appear a long time after the\n"
+                "event that caused them!\n"
+                "[Re-enable debug output synchronization or disable debugging to remove this warning!]\n");
+            glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        }
+        glDebugMessageCallback(printGraphicsContextMessageCallback, nullptr);
+    }
+    else {
         fprintf(MSGLOG, "Disabled\n\n");
     }
 }
@@ -460,24 +495,24 @@ void Application::checkMSAA() const {
     //This function's current implementation does not 
     constexpr bool CHECK_MSAA_IMPLEMENTATION_HAS_BEEN_FIXED = false;
 
-	if (mApplicationValid) {
-		//glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
-		GLint bufs = -1;
-		GLint samples = -1;
+    if (mApplicationValid) {
+        //glad_glEnable(GL_MULTISAMPLE); //Need framebuffer objects for proper MSAA
+        GLint bufs = -1;
+        GLint samples = -1;
 
-		//glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
-		//glad_glGetIntegerv(GL_SAMPLES, &samples);
-		//fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+        //glad_glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+        //glad_glGetIntegerv(GL_SAMPLES, &samples);
+        //fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
 
-		glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
-		glGetIntegerv(GL_SAMPLES, &samples);
-		fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
-	}
+        glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+        glGetIntegerv(GL_SAMPLES, &samples);
+        fprintf(MSGLOG, "\nMSAA CONFIGURATION:\n\tBuffers Available: %d\n\tSamples: %d\n\n", bufs, samples);
+    }
 }
 
 
 void Application::playIntroMovie() noexcept {
-	fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
+    fprintf(MSGLOG, "PSYCH! There is no intro movie!\n");
 }
 
 
@@ -559,31 +594,31 @@ void Application::runOpenGLSandboxExperiments() {
 
 
 void Application::runRenderDemo(std::unique_ptr<RenderDemoBase>& renderDemo, const char * name) {
-	bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));
+    bool demoHasNameProvided = ((name != nullptr) && (*name != '\0'));
     OPTICK_CATEGORY("RenderDemoSelected", Optick::Category::Navigation )
     OPTICK_EVENT("ErrorCheckingRenderDemo");
-	//Perform error check
-	if (renderDemo == nullptr) {
-		if (demoHasNameProvided) {
-			fprintf(ERRLOG, "\n\n\t(While trying to run RenderDemo %s)\n", name);
-		}
-		else {
-			fprintf(ERRLOG, "\n\n");
-		}
-		fprintf(ERRLOG, "\nWhoah! A 'nullptr' was passed in as the RenderDemo to\nthis Application's "
-			"member function 'runRenderDemo()'.\n"
-			"Passing around nullptrs is very dangerous, luckily this time it was caught.\n"
-			"Only reasonable thing to do here is crash and exit gracefully...\n  Demo is exiting!\n");
-		fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
-		std::cin.get(); //Require acknowledgment from programmer that he/she/they messed up big time before crashing 
+    //Perform error check
+    if (renderDemo == nullptr) {
+        if (demoHasNameProvided) {
+            fprintf(ERRLOG, "\n\n\t(While trying to run RenderDemo %s)\n", name);
+        }
+        else {
+            fprintf(ERRLOG, "\n\n");
+        }
+        fprintf(ERRLOG, "\nWhoah! A 'nullptr' was passed in as the RenderDemo to\nthis Application's "
+            "member function 'runRenderDemo()'.\n"
+            "Passing around nullptrs is very dangerous, luckily this time it was caught.\n"
+            "Only reasonable thing to do here is crash and exit gracefully...\n  Demo is exiting!\n");
+        fprintf(MSGLOG, "\t  [ Press ENTER to continue ]\n");
+        std::cin.get(); //Require acknowledgment from programmer that he/she/they messed up big time before crashing 
         std::exit(EXIT_FAILURE);
-	}
-	//Perform a second error check
-	else if ( !(initReport && mApplicationValid) ) {
-		fprintf(ERRLOG, "\nError launching RenderDemo!\n"
-			"The Application is invalid or the detected display information is null!\n");
-	}
-	//Else proceed with loading and launching the RenderDemo
+    }
+    //Perform a second error check
+    else if ( !(initReport && mApplicationValid) ) {
+        fprintf(ERRLOG, "\nError launching RenderDemo!\n"
+            "The Application is invalid or the detected display information is null!\n");
+    }
+    //Else proceed with loading and launching the RenderDemo
     else {
         if (demoHasNameProvided) {
             fprintf(MSGLOG, "Loading %s... \n", name);
@@ -613,19 +648,19 @@ void Application::runFlyingCameraDemo() {
 void Application::runAssetLoadingDemo() {
     OPTICK_EVENT();
     std::unique_ptr<RenderDemoBase> assetLoadingDemo = std::make_unique<AssetLoadingDemo>(initReport.get());
-	runRenderDemo(assetLoadingDemo, "Asset Loading Demo");
+    runRenderDemo(assetLoadingDemo, "Asset Loading Demo");
 }
 
 void Application::runLightsourceTestDemo() {
     OPTICK_EVENT();
     std::unique_ptr<RenderDemoBase> lightsourceTestDemo = std::make_unique<LightsourceTestDemo>(initReport.get());
-	runRenderDemo(lightsourceTestDemo, "Lightsource Test Demo");
+    runRenderDemo(lightsourceTestDemo, "Lightsource Test Demo");
 }
 
 void Application::runTeapotExplosionDemo() {
     OPTICK_EVENT();
     std::unique_ptr<RenderDemoBase> teapotExplosionDemo = std::make_unique<TeapotExplosion>(initReport.get());
-	runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
+    runRenderDemo(teapotExplosionDemo, "Teapot Explosion Demo");
 }
 
 
