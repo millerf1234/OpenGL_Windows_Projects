@@ -90,14 +90,14 @@
 
 //see: https://www.khronos.org/opengl/wiki/GLAPI/glGetAttachedShaders
 
-        class ShaderProgram final {
+    class ShaderProgram final {
         public:
             //-------------------------------
             // Construction/Destruction/Copying/Moving
             //-------------------------------
 
-            ShaderProgram();
-            ~ShaderProgram();
+            ShaderProgram() noexcept;
+            ~ShaderProgram() noexcept;
             
             //Allow moving but disallow copying
             ShaderProgram(const ShaderProgram&) = delete;
@@ -132,20 +132,20 @@
             bool attachGeom(const char* geom);
             //Uses an already-created geometry shader and attaches it to this program. This object does
             //not assume control of the vertex shader
-            void attachGeom(const ShaderInterface::GeometryShader * geom);
+            void attachGeom(const ShaderInterface::GeometryShader* geom);
             //Attach secondary GeometryShader to this ShaderProgram. Will reject any 
             //GeometryShader that has not been marked as secondary. A shader should 
             //only be marked as secondary if it does not define a 'main' function.
             //Otherwise, multiple 'main' function definitions across all attached
             //GeometryShader automatically guarantees a GLSL compiler fail when
             //program is linked.
-            void attachSecondaryGeom(const ShaderInterface::GeometryShader * geom);
+            void attachSecondaryGeom(const ShaderInterface::GeometryShader* geom);
 
 
             //Creates object-local Tessellation Compute and Evaluation shaders and attaches them to the program
             inline bool attachTess(std::string tesse, std::string tessc) { return ((attachTesse(tesse.c_str())) && (attachTessc(tessc.c_str())));   }
             //Creates object-local Tessellation Compute and Evaluation shaders and attaches them to the program
-            bool attachTess(const char * tesse, const char * tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
+            bool attachTess(const char* tesse, const char* tessc) { return(attachTesse(tesse) && attachTessc(tessc)); }
             //Uses already created Tessellation Control and Evaluation shaders and attaches them to this program. 
             //This object does not assume control of the shaders.
             void attachTess(const ShaderInterface::TessellationControlShader* tessc, const ShaderInterface::TessellationEvaluationShader* tesse);
@@ -156,16 +156,16 @@
             //Creates an object-local Tessellation Evaluation shader and attaches it to this program
             bool attachTesse(const char * tesse);
             //Uses an already-created Tessellation Evaluation shader and attaches it to this program. Does not
-            //assume control of the tesse shader. (i.e. this object's mTesselationEvaluationShader remains
+            //assume control of the tesse shader. (i.e. this object's mTessellationEvaluationShader remains
             //nullptr)
-            void attachTesse(const ShaderInterface::TessellationEvaluationShader * tesse);
+            void attachTesse(const ShaderInterface::TessellationEvaluationShader* tesse);
             //Attach secondary TesselationEvaluationShader to this ShaderProgram. Will reject any 
             //TesselationEvaluationShader to this ShaderProgram. that has not been marked as 
             //secondary. A shader should only be marked as secondary if it does not define a
             //'main' function. Otherwise, multiple 'main' function definitions across all attached
             //TesselationEvaluationShader to this ShaderProgram. automatically guarantees a GLSL
             //compiler fail when program is linked.
-            void attachSecondaryTesse(const ShaderInterface::TessellationEvaluationShader * tesse);
+            void attachSecondaryTesse(const ShaderInterface::TessellationEvaluationShader* tesse);
             
 
             //Creates an object-local Tessellation Control shader and attaches it to this program
@@ -173,14 +173,14 @@
             //Creates an object-local Tessellation Control shader and attaches it to this program
             bool attachTessc(const char * tessc);
             //Uses an already-created Tessellation Control shader and attaches it to this program. Does not
-            //assume control of the tessc shader. (i.e. this object's mTesselationControlShader remains
+            //assume control of the tessc shader. (i.e. this object's mTessellationControlShader remains
             //nullptr)
-            void attachTessc(const ShaderInterface::TessellationControlShader * tessc);
+            void attachTessc(const ShaderInterface::TessellationControlShader* tessc);
             //Uses an already created Tessc shader that does not contain a 'main' function and has
             //been marked as secondary using the 'makeSecondary()' function and attaches it to this
             //shader program. It is possible to attach as many secondaries as are available, however it is an
             //error to try to attach the same secondary shader multiple times to one program. 
-            void attachSecondaryTessc(const ShaderInterface::TessellationControlShader * tessc);
+            void attachSecondaryTessc(const ShaderInterface::TessellationControlShader* tessc);
             
 
             //Creates an object-local Fragment shader and attaches it to this program.
@@ -189,12 +189,12 @@
             bool attachFrag(const char * frag);
             //Uses an already-created Fragment shader and attaches it to this program. Does not assume control
             //of the Fragment shader. (i.e. this object's mFragmentShader remains nullptr)
-            void attachFrag(const ShaderInterface::FragmentShader * frag );
+            void attachFrag(const ShaderInterface::FragmentShader* frag );
             //Uses an already created Frag shader that does not contain a 'main' function and has
             //been marked as secondary using the 'makeSecondary()' function and attaches it to this
             //ShaderProgram. It is possible to attach as many secondaries as are available, however it is an
             //error to try to attach the same secondary shader multiple times to one program. 
-            void attachSecondaryFrag(const ShaderInterface::FragmentShader * frag);
+            void attachSecondaryFrag(const ShaderInterface::FragmentShader* frag);
             
 
             //Creates an object-local Compute shader and attaches it to this program. This function should
@@ -204,11 +204,11 @@
             //Creates an object-local Compute shader and attaches it to this program. This function should
             //only be called in no other Shaders have been attached to this object, and after calling
             //this function no additional shaders may be attached.
-            bool attachCompute(const char * compute);
+            bool attachCompute(const char* compute);
             //Uses an already-created Compute shader and attaches it to this program. This function should
             //only be called in no other Shaders have been attached to this object, and after calling
             //this function no additional shaders may be attached.
-            void attachCompute(const ShaderInterface::ComputeShader * compute);
+            void attachCompute(const ShaderInterface::ComputeShader* compute);
             //Uses an already created Compute shader that does not contain a 'main' function and has
             //been marked as secondary using the 'makeSecondary()' function and attaches it to this
             //ShaderProgram. Compute shaders have the additional requirement that they must be the only type of
@@ -217,7 +217,7 @@
             //of a different type to a program that already has compute shaders attached.
             //It is possible to attach as many secondaries as are available, however it is an
             //error to try to attach the same secondary shader multiple times to one program. 
-            void attachSecondaryCompute(const ShaderInterface::ComputeShader * compute);
+            void attachSecondaryCompute(const ShaderInterface::ComputeShader* compute);
 
 
             //Checks to see if this ShaderProgram is linked
@@ -227,11 +227,11 @@
             //shader or both a Vertex and Fragment shader attached before linking. Additionally,
             //using the Tessellation shaders requires both a Tessellation control and Tessellation 
             //evaluation shader to be attached.
-            void link();
+            void link() noexcept;
 
             //Binds this ShaderProgram to the active program spot in the GL Context. This ShaderProgram
-            //must be linked before this function call will work correctly.
-            void use() const;
+            //must be linked and valid before this function call will modify the GL Context's state.
+            void use() const noexcept;
 
             //Allows this ShaderProgram to be called like a function with no parameters.
             //void operator()() const { this->use(); } //This is probably unsafe and shouldn't be used...
@@ -255,66 +255,67 @@
 
             //Queries the current GL context to see if this object is a valid shader program
             //Queries the current GL context to see if this object is a valid shader program
-            bool isProgram() const { return glIsProgram(mProgramID); }
+            bool isProgram() const noexcept { return glIsProgram(mProgramID); }
 
-            //Checks to see if this program has had itself deleted from the gl context's state 
-            //through the function glDeleteProgram(). 
-            bool released() const { return mState.mReleased; }
+            //Checks to see if this program has had itself deleted from the GL Context's state 
+            //through the OpenGL function 'glDeleteProgram()'
+            bool released() const noexcept { return mState.mReleased; }
 
             //Returns true when this object is ready for use
-            bool valid() const { return mState.mValid; }
+            bool valid() const noexcept { return mState.mValid; }
 
-            //Returns true when an error has occured during the lifetime of this object, rendering it's behavior as undefined
-            bool error() const { return mState.mError; }
+            //Returns true when an error has occurred during the lifetime of this object, rendering it's behavior as undefined
+            bool error() const noexcept { return mState.mError; }
 
             //The ShaderProgram will not be ready to link until this function returns true
-            bool readyToLink() const { return mState.mReadyToLink; }
+            bool readyToLink() const noexcept { return mState.mReadyToLink; }
 
-            bool hasVertAttached() const { return mState.mHasVert; }
-            bool hasCachedVert() const { return (mVertexShader != nullptr); }
-            bool hasGeom() const { return mState.mHasGeom; }
-            bool hasCachedGeom() const { return (mGeometryShader != nullptr); }
-            bool hasTessE() const { return mState.mHasTesse; }
-            bool hasCachedTesse() const { return (mTesselationEvaluationShader != nullptr); }
-            bool hasTessC() const { return mState.mHasTessc; }
-            bool hasCachedTessc() const { return (mTesselationEvaluationShader != nullptr); }
-            bool hasFrag() const { return mState.mHasFrag; }
-            bool hasCachedFrag() const { return (mFragmentShader != nullptr); }
-            bool hasCompute() const { return mState.mHasCompute; }
-            bool hasCachedCompute() const { return (mComputeShader != nullptr); }
+            bool hasVertAttached() const noexcept { return mState.mHasVert; }
+            bool hasCachedVert() const noexcept { return (mVertexShader != nullptr); }
+            bool hasGeom() const noexcept { return mState.mHasGeom; }
+            bool hasCachedGeom() const noexcept { return (mGeometryShader != nullptr); }
+            bool hasTessE() const noexcept { return mState.mHasTesse; }
+            bool hasCachedTesse() const noexcept { return (mTessellationEvaluationShader != nullptr); }
+            bool hasTessC() const noexcept { return mState.mHasTessc; }
+            bool hasCachedTessc() const noexcept { return (mTessellationEvaluationShader != nullptr); }
+            bool hasFrag() const noexcept { return mState.mHasFrag; }
+            bool hasCachedFrag() const noexcept { return (mFragmentShader != nullptr); }
+            bool hasCompute() const noexcept { return mState.mHasCompute; }
+            bool hasCachedCompute() const noexcept { return (mComputeShader != nullptr); }
 
             //Gets the number of attached secondary vertex shaders to this ShaderProgram
-            int getAttachedSecondaryVertCount() const { return mState.mAttachedSecondaryVertCount; }
+            int getAttachedSecondaryVertCount() const noexcept { return mState.mAttachedSecondaryVertCount; }
             //Gets the number of attached secondary geometry shaders to this ShaderProgram
-            int getAttachedSecondaryGeomCount() const { return mState.mAttachedSecondaryGeomCount; }
+            int getAttachedSecondaryGeomCount() const noexcept { return mState.mAttachedSecondaryGeomCount; }
             //Gets the number of attached secondary tesse shaders to this ShaderProgram
-            int getAttachedSecondaryTesseCount() const { return mState.mAttachedSecondaryTesseCount; }
+            int getAttachedSecondaryTesseCount() const noexcept { return mState.mAttachedSecondaryTesseCount; }
             //Gets the number of attached secondary tessc shaders to this ShaderProgram
-            int getAttachedSecondaryTesscCount() const { return mState.mAttachedSecondaryTesscCount; }
+            int getAttachedSecondaryTesscCount() const noexcept { return mState.mAttachedSecondaryTesscCount; }
             //Gets the number of attached secondary fragment shaders to this ShaderProgram
-            int getAttachedSecondaryFragCount() const { return mState.mAttachedSecondaryFragCount; }
+            int getAttachedSecondaryFragCount() const noexcept { return mState.mAttachedSecondaryFragCount; }
             //Gets the number of attached secondary compute shaders to this ShaderProgram
-            int getAttachedSecondaryComputeCount() const { return mState.mAttachedSecondaryComputeCount; }
+            int getAttachedSecondaryComputeCount() const noexcept { return mState.mAttachedSecondaryComputeCount; }
 
 
             //Uniform processing is handled through a UniformLocationInterface member object
             ShaderInterface::UniformLocationInterface uniforms;
             
         private:
-            GLuint mProgramID; //GL ShaderProgram ID
+            GLuint mProgramID; //ID assigned by GL Context
             class ProgramState {
             public:
                 bool mValid;
                 bool mLinked;
-                bool mHasVert, mHasGeom, mHasTesse, mHasTessc, mHasFrag, mHasCompute; //These bools represent attached shaders, not cached shaders
+                bool mHasVert, mHasGeom, mHasTesse, mHasTessc, mHasFrag, mHasCompute; //These booleans represent attached shaders, not cached shaders
                 int mAttachedSecondaryVertCount, mAttachedSecondaryGeomCount, mAttachedSecondaryTesseCount, mAttachedSecondaryTesscCount;
                 int mAttachedSecondaryFragCount, mAttachedSecondaryComputeCount;
                 std::unordered_map<GLuint, std::string> mAttachedSecondaries;
                 bool mError;
                 bool mReadyToLink;
                 bool mReleased;
+
                 //Constructor
-                ProgramState();
+                ProgramState() noexcept;
             };
 
             ProgramState mState;
@@ -322,21 +323,21 @@
             //Primary shaders (can only have 1 of each at a time)
             std::unique_ptr<ShaderInterface::VertexShader> mVertexShader;
             std::unique_ptr<ShaderInterface::GeometryShader> mGeometryShader;
-            std::unique_ptr<ShaderInterface::TessellationControlShader> mTesselationControlShader;
-            std::unique_ptr<ShaderInterface::TessellationEvaluationShader> mTesselationEvaluationShader;
+            std::unique_ptr<ShaderInterface::TessellationControlShader> mTessellationControlShader;
+            std::unique_ptr<ShaderInterface::TessellationEvaluationShader> mTessellationEvaluationShader;
             std::unique_ptr<ShaderInterface::FragmentShader> mFragmentShader;
             std::unique_ptr<ShaderInterface::ComputeShader> mComputeShader;
 
         
             //Private helper functions
-            void initialize();
-            void generateGLProgramHandle();
-            void initializeUniformLocationTracker();
+            void initialize() noexcept;
+            void generateGLProgramHandle() noexcept;
+            void initializeUniformLocationTracker() noexcept;
 
-            bool checkToSeeIfReadyToLinkAfterAttachingVert() const;
-            bool checkToSeeIfReadyToLinkAfterAttachingTesse() const;
-            bool checkToSeeIfReadyToLinkAfterAttachingTessc() const;
-            bool checkToSeeIfReadyToLinkAfterAttachingFrag() const;
+            bool checkToSeeIfReadyToLinkAfterAttachingVert() const noexcept;
+            bool checkToSeeIfReadyToLinkAfterAttachingTesse() const noexcept;
+            bool checkToSeeIfReadyToLinkAfterAttachingTessc() const noexcept;
+            bool checkToSeeIfReadyToLinkAfterAttachingFrag() const noexcept;
             
             bool checkAttachedSecondariesForMatch(const ShaderInterface::ShaderID&) const;
             void addShaderToAttachedSecondaries(const ShaderInterface::CompiledShader* secondaryShader); //Do not pass nullptr to this function!

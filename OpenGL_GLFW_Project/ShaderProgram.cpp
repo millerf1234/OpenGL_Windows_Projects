@@ -24,7 +24,7 @@ using namespace ShaderInterface;  //Hopefully this doesn't get imported into the
 
 
 //Constructor for internal struct that tracks the shader programs state
-ShaderProgram::ProgramState::ProgramState() {
+ShaderProgram::ProgramState::ProgramState() noexcept {
     mValid = false;
     mLinked = false;
     mHasVert = false;
@@ -47,13 +47,13 @@ ShaderProgram::ProgramState::ProgramState() {
 
 
 
-void ShaderProgram::initialize() {
+void ShaderProgram::initialize() noexcept {
     mProgramID = 0u;
     mState = ProgramState();  //Explicitly call default constructor
     mVertexShader = nullptr;
     mGeometryShader = nullptr;
-    mTesselationControlShader = nullptr;
-    mTesselationEvaluationShader = nullptr;
+    mTessellationControlShader = nullptr;
+    mTessellationEvaluationShader = nullptr;
     mFragmentShader = nullptr;
     mComputeShader = nullptr;
 
@@ -62,12 +62,12 @@ void ShaderProgram::initialize() {
 }
 
 
-ShaderProgram::ShaderProgram() : uniforms() {
+ShaderProgram::ShaderProgram() noexcept : uniforms() {
     initialize(); //Gives initial values to member variables
 }
 
 
-ShaderProgram::~ShaderProgram() {
+ShaderProgram::~ShaderProgram() noexcept {
     if ( (mProgramID != 0u) || (!(mState.mReleased)) ) {
         release(); 
     }
@@ -104,11 +104,11 @@ ShaderProgram::ShaderProgram(ShaderProgram&& that) noexcept : uniforms() {
     if (that.mGeometryShader) {
         mGeometryShader = std::move(that.mGeometryShader);
     }
-    if (that.mTesselationControlShader) {
-        mTesselationControlShader = std::move(that.mTesselationControlShader);
+    if (that.mTessellationControlShader) {
+        mTessellationControlShader = std::move(that.mTessellationControlShader);
     }
-    if (that.mTesselationEvaluationShader) {
-        mTesselationEvaluationShader = std::move(that.mTesselationEvaluationShader);
+    if (that.mTessellationEvaluationShader) {
+        mTessellationEvaluationShader = std::move(that.mTessellationEvaluationShader);
     }
     if (that.mFragmentShader) {
         mFragmentShader = std::move(that.mFragmentShader);
@@ -122,6 +122,10 @@ ShaderProgram::ShaderProgram(ShaderProgram&& that) noexcept : uniforms() {
 //Move assignment operator
 ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     if (this != &that) {
+
+        if (glIsProgram(mProgramID))
+            glDeleteProgram(mProgramID);
+
         mProgramID = that.mProgramID;
         that.mProgramID = 0u;
 
@@ -138,6 +142,8 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         mState.mAttachedSecondaryFragCount = that.mState.mAttachedSecondaryFragCount;
         mState.mAttachedSecondaryComputeCount = that.mState.mAttachedSecondaryComputeCount;
 
+        //Any warning for this next line is a lie, the standard for C++17 guarantees 'swap()' to
+        //be 'noexcept' for std::unordered_map 
         mState.mAttachedSecondaries.swap(that.mState.mAttachedSecondaries);
 
         mState.mValid = that.mState.mValid;
@@ -152,11 +158,11 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         if (that.mGeometryShader) {
             mGeometryShader = std::move(that.mGeometryShader);
         }
-        if (that.mTesselationControlShader) {
-            mTesselationControlShader = std::move(that.mTesselationControlShader);
+        if (that.mTessellationControlShader) {
+            mTessellationControlShader = std::move(that.mTessellationControlShader);
         }
-        if (that.mTesselationEvaluationShader) {
-            mTesselationEvaluationShader = std::move(that.mTesselationEvaluationShader);
+        if (that.mTessellationEvaluationShader) {
+            mTessellationEvaluationShader = std::move(that.mTessellationEvaluationShader);
         }
         if (that.mFragmentShader) {
             mFragmentShader = std::move(that.mFragmentShader);
@@ -227,9 +233,9 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
                 "Please use the 'attachSecondaryVert()' function to attach this shader.\n", vert->getFilepath().c_str());
             return;
         }
-        //One last extra check (that probably isnt necessary):
+        //One last extra check (that probably isn't necessary):
         if ( (vert->ID() == 0u) || (vert->type() != ShaderType::VERTEX) ) {
-            fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as %s vert shader to this program!\n", vert->getFilepath().c_str());
+            fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as %s Vertex shader to this program!\n", vert->getFilepath().c_str());
             return;
         }
 
@@ -344,7 +350,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         mState.mHasGeom = true;
     }
 
-    void ShaderProgram::attachSecondaryGeom(const ShaderInterface::GeometryShader * secondaryGeom) {
+    void ShaderProgram::attachSecondaryGeom(const ShaderInterface::GeometryShader* secondaryGeom) {
         if (secondaryGeom == nullptr) { return; }
         if (!(secondaryGeom->readyToBeAttached())) {
             fprintf(ERRLOG, "\nError! Unable to attach secondary Geometry shader \"%s\"\n"
@@ -409,24 +415,24 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
             return false;
         }
         if (mState.mHasTesse) {
-            fprintf(WRNLOG, "\nWARNING! Unable to attach Tesselation Evaluation shader \"%s\" to this ShaderProgram\n"
+            fprintf(WRNLOG, "\nWARNING! Unable to attach Tessellation Evaluation shader \"%s\" to this ShaderProgram\n"
                 "because this ShaderProgram already has a tesse shader attached!\n", tesse);
             return false;
         }
         if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
-            fprintf(WRNLOG, "\nWARNING! Unable to attach Tesselation Evaluation shader \"%s\"\nto this ShaderProgram "
+            fprintf(WRNLOG, "\nWARNING! Unable to attach Tessellation Evaluation shader \"%s\"\nto this ShaderProgram "
                 "because this ShaderProgram already has a Compute attached!\n", tesse);
             return false;
         }
-        mTesselationEvaluationShader = std::make_unique<TessellationEvaluationShader>(tesse);
-        if ( (mTesselationEvaluationShader->readyToBeAttached())  &&  (mTesselationEvaluationShader->type() == ShaderType::TESSELATION_EVALUATION) ) {
-            glAttachShader(mProgramID, mTesselationEvaluationShader->ID());
+        mTessellationEvaluationShader = std::make_unique<TessellationEvaluationShader>(tesse);
+        if ( (mTessellationEvaluationShader->readyToBeAttached())  &&  (mTessellationEvaluationShader->type() == ShaderType::TESSELATION_EVALUATION) ) {
+            glAttachShader(mProgramID, mTessellationEvaluationShader->ID());
             mState.mHasTesse = true;
             mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTesse();
             return true;
         }
         else {
-            mTesselationEvaluationShader.release();
+            mTessellationEvaluationShader.release();
         }
         return false;
     }
@@ -434,31 +440,31 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     void ShaderProgram::attachTesse(const ShaderInterface::TessellationEvaluationShader * tesse) {
         if (tesse == nullptr) { return; }
         if (mState.mLinked) {
-            fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Evaluation shader %s\n" 
+            fprintf(ERRLOG, "\nERROR: Unable to attach Tessellation Evaluation shader %s\n" 
                 "to shaderProgram because this ShaderProgram has already been linked!\n", tesse->getFilepath().c_str());
             return;
         }
         if (mState.mHasTesse) {
-            fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Evaluation shader \"%s\" to this ShaderProgram\n"
+            fprintf(ERRLOG, "\nERROR: Unable to attach Tessellation Evaluation shader \"%s\" to this ShaderProgram\n"
                 "because this ShaderProgram already has a tesse shader attached!\n", tesse->getFilepath().c_str());
             return;
         }
         if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
-            fprintf(ERRLOG, "\nError attaching Tessetlation Evaluation shader %s\n"
+            fprintf(ERRLOG, "\nError attaching Tessellation Evaluation shader %s\n"
                 "to this program. This program has already had a compute\n"
                 "shader attached to it, which prevents any further shaders that\n"
                 "are not compute shaders from being attached!\n", tesse->getFilepath().c_str());
             return;
         }
         if (tesse->markedAsSecondary()) {
-            fprintf(ERRLOG, "\nERROR! Unable to attach secondary tesselation evaluation shader\n"
-                "%s as a primary Tesselation shader!\nPlease use the 'attachSecondary* function\n",
+            fprintf(ERRLOG, "\nERROR! Unable to attach secondary Tessellation evaluation shader\n"
+                "%s as a primary Tessellation shader!\nPlease use the 'attachSecondary* function\n",
                 tesse->getFilepath().c_str());
             return;
         }
         if ((tesse->ID() == 0) || (tesse->type() != ShaderType::TESSELATION_EVALUATION)) {
             fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
-                "Tesselation Evaluation shader to this program!\n", tesse->getFilepath().c_str());
+                "Tessellation Evaluation shader to this program!\n", tesse->getFilepath().c_str());
             return;
         }
         glAttachShader(mProgramID, tesse->ID());
@@ -469,25 +475,25 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     void ShaderProgram::attachSecondaryTesse(const ShaderInterface::TessellationEvaluationShader * secondaryTesse) {
         if (secondaryTesse == nullptr) { return; }
         if (!(secondaryTesse->readyToBeAttached())) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Evaluation shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation Evaluation shader \"%s\"\n"
                 "to this ShaderProgram because the secondary Tess Eval shader shows it is not ready\n"
                 "to be attached!\n", secondaryTesse->getFilepath().c_str());
             return;
         }
         if (mState.mLinked) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary tesselation evaluation shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation evaluation shader \"%s\"\n"
                 "to shaderProgram because ShaderProgram has already been "
                 "linked!\n", secondaryTesse->getFilepath().c_str());
             return;
         }
         if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Evaluation shader \"%s\"\nto this "
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation Evaluation shader \"%s\"\nto this "
                 "ShaderProgram object because this ShaderProgram object has had a Compute shader\n"
                 "attached to it already!\n", secondaryTesse->getFilepath().c_str());
             return;
         }
         if (!secondaryTesse->markedAsSecondary()) {
-            fprintf(ERRLOG, "\nError attempting to attach the secondary Tesselation Evaluation shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError attempting to attach the secondary Tessellation Evaluation shader \"%s\"\n"
                 "as a secondary shader, because this shader was never marked as secondary!\n"
                 "Please use the function 'makeSecondary()' on this Tesse shader to allow it to\n"
                 "be attached as a secondary. Please note that secondary shaders can not contain\n"
@@ -519,24 +525,24 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
             return false;
         }
         if (mState.mHasTessc) {
-            fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Control shader \"%s\" to this ShaderProgram\n"
+            fprintf(ERRLOG, "\nERROR: Unable to attach Tessellation Control shader \"%s\" to this ShaderProgram\n"
                 "because this ShaderProgram already has a tessc shader attached!\n", tessc);
             return false;
         }
         if (mState.mHasCompute) {
-            fprintf(ERRLOG, "\nERROR: Unable to attach Tesselation Control shader \"%s\"\nto this ShaderProgram "
+            fprintf(ERRLOG, "\nERROR: Unable to attach Tessellation Control shader \"%s\"\nto this ShaderProgram "
                 "because this ShaderProgram already has a Compute attached!\n", tessc);
             return false;
         }
-        mTesselationControlShader = std::make_unique<TessellationControlShader>(tessc);
-        if ((mTesselationControlShader->readyToBeAttached()) && (mTesselationControlShader->type() == ShaderType::TESSELLATION_CONTROL)) {
-            glAttachShader(mProgramID, mTesselationControlShader->ID());
+        mTessellationControlShader = std::make_unique<TessellationControlShader>(tessc);
+        if ((mTessellationControlShader->readyToBeAttached()) && (mTessellationControlShader->type() == ShaderType::TESSELLATION_CONTROL)) {
+            glAttachShader(mProgramID, mTessellationControlShader->ID());
             mState.mHasTessc = true;
             mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingTessc();
             return true;
         }
         else {
-            mTesselationControlShader.release();
+            mTessellationControlShader.release();
         }
         return false;
     }
@@ -544,36 +550,36 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     void ShaderProgram::attachTessc(const ShaderInterface::TessellationControlShader * tessc) {
         if (tessc == nullptr) { return; }
         if (mState.mLinked) {
-            fprintf(ERRLOG, "\nUnable to attach Tesselation Control shader %s\n"
+            fprintf(ERRLOG, "\nUnable to attach Tessellation Control shader %s\n"
                 "to shaderProgram because this ShaderProgram has already been linked!\n", tessc->getFilepath().c_str());
             return;
         }
         if (mState.mHasTessc) {
-            fprintf(ERRLOG, "\nWARNING! Unable to attach Tesselation Control shader \"%s\" to this ShaderProgram\n"
+            fprintf(ERRLOG, "\nWARNING! Unable to attach Tessellation Control shader \"%s\" to this ShaderProgram\n"
                 "because this ShaderProgram already has a tesse shader attached!\n", tessc->getFilepath().c_str());
             return;
         }
         if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
-            fprintf(ERRLOG, "\nError attaching Tessetlation Control shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError attaching Tessellation Control shader \"%s\"\n"
                 "to this program. This program has already had a compute\n"
                 "shader attached to it, which prevents any further shaders that\n"
                 "are not compute shaders from being attached!\n", tessc->getFilepath().c_str());
             return;
         }
         if (tessc->markedAsSecondary()) {
-            fprintf(ERRLOG, "\nERROR! Unable to attach secondary Tesselation Control shader\n"
-                "\"%s\" as a primary Tesselation shader!\nPlease use the 'attachSecondary*()' function\n"
+            fprintf(ERRLOG, "\nERROR! Unable to attach secondary Tessellation Control shader\n"
+                "\"%s\" as a primary Tessellation shader!\nPlease use the 'attachSecondary*()' function\n"
                 "or provide a primary shader to this attachTessc function.\n",
                 tessc->getFilepath().c_str());
             return;
         }
         if ((!tessc->readyToBeAttached())) {
-            fprintf(ERRLOG, "Error! Attaching Tesselation Control shader \"%s\"\n"
+            fprintf(ERRLOG, "Error! Attaching Tessellation Control shader \"%s\"\n"
                 "failed because object is not ready to be attached\n", tessc->getFilepath().c_str());
         }
         if ((tessc->ID() == 0) || (tessc->type() != ShaderType::TESSELLATION_CONTROL)) {
             fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
-                "Tesselation Control shader to this program!\n", tessc->getFilepath().c_str());
+                "Tessellation Control shader to this program!\n", tessc->getFilepath().c_str());
             return;
         }
         glAttachShader(mProgramID, tessc->ID());
@@ -584,25 +590,25 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     void ShaderProgram::attachSecondaryTessc(const ShaderInterface::TessellationControlShader * secondaryTessc) {
         if (secondaryTessc == nullptr) { return; }
         if (!(secondaryTessc->readyToBeAttached())) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Control shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation Control shader \"%s\"\n"
                 "to this ShaderProgram because the secondary Tess Control shader shows it is not ready\n"
                 "to be attached!\n", secondaryTessc->getFilepath().c_str());
             return;
         }
         if (mState.mLinked) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary tesselation control shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation control shader \"%s\"\n"
                 "to shaderProgram because ShaderProgram has already been "
                 "linked!\n", secondaryTessc->getFilepath().c_str());
             return;
         }
         if ((mState.mHasCompute) || (mState.mAttachedSecondaryComputeCount > 0)) {
-            fprintf(ERRLOG, "\nError! Unable to attach secondary Tesselation Control shader \"%s\"\nto this "
+            fprintf(ERRLOG, "\nError! Unable to attach secondary Tessellation Control shader \"%s\"\nto this "
                 "ShaderProgram object because this ShaderProgram object has had a Compute shader\n"
                 "attached to it already!\n", secondaryTessc->getFilepath().c_str());
             return;
         }
         if ( !(secondaryTessc->markedAsSecondary()) ) {
-            fprintf(ERRLOG, "\nError attempting to attach as secondary the requested Tesselation Control shader \"%s\"\n"
+            fprintf(ERRLOG, "\nError attempting to attach as secondary the requested Tessellation Control shader \"%s\"\n"
                 "as a secondary shader, because this shader was never marked as secondary!\n"
                 "Please use the function 'makeSecondary()' on this Tess Control shader to allow it to\n"
                 "be attached as a secondary. Please note that secondary shaders can not contain\n"
@@ -867,7 +873,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 
 
 
-    void ShaderProgram::link() {
+    void ShaderProgram::link() noexcept {
         if (mState.mLinked) {
             fprintf(WRNLOG, "\nWARNING! Unable to link this shader program because this shader program has already been linked!\n");
             return;
@@ -897,49 +903,61 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
                     fprintf(WRNLOG, "Shader program is unable to link because a Tessellation Control is attached but no Tessellation Evaluation is attached!\n");
                 }
                 else if (!mState.mHasTessc && mState.mHasTesse) {
-                    fprintf(WRNLOG, "Shader program is unable to link because a Tesselation Control is attached but no Tesselation Evaluation is attached!\n");
+                    fprintf(WRNLOG, "Shader program is unable to link because a Tessellation Control is attached but no Tessellation Evaluation is attached!\n");
                 }
                 if (!mState.mHasVert) {
                     fprintf(WRNLOG, "Shader Program is unable to link because program has not had a vert shader attached yet!\n");
                 }
                 if (!mState.mHasFrag) {
-                    fprintf(WRNLOG, "Shader program is unable to link becuase program has not had a frag shader attached yet!\n");
+                    fprintf(WRNLOG, "Shader program is unable to link because program has not had a frag shader attached yet!\n");
                 }
             }
             return;
         }
-        else if (mState.mError) {//If an error has occured before linking
-            fprintf(ERRLOG, "\nERROR! Unable to link ShaderProgram because it encountered an error!\n");
+        else if (mState.mError) {//If an error has occurred before linking
+            const int programID = static_cast<int>(mProgramID);
+            fprintf(ERRLOG, "\nERROR! Unable to link ShaderProgram [ID=%d] because an issue was encountered\n"
+                "prior to its linking step!\n", programID);
             return;
         }
-        else { //Program is ready to be linked and hasn't already been linked and no errors 
-            GLchar infoLog[768]; //Used to store results of linking
-            GLint success;
+        else { //Program is i) ready to be linked
+            //             ii) has not already been linked
+            //            iii) no errors have been encountered thus far with it 
+            static constexpr const GLsizei INFO_LOG_MESSAGE_BUFFER_SIZE = 768U;
+            GLchar infoLog[INFO_LOG_MESSAGE_BUFFER_SIZE] = { '\0' }; //Used to store results of linking
+            GLint success = GL_FALSE;
 
             //Link the program
             glLinkProgram(mProgramID);
             glGetProgramiv(mProgramID, GL_LINK_STATUS, &success);
-            if (!success) {
+            if (success) {
+                mState.mReadyToLink = false;
+                mState.mLinked = true;
+                mState.mValid = true;
+                /* return; */
+            }
+            else {
                 mState.mError = true;
                 mState.mReadyToLink = false;
                 mState.mLinked = false;
                 mState.mValid = false;
-
-                glGetProgramInfoLog(mProgramID, 768u, NULL, infoLog);
-                fprintf(ERRLOG, "\nERROR OCCURED WHILE LINKING SHADERPROGRAM!\nError log:\n\t%s\n", infoLog);
-                return;
+                //Get logged message explaining what went wrong (From OpenGL's point of view)
+                glGetProgramInfoLog(mProgramID,
+                                    INFO_LOG_MESSAGE_BUFFER_SIZE,
+                                    nullptr,
+                                    &(infoLog[0]));
+                //Print error message out to ERRLOG
+                fprintf(ERRLOG, 
+                        "\nERROR OCCURED WHILE LINKING SHADERPROGRAM!\nError log:\n\t%s\n",
+                        &(infoLog[0]));
             }
-
-            mState.mReadyToLink = false;
-            mState.mLinked = true;
-            mState.mValid = true;
         }
     }
     
-    void ShaderProgram::use() const {
+    void ShaderProgram::use() const noexcept {
         if (mState.mReleased) { //Make sure the program hasn't been deleted from the graphics context
-            fprintf(ERRLOG, "\nERROR using shader program! This shader program has been deleted "
-                "from the graphics context!\n");
+            fprintf(ERRLOG, "\nERROR using shader program!\n"
+                "This shader program has been deleted from the graphics context!\n");
             return;
         }
         else if (mState.mValid) { //If the program is valid, go ahead and use it
@@ -950,32 +968,74 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
             if (mState.mError) {
                 fprintf(ERRLOG, "\nError! Unable to use shader program because of an error \n"
                                 "encountered while configuring the program!\n");
-                glUseProgram(0);
                 return;
             }
             if (!mState.mLinked) {
                 fprintf(ERRLOG, "\nError! Unable to use ShaderProgram because this program has not yet been linked!\n");
-                glUseProgram(0);
                 return;
             }
-            /*if (!mState.mValid) {
+            if (!mState.mValid) {
                 fprintf(ERRLOG, "\nError! Unable to use shader program because the ShaderProgram is not yet valid!\n");
-                glUseProgram(0);
                 return;
-            }*/
+            }
         }
     }
 
 
-    void ShaderProgram::generateGLProgramHandle() {
+    void ShaderProgram::generateGLProgramHandle() noexcept {
         mProgramID = glCreateProgram();
     }
 
-    void ShaderProgram::initializeUniformLocationTracker() {
+
+
+    void ShaderProgram::initializeUniformLocationTracker() noexcept {
+        assert(mProgramID); //mProgramID must not be 0
+                            
+        //IMPLEMENTATION NOTE: For Some Reason Microsoft's 'std::exception' Class
+        //                     Does Not Declare Member Function 'std::exception::what()'
+        //                     As 'noexcept'. This Causes The Compiler To Complain
+        //                     Excessively. Hence The Nested 'try' Statements Are Needed 
+        //                     As A Work Around.
+#ifdef USE_EXCEPTION_NAIVE_IMPL
+        //Look how simple this function could be...
         uniforms.activateUniformLocationTracker(mProgramID);
+#else 
+        std::string exceptionMsg(R"(No Message)"); //Construct a string without allocating data
+        try { //Outer 'Try' For Actual Exception Handling
+            try { //Inner 'Try' To Get 'e.what()' While Satisfying Compilers Complaints About This Throwing... 
+                uniforms.activateUniformLocationTracker(mProgramID);
+            }
+            catch (const std::exception& e) {
+                exceptionMsg = e.what();
+                throw "A Major Fit At Microsoft!\n"; //What gets thrown here doesn't matter
+            }
+        }
+        catch ( ... ) {
+            //Unfortunately if the UniformLocationTracker throws an exception,
+            //we must invalidate the entire ShaderProgram.
+            mState.mValid = false;
+            mState.mError = true;
+
+            const int progID = static_cast<int>(mProgramID);
+            fprintf(ERRLOG, "\n\n ");
+            for (auto i = 0; i < 77; i++)
+                fprintf(ERRLOG, "~");
+            fprintf(ERRLOG, "\n\n\t\t\t\t!!!  ERROR  !!!\n\a"
+                "\tAn exception was thrown while activating the UniformLocationTracker\n"
+                "\t    for ShaderProgram [ID=%d]!!!\n"
+                "\tException Message:  \"%s\"\n"
+                "\tUnfortunately this means this ShaderProgram can no longer be\n"
+                "\t    considered valid and will not be available for use!\n\n ",
+                    progID,
+                    exceptionMsg.c_str());
+            for (auto i = 0; i < 77; i++)
+                fprintf(ERRLOG, "~");
+            fprintf(ERRLOG, "\n\n");
+        }
+#endif //USE_EXCEPTION_NAIVE_IMPL
     }
 
-    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingVert() const {
+    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingVert() const noexcept {
         //Check to see if ShaderProgram is ready to be linked
         if (mState.mHasFrag) {
             if (mState.mHasTessc) {
@@ -997,7 +1057,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         return false;; //Still need a Fragment shader before able to link	
     }
 
-    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingTesse() const {
+    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingTesse() const noexcept {
         if (mState.mHasVert && mState.mHasFrag) {
             if (!mState.mHasTessc) 
                 return false;
@@ -1006,7 +1066,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         return false;
     }
 
-    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingTessc() const {
+    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingTessc() const noexcept {
         if (mState.mHasVert && mState.mHasFrag) {
             if (!mState.mHasTesse)
                 return false;
@@ -1015,7 +1075,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         return false;
     }
 
-    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingFrag() const {
+    bool ShaderProgram::checkToSeeIfReadyToLinkAfterAttachingFrag() const noexcept {
         //Check to see if ShaderProgram is ready to be linked
         if (mState.mHasVert) {
             if (mState.mHasTessc) {
@@ -1030,7 +1090,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
                 else                      //Still need a tessc to be ready to link
                     return false;
             }
-            else            //If neither tesselation shaders are attached
+            else            //If neither Tessellation shaders are attached
                 return true;
         }
         //else 
