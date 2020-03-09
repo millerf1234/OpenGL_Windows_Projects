@@ -216,15 +216,6 @@
     <Filter Include="Source Files\Utility\Filepath\Deprecated">
       <UniqueIdentifier>{41e8b6d5-2f4e-47d6-9c57-209294eb84aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Third Party\TGASDK">
-      <UniqueIdentifier>{8cd53d14-428a-47cd-b365-17062a87a145}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\TGASDK\source">
-      <UniqueIdentifier>{5bd9af5f-b24e-46e0-bde6-81c2e03f9dd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\TGASDK\include">
-      <UniqueIdentifier>{a92f2d5b-f54c-49e7-8a4a-62a29b6f7f31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Unfinished\TakeScreenshot">
       <UniqueIdentifier>{47a263fa-a948-4d98-9094-05cf3e856133}</UniqueIdentifier>
     </Filter>
@@ -311,12 +302,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\PerformanceProfiling\GPU">
       <UniqueIdentifier>{0e4415b7-e863-4830-8eb5-7f9ba26a88db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\Temp">
-      <UniqueIdentifier>{25bc1157-0e20-40a5-944b-1acd3b537ff5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Third Party\Temp\CameraClass_FromNonEuclidean">
-      <UniqueIdentifier>{8feb3188-06f1-4f58-970b-eccc2a4e6954}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Asset Loading\ImageAssets\Unused">
       <UniqueIdentifier>{ed411dca-95a3-4845-959a-f85b5ee09557}</UniqueIdentifier>
@@ -726,9 +711,6 @@
     <ClCompile Include="FlyingCameraDemo.cpp">
       <Filter>Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo</Filter>
     </ClCompile>
-    <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp">
-      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
-    </ClCompile>
     <ClCompile Include="Timepoint.cpp">
       <Filter>Source Files\Utility\PerformanceProfiling\Application\Timepoint</Filter>
     </ClCompile>
@@ -764,24 +746,6 @@
     </ClCompile>
     <ClCompile Include="TGAImage.cpp">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets\Deprecated\TGA_PrototypeLoader\TGALoader</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGA.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGAColorMapData.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGAHeader.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGAImageData.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGAImageID.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClCompile>
-    <ClCompile Include="TGASDK\sources\TGAVariable.cpp">
-      <Filter>Third Party\TGASDK\source</Filter>
     </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject</Filter>
@@ -1312,15 +1276,6 @@
     <ClInclude Include="FlyingCameraDemo.h">
       <Filter>Source Files\Projects\RenderDemos\UnfinishedProjects\[WorkInProgress]FlyingCameraDemo</Filter>
     </ClInclude>
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h">
-      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
-    </ClInclude>
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h">
-      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
-    </ClInclude>
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h">
-      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalConstants.h">
       <Filter>Header Files\SetupAndConfiguration\GlobalConstants_DO_NOT_MODIFIY</Filter>
     </ClInclude>
@@ -1392,42 +1347,6 @@
     </ClInclude>
     <ClInclude Include="TGAImage.h">
       <Filter>Source Files\Utility\Asset Loading\ImageAssets\Deprecated\TGA_PrototypeLoader\TGALoader</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGA.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAEnum.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAError.hpp">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAExports.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAFile.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAHeader.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\include\TGAVersion.h">
-      <Filter>Third Party\TGASDK\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\sources\TGAColorMapData.h">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\sources\TGAFiler.hpp">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\sources\TGAImageData.h">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\sources\TGAImageID.h">
-      <Filter>Third Party\TGASDK\source</Filter>
-    </ClInclude>
-    <ClInclude Include="TGASDK\sources\TGAVariable.h">
-      <Filter>Third Party\TGASDK\source</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram2.h">
       <Filter>Source Files\Unfinished</Filter>
@@ -1713,9 +1632,6 @@
     <None Include="Shaders\TeapotExplosion.frag">
       <Filter>Asset Files\Shaders\RenderProjects\TeapotExplosion</Filter>
     </None>
-    <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html">
-      <Filter>Third Party\Temp\CameraClass_FromNonEuclidean</Filter>
-    </None>
     <None Include="Shaders\FlyingCameraDemo.frag">
       <Filter>Asset Files\Shaders\RenderProjects\FlyingCameraDemo</Filter>
     </None>
@@ -1944,9 +1860,6 @@
     </Text>
     <Text Include="Images\Cubemap\green\license.txt">
       <Filter>Asset Files\Images\Cubemap\green</Filter>
-    </Text>
-    <Text Include="TGASDK_GithubLink.txt">
-      <Filter>Third Party\TGASDK</Filter>
     </Text>
     <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
       <Filter>NotesAndReferences\Profiling</Filter>

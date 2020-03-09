@@ -6,6 +6,8 @@
 //  July 20, 2019
 //  Forrest Miller
 
+#if 0
+
 #include "TGAImage.h"
 
 #include <vector>
@@ -479,3 +481,5 @@ int main(int argc, char *argv[])
   return 0;
 }
 */
+
+#endif //0

@@ -96,6 +96,8 @@
       <SupportJustMyCode>false</SupportJustMyCode>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <AssemblerOutput>All</AssemblerOutput>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPERCATION_WARNINGS 1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -125,6 +127,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPERCATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -151,6 +154,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\sources;C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPERCATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -179,6 +183,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPERCATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -200,7 +205,9 @@
     <ClCompile Include="optick\src\optick_message.cpp" />
     <ClCompile Include="optick\src\optick_miniz.cpp" />
     <ClCompile Include="optick\src\optick_serialization.cpp" />
-    <ClCompile Include="optick\src\optick_server.cpp" />
+    <ClCompile Include="optick\src\optick_server.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="AsciiAsset.cpp" />
     <ClCompile Include="AssetLoadingDemo.cpp" />
@@ -242,7 +249,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathFunctions.cpp" />
     <ClCompile Include="MeshFunctions.cpp" />
-    <ClCompile Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.cpp" />
     <ClCompile Include="OffscreenFramebuffer.cpp" />
     <ClCompile Include="OpenAL_Context.cpp" />
     <ClCompile Include="OpenGLEnumToString.cpp" />
@@ -266,12 +272,6 @@
     <ClCompile Include="TessellationEvaluationShader.cpp" />
     <ClCompile Include="CachedUniformLocation.cpp" />
     <ClCompile Include="TGAImage.cpp" />
-    <ClCompile Include="TGASDK\sources\TGA.cpp" />
-    <ClCompile Include="TGASDK\sources\TGAColorMapData.cpp" />
-    <ClCompile Include="TGASDK\sources\TGAHeader.cpp" />
-    <ClCompile Include="TGASDK\sources\TGAImageData.cpp" />
-    <ClCompile Include="TGASDK\sources\TGAImageID.cpp" />
-    <ClCompile Include="TGASDK\sources\TGAVariable.cpp" />
     <ClCompile Include="Timepoint.cpp" />
     <ClCompile Include="UniformLocationInterface.cpp" />
     <ClCompile Include="UniformLocationTracker.cpp" />
@@ -299,7 +299,9 @@
     <ClInclude Include="ImageLoadingStrategy.h" />
     <ClInclude Include="OptickCallbackFunction.h" />
     <ClInclude Include="optick\src\optick.config.h" />
-    <ClInclude Include="optick\src\optick.h" />
+    <ClInclude Include="optick\src\optick.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="optick\src\optick_common.h" />
     <ClInclude Include="optick\src\optick_core.freebsd.h" />
     <ClInclude Include="optick\src\optick_core.h" />
@@ -311,8 +313,12 @@
     <ClInclude Include="optick\src\optick_memory.h" />
     <ClInclude Include="optick\src\optick_message.h" />
     <ClInclude Include="optick\src\optick_miniz.h" />
-    <ClInclude Include="optick\src\optick_serialization.h" />
-    <ClInclude Include="optick\src\optick_server.h" />
+    <ClInclude Include="optick\src\optick_serialization.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="optick\src\optick_server.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="PipelineObserver.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="AsciiAsset.h" />
@@ -356,9 +362,6 @@
     <ClInclude Include="Joystick.h" />
     <ClInclude Include="JoystickBase.h" />
     <ClInclude Include="JoystickManager.h" />
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Camera.h" />
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\GameHeader.h" />
-    <ClInclude Include="NonEuclidean_CameraClass_ByHackerPoet\Vector.h" />
     <ClInclude Include="OffscreenFramebuffer.h" />
     <ClInclude Include="OpenGLEnumToString.h" />
     <ClInclude Include="PrimaryRenderWindow.h" />
@@ -373,18 +376,6 @@
     <ClInclude Include="SkyBoxCube.h" />
     <ClInclude Include="SupportedWindowResolutions.h" />
     <ClInclude Include="TGAImage.h" />
-    <ClInclude Include="TGASDK\include\TGA.h" />
-    <ClInclude Include="TGASDK\include\TGAEnum.h" />
-    <ClInclude Include="TGASDK\include\TGAError.hpp" />
-    <ClInclude Include="TGASDK\include\TGAExports.h" />
-    <ClInclude Include="TGASDK\include\TGAFile.h" />
-    <ClInclude Include="TGASDK\include\TGAHeader.h" />
-    <ClInclude Include="TGASDK\include\TGAVersion.h" />
-    <ClInclude Include="TGASDK\sources\TGAColorMapData.h" />
-    <ClInclude Include="TGASDK\sources\TGAFiler.hpp" />
-    <ClInclude Include="TGASDK\sources\TGAImageData.h" />
-    <ClInclude Include="TGASDK\sources\TGAImageID.h" />
-    <ClInclude Include="TGASDK\sources\TGAVariable.h" />
     <ClInclude Include="TGA_Image_File_Format_Header.h" />
     <ClInclude Include="Timepoint.h" />
     <ClInclude Include="VideoMode.h" />
@@ -527,7 +518,6 @@
     <None Include="glfw3.pdb" />
     <None Include="glfw3dll.exp" />
     <None Include="Images\Cubemap\green\hw_green.shader" />
-    <None Include="NonEuclidean_CameraClass_ByHackerPoet\LICENSE.html" />
     <None Include="NotesAndReferences\MTL_Files__Material_Definitions_For_OBJ_Files_FSU_jburkardt.pdf" />
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
@@ -645,7 +635,6 @@
     <Text Include="NotesOnTexturing.txt" />
     <Text Include="NotesOnUsingMultipleContexts.txt" />
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
-    <Text Include="TGASDK_GithubLink.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>

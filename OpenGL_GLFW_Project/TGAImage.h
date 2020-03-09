@@ -26,6 +26,8 @@
 
 #pragma once
 
+#if 0
+
 #ifndef TGA_IMAGE_H_
 #define TGA_IMAGE_H_
 
@@ -99,4 +101,6 @@ private:
 };
 
 #endif //TGA_IMAGE_H_
+
+#endif //0
 
