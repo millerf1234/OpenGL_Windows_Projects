@@ -96,8 +96,9 @@
       <SupportJustMyCode>false</SupportJustMyCode>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <AssemblerOutput>All</AssemblerOutput>
-      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPERCATION_WARNINGS 1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAs>Default</CompileAs>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -115,6 +116,9 @@
     <ResourceCompile>
       <ShowProgress>true</ShowProgress>
     </ResourceCompile>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
