@@ -1843,9 +1843,6 @@
     <Text Include="NotesAndReferences\VirtualDesctructors.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
-    <Text Include="UserInputConsiderationsAndNotes.txt">
-      <Filter>NotesAndReferences</Filter>
-    </Text>
     <Text Include="NotesOnTexturing.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
@@ -1872,6 +1869,9 @@
     </Text>
     <Text Include="Shaders\DrawTextureOnQuad.frag">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+    </Text>
+    <Text Include="NotesAndReferences\RawInputUsingWin32.txt">
+      <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

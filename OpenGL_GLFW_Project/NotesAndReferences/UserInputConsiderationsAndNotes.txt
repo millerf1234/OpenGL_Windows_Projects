@@ -1,11 +1,11 @@
 UI Notes/Ideas/Philosophy/Justifications 
 // Primary author:     Forrest Miller
-// Document created:   Decemeber 2018 
+// Document created:   December 2018 
 
-This file contains various explanations and details regarding intially ideas and eventually
+This file contains various explanations and details regarding initially ideas and eventually
 justification for how the user-experience/interface comes together. This document is more of
 a scratch sheet of ideas that at some point would benefit from being rewritten (like after
-this project gets some more practicle user interface elements beyond its current iterface
+this project gets some more practical user interface elements beyond its current interface
 of undocumented single key press events)
 
 
@@ -13,14 +13,14 @@ of undocumented single key press events)
 //////////                          Overall UI Philosophy                          //////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-The UI should be intuitive and follow precents set by previous software applications. Weird/unusual
-key cominations should be avoided (just try and use blender for 5 minutes to find out why).
+The UI should be intuitive and follow percents set by previous software applications. Weird/unusual
+key combinations should be avoided (just try and use blender for 5 minutes to find out why).
 When in doubt, search for a precedent. When in doubt, do what is the least unintuitive. 
-Write code in a way such that actions are seperated from their specific input trigger and have the 
+Write code in a way such that actions are separated from their specific input trigger and have the 
 location in code where the two are linked be at a single location (no binding inputs willy-nilly all
 over the place)
 DO NOT PUT UI/LOGIC IN THE RENDER FUNCTIONS! [If Render loop serves double duty by also being game loop,
-do best to keep all UI/Logic as seperate functions/objects/etc... of the render loop]
+do best to keep all UI/Logic as separate functions/objects/etc... of the render loop]
 
 
 
@@ -32,9 +32,9 @@ do best to keep all UI/Logic as seperate functions/objects/etc... of the render 
 Concern/Issue:
 It should be noted that in Windows 10, the cursor's position on the screen is not mapped using 
 a constant function directly from the raw user input. Instead, by default Windows enables mouse 
-accelaration, which is described in basic detail at:
+acceleration, which is described in basic detail at:
                   https://www.howtogeek.com/321763/what-is-enhance-pointer-precision-in-windows/
-[As of the current revision of Windows 10 as of December 2018, this accelaration can be toggled on/off 
+[As of the current revision of Windows 10 as of December 2018, this acceleration can be toggled on/off 
  and even customized by going to Settings->Personalization->Themes then click the 'Mouse Cursor' option
  and go to the 'Pointer Options' tab]
 
@@ -42,7 +42,7 @@ Solution: TBD
    Ideas:  
      (i)     (perhaps some sort of array of 'recent memory' that retains the displacement of the previous
                 [insert_value] number of ticks, and then based off the sum/average [choose 1] of the 
-				distance/displacement [choose 1] covered by the curser a speed boost can be applied)
+				distance/displacement [choose 1] covered by the cursor a speed boost can be applied)
      (ii)    (see if it is possible to piggy-back off the OS {though GLFW may prevent this})
 
 

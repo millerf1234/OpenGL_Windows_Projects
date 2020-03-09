@@ -555,6 +555,7 @@
     <None Include="OpenAL\OpenAL32.pdb" />
     <Text Include="HowToWriteAClass.txt" />
     <Text Include="Mid2019_ListOfMistakesMadeWhileWritingThisCode.txt" />
+    <Text Include="NotesAndReferences\RawInputUsingWin32.txt" />
     <Text Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.rtf">
       <FileType>Document</FileType>
     </Text>
@@ -635,7 +636,6 @@
     <Text Include="NotesOnTexturing.txt" />
     <Text Include="NotesOnUsingMultipleContexts.txt" />
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
-    <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\BeveledCube.obj">

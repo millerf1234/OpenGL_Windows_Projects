@@ -8,11 +8,11 @@ it is known that the class will definitly not be a base class, then the class's 
 should not be virtual. See: https://www.quora.com/Why-arent-all-destructors-in-C++-virtual-by-default
 IMPORTANT: DESCTRUCTORS SHOULD (PRETTY MUCH ALWAYS) NEVER BE MARKED 'OVERRIDE'.
 
-For why a base class should have virtual destructors, consider the following example:
+For why a base class should have virtual destructor, consider the following example:
 
 **************************************************
 **************************************************
-*********  Without Virtual Desctructors  *********
+*********  Without Virtual Destructor  *********
 **************************************************
 **************************************************
 
@@ -44,7 +44,7 @@ int main() {
 	if (true) {
 		std::unique_ptr<Base> base = std::make_unique<Derived>();
 	} //LEAK!
-	//Once base pointer leaves scope, the desctructor for Base will be called. However, since 
+	//Once base pointer leaves scope, the destructor for Base will be called. However, since 
 	//the destructor for Base was not virtual, there is no way for the destructor for Derived to
 	//be called, and thus a memory leak ensues. 
 }

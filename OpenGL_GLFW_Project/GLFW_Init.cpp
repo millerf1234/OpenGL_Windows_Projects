@@ -69,6 +69,7 @@
 
 #include "GLFW_Init.h"
 
+//#include "WindowConfiguration.h"
 //#include "Timepoint.h"
 
 //Note that in GLFW3.h these are defined, might want to make the cursor invisible when game launches...

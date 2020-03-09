@@ -1,0 +1,9 @@
+
+
+Here is how to get raw mouse input using WIN32 APIs
+
+Note that (as of March 2020) I have not yet actually tried this yet...
+
+see: 
+     https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinput
+     https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
