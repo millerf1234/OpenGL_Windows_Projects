@@ -1752,9 +1752,6 @@
     <None Include="obj\LargeSphere.obj">
       <Filter>Asset Files\Models\OBJ\DemoRenderScenes\LargeSphere</Filter>
     </None>
-    <None Include="Shaders\DrawTextureOnQuad.vert">
-      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
-    </None>
     <None Include="ReportOnProfilingTheOpenGLFunction_glUseProgram.odt">
       <Filter>NotesAndReferences\Profiling</Filter>
     </None>
@@ -1769,6 +1766,15 @@
     </None>
     <None Include="optick\README.md">
       <Filter>Third Party\optick</Filter>
+    </None>
+    <None Include="Shaders\DrawTextureOnQuad_Old.vert">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+    </None>
+    <None Include="Shaders\DrawTextureOnQuad.frag">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
+    </None>
+    <None Include="Shaders\DrawTextureOnQuad.vert">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1867,11 +1873,11 @@
     <Text Include="HowToWriteAClass.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
-    <Text Include="Shaders\DrawTextureOnQuad.frag">
-      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
-    </Text>
     <Text Include="NotesAndReferences\RawInputUsingWin32.txt">
       <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="Shaders\DrawTextureOnQuad_Old.frag">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -581,13 +581,15 @@
     <None Include="Shaders\AssetLoadingDemo.frag" />
     <None Include="Shaders\AssetLoadingDemo.vert" />
     <None Include="Shaders\ColorTransforms.frag" />
-    <Text Include="Shaders\DrawTextureOnQuad.frag">
+    <Text Include="Shaders\DrawTextureOnQuad_Old.frag">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <DeploymentContent>false</DeploymentContent>
     </Text>
+    <None Include="Shaders\DrawTextureOnQuad.frag" />
     <None Include="Shaders\DrawTextureOnQuad.vert" />
+    <None Include="Shaders\DrawTextureOnQuad_Old.vert" />
     <None Include="Shaders\FlyingCameraDemo.frag" />
     <None Include="Shaders\FlyingCameraDemo.vert" />
     <None Include="Shaders\FlyingCameraDemo2.vert" />
