@@ -521,18 +521,21 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); //*** 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)"); //***
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //*** Everything's Very White 
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\\OuterSpaceScreenshots\\scr00209.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
     //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
 
@@ -660,7 +663,7 @@ void AssetLoadingDemo::loadModels() {
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    worldMeshName = "SimpleSkyDome_ReExport.obj";
+    //worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     //A very simple large sphere [may take a bit to load]
@@ -669,7 +672,7 @@ void AssetLoadingDemo::loadModels() {
 
 
     //My First Attempt at a skybox cube 
-    //worldMeshName = "AlienWorldSkybox.obj";
+    worldMeshName = "AlienWorldSkybox.obj";
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
@@ -692,7 +695,7 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    ///for (int i = 0; i < 3; i++) 
+    //for (int i = 0; i < 1; i++) 
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
@@ -702,7 +705,7 @@ void AssetLoadingDemo::loadModels() {
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -862,8 +865,7 @@ void AssetLoadingDemo::renderLoop() {
         //        * * * *                  +---------------+                    * * * *        //
         //        ---------------------------------------------------------------------        //
         presentFrame();
-        
-        
+
     }
 
 }
@@ -1304,7 +1306,8 @@ void AssetLoadingDemo::toggleBlending() noexcept {
         fprintf(MSGLOG, "Blending Enabled!\tBlend Function set to \'ONE_MINUS_SOURCE_ALPHA\' \n");
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+         //https://stackoverflow.com/a/17236085
+        //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
     }
     else {
         fprintf(MSGLOG, "Blending Disabled!\n");
@@ -2297,20 +2300,38 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
 
 bool AssetLoadingDemo::buildQuadTextureTestShader() {
     OPTICK_EVENT();
+
+    //There are 5 steps to this function. They are: 
+
+    //    1) Create ShaderProgram with GL Context
     quadTextureTestShader = std::make_unique<ShaderProgram>();
+
+    //    2) Attach Primary Shaders for each stage 
     quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
     quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
-    //Attach Secondary Vertex Shaders
+    
+    //    3) Attach Secondary Vertex Shaders [in this case there are 2 secondary shaders to attach]
+    std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
+        std::make_unique<ShaderInterface::VertexShader>(R"(Shaders\ShaderNoiseFunctions.glsl)");
+    vertexNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryVert(vertexNoiseShader.get());
+    std::unique_ptr<ShaderInterface::VertexShader> practiceNoiseShaderV =
+        std::make_unique<ShaderInterface::VertexShader>(R"(Shaders\PracticeNoise.glsl)");
+    practiceNoiseShaderV->makeSecondary();
+    quadTextureTestShader->attachSecondaryVert(practiceNoiseShaderV.get());
+    
 
-    //Attach Secondary Fragment Shaders
+    //    4) Attach Secondary Fragment Shaders [again 2 secondary shaders are attached, note that the shader code we are attaching looks vaguely familiar... ]
     std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
         std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\ShaderNoiseFunctions.glsl)");
     fragmentNoiseShader->makeSecondary();
     quadTextureTestShader->attachSecondaryFrag(fragmentNoiseShader.get());
-    std::unique_ptr<ShaderInterface::FragmentShader> practiceNoiseShader =
+    std::unique_ptr<ShaderInterface::FragmentShader> practiceNoiseShaderF =
         std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\PracticeNoise.glsl)");
-    practiceNoiseShader->makeSecondary();
-    quadTextureTestShader->attachSecondaryFrag(practiceNoiseShader.get());
+    practiceNoiseShaderF->makeSecondary();
+    quadTextureTestShader->attachSecondaryFrag(practiceNoiseShaderF.get());
+   
+    //    5) Once all shaders have been attached, we are ready to link
     quadTextureTestShader->link();
     return quadTextureTestShader->checkIfLinked();
 }

@@ -26,7 +26,7 @@ uniform mat4 rotation;
 uniform uint customParameter1, customParameter2, customParameter3;
 const uint lightingVersion = (customParameter1 % 3U);
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//*******************************************************
 //External Noise Function Declarations
 float noise(float p);
 float noise(vec2 n);
@@ -45,7 +45,7 @@ float snoise(vec4 v);
 float fbm(float x);
 float fbm(vec2 x);
 float fbm(vec3 x);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//******************************************************
 
 float computeCustom1(in const uint seed) {
     float custom1 = clamp(tan(float(customParameter1)),
@@ -71,26 +71,25 @@ float sinePartialSummation(float angularFreq, //angular frequency is (2 * PI * F
                            int terms, //How many terms in series to compute. Must be 1 or greater 
                            int harmonicMultiple) {//Distance Between Frequency Multiples) {
     
-    const float SUMMATION_FACTOR = 2.0 / 3.14159;
+    const float SUMMATION_FACTOR = 2. / 3.14159;
     const int termsToCompute = max(1, terms);
     const int harmonicIntervalSpacing = max(1, harmonicMultiple);
     float summation = sin(angularFreq * time);
     for (int i = 1; i <= termsToCompute; i++) {
-        const float harmonic = 1.0 + float(i * harmonicIntervalSpacing);
-        const float sign = pow(1.0, float(i * harmonicIntervalSpacing));
+        const float harmonic = 1. + float(i * harmonicIntervalSpacing);
+        const float sign = pow(1., float(i * harmonicIntervalSpacing));
         summation += sign*(sin((harmonic*angularFreq)*time) / harmonic);
     }
     return  SUMMATION_FACTOR*summation;
 }
-/* //DISABLED FOR NOW
+/* DISABLED FOR NOW
 float cosinePartialSummation(float x, int termsToCompute, float harmonicIntervalSpacing) {
     float summation = cos(x);
     for (int i = 1; i <= max(1, termsToCompute); i++) {
-        summation += (1.0 / (2.0 * i + 1.0)) * cos((1.0 + i * harmonicIntervalSpacing) * x);
+        summation += (1. / (2. * i + 1.)) * cos((1. + i * harmonicIntervalSpacing) * x);
     }
-    return ((4.0 / 3.1416) * summation);
+    return ((4. / 3.1416) * summation);
 } */
-
 
 
 
@@ -102,6 +101,7 @@ vec3 fsmJankyPolarNoiseV3_00(vec3 samplePoint,float freq,float jankyness);
 
 
 
+
 void main() {
 
     const uint numCustParam1Options = 9u;
@@ -109,22 +109,7 @@ void main() {
     //-----------------------------------------------------------------------------------------------
     if (customParameter1 % numCustParam1Options == 0u) { 
         //This first one is the best one so far for demonstrating a solid texture mapped model
-        color = texture(tex_object, processed_vertex.texCoord);
-        if (customParameter3 % 4U == 1U) {
-            color.r *= 2.;
-            color.g *= .65;
-            color.b *= .65;
-        }
-        else if (customParameter3 % 4U == 2U) {
-            color.r *= .65;
-            color.g *= 2.;
-            color.b *= .65;
-        }
-        else if (customParameter3 % 4U == 3U) {
-            color.r *= .65;
-            color.g *= .65;
-            color.b *= 2.;
-        }
+        color = texture(tex_object, processed_vertex.texCoord); //- vec4(.2, 0., 0., .5);
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -172,7 +157,7 @@ void main() {
                                       .4667 + .3*sin(.781*time));
         const float diffuse = dot(normalize(processed_vertex.position.xyz),
                                   normalize(lightPos));
-        const float diffuseMag = .5335 + 0.192 * sinePartialSummation(.0135+.0195*sin(.05*time), 8, 2);
+        const float diffuseMag = .5335 + 0.192 * sinePartialSummation(.0135+.0195*sin(.05*time), 4, 2);
         const float oneMinusDiffuseMag = 1. - diffuseMag;
         const vec4 computedDiffuse = vec4((diffuseMag * diffuse) * lightColor,      //R,G,B
                                           .75 - .0125*processed_vertex.instanceID);  //A
@@ -276,7 +261,7 @@ void main() {
                                                       0.64 + .36*cos(time + 30.*snoise(3.*gl_FragCoord.xy)));
         }
         if (customParameter2 % 2 == 1) {
-            finalColor.r += sinePartialSummation(processed_vertex.position.y + processed_vertex.vertIDMod + time, 16, 1);
+            finalColor.r += cos(processed_vertex.position.y + processed_vertex.vertIDMod + time);
             finalColor.r = clamp(finalColor.r, -.1, 1.);
             finalColor.g *= 1.65*finalColor.b*cos(processed_vertex.vertID - time);
             finalColor.b *= 1.605*finalColor.g*sin(1.-time);
@@ -305,15 +290,11 @@ void main() {
         }
         finalColor.a *= .244*diffuse;
 
-        finalColor.a = clamp(finalColor.a, .135, .92);
+        finalColor.a = clamp(finalColor.a, 0.035, 0.592);
         //finalColor.a += .000195*processed_vertex.vertID;
         color = finalColor;
     }
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
-    color.a = 1.0;
-
-    color.a /= max(1.0, (processed_vertex.instanceID-1.0) * min((7.0-.05*processed_vertex.instanceID), 2.0));
-    
 }

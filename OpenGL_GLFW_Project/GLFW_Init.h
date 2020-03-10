@@ -153,6 +153,10 @@ private:
     //of system data at the end of public member function 'initialize()'.
     std::unique_ptr<InitReport> generateDetectedMonitorsStruct(); 
 
+    //VSync is separate from all of other window configuration settings in
+    //that it is to be set only after an OpenGL context has been created and 
+    //made current
+    void setVsync() const noexcept;
 
 
     //                                                      //

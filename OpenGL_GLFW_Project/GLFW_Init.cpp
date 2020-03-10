@@ -293,16 +293,6 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 
 	fprintf(MSGLOG, "\t  Full-Screen MSAA Samples: %d\n", aaSamples);
 	glfwWindowHint(GL_SAMPLES, aaSamples);
-
-	
-	if (vSyncInterval == 0) {
-		fprintf(MSGLOG, "\t  VSYNC: OFF\n");
-		glfwSwapInterval(0);
-	}
-	else {
-		fprintf(MSGLOG, "\t  VSYNC: ON\n");
-		glfwSwapInterval(1);
-	}
 	
 
 	fprintf(MSGLOG, "OpenGL context configured!\n");
@@ -322,7 +312,9 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 	fprintf(MSGLOG, "\t%d connected displays are detected!\n", connectedDisplayCount);
 	
 
-	//First try to make the window open on the specified display
+	///////////////////////////
+    ///// OPEN FULLSCREEN /////
+    ///////////////////////////
 	if (openFullScreen) {
 		if (connectedDisplayCount >= (defaultMonitor + 1)) { //Check to make sure there is at least enough connected displays for defaultMonitor to exist
 			detectDisplayResolution(defaultMonitor, width, height, refreshRate);
@@ -389,12 +381,15 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 		//		glfwGetPrimaryMonitor(), nullptr);
 		//}
 	}
-	else { //Open windowed
+    /////////////////////////
+    ///// OPEN WINDOWED /////
+    /////////////////////////
+	else { 
 		fprintf(MSGLOG, "\nWindow Context set to open in windowed mode...\n\nOpening Window\n");
 		//(If not on a 4k monitor, then this resolution works fine. However with 4k, this is tiny.
 		//mWindow = glfwCreateWindow(1670, 960, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
 		//So if using a 4k monitor, then do something more like:
-		mWindow = glfwCreateWindow(3600, 1800, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
+		mWindow = glfwCreateWindow(800, 600, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
 		defaultMonitor = 0;
 		if (mWindow) {
 			glfwSetWindowMonitor(mWindow, NULL, 30, 50, 3600, 1800, GLFW_DONT_CARE);
@@ -408,6 +403,8 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 		}
 	}
 
+
+
 	//I do one additional check to make sure mWindow definitely is not nullptr (this check
     //is superfluous but doesn't hurt)
 	if (mWindow == nullptr) {
@@ -418,6 +415,8 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 	}
 	else {
 		glfwMakeContextCurrent(mWindow); //Context must be made current here due to load dependencies 
+        //V-Sync is to be set only once a GL Context is made current
+        setVsync();
         GLFW_INIT_INTERNAL::GLFW_IS_INIT() = true;
         //Timepoint temp("GLFW has been initialized!\n"); //This Timepoint No Longer In Use
 	}
@@ -585,6 +584,17 @@ std::unique_ptr<InitReport> GLFW_Init::generateDetectedMonitorsStruct() {
 //Restore warning state
 #pragma warning(pop)
 
+
+void GLFW_Init::setVsync() const noexcept {
+    if (vSyncInterval == 0) {
+        fprintf(MSGLOG, "\t  VSYNC: OFF\n");
+        glfwSwapInterval(0);
+    }
+    else {
+        fprintf(MSGLOG, "\t  VSYNC: ON\n");
+        glfwSwapInterval(1);
+    }
+}
 
 
 void GLFW_Init::assignAtExitTerminationFunction() noexcept {

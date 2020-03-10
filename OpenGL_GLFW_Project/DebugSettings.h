@@ -61,7 +61,7 @@
 //long after the Application event that triggered them. It is recommended to leave this enabled while
 //debugging unless absolutely necessary. 
 //This macro will only be used if the 'USE_DEBUG_' macro is defined.
-//#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
+#define FORCE_DEBUG_CONTEXT_APP_SYNCHRONIZATION_
 
 
 

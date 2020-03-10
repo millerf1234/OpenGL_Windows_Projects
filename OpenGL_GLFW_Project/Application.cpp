@@ -26,16 +26,20 @@
 void Application::initialize() {
     
 #if (defined USE_OPTICK && (USE_OPTICK == 1))
-    fprintf(MSGLOG, "  OPTICK PROFILING ENABLED!\n");
-    OPTICK_START_CAPTURE(/*Optick::Mode::AUTOSAMPLING*/);
+    fprintf(MSGLOG, "OPTICK PROFILING ENABLED!\n");
+    OPTICK_START_CAPTURE( /*Optick::Mode::AUTOSAMPLING*/ );
     OPTICK_EVENT("Capture Begun");
     //Set the path for where to save optick capture
     globalOptickState.captureActive = true;
     auto currentPath = std::filesystem::current_path();
     currentPath.append("optickCaptures");
+    currentPath.make_preferred();
+    //See if a directory at this path exists 
+    if (!std::filesystem::exists(currentPath))
+        std::filesystem::create_directories(currentPath);
     globalOptickState.pathToSaveCapture = std::filesystem::absolute(currentPath);
-    std::cout << "\n\nSaving Capture to: \n\t\"" << 
-        globalOptickState.pathToSaveCapture << "\"\n\n\n";
+    std::cout << "  [Saving Capture to: \n\t" << 
+        globalOptickState.pathToSaveCapture << "]\n\n";
 
     OPTICK_CATEGORY("InitializeApplication", Optick::Category::Scene);
 
@@ -57,7 +61,7 @@ void Application::initialize() {
         // Print the ID for this thread (the Application's main thread)
         const auto threadID = std::this_thread::get_id();
         std::ostringstream threadIDString;
-        threadIDString << "[ ~DEBUG~ ] Application Operating On Thread: 0x"
+        threadIDString << "[ ~DEBUG~ ] Application Operating On Thread:                      0x"
             << std::hex << threadID;
         fprintf(MSGLOG, "\n%s\n", threadIDString.str().c_str());
 
@@ -100,7 +104,7 @@ void Application::initialize() {
             static_cast<uint64_t>(__STDCPP_DEFAULT_NEW_ALIGNMENT__);
         const std::string defaultDynMemAllignmentMessage = std::string(""
             "[ ~DEBUG~ ] Current Default Alignment Of Every Dynamic Memory\n"
-            "            Allocation Which Doesn't Use 'align_as':          ") +
+            "            Allocation Which Doesn't Use 'align_as':              ") +
             std::to_string(defaultAlignmentForDynamicMemoryAllocations);
         fprintf(MSGLOG, "\n%s-bits\n", defaultDynMemAllignmentMessage.c_str());
 #endif // __STDCPP_DEFAULT_NEW_ALIGNMENT__
