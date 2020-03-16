@@ -169,7 +169,6 @@
 //ProjectWide Header File Defining Asset Data Directories
 #include "RelativeFilepathsToResources.h"
 
-//#include "TGAImage.h" //For testing purposes
 #include "ImageData_UByte.h"
 
 //The following 2 global variables can be used to define how models are to be loaded into the scene.
@@ -189,7 +188,7 @@ constexpr const float CAMERA_MINIMUM_FOV = -3.14159f*10.0f;
 constexpr const float CAMERA_Z_PLANE_NEAR = 0.05f;
 constexpr const float CAMERA_Z_PLANE_FAR = 1000.0f;
 
-constexpr const unsigned long long FRAMES_BETWEEN_PERFORMANCE_REPORT = 180ULL;
+constexpr const uint32_t FRAMES_BETWEEN_PERFORMANCE_REPORT = 180U;
 
 
 //This function is intended to be called only through this class's constructor and 
@@ -199,25 +198,25 @@ void AssetLoadingDemo::initialize() {
     error = false;
 
     //Set FrameCounter-related variables (Note that these must all be reset in the 'reset()' function as well)
-    frameCounter = 0ULL;
-    frameUnpaused = 0ULL;
-    frameLineTypeLastSwitched = 0ULL;  
-    frameInstancedDrawingBehaviorLastToggled = 0ULL;
-    frameInstancedDrawingCountLastModified = 0ULL;
-    frameTimeFreezeLastToggled = 0ULL;
-    frameBlendOperationLastToggled = 0ULL;
-    frameDepthClampLastToggled = 0ULL;
-    frameThatTimePropogationWasLastReversed = 0ULL;
-    frameThatCustomShaderParameter1LastModified = 0ULL;
-    frameThatCustomShaderParameter2LastModified = 0ULL;
-    frameThatCustomShaderParameter3LastModified = 0ULL;
-    framePerformanceReportingLastToggled = 0ULL;
+    frameCounter = 0U;
+    frameUnpaused = 0UL;
+    frameLineTypeLastSwitched = 0UL;  
+    frameInstancedDrawingBehaviorLastToggled = 0UL;
+    frameInstancedDrawingCountLastModified = 0UL;
+    frameTimeFreezeLastToggled = 0UL;
+    frameBlendOperationLastToggled = 0UL;
+    frameDepthClampLastToggled = 0UL;
+    frameThatTimePropogationWasLastReversed = 0UL;
+    frameThatCustomShaderParameter1LastModified = 0UL;
+    frameThatCustomShaderParameter2LastModified = 0UL;
+    frameThatCustomShaderParameter3LastModified = 0UL;
+    framePerformanceReportingLastToggled = 0UL;
     counter = 0.0f;
     timeTickRateModifier = 0.0f;
     vao = 0U;
     sceneBufferVBO = 0U;
     triangleOutlineEBO = 0U;
-    practiceTexture = 0u;
+    practiceTexture = 0U;
 
 
     //Set the starting input primitive type
@@ -523,11 +522,11 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); //*** 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //*** Everything's Very White 
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //***
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
@@ -800,7 +799,6 @@ void AssetLoadingDemo::renderLoop() {
     }
 
     while (glfwWindowShouldClose(mainRenderWindow) == GLFW_FALSE) {
-
        
         //------------------------------------------------------
         //             OPTICK's PER-FRAME FUNCTION              
@@ -2589,7 +2587,7 @@ void AssetLoadingDemo::addObject(std::vector<std::unique_ptr<QuickObj>>::const_i
 
 
 void AssetLoadingDemo::createSceneVBO() noexcept {
-
+    OPTICK_EVENT();
     glGenBuffers(1, &sceneBufferVBO);
     fprintf(MSGLOG, "\nCreated a vertex buffer object to store scene vertices. (BufferID = %u)\n\n", sceneBufferVBO);
 
@@ -2597,7 +2595,7 @@ void AssetLoadingDemo::createSceneVBO() noexcept {
 
 
 void AssetLoadingDemo::createTriangleOutlineEBO() noexcept {
-
+    OPTICK_EVENT();
     glGenBuffers(1, &triangleOutlineEBO);
     fprintf(MSGLOG, "\nCreated an element buffer object to store the alternative\n"
         "vertex ordering required to properly draw lines. (BufferID = %u)\n\n",
