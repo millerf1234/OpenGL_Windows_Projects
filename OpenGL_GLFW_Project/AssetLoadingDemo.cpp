@@ -320,6 +320,7 @@ AssetLoadingDemo::~AssetLoadingDemo() noexcept {
 
     if (practiceTexture)
         glDeleteTextures(1, &practiceTexture);
+
 }
 
 
@@ -401,6 +402,7 @@ bool AssetLoadingDemo::loadShaders() {
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
+
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
         std::exit(EXIT_FAILURE);
@@ -481,6 +483,7 @@ bool AssetLoadingDemo::loadShaders() {
     std::cin.get(); //Hold the mainRenderWindow open if there was an error
     markMainRenderWindowAsReadyToClose(); //Mark window for closing once error is acknowledged
 
+
     //Return Window from Iconification?
     if (applicationWindow)
         glfwRestoreWindow(applicationWindow);
@@ -522,9 +525,9 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); //*** 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)"); //***
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //*** Everything's Very White 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //***
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
@@ -658,7 +661,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    //worldMeshName = "DemoSceneInsideABox00.obj";
+    worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -671,7 +674,7 @@ void AssetLoadingDemo::loadModels() {
 
 
     //My First Attempt at a skybox cube 
-    worldMeshName = "AlienWorldSkybox.obj";
+    //worldMeshName = "AlienWorldSkybox.obj";
 
     sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
@@ -694,7 +697,7 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    //for (int i = 0; i < 1; i++) 
+    for (int i = 0; i < 4; i++) 
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  

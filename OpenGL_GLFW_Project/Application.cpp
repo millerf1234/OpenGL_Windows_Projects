@@ -252,6 +252,7 @@ Application::~Application() noexcept {
     }
 #endif //USE_OPTICK == 1
     
+    //glfwInitializer is now terminated using an 'atexit()' callback
     //if (glfwInitializer) {
     //    glfwInitializer->terminate();  
     //}
@@ -292,14 +293,13 @@ void Application::launch() {
         runAssetLoadingDemo();
         return;
 
-       // fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
-       // runLightsourceTestDemo();
-       // return;
+        //fprintf(MSGLOG, "\nSelected LightsourceTestDemo.\n");
+        //runLightsourceTestDemo();
+        //return;
 
         //fprintf(MSGLOG, "\nSelected TeapotExplosionDemo.\n");
         //runTeapotExplosionDemo();
         //return;
-
     }
     catch (const std::system_error& e) {
         fprintf(stderr, "\nCaught a system error exception:\n\t%s\n", e.what());

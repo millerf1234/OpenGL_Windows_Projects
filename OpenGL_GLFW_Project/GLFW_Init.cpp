@@ -392,7 +392,7 @@ std::unique_ptr<InitReport> GLFW_Init::initialize() {
 		mWindow = glfwCreateWindow(800, 600, NAME_OF_APPLICATION, nullptr, nullptr); //Open as window
 		defaultMonitor = 0;
 		if (mWindow) {
-			glfwSetWindowMonitor(mWindow, NULL, 30, 50, 3600, 1800, GLFW_DONT_CARE);
+			glfwSetWindowMonitor(mWindow, NULL, 30, 50, 1600, 900, GLFW_DONT_CARE);
 			fprintf(MSGLOG, "Window Successfully Opened!\n\n");
 		}
 		else {
