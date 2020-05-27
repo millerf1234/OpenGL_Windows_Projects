@@ -1,3 +1,4 @@
+#ifdef JOYSTICKBASE_CODE_FINISHED  
 //File:                       JoystickBase.h
 //Class:                      JoystickBase
 //
@@ -98,16 +99,16 @@
 //               where the JoystickBase is stored.
 //-----------------------------------------------------------------------------------------------------------------------------
 //
-//    UPDATE:  24 hours after I intially started writing this class, I now have a much more thourough grasp on how 
-//             GLFW and Joysticks interact with eachother and the App. All four of the concerns I list below I now
-//             have answers too. Unfortunatly, with more knowledge comes more questions. I believe it will be wise 
+//    UPDATE:  24 hours after I initially started writing this class, I now have a much more thorough grasp on how 
+//             GLFW and Joysticks interact with each other and the App. All four of the concerns I list below I now
+//             have answers too. Unfortunately, with more knowledge comes more questions. I believe it will be wise 
 //             to investigate the properties of certain joysticks which GLFW recognizes as meeting a criteria to 
 //             be called a 'gamepad', and there is some sort of link between GLFW and SDL for keeping a document that
-//              allows the very many different types and vareities of gamepad to be parseable and useable. Perhaps there
+//              allows the very many different types and varieties of gamepad to be parse-able and usable. Perhaps there
 //              now needs to be a 'gamepad' class that inherits from this class.
-//            I have also discovered that each joystick has a unqiue value known as its GUID/UUID. Perhaps I will modify 
+//            I have also discovered that each joystick has a unique value known as its GUID/UUID. Perhaps I will modify 
 //             this class to track joysticks by their GUID, which will remain constant even if several controllers are 
-//              connected/disconnected randomly. They may not be completly unique though, more testing is required...
+//              connected/disconnected randomly. They may not be completely unique though, more testing is required...
 //
 //  IDEA(s)  (delete these next few sections once implementation is more complete): 
 //                            There will be this class which wraps individual JoystickBase objects, and 
@@ -125,8 +126,8 @@
 //                               count, etc...). Perhaps it won't be an issue. Luckily I have several 
 //                               different types of USB controllers readily available which I can experiment
 //                               with.
-//                            I am also worried about the very unlikly event that multiple controllers get
-//                               unplugged during a multiplayer game, and then upon being reconnected they
+//                            I am also worried about the very unlikely event that multiple controllers get
+//                               unplugged during a Multiplayer game, and then upon being reconnected they
 //                               fail to get reassigned to the correct ID's. I am not sure yet whether to
 //                               just delete outright a controller in the event it gets unplugged or to 
 //                               keep a record of it around (until program is closed) in case it gets 
@@ -162,7 +163,7 @@ public:
 	//----------------------------\\
 
 	//A unique ID number is required for construction. Please note that as part of 
-	//this object's construction process, GLFW will be queryed based off the ID provided
+	//this object's construction process, GLFW will be queried based off the ID provided
 	//as this constructor's parameter to verify that this controller is indeed connected.
 	JoystickBase(int joystickToken); 
 	
@@ -245,3 +246,5 @@ private:
 
 
 #endif //JOYSTICK_H_
+
+#endif //JOYSTICKBASE_CODE_FINISHED  
