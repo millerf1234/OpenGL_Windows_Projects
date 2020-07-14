@@ -109,7 +109,7 @@ void main() {
     //-----------------------------------------------------------------------------------------------
     if (customParameter1 % numCustParam1Options == 0u) { 
         //This first one is the best one so far for demonstrating a solid texture mapped model
-        color = texture(tex_object, processed_vertex.texCoord);
+        color = texture(tex_object, vec2(processed_vertex.texCoord.x, processed_vertex.texCoord.y));
         if (customParameter3 % 4U == 1U) {
             color.r *= 2.;
             color.g *= .65;

@@ -538,9 +538,6 @@
     <None Include="obj\CrazyJetEngine.mtl" />
     <None Include="obj\DemoSceneInsideABox00.mtl" />
     <None Include="obj\ExperimentalEngine.mtl" />
-    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.mtl" />
     <None Include="obj\HighlyExperimental\BlenderTextExportExperiment\BlenderTextExportTest_000001.obj.vsspell" />
     <None Include="obj\Interceptor00.mtl" />
@@ -693,10 +690,6 @@
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
     </None>
-    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.obj">
-      <SubType>Designer</SubType>
-      <FileType>Document</FileType>
-    </None>
     <None Include="obj\ParentedPrimatives.obj">
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
@@ -720,6 +713,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\2DTexture\BeveledCube.png" />
     <Image Include="Images\2DTexture\BlockShip_UvMap_albedo.png" />
     <Image Include="Images\2DTexture\BlockShip_UvMap_AmbientOcclusion.png" />
     <Image Include="Images\2DTexture\BlockShip_UvMap_diffuse.png" />
@@ -748,65 +742,20 @@
     <Image Include="Images\Cubemap\spire\spire_rt.tga" />
     <Image Include="Images\Cubemap\spire\spire_up.png" />
     <Image Include="Images\Cubemap\spire\spire_up.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00000.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00001.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00002.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00003.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00004.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00005.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00006.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00007.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00008.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00009.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00010.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00011.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00012.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00013.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00014.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00015.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00016.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00017.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00018.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00019.tga" />
     <Image Include="Images\OuterSpaceScreenshots\scr00020.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00020.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00021.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00022.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00022.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00023.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00024.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00025.tga" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00026.tga" />
     <Image Include="Images\OuterSpaceScreenshots\scr00028.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00041.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00043.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00057.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00062.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00070.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00080.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00088.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00098.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00111.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00135.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00156.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00157.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00163.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00173.jpg" />
+    <Image Include="Images\OuterSpaceScreenshots\scr00067.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00176.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00177.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00207.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00209.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00228.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00243.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00249.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00253.jpg" />
-    <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr10011.jpg" />
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg" />
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232.jpg" />
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232_lrg.jpg" />
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
-    <Image Include="obj\2DTexturedQuadPlaneTexture.png" />
-    <Image Include="obj\BeveledCube.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png" />
     <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png" />

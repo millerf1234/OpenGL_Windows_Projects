@@ -54,9 +54,6 @@
     <Filter Include="Source Files\Utility\Lightsource\HalfFinished">
       <UniqueIdentifier>{243a2fb6-a4a8-40bf-b735-a594431277ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility\UI">
-      <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework">
       <UniqueIdentifier>{9c568e49-fc6b-49af-9394-3b410352fcbe}</UniqueIdentifier>
     </Filter>
@@ -77,12 +74,6 @@
     </Filter>
     <Filter Include="Source Files\GraphicsLanguageFramework\Version1\PrimaryGLFWWindow\PrimaryWindowCallbackFunctions">
       <UniqueIdentifier>{ae31196a-2129-40ef-9c53-e1004b3c6b41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\UI\Joystick/Controller">
-      <UniqueIdentifier>{ac7ddb60-abf3-49ca-a0ff-80c90c247384}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt">
-      <UniqueIdentifier>{6a24f5fc-3443-4a7c-a89c-a5f9e55eee23}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility\Debug">
       <UniqueIdentifier>{a478040c-0ce3-411f-b165-64750b9cbbc6}</UniqueIdentifier>
@@ -547,12 +538,6 @@
     <Filter Include="Asset Files\Images\Cubemap\spire\png">
       <UniqueIdentifier>{8637c818-ffe4-40ad-b9fd-5cdee01c6b22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset Files\Images\FormatTestFiles">
-      <UniqueIdentifier>{d8792b5e-77c8-4e11-974c-5dd8c51311bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset Files\Images\FormatTestFiles\HDR">
-      <UniqueIdentifier>{3908616a-303d-4ad4-b7e3-7de844a691fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Asset Files\Images\OuterSpaceScreenshots">
       <UniqueIdentifier>{c3e26ffe-44cb-42db-9010-c9e76e2f4405}</UniqueIdentifier>
     </Filter>
@@ -567,6 +552,21 @@
     </Filter>
     <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
       <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\User-Input">
+      <UniqueIdentifier>{af80a78f-b2ec-40ec-b40d-371b6f310d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\User-Input\Joystick/Controller">
+      <UniqueIdentifier>{ac7ddb60-abf3-49ca-a0ff-80c90c247384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unfinished\User-Input\Joystick/Controller\First_HalfFinished_Attempt">
+      <UniqueIdentifier>{6a24f5fc-3443-4a7c-a89c-a5f9e55eee23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\LandsatTestImages">
+      <UniqueIdentifier>{45cdff58-53e9-477f-8c05-ac3541745906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Images\LandsatTestImages\VolcanicPlateausInArgentina">
+      <UniqueIdentifier>{1a930032-f969-4682-bc15-53b8868efa04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -655,7 +655,7 @@
       <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
     </ClCompile>
     <ClCompile Include="JoystickBase.cpp">
-      <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
+      <Filter>Source Files\Unfinished\User-Input\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClCompile>
     <ClCompile Include="JoystickManager.cpp">
       <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
@@ -1205,7 +1205,7 @@
       <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Monitor\VideoMode</Filter>
     </ClInclude>
     <ClInclude Include="JoystickBase.h">
-      <Filter>Source Files\Utility\UI\Joystick/Controller\First_HalfFinished_Attempt</Filter>
+      <Filter>Source Files\Unfinished\User-Input\Joystick/Controller\First_HalfFinished_Attempt</Filter>
     </ClInclude>
     <ClInclude Include="JoystickManager.h">
       <Filter>Source Files\Unfinished\GraphicsLanguageFrameworkRewrite\Version2_FSMEngine\ComponentDefinitions\Joystick</Filter>
@@ -1496,12 +1496,6 @@
     </None>
     <None Include="obj\ExperimentalEngine.obj">
       <Filter>Asset Files\Models\OBJ\Sample\Experimental Engine</Filter>
-    </None>
-    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.mtl">
-      <Filter>Asset Files\Models\OBJ\3D_Coat Imported</Filter>
-    </None>
-    <None Include="obj\ExperimentalEngineUV_ToGOWithAlbedo.obj">
-      <Filter>Asset Files\Models\OBJ\3D_Coat Imported</Filter>
     </None>
     <None Include="obj\ParentedPrimatives.mtl">
       <Filter>Asset Files\Models\OBJ\Sample\ParentedPrimatives</Filter>
@@ -1974,9 +1968,6 @@
     <Image Include="Images\Cubemap\spire\spire_up.tga">
       <Filter>Asset Files\Images\Cubemap\spire\tga</Filter>
     </Image>
-    <Image Include="obj\BeveledCube.png">
-      <Filter>Asset Files\Images</Filter>
-    </Image>
     <Image Include="Images\2DTexture\BlockShip_UvMap_glossiness.png">
       <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
@@ -2007,136 +1998,13 @@
     <Image Include="Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png">
       <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00000.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00001.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00002.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00003.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00004.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00005.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00006.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00007.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00008.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00009.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00010.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00011.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00012.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00013.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00014.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00015.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00016.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00017.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00018.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00019.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00020.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00020.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00021.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00022.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00022.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00023.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00024.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00025.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00026.tga">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00041.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00043.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00057.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00062.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00070.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00080.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00088.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00098.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00111.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00135.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00156.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00157.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00163.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00173.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00176.jpg">
@@ -2145,35 +2013,29 @@
     <Image Include="Images\OuterSpaceScreenshots\scr00177.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00207.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00209.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00228.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00243.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00249.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00253.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="Images\OuterSpaceScreenshots\scr00269.jpg">
-      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
-    </Image>
-    <Image Include="obj\2DTexturedQuadPlaneTexture.png">
-      <Filter>Asset Files\Images\Texture2D</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00028.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr10011.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00067.jpg">
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232.jpg">
+      <Filter>Asset Files\Images\LandsatTestImages\VolcanicPlateausInArgentina</Filter>
+    </Image>
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232_lrg.jpg">
+      <Filter>Asset Files\Images\LandsatTestImages\VolcanicPlateausInArgentina</Filter>
+    </Image>
+    <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg">
+      <Filter>Asset Files\Images\LandsatTestImages\VolcanicPlateausInArgentina</Filter>
+    </Image>
+    <Image Include="Images\2DTexture\BeveledCube.png">
+      <Filter>Asset Files\Images\Texture2D\png</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

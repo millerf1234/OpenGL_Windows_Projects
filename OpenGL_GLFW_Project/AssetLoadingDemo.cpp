@@ -502,47 +502,38 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     const Timepoint imageLoadStart("Image Load Start!\n");
 
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+
+    /////////////////////////////
+    ////    Outer Space Images
+    /////////////////////////////
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //Everything's Very White 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //Cool Colors
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00177.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)"); 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr10011.jpg)"); //Star exploding (kinda blury)
 
 
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
-
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
-
-
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
-
-    ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
-
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
-
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); //*** 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)"); //***
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)"); //***
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //*** Everything's Very White 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //***
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\\OuterSpaceScreenshots\\scr00209.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
-    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
+    /////////////////////////////
+    ////    Landsat Images
+    /////////////////////////////
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindioszm_oli_2018232.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232_lrg.jpg)"); //TOO MANY PIXELS
 
 
-    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+    /////////////////////////////
+    ////    2D Textures
+    /////////////////////////////
+    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BeveledCube.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
+
 
     Timepoint imageLoadEnd("Image Load End!\n");
 
@@ -661,7 +652,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    //worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -676,7 +667,7 @@ void AssetLoadingDemo::loadModels() {
     //My First Attempt at a skybox cube 
     //worldMeshName = "AlienWorldSkybox.obj";
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -684,7 +675,7 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
      ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
@@ -697,13 +688,12 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    for (int i = 0; i < 4; i++) 
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //for (int i = 0; i < 1; i++) 
+    ///    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
@@ -712,31 +702,18 @@ void AssetLoadingDemo::loadModels() {
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
-    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-    //    float baseZoom = 1.0f;
-    //    float amplitude = 1.75f;
-    //    float zoom = baseZoom + (amplitude * cos(pow(f0, 2.0f / (amplitude))));
-    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", zoom));
-    //    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-    //   
-    //   /*
-    //    static float denominator = (1.0f - f0);
-    //    denominator += (-1.0f * f0);
-    //    if (abs(denominator < 0.8f))
-    //       denominator = (std::abs(f0 - denominator)) / (f0 + denominator);
-    //    if (denominator > 2.0f)
-    //       denominator = 0.5f;
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "spiral.obj", 1.0f)); // denominator ));
-    //    */
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));  
+
+    //for (int i = 0; i < 20; i++) {
+
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 4.0f));
+        //Several different objects were given a parent-child relationship in Blender and then saved into the same file
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", 1.0f));
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f + (float)i));
     //}
-
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
-
-    //Several different objects were given a parent-child relationship in Blender and then saved into the same file
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
-
     //////////////////////
     //  Less-Well-Behaved models\
     ////////////
@@ -982,6 +959,8 @@ bool AssetLoadingDemo::checkKeyboardInput() {
     rotate();
     changeZoom();
     translate();
+
+    return true;
 }
 
 //   ***\______+============+______/***
@@ -1773,7 +1752,7 @@ void AssetLoadingDemo::buildNewShader() {
         backupSceneShader->link();
         if (backupSceneShader->checkIfLinked()) {
             fprintf(MSGLOG, "New Program Successfully linked!\n");
-            sceneShader.release();
+            sceneShader.release(); 
             sceneShader = std::move(backupSceneShader);
         }
         else {
@@ -1846,12 +1825,12 @@ void AssetLoadingDemo::reportStatistics() {
         timeFromFlipBuffersToNextFrameBeginAvg = timeFromFlipBuffersToNextFrameBeginTotal / capturedFramesCounter;
         fprintf(MSGLOG, "\nPerformance Report:   [These are all averages] \n");
         fprintf(MSGLOG, "  Frame Average Time:                     %f sec\n"
-            "  Time From Frame Begin to Draw:          %f sec\n"
-            "  Time From Draw to Flip Buffers:         %f sec\n"
-            "  Time From Flip Buffers to Next Frame:   %f sec\n",
-            tBeginAvg, timeFromLoopBeginToDrawCommandsAvg,
-            timeFromDrawCommandsToFlipBuffersAvg,
-            timeFromFlipBuffersToNextFrameBeginAvg);
+                        "  Time From Frame Begin to Draw:          %f sec\n"
+                        "  Time From Draw to Flip Buffers:         %f sec\n"
+                        "  Time From Flip Buffers to Next Frame:   %f sec\n",
+                        tBeginAvg, timeFromLoopBeginToDrawCommandsAvg,
+                        timeFromDrawCommandsToFlipBuffersAvg,
+                        timeFromFlipBuffersToNextFrameBeginAvg);
     }
 }
 
@@ -2122,7 +2101,7 @@ void AssetLoadingDemo::updateFrameClearColor() {
 }
 
 
-void AssetLoadingDemo::updateBaseUniforms() noexcept {
+void AssetLoadingDemo::updateBaseUniforms() {
     OPTICK_EVENT();
     //quadTextureTestShader = nullptr;
     if (quadTextureTestShader) {
@@ -2136,9 +2115,9 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
         glm::mat4 MVP; //Model-View-Projection matrix 
         MVP = perspective * (view * (rotation));
         const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-            0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            xTranslation, yTranslation, zTranslation, 1.0f);
+                                                    0.0f, 1.0f, 0.0f, 0.0f,
+                                                    0.0f, 0.0f, 1.0f, 0.0f,
+                                                    xTranslation, yTranslation, zTranslation, 1.0f);
         MVP *= userTranslation;//* MVP;
         
         
@@ -2205,11 +2184,11 @@ void AssetLoadingDemo::drawVerts() {
 
     /*
     
-void glDrawElementsInstanced(	GLenum mode,
-    GLsizei count,
-    GLenum type,
-    const void * indices,
-    GLsizei instanceCount);
+void glDrawElementsInstanced( GLenum mode,
+                              GLsizei count,
+                              GLenum type,
+                              const void * indices,
+                              GLsizei instanceCount);
     */
     if (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleOutlineEBO);
@@ -2262,6 +2241,7 @@ void glDrawElementsInstanced(	GLenum mode,
         else 
             glDrawArrays(GL_POINTS, 0, BUFFER_SIZE);
     }
+
 }
 
 void AssetLoadingDemo::presentFrame() {

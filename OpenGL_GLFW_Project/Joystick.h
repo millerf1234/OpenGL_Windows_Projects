@@ -1,7 +1,7 @@
 //File:                       Joystick.h
 //Class:                      Joystick
 //
-//Description:                This class exists to serve as the primary liason between input-sensitive
+//Description:                This class exists to serve as the primary liaison between input-sensitive
 //                              components of this application and currently connected Joysticks as being
 //                              reported by GLFW. 
 //                         
@@ -13,7 +13,7 @@
 // 
 //    * The GLFW library is initialized after a single call to the function:
 //          'int glfwInit()'
-//      If the 'glfwInit' function returns GLFW_TRUE, the initialzation was
+//      If the 'glfwInit' function returns GLFW_TRUE, the initialization was
 //          a success, which unlocks the majority of this class's functionality.
 //      GLFW will remain initialized until the function glTerminate() is 
 //          called, upon which the data contained within these objects
@@ -84,14 +84,14 @@ public:
 	bool connected() const { return mIsConnected_; }
     //Retrieves this objects uniquely assigned joystickID
 	int tokenID() const { return mJoyID_; }
-    //Checks to see if this joystick has a specific mapping availble
+    //Checks to see if this joystick has a specific mapping available
 
 
 	//----------------------------\\
 	//   Disabled Functionality   \\
 	//----------------------------\\
 	
-	//No default contructor
+	//No default constructor
 	Joystick() = delete;
 	//No Copy constructor
 	Joystick(const Joystick&) = delete;

@@ -385,7 +385,7 @@ protected: //private:
     ///  (4-2a)  Update Uniforms    ///
     ///////////////////////////////////
     
-    void updateBaseUniforms() noexcept;
+    void updateBaseUniforms();
     
     
     //////////////////////////////////
@@ -469,3 +469,4 @@ protected: //private:
 
 
 #endif //ASSET_LOADING_DEMO_H_
+
