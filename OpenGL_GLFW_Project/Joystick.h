@@ -60,7 +60,7 @@ public:
 	//----------------------------\\
 
 	//A unique ID number is required for construction. Please note that as part of 
-	//this object's construction process, GLFW will be queryed based off the ID provided
+	//this object's construction process, GLFW will be queried based off the ID provided
 	//as this constructor's parameter to verify that this controller is indeed connected.
 	Joystick(int joyID); 
 	
@@ -68,7 +68,7 @@ public:
 	//         Destructor         \\
 	//----------------------------\\
 
-	~Joystick() = default;
+	~Joystick() noexcept { ; }
 
 	//----------------------------\\
 	//            Move            \\
