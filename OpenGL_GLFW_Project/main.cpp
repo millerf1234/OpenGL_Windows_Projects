@@ -27,7 +27,7 @@
         "\n\t[Here is the obligatory exception message]\n\t%s\n\n",            \
         e.what());                                                             \
 } catch (...) {                                                                \
-    for (auto i = 0; i < 23; i++) { fprintf(stderr, "\n"); }                   \
+    for (auto i = 0; i < 13; i++) { fprintf(stderr, "\n"); }                   \
     fprintf(stderr, "\a ");                                                    \
     for (auto i = 0; i < 77; i++) { fprintf(stderr, "!"); }                    \
     fprintf(stderr, "\n\n\t\t\t\t   OH NO!\n"                                  \

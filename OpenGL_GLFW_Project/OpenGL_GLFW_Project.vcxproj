@@ -74,7 +74,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -257,6 +257,7 @@
     <ClCompile Include="ScreenCapture.cpp" />
     <ClCompile Include="ScreenCaptureAssistant.cpp" />
     <ClCompile Include="ScreenFramebuffer.cpp" />
+    <ClCompile Include="ShaderDefinedUniform.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgram2.cpp" />
     <ClCompile Include="SkyBoxCube.cpp" />
@@ -788,6 +789,7 @@
     <Image Include="Images\OuterSpaceScreenshots\scr00045.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00057.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00062.jpg" />
+    <Image Include="Images\OuterSpaceScreenshots\scr00067.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00070.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00080.jpg" />
     <Image Include="Images\OuterSpaceScreenshots\scr00088.jpg" />

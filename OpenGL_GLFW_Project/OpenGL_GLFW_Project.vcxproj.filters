@@ -603,9 +603,6 @@
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface\ShaderObject\CompiledShader\DerivedShaderTypes</Filter>
     </ClCompile>
-    <ClCompile Include="RenderDemoBase.cpp">
-      <Filter>Source Files\Projects\RenderDemos</Filter>
-    </ClCompile>
     <ClCompile Include="TeapotExplosion.cpp">
       <Filter>Source Files\Projects\RenderDemos\TeapotExplosion</Filter>
     </ClCompile>
@@ -857,6 +854,12 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDemoBase.cpp">
+      <Filter>Source Files\Projects\RenderDemos</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderDefinedUniform.cpp">
+      <Filter>Source Files\Utility\RenderTools\Shader Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2254,6 +2257,9 @@
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr10011.jpg">
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00067.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
   </ItemGroup>

@@ -641,7 +641,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         }
         if (mState.mHasFrag) {
             fprintf(ERRLOG, "\nERROR: Unable to attach Fragment shader \"%s\"\nto this ShaderProgram "
-                "because this shaderprogram already has a fragment shader attached!\n", frag);
+                "because this ShaderProgram already has a fragment shader attached!\n", frag);
             return false;
         }
         if (mState.mHasCompute) {
@@ -692,7 +692,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
                 "Please use the 'attachSecondaryFrag()' function to attach this shader.\n", frag->getFilepath().c_str());
             return;
         }
-        //One last extra check (that probably isnt necessary):
+        //One last extra check (that probably isn't necessary):
         if ((frag->ID() == 0u) || (frag->type() != ShaderType::FRAGMENT)) {
             fprintf(ERRLOG, "\nERROR! Attempting to attach ShaderID 0 as \"%s\"\n"
                 "Fragment shader to this program!\n", frag->getFilepath().c_str());
@@ -704,7 +704,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
         mState.mReadyToLink = checkToSeeIfReadyToLinkAfterAttachingFrag();
     }
 
-    void ShaderProgram::attachSecondaryFrag(const ShaderInterface::FragmentShader * secondaryFrag) {
+    void ShaderProgram::attachSecondaryFrag(const ShaderInterface::FragmentShader* secondaryFrag) {
         if (secondaryFrag == nullptr) { return; }
         if (!(secondaryFrag->readyToBeAttached())) {
             fprintf(ERRLOG, "\nError! Unable to attach secondary Fragment shader \"%s\"\n"
@@ -765,7 +765,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
             (((mState.mAttachedSecondaryVertCount + mState.mAttachedSecondaryGeomCount + mState.mAttachedSecondaryTesseCount +
                 mState.mAttachedSecondaryTesscCount + mState.mAttachedSecondaryFragCount) > 0))) {
             fprintf(WRNLOG, "\nWARNING! Unable to attach Compute shader \"%s\"\nto this ShaderProgram "
-                "because this shader program has already had a differnt type of shader attached.\nCompute "
+                "because this shader program has already had a different type of shader attached.\nCompute "
                 "shaders must always be bound to their own ShaderProgram objects without\n"
                 "any other shaders.\n", compute);
         }
@@ -906,7 +906,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
                     fprintf(WRNLOG, "Shader program is unable to link because a Tessellation Control is attached but no Tessellation Evaluation is attached!\n");
                 }
                 if (!mState.mHasVert) {
-                    fprintf(WRNLOG, "Shader Program is unable to link because program has not had a vert shader attached yet!\n");
+                    fprintf(WRNLOG, "Shader Program is unable to link because program has not had a Vertex shader attached yet!\n");
                 }
                 if (!mState.mHasFrag) {
                     fprintf(WRNLOG, "Shader program is unable to link because program has not had a frag shader attached yet!\n");
@@ -987,7 +987,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
     }
 
 
-
+    //Todo: Fix the mess that is this function's implementation
     void ShaderProgram::initializeUniformLocationTracker() noexcept {
         assert(mProgramID); //mProgramID must not be 0
                             
@@ -999,7 +999,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
 #ifdef USE_EXCEPTION_NAIVE_IMPL
         //Look how simple this function could be if we didn't care about exceptions...
         uniforms.activateUniformLocationTracker(mProgramID);
-#else 
+#else //This is the GSL-Compliant (NOT REALLY) Implementation 
         std::string exceptionMsg(R"(No Message)"); //Construct a string without allocating data
         try { //Outer 'Try' For Actual Exception Handling
             try { //Inner 'Try' To Get 'e.what()' While Satisfying Compilers Complaints About This Throwing... 
@@ -1007,7 +1007,7 @@ ShaderProgram& ShaderProgram::operator=(ShaderProgram&& that) noexcept {
             }
             catch (const std::exception& e) {
                 exceptionMsg = e.what();
-                throw "A Major Fit At Microsoft!\n"; //What gets thrown here doesn't matter
+                throw "A Major Fit At Microsoft For !\n"; //What gets thrown here doesn't matter
             }
         }
         catch ( ... ) {

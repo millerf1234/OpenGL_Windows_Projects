@@ -41,7 +41,7 @@
 #include "RenderDemoBase.h"
 
 //Forward declare the Timepoint class
-class Timepoint;
+//class Timepoint;
 
 class Application final {
 public:

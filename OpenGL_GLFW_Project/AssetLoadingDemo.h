@@ -78,21 +78,21 @@ static constexpr const GLsizei TRIANGLE_SIDES_AMOUNTAGE = 3;
 
 class AssetLoadingDemo : public RenderDemoBase { 
 public:
-	AssetLoadingDemo() = delete;
-	AssetLoadingDemo(InitReport*);
+    AssetLoadingDemo() = delete;
+    AssetLoadingDemo(InitReport*);
     virtual ~AssetLoadingDemo() noexcept override;// = default;
 
-	void loadAssets() override; //By declaring these functions 'override', the usage 
-	void run() override;        //of the keyword 'virtual' becomes superfluous
-	
+    void loadAssets() override; //By declaring these functions 'override', the usage 
+    void run() override;        //of the keyword 'virtual' becomes superfluous
+    
     
     
     FramePerformanceTimepointsList framePerformance;
 
 
 protected: //private:
-	bool error;
-	//float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
+    bool error;
+    //float counter;  //Counter was moved to be a member of the base class 'RenderDemoBase'
     float timeTickRateModifier;
     uint32_t frameCounter;
     uint32_t frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
@@ -102,7 +102,7 @@ protected: //private:
         frameThatCustomShaderParameter3LastModified;
     mutable uint32_t framePerformanceReportingLastToggled;
 
-	glm::vec3 backgroundColor;
+    glm::vec3 backgroundColor;
 
     GLuint vao; //Only 1 VertexArrayObject is required because all buffers share a common data layout.
     GLuint triangleOutlineEBO;
@@ -110,15 +110,15 @@ protected: //private:
     GLuint practiceTexture;
     std::vector<GLuint> practiceTextureSet;
 
-	//Variables that are modifiable by input from the user
-	PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
-	bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
-	GLsizei instanceCount;
-	
+    //Variables that are modifiable by input from the user
+    PIPELINE_PRIMITIVE_INPUT_TYPE currentPrimitiveInputType;
+    bool drawMultipleInstances; //For trying out glDrawArraysInstanced() vs plain old glDrawArrays();
+    GLsizei instanceCount;
+    
     bool reportPerformance;
-	bool freezeTimeToggle; 
+    bool freezeTimeToggle; 
     bool reverseTimePropogation;
-	bool enableBlending;
+    bool enableBlending;
     mutable bool enableDepthClamping;
 
     //These next 3 variables allow for various configurations to be alternated 
@@ -132,47 +132,47 @@ protected: //private:
     const GLchar* CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME = "customParameter3";
 
 
-	//Scene Control Variables
-	std::unique_ptr<ShaderProgram> sceneShader, quadTextureTestShader;
-	std::vector<std::unique_ptr<QuickObj>> sceneObjects;
+    //Scene Control Variables
+    std::unique_ptr<ShaderProgram> sceneShader, quadTextureTestShader;
+    std::vector<std::unique_ptr<QuickObj>> sceneObjects;
     std::vector<GLfloat> sceneBuffer;// , alternativeSceneBuffer;
     std::vector<GLuint> triangleOutlineElementOrdering;
 
-	//For dynamic shader recompilation
-	struct DynamicShaderSet {
-		FilepathWrapper file;
-		bool primary;
-		ShaderInterface::ShaderType type;
-		DynamicShaderSet() = delete;
-		DynamicShaderSet(std::string s, bool isPrimary, ShaderInterface::ShaderType type) : file(s), primary(isPrimary), type(type) { ; }
-	};
-	std::vector<DynamicShaderSet> shaderSources; //Vector of filepaths to shaders for checking for updates
-	std::unique_ptr<ShaderProgram> backupSceneShader; //Used for building a new sceneShader once files are updated
-	
+    //For dynamic shader recompilation
+    struct LiveUpdateEnabledShaderSet {
+        FilepathWrapper file;
+        bool primary;
+        ShaderInterface::ShaderType type;
+        LiveUpdateEnabledShaderSet() = delete;
+        LiveUpdateEnabledShaderSet(std::string s, bool isPrimary, ShaderInterface::ShaderType type) : file(s), primary(isPrimary), type(type) { ; }
+    };
+    std::vector<LiveUpdateEnabledShaderSet> shaderSources; //Vector of filepaths to shaders for checking for updates
+    std::unique_ptr<ShaderProgram> backupSceneShader; //Used for building a new sceneShader once files are updated
+    
 
-	//View parameters
-	glm::vec3 cameraPos;
-	glm::vec3 lookAtOrgin;
-	glm::vec3 upDirection;
-	float xTranslation;
-	float yTranslation;
+    //View parameters
+    glm::vec3 cameraPos;
+    glm::vec3 lookAtOrgin;
+    glm::vec3 upDirection;
+    float xTranslation;
+    float yTranslation;
     float zTranslation;
-	//Projection parameters
-	float fov, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
-	//Shader Uniforms
-	glm::mat4 rotation;
-	glm::mat4 view;
-	glm::mat4 perspective; //Computes from Projection parameters
-	float head, pitch, roll;
-	float zoom;
-	
+    //Projection parameters
+    float fov, zNear, zFar;   //see https://glm.g-truc.net/0.9.2/api/a00245.html
+    //Shader Uniforms
+    glm::mat4 rotation;
+    glm::mat4 view;
+    glm::mat4 perspective; //Computes from Projection parameters
+    float head, pitch, roll;
+    float zoom;
+    
 
 
-	///////////////////////////////////////////////////////
-	/////////////      Setup Functions      ///////////////
-	///////////////////////////////////////////////////////
-	
-	void initialize(); //Called by constructor(s)
+    ///////////////////////////////////////////////////////
+    /////////////      Setup Functions      ///////////////
+    ///////////////////////////////////////////////////////
+    
+    void initialize(); //Called by constructor(s)
 
     //Sets the initial OpenGL Context state to the default 
     //state expected by this RenderDemo upon first entering its
@@ -189,17 +189,17 @@ protected: //private:
     //necessary for any rendering to occur, this function returns a
     //bool. Will return 'true' if all shaders compiled and linked 
     //without an issue. Otherwise the returned value will be false
-	bool loadShaders(); //Sets up the sceneShader
+    bool loadShaders(); //Sets up the sceneShader
 
     //Loads all of the mesh data. Since this data is (surprisingly) not
     //vital for rendering, it is possible for this function to fail
     //completely and the RenderDemo will still be able to enter its
     //render loop and run as normal (baring any uncaught exceptions)
-	void loadModels(); //Loads 3D model data from asset files
-	
-	//This function is meant to be called after the sceneShader is linked and 
-	//all models for the scene have finished loading
-	void prepareScene();
+    void loadModels(); //Loads 3D model data from asset files
+    
+    //This function is meant to be called after the sceneShader is linked and 
+    //all models for the scene have finished loading
+    void prepareScene();
 
 
 
@@ -288,7 +288,7 @@ protected: //private:
                                
 
     //The high level function 'detectInput()' breaks input detection into two partitions
-    bool checkKeyboardInput();
+    void checkKeyboardInput();
     void checkControllerInput();
 
     //These are then all the individual input detection functions
@@ -320,7 +320,7 @@ protected: //private:
     //   ***/      +============+      \***
 
     void readJoystick0State_AssumingXInput_AndThenProcessAllInput();
-
+    void readNonStandardJoystick();
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     /*}~~                               +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                 ~~{*/
@@ -395,14 +395,14 @@ protected: //private:
     /*        Maybe one day         */
     
     
-	//////////////////////////////////
-	///  (4-2c)  Make Draw Call    ///                           
-	////////////////////////////////// 
-	virtual void drawVerts();                  
+    //////////////////////////////////
+    ///  (4-2c)  Make Draw Call    ///                           
+    ////////////////////////////////// 
+    virtual void drawVerts();                  
                                       
     // [REPEAT Step 4-2 (parts a-c) for each draw call]  
-	
-	
+    
+    
     /*                    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
                           |    (5) Clean-up and Prepare for Next Frame    |
                           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                    */
@@ -412,9 +412,9 @@ protected: //private:
 
 
 
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	////  The following are utility functions called by the setup and render-loop functions  ////
-	/////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    ////  The following are utility functions called by the setup and render-loop functions  ////
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
     bool buildQuadTextureTestShader();
     bool loadTexture2DFromImageFile();
@@ -436,21 +436,21 @@ protected: //private:
     //of the input logic to allow for faster input-response rates.
     float getShiftBoost() const noexcept;
 
-	//Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
-	//as needed to give every vertex in the sceneBuffer the same format. 
-	void buildSceneBufferFromLoadedSceneObjects();
+    //Sets up the sceneBuffer. Will fill in missing uvTexCoord and Normal vertex components
+    //as needed to give every vertex in the sceneBuffer the same format. 
+    void buildSceneBufferFromLoadedSceneObjects();
 
-	//The following 4 functions are intended for use within the function
-	//buildSceneBufferFromLoadedSceneObjects() to handle 
-	//data into the sceneBuffer
-	void addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
-		const glm::vec3& objPos);
+    //The following 4 functions are intended for use within the function
+    //buildSceneBufferFromLoadedSceneObjects() to handle 
+    //data into the sceneBuffer
+    void addObject(std::vector<std::unique_ptr<QuickObj>>::const_iterator object,
+        const glm::vec3& objPos);
 
-	//Helper function for generating random texture coordinates
-	static inline glm::vec2 generateRandomTexCoords() {
-		return glm::vec2(MathFunc::getRandomInRangef(0.0f, 1.0f), MathFunc::getRandomInRangef(0.0f, 1.0f));
-	}
-	//Helper function for generating constant texture coords
+    //Helper function for generating random texture coordinates
+    static inline glm::vec2 generateRandomTexCoords() {
+        return glm::vec2(MathFunc::getRandomInRangef(0.0f, 1.0f), MathFunc::getRandomInRangef(0.0f, 1.0f));
+    }
+    //Helper function for generating constant texture coords
     static inline glm::vec2 generateConstantTexCoords() noexcept {
         return glm::vec2(0.5f, 0.5f);
     }
@@ -458,11 +458,11 @@ protected: //private:
     void createSceneVBO() noexcept;
     void createTriangleOutlineEBO() noexcept;
 
-	//Does exactly what you think [creates buffers within the GL Context, uploads vertices to buffer]
-	void uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept;
+    //Does exactly what you think [creates buffers within the GL Context, uploads vertices to buffer]
+    void uploadSceneBufferToGPU(GLuint& targetVBO, const std::vector<float>& sceneBuf) noexcept;
     void uploadTriangleOutlineElementOrderingBufferToGPU(GLuint& ebo, const std::vector<GLuint>& eboData) noexcept;
-	//Sets up the VAO [which describes how the vertex data is arranged in the VertexArrayBuffer]
-	void configureVertexArrayAttributes() noexcept; 
+    //Sets up the VAO [which describes how the vertex data is arranged in the VertexArrayBuffer]
+    void configureVertexArrayAttributes() noexcept; 
 
 
 };
