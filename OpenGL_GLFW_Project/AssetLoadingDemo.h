@@ -215,13 +215,20 @@ protected: //private:
     //        \             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                /         //
     //         \           ~~~~  RENDER LOOP EXECUTION CYCLE  ~~~~              /          //
     //          \           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~              /           //
-    //          The Render Loop Will Always Be In One of Four Phases Of Execution          //
+    //          The Render Loop Will Always* Be In One of Four Phases Of Execution         //
     //            While The Application Is Running:                                        //
     //                                               - INPUT                               //
     //                                               - LOGIC                               //
     //                                               - DRAW                                //
     //                                               - PRESENT                             //
-    //    [ There may also be implicit micro-phases for inserting profiler tags ]          //
+    //           *[ For DEBUG builds, the Render Loop will briefly reach several           //
+    //              places within each cycle where the code executing exists               //
+    //              outside any specific phase of execution. This code's purpose is        //
+    //              to record certain event timestamps at various moments in the loop      //
+    //              which allow for run-time performance data to be profiled. These        //
+    //              event timestamps are recorded using the 'Optick Profiler-Tag           //
+    //              Insertion' Functions found below ]                                     //
+
     //                                                                                     //
     //                                                                                     //
     //                                                                                     //
@@ -254,7 +261,7 @@ protected: //private:
     //        ---------------------------------------------------------------------        //
     void presentFrame();
     //                                                                                     //
-    //                               (Profiling Functions)                                 //
+    //                          (Optick Profiler-Tag Insertion Functions)                  //
     void recordFrameStartTimepoint();
     void recordBeginRenderCommandsTimepoint();
     void recordSwapFramebuffersTimepoint();
@@ -288,7 +295,7 @@ protected: //private:
                                
 
     //The high level function 'detectInput()' breaks input detection into two partitions
-    void checkKeyboardInput();
+    bool checkKeyboardInput();
     void checkControllerInput();
 
     //These are then all the individual input detection functions
