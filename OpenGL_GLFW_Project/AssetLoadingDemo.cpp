@@ -404,12 +404,12 @@ bool AssetLoadingDemo::loadShaders() {
 
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
-        std::exit(EXIT_FAILURE);
+        return false;//std::exit(EXIT_FAILURE);
     }
     else {
         if (!loadTexture2DFromImageFile()) {
             fprintf(ERRLOG, "\nError loading texture from image file!\n");
-            //std::exit(EXIT_FAILURE);
+            return false; //std::exit(EXIT_FAILURE);
         }
     }
 
