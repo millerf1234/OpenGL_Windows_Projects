@@ -1,0 +1,55 @@
+
+
+Hey so I can get the vertex coordinates for various polyhedra by 
+going onto Wolfram Alpha and extracting it from there. 
+
+
+So if I go to Wolfram Alpha and type in something like:
+
+        PolyhedronData["SmallTriakisOctahedron", "VertexCoordinates"]
+
+This will give me the coordinates for all 14 vertices for the SmallTriakisOctahedron.
+
+
+
+
+The only problem with this data from Wolfram though is that the vertex coordinates are 
+given as exact values (i.e. as fractions containing square roots and such rather than 
+decimal values).  [Yes I realize it's probably really easy to tell Wolfram to give the 
+values in decimal, but I hardly use Wolfram enough to know how to do that]
+
+Actually I probably should just look that up...
+Here's how to do it :
+
+        N(PolyhedronData["SmallTriakisOctahedron", "VertexCoordinates"])
+
+
+
+
+And with that being said, here are the vertices for the SmallTriakisOctahedron:
+
+{{-0.5, -0.5, -0.5},
+{-0.5, -0.5, 0.5},
+{-0.5, 0.5, -0.5},
+{-0.5, 0.5, 0.5},
+{0., 0., -1.20711},
+{0., 0., 1.20711},
+{0., -1.20711, 0.},
+{0., 1.20711, 0.},
+{0.5, -0.5, -0.5},
+{0.5, -0.5, 0.5},
+{0.5, 0.5, -0.5},
+{0.5, 0.5, 0.5},
+{-1.20711, 0., 0.},
+{1.20711, 0., 0.}}
+
+
+I suppose I still need to figure out a way to get the correct triangle ordering if I'm
+ever going to actually render one of these polyhedrons... 
+
+
+
+
+
+Here are some links to some cool polyhedra
+    https://mathworld.wolfram.com/StellaOctangula.html
