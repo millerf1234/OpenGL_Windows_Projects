@@ -17,6 +17,10 @@
 
 #include "QuickObj.h"
 
+//#include <cstdint> //I always mix cinttypes and cstdint up... here only cinttypes is needed
+#include <cinttypes>
+
+//N-GON parser was never finished? / Consider Removing this dependency?
 #include "QuickObj_NGonParser.h"
 
 namespace { //An anonymous namespace is used to prevent these constants from polluting the global namespace
@@ -60,7 +64,9 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
         parseFile();
     }
     else {
-        fprintf(ERRLOG, "\nERROR acquiring file: %s!\n", filepath.c_str());
+        if (!filepath.empty()) {
+            fprintf(ERRLOG, "\nERROR acquiring file: %s!\n", filepath.c_str());
+        }
         mError_ = true;
         return;
     }
@@ -71,9 +77,12 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
         }
     }
 
+    //If the model data contains any lines (i.e. a 'face' with only 2 vertices),
+    //account for them by appending their vertices onto the end of the model data
     if (mLines_.size() > 0u)
         addParsedLinePrimitivesToEndOfMeshData();
 
+    
     mVertices_.shrink_to_fit();
 }
 
@@ -138,7 +147,7 @@ void QuickObj::parseFile() {
 
     //In case a line starting with "vp" is parsed (representing freeform geometry data),
     //we only need to print out a warning about parser not supporting freeform geometry 
-    //one time. 
+    //one time
     bool freeformGeometryWarningMessageFlag = false; 
 
     size_t fileSize = mFile_->getNumberOfLines();
@@ -160,6 +169,14 @@ void QuickObj::parseFile() {
             continue;
         case 'u':
             //Line probably is a "usemtl ____"  instruction
+            //Let's check to make sure
+            if (!std::string("usemtl").compare(line.substr(0, 5))) {
+                fprintf(MSGLOG, "Here is the culprate: %s\n", line.substr(0, 5).c_str());
+                fprintf(ERRLOG, "\n\nError! Unrecognized Syntax on line %" PRIu64 " of Obj file \"%s\"\n",
+                        static_cast<uint64_t>(i), mFile_->getFilepath().c_str());
+                fprintf(ERRLOG, "       Syntax on this line: \"%s\n\n",
+                        line.c_str());
+            }
             //No material using for now
             break;
         case 'v':

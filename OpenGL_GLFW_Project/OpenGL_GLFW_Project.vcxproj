@@ -526,11 +526,9 @@
     <None Include="NotesAndReferences\MTL_OBJ_Materials_FULL_DOCUMENTATION.pdf" />
     <None Include="NotesAndReferences\OpenGL_PipelineTransformations.pdf" />
     <None Include="obj\2DTexturedQuadPlane.mtl" />
-    <None Include="obj\3D_Arrow.mtl" />
     <None Include="obj\AbstractShapeDecimated.mtl" />
     <None Include="obj\AlienWorldSkybox.mtl" />
     <None Include="obj\BeveledCube.mtl" />
-    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl" />
     <None Include="obj\BlockThing_Quads.mtl" />
     <None Include="obj\BlockThing_Triangulated.mtl" />
     <None Include="obj\box_cutter.mtl" />
@@ -550,10 +548,10 @@
     <None Include="obj\Splines.mtl" />
     <None Include="obj\SubdivisionCube.mtl" />
     <None Include="obj\Thing.mtl" />
-    <None Include="obj\ViperMKIV_Fighter.mtl" />
     <None Include="OpenAL\copyright" />
     <None Include="OpenAL\OpenAL32.dll" />
     <None Include="OpenAL\OpenAL32.pdb" />
+    <Text Include="HowToGetTheVertexCoordinatesOfVariousPolyhedra.txt" />
     <Text Include="HowToWriteAClass.txt" />
     <Text Include="Mid2019_ListOfMistakesMadeWhileWritingThisCode.txt" />
     <Text Include="NotesAndReferences\RawInputUsingWin32.txt" />
@@ -630,7 +628,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Images\Cubemap\green\license.txt" />
-    <Text Include="NewTieFighterNotice.txt" />
     <Text Include="NoteOnVisualStudioGLSLTextColoring.txt" />
     <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt" />
     <Text Include="NotesAndReferences\Notes_and_ReadMe.txt" />
@@ -652,9 +649,6 @@
     <None Include="obj\BlockThing_Triangulated.obj">
       <FileType>Document</FileType>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.obj">
-      <FileType>Document</FileType>
     </None>
     <None Include="obj\AbstractShape.obj">
       <FileType>Document</FileType>
@@ -704,13 +698,6 @@
     <None Include="obj\Spaceship.obj">
       <FileType>Document</FileType>
     </None>
-    <None Include="obj\NewOrderTie_Triangulated.obj">
-      <SubType>Designer</SubType>
-      <FileType>Document</FileType>
-    </None>
-    <None Include="obj\ViperMKIV_Fighter.obj">
-      <FileType>Document</FileType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\2DTexture\BeveledCube.png" />
@@ -756,16 +743,6 @@
     <Image Include="Images\Samples\LandsatTestImages\VolcanicPlateausInArgentina\pasodeindios_oli_2018232_lrg.jpg" />
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png" />
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_emissive.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_glossiness.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_normal_map.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_roughness.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_Specular.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_SpecularTint.png" />
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png" />
     <Image Include="obj\RocketEngine_UV.png" />
   </ItemGroup>
   <ItemGroup>
@@ -830,6 +807,15 @@
   <ItemGroup>
     <None Include="obj\AlienWorldSkybox.obj">
       <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Aspirin_3DStructure.obj">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

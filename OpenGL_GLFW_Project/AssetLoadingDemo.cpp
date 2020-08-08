@@ -511,8 +511,8 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)"); //Everything's Very White 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //Cool Colors
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)"); 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00177.jpg)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)"); //Way Cool Horizon Shot
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00177.jpg)"); //Cool Horizon Shot
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)"); 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr10011.jpg)"); //Star exploding (kinda blury)
 
@@ -528,7 +528,8 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     /////////////////////////////
     ////    2D Textures
     /////////////////////////////
-    ImageData_UByte testDefaultImage(R"(Images\2DTexture\BeveledCube.png)");
+    //   WIP
+    //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BeveledCube.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\
@@ -667,7 +668,7 @@ void AssetLoadingDemo::loadModels() {
     //My First Attempt at a skybox cube 
     //worldMeshName = "AlienWorldSkybox.obj";
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -675,12 +676,11 @@ void AssetLoadingDemo::loadModels() {
     //  Well-Behaved models
     /////////////
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
     
-     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
+    
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
+    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
     
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShapeDecimated.obj", abstractShapeScale));
 
@@ -688,14 +688,15 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    //for (int i = 0; i < 1; i++) 
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Aspirin_3DStructure.obj", 0.01f));
+
+    for (int i = 0; i < 5; i++) {
     ///    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
+        ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f + (float)i));
+        ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
+        ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
+    }
 
-
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
@@ -971,7 +972,7 @@ void AssetLoadingDemo::checkControllerInput() {
     readJoystick0State_AssumingXInput_AndThenProcessAllInput();
 }
 
-inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const  noexcept {
+inline bool AssetLoadingDemo::checkToSeeIfShouldCloseWindow() const noexcept {
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         return true;
     }
@@ -1047,7 +1048,7 @@ inline bool AssetLoadingDemo::checkIfShouldToggleBlending() const  noexcept {
             return true;
         }
     }
-    return false;	
+    return false;
 }
 
 inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept {
@@ -2127,7 +2128,7 @@ void AssetLoadingDemo::updateBaseUniforms() {
         quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
         quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
 
-        return;
+        //return;
     }
     
     //ELSE 
@@ -2169,7 +2170,7 @@ void AssetLoadingDemo::drawVerts() {
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
     //if (sceneShader)
-    //	sceneShader->use();
+    //    sceneShader->use();
 
     if (quadTextureTestShader)
         quadTextureTestShader->use();

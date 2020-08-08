@@ -457,20 +457,8 @@
     <Filter Include="Asset Files\Models\OBJ\Spaceships">
       <UniqueIdentifier>{fe1e1001-9f2c-4a20-b8e2-a051a4844cd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset Files\Models\OBJ\Spaceships\Test">
-      <UniqueIdentifier>{034a3a59-d139-4422-8d09-156d97927f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted">
-      <UniqueIdentifier>{a5bd8c56-e05e-420d-9ddf-3fabf8fcda98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Asset Files\Models\OBJ\Spaceships\StarSuzerian">
       <UniqueIdentifier>{fc9c82bc-0065-4439-8fe2-3e962f54fc05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter">
-      <UniqueIdentifier>{b20aff9e-c742-4a19-a37c-8d07ec12b89b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter">
-      <UniqueIdentifier>{73d7db21-48d4-4fbb-b00e-0b95d24272b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Asset Files\Models\OBJ\Spaceships\CargoSpaceship">
       <UniqueIdentifier>{a9a0ace4-1a71-43ab-a4da-2d9866b19cc3}</UniqueIdentifier>
@@ -1548,12 +1536,6 @@
     <None Include="Shaders\AssetLoadingDemo.frag">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo</Filter>
     </None>
-    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.mtl">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </None>
-    <None Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01.obj">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </None>
     <None Include="obj\AbstractShape.obj">
       <Filter>Asset Files\Models\OBJ\Sample\AbstractShape</Filter>
     </None>
@@ -1593,23 +1575,11 @@
     <None Include="AssetLoadingDemo_CoolEffect.frag">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\CoolEffect</Filter>
     </None>
-    <None Include="obj\NewOrderTie_Triangulated.obj">
-      <Filter>Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
-    </None>
-    <None Include="obj\3D_Arrow.mtl">
-      <Filter>Asset Files\Models\OBJ</Filter>
-    </None>
     <None Include="Shaders\Sample\RubyMine.frag">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
     </None>
     <None Include="Shaders\Sample\RubyMine.vert">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\ShaderFrog\RubyMine</Filter>
-    </None>
-    <None Include="obj\ViperMKIV_Fighter.mtl">
-      <Filter>Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
-    </None>
-    <None Include="obj\ViperMKIV_Fighter.obj">
-      <Filter>Asset Files\Models\OBJ\Spaceships\ViperMkIV_Fighter</Filter>
     </None>
     <None Include="obj\Engine2_Textured.obj">
       <Filter>Asset Files\Models\OBJ\JetEngine\Engine2</Filter>
@@ -1770,6 +1740,9 @@
     <None Include="Shaders\DrawTextureOnQuad.vert">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </None>
+    <None Include="obj\Aspirin_3DStructure.obj">
+      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1828,9 +1801,6 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="NewTieFighterNotice.txt">
-      <Filter>Asset Files\Models\OBJ\Spaceships\NewOrder_TieFighter</Filter>
-    </Text>
     <Text Include="NotesAndReferences\C_Preprocessor_Applications.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
@@ -1873,6 +1843,9 @@
     <Text Include="Shaders\DrawTextureOnQuad_Old.frag">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
+    <Text Include="HowToGetTheVertexCoordinatesOfVariousPolyhedra.txt">
+      <Filter>Asset Files\Models</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="obj\RocketEngine_UV.png">
@@ -1880,36 +1853,6 @@
     </Image>
     <Image Include="NotesAndReferences\CPP_CoreGuidelinesOnHavingNonVirtualDesctructorsBeProtected.png">
       <Filter>NotesAndReferences</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_albedo.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_AmbientOcclusion.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_diffuse.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_emissive.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_glossiness.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_normal_map.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_roughness.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_Specular.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_SpecularTint.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
-    </Image>
-    <Image Include="obj\BlockshipSampleExports\BlockShipSample_01_3DCoatExport01_WorldNrmlMap.png">
-      <Filter>Asset Files\Models\OBJ\Spaceships\Test\BlockShipPainted</Filter>
     </Image>
     <Image Include="NotesAndReferences\SDL_GameController_mapping_guide.png">
       <Filter>NotesAndReferences</Filter>
