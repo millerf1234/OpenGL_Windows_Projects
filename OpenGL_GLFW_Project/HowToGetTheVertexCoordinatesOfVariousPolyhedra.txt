@@ -44,12 +44,54 @@ And with that being said, here are the vertices for the SmallTriakisOctahedron:
 {1.20711, 0., 0.}}
 
 
+
 I suppose I still need to figure out a way to get the correct triangle ordering if I'm
 ever going to actually render one of these polyhedrons... 
+Actually here I figured it out. To get the data, do the following Wolfram queries
+(while also making sure to replace NAME with the polyhedron's name):
+
+        Vertices ->    N(PolyhedronData["NAME", "VertexCoordinates"])
+        Edges    ->    N(PolyhedronData["NAME", "EdgeIndices"])
+        Faces    ->    N(PolyhedronData["NAME", "FaceIndices"])
 
 
 
 
+    See this also:
+        https://www.wolframalpha.com/input/?i=dodecahedron%2C+edge+length%3D10
 
-Here are some links to some cool polyhedra
+
+
+Here are links to some cool polyhedra
+    https://mathworld.wolfram.com/SmallTriakisOctahedron.html
     https://mathworld.wolfram.com/StellaOctangula.html
+    https://mathworld.wolfram.com/StellatedTruncatedHexahedron.html
+    https://mathworld.wolfram.com/DeltoidalIcositetrahedron.html
+    https://mathworld.wolfram.com/SmallHexacronicIcositetrahedron.html
+    https://mathworld.wolfram.com/SmallCubicuboctahedron.html
+    https://mathworld.wolfram.com/UniformGreatRhombicuboctahedron.html   <--- This one may be too crazy
+    https://mathworld.wolfram.com/Octahemioctacron.html
+
+    https://mathworld.wolfram.com/Tetrahemihexahedron.html
+    https://mathworld.wolfram.com/Tetrahemihexacron.html
+
+    https://mathworld.wolfram.com/Gyrobifastigium.html
+
+    https://mathworld.wolfram.com/RhombicTriacontahedron.html
+
+    https://mathworld.wolfram.com/RhombicTriacontahedronStellations.html
+
+    https://mathworld.wolfram.com/MedialRhombicTriacontahedron.html
+
+    https://mathworld.wolfram.com/GreatRhombicuboctahedron.html
+
+    https://mathworld.wolfram.com/Octahemioctahedron.html
+
+
+
+Here's a link which lists them all
+    https://mathworld.wolfram.com/topics/UniformPolyhedra.html
+
+
+See also this:
+    https://wolfram.com/xid/08uquwzpvwqg4ki-ik9oj9
