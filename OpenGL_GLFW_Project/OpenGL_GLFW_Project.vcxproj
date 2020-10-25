@@ -646,6 +646,7 @@
     <Text Include="NotesOnTexturing.txt" />
     <Text Include="NotesOnUsingMultipleContexts.txt" />
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
+    <Text Include="Shadertoy_SinCosTimeMacro.txt" />
     <Text Include="TGASDK_GithubLink.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>

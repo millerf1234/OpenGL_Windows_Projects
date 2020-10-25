@@ -10,7 +10,7 @@
 //
 //                               The GLFW library assigns to the macro GLFW_JOYSTICK_LAST the maximum
 //                               number of joysticks that can be connected at the same time, which allows
-//                               for this class to be built arond a static array representing every
+//                               for this class to be built around a static array representing every
 //                               currently connected Joystick.                       
 //                                        
 //                               
@@ -25,71 +25,69 @@
 
 #include <array>
 #include <atomic>
+#include <memory>
 #include "LoggingMessageTargets.h"
 #include "Joystick.h"
 
 class JoystickManager final {
 public:
-	//Calling this constructor will bring a JoystickManager into existance, but note that the 
-	//required setup for a completly functional JoystickManager must involve an additional 
-	//function call. This is good news though, because this object can be constructed without 
-	//first requiring any dependent libraies (*cough* GLFW *cough) to be initialized. 
-	//
-	// (TL;DR) Be sure to call this object's 'runSetup()' function after GLFW is initialized
-	JoystickManager();
+    //Calling this constructor will bring a JoystickManager into existence, but note that the 
+    //required setup for a completely functional JoystickManager must involve an additional 
+    //function call. This is good news though, because this object can be constructed without 
+    //first requiring any dependent libraries (*cough* GLFW *cough) to be initialized. 
+    //
+    // (TL;DR) Be sure to call this object's 'runSetup()' function after GLFW is initialized
+    JoystickManager();
 
     ~JoystickManager() = default;
 
-	//This function should be called ideally as soon as possible after GLFW is successfully
-	//initialized. There are a number of different steps that get performed by this class
-	//which are necessary to allow it to interface with the GLFW library and every connected
-	//controller.  
-	void runSetup(); 
+    //This function should be called ideally as soon as possible after GLFW is successfully
+    //initialized. There are a number of different steps that get performed by this class
+    //which are necessary to allow it to interface with the GLFW library and every connected
+    //controller.  
+    void runSetup(); 
 
-	//------------------------------------//
-	//    Joystick-Related Functions      //
+    //------------------------------------//
+    //    Joystick-Related Functions      //
     //------------------------------------//
 
-	//Returns the number of currently connected Joysticks
-	size_t activeCount() const { return numberOfConnectedJoysticks.load(); }
+    //Returns the number of currently connected Joysticks
+    size_t activeCount() const { return numberOfConnectedJoysticks.load(); }
 
 
-	//Returns true if the Joystick event callback function was sucessfully setup. If something
-	//went wrong with setting up the callback, returns false.
-	bool joystickCallbackFunctionWasAssigned() const { return joystickEventCallbackFunctionIsAssigned; }
+    //Returns true if the Joystick event callback function was successfully setup. If something
+    //went wrong with setting up the callback, returns false.
+    bool joystickCallbackFunctionWasAssigned() const { return joystickEventCallbackFunctionIsAssigned; }
 
-	//Checks to see if this object was able to complete all parts of its setup
-	//without failure
-	bool setupCompleted() const { return mSetupComplete_; }
+    //Checks to see if this object was able to complete all parts of its setup
+    //without failure
+    bool setupCompleted() const { return mSetupComplete_; }
 
-	
+    
 private:
-	static bool joystickEventCallbackFunctionIsAssigned; //Will become true if done sucessfully as part of setup
-	static std::atomic_size_t numberOfConnectedJoysticks;
-	static std::array<std::unique_ptr<Joystick>, GLFW_JOYSTICK_LAST> joystickArray;
+    static bool joystickEventCallbackFunctionIsAssigned; //Will become true if done successfully as part of setup
+    static std::atomic_size_t numberOfConnectedJoysticks;
+    static std::array<std::unique_ptr<Joystick>, GLFW_JOYSTICK_LAST> joystickArray;
 
-	bool mSetupComplete_;
-	
-	
-	
+    bool mSetupComplete_;
 
 
-	//----------------------------------------------//
-	//             Utility Functions                //
-	//----------------------------------------------//
-	void initializeJoystickArray(); //Initalizes every element in array to nullptr
-	void setupJoystickEventCallback();
-	void detectAllCurrentlyConnectedJoysticks(); 
+    //----------------------------------------------//
+    //             Utility Functions                //
+    //----------------------------------------------//
+    void initializeJoystickArray(); //Initializes every element in array to nullptr
+    void setupJoystickEventCallback();
+    void detectAllCurrentlyConnectedJoysticks(); 
 
 
 
-	
-	//-----------------------------------------------\\
-	//    GLFW Joystick Event Callback Function      \\      (Note that this is not actually a member function)
-	//-----------------------------------------------\\
+    
+    //-----------------------------------------------\\
+    //    GLFW Joystick Event Callback Function      \\      (Note that this is not actually a member function)
+    //-----------------------------------------------\\
 
-	friend void joystickEventCallback(int joyID, int event);  //Second parameter is either GLFW_CONNECTED or GLFW_DISCONNECTED
-	
+    friend void joystickEventCallback(int joyID, int event);  //Second parameter is either GLFW_CONNECTED or GLFW_DISCONNECTED
+    
 
 };
 

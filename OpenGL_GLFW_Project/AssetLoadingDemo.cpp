@@ -368,9 +368,11 @@ void AssetLoadingDemo::setAssetLoadingDemoSpecificGlobalGLContextState() const {
 void AssetLoadingDemo::loadAssets() {
     OPTICK_EVENT();
     try {
-        if (!loadShaders()) //load the GLSL shader code
+        if (!loadShaders()) { //load the GLSL shader code
+            error = true; //It will be impossible to render anything without shaders
             return;
-        loadModels();  //have the GL context load the Teapot vertices to video memory 
+        }
+        loadModels(); 
         prepareScene();
     }
     catch (const std::system_error& sysErr) {
@@ -505,7 +507,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
 
-    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
+    ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
 
 
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
@@ -525,7 +527,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
@@ -660,12 +662,11 @@ void AssetLoadingDemo::loadModels() {
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    worldMeshName = "SimpleSkyDome_ReExport.obj";
+    //worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     //A very simple large sphere [may take a bit to load]
     //worldMeshName = "LargeSphere.obj";
-
 
 
     //My First Attempt at a skybox cube 
@@ -693,16 +694,16 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
     ///for (int i = 0; i < 3; i++) 
-        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+       // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -2132,9 +2133,9 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
         glm::mat4 MVP; //Model-View-Projection matrix 
         MVP = perspective * (view * (rotation));
         const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-            0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            xTranslation, yTranslation, zTranslation, 1.0f);
+                                                    0.0f, 1.0f, 0.0f, 0.0f,
+                                                    0.0f, 0.0f, 1.0f, 0.0f,
+                                                    xTranslation, yTranslation, zTranslation, 1.0f);
         MVP *= userTranslation;//* MVP;
         
         
@@ -2301,7 +2302,14 @@ bool AssetLoadingDemo::buildQuadTextureTestShader() {
     quadTextureTestShader->attachVert("Shaders\\DrawTextureOnQuad.vert");
     quadTextureTestShader->attachFrag("Shaders\\DrawTextureOnQuad.frag");
     //Attach Secondary Vertex Shaders
-
+    std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
+        std::make_unique<ShaderInterface::VertexShader>(R"(Shaders\ShaderNoiseFunctions.glsl)");
+    vertexNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryVert(vertexNoiseShader.get());
+    std::unique_ptr<ShaderInterface::VertexShader> practiceVertNoiseShader =
+        std::make_unique<ShaderInterface::VertexShader>(R"(Shaders\PracticeNoise.glsl)");
+    practiceVertNoiseShader->makeSecondary();
+    quadTextureTestShader->attachSecondaryVert(practiceVertNoiseShader.get());
     //Attach Secondary Fragment Shaders
     std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
         std::make_unique<ShaderInterface::FragmentShader>(R"(Shaders\ShaderNoiseFunctions.glsl)");
