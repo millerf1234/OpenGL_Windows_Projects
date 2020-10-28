@@ -7,6 +7,7 @@
 
 
 RenderDemoBase::RenderDemoBase() {
+    OPTICK_EVENT();
     mainRenderWindow = nullptr;
     mJoystickStatePrintingEnabled_ = false;
     mIterationsSinceLastJoystickStatePrintingLastModified_ = 0ull;
@@ -16,9 +17,10 @@ RenderDemoBase::RenderDemoBase() {
 
 
 RenderDemoBase::~RenderDemoBase() noexcept {
+    OPTICK_EVENT();
 #ifdef _DEBUG
-    fprintf(MSGLOG, "\n\n[DEBUG]  "
-        "Confirming that \'~RenderDemoBase()\' has been called!\n\n");
+   // fprintf(MSGLOG, "\n\n[DEBUG]  "
+   //     "Confirming that \'~RenderDemoBase()\' has been called!\n\n");
 #endif 
 }
 

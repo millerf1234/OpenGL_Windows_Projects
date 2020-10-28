@@ -507,7 +507,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_oli_2018362_wide.jpg)");
 
-    ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
+    //ImageData_UByte testDefaultImage(R"(C:\Users\Forrest\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\Images\Samples\LandsatTestImages\EtnaAwakensOnItsSide\etna_olitir_2018362_lrg.jpg)");
 
 
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_albedo.png)");
@@ -530,7 +530,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
@@ -670,9 +670,10 @@ void AssetLoadingDemo::loadModels() {
 
 
     //My First Attempt at a skybox cube 
-    //worldMeshName = "AlienWorldSkybox.obj";
+    worldMeshName = "AlienWorldSkybox.obj";
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
+    if (!worldMeshName.empty())
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
 
 
 
@@ -691,7 +692,8 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "NewOrderTie_Triangulated.obj", 1.0f));
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
+    for (int i = 0; i < 3; i++) 
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
     ///for (int i = 0; i < 3; i++) 
        // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
@@ -701,7 +703,7 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RockThing.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ViperMKIV_Fighter.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
@@ -1572,6 +1574,7 @@ void AssetLoadingDemo::rotate() noexcept {
             head -= HEAD_DELTA_RSHIFT;
     }
     else {
+        assert(lrShiftState == (LSHIFTVAL + RSHIFTVAL));
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_UP) == GLFW_PRESS)
             pitch += PITCH_DELTA_LRSHIFT;
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
@@ -1620,6 +1623,7 @@ void AssetLoadingDemo::changeZoom() noexcept {
             zoom -= ZOOM_DELTA_RSHIFT;
     }
     else {
+        assert(lrShiftState == (LSHIFTVAL + RSHIFTVAL));
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_Z) == GLFW_PRESS)
             zoom += ZOOM_DELTA_LRSHIFT;
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_X) == GLFW_PRESS)
@@ -1627,8 +1631,8 @@ void AssetLoadingDemo::changeZoom() noexcept {
     }
 
     //Clamp zoom to prevent from growing too close to 0.0f
-    if (zoom < 0.2f)
-        zoom = 0.2f;
+    if (zoom < 0.18f) //Was  (zoom < 0.2f) 
+        zoom = 0.18f;
 }
 
 
@@ -1731,7 +1735,7 @@ void AssetLoadingDemo::buildNewShader() {
             break;
 
         case (ShaderInterface::ShaderType::GEOMETRY):
-            fprintf(MSGLOG, "\nDetected that a geometry shader was updated!\n"
+            fprintf(MSGLOG, "\nDetected that a Geometry shader was updated!\n"
                 "Unfortunately that type of shader is not yet supported for dynamic updates!\n");
             break;
 

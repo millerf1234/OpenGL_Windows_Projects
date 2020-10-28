@@ -54,7 +54,7 @@ typedef struct WindowContext {
     typedef struct ContextInfo {
         bool contextValid = false;
         int versionMajor = 4;
-        int versionMinor = 5;
+        int versionMinor = 0;
         bool forwardCompat = false;
         bool isDebug = false;
        // bool forceContextAppSync = false;  //Turns out this is set elsewhere (in Application.cpp)

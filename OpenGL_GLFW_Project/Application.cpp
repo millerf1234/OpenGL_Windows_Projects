@@ -29,7 +29,7 @@ void Application::initialize() {
     fprintf(MSGLOG, "  OPTICK PROFILING ENABLED!\n");
     OPTICK_START_CAPTURE(/*Optick::Mode::AUTOSAMPLING*/);
     OPTICK_EVENT("Capture Begun");
-    //Set the path for where to save optick capture
+    //Set the path for where to save Optick capture
     globalOptickState.captureActive = true;
     auto currentPath = std::filesystem::current_path();
     currentPath.append("optickCaptures");
@@ -51,7 +51,9 @@ void Application::initialize() {
     //details during start-up about the Runtime Environment's configuration and
     //this Application's state
     if constexpr (USE_DEBUG) {
-        //fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
+        //The compiler provides the macro '__cplusplus' used to identify
+        //which version of C++ the code is compiling under  
+        fprintf(MSGLOG, "[DEBUG:    __cplusplus is defined as %ld]\n\n", __cplusplus);
         
         //----------------------------------------------------------------
         // Print the ID for this thread (the Application's main thread)
@@ -113,7 +115,6 @@ void Application::initialize() {
     //            Application's Window 
     if ( !setupGLFW() ) {
         mApplicationValid = false;
-        
         fprintf(ERRLOG, "\nThe application encountered an error setting up GLFW!\n");
         return;
     }
@@ -238,13 +239,30 @@ Application::~Application() noexcept {
 #if (defined USE_OPTICK && (USE_OPTICK == 1))
     try {
         if (globalOptickState.captureActive) {
+            //Tell Optick to stop capturing profiling data
+            fprintf(MSGLOG, "\n\nFinalizing OPTICK capture...");
             OPTICK_STOP_CAPTURE();
-            OPTICK_SAVE_CAPTURE((globalOptickState.pathToSaveCapture.string() + std::string(R"(\)")).c_str());
-            fprintf(MSGLOG, "\n\t\t[OPTICK CAPTURE SAVED]\n\n");
+            globalOptickState.captureActive = false;
+            fprintf(MSGLOG, "DONE\n");
+
+            //Write the OPTICK capture data to file 
+            fprintf(MSGLOG, "Writing OPTICK capture to file...");
+            const std::string optickSavePathStr = globalOptickState.pathToSaveCapture.string() + std::string(R"(\)");
+            OPTICK_SAVE_CAPTURE(optickSavePathStr.c_str());
+            fprintf(MSGLOG, "DONE\n");
+            fprintf(MSGLOG, "\t\t\t\t\t\t[OPTICK CAPTURE SAVED]\n");
+            fprintf(MSGLOG, "\t  ~~OPTICK capture info~~\n    Filename: %s\n    Location: %s\n\n",
+                "[AUTO-GENERATED].opt", optickSavePathStr.c_str());
+
+            //Just to be polite, tell Optick to prepare itself for process termination
+            fprintf(MSGLOG, "Cleaning up OPTICK after successful capture...");
+            OPTICK_SHUTDOWN();
+            fprintf(MSGLOG, "DONE\n\n\n");
+
         }
     }
     catch (...) {
-        fprintf(ERRLOG, "\nCapture Failed!\n");
+        fprintf(ERRLOG, "\nOptick Capture Failed!\n");
     }
 #endif //USE_OPTICK == 1
     
@@ -339,6 +357,7 @@ bool Application::setupGLFW() {
         return false;
     }
     else {
+        //printf("Init report values: OpenGL %d . %d \n", initReport->windowContext.context.versionMajor, initReport->windowContext.context.versionMinor);
         glfwInitializer->specifyWindowCallbackFunctions();
         //glfwInitializer->setWindowUserPointer(static_cast<void *>(initReport.get())); 
         return true;
@@ -377,6 +396,10 @@ void Application::reportDetailsFromGLImplementation() {
         glGetString(GL_VENDOR));
     fprintf(MSGLOG, "\tGraphics Rendering Device:         %s\n",
         glGetString(GL_RENDERER));
+
+    //Worth mentioning: There are also details about the OpenGL context already stored 
+    //                  internally by this class at initReport->windowContext.context. [values here]
+    //                  which are provided by GLFW during initialization
 }
 
 void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
@@ -419,7 +442,7 @@ void Application::reportDetailsFromGLImplementationOnTextureUnitLimitations() {
     // [Some of these formats supported by my computer are 
     //  really old and aren't part of Modern OpenGL]
     //  See: https://www.khronos.org/registry/OpenGL/extensions/OES/OES_compressed_paletted_texture.txt
-    constexpr const bool REPORT_SUPPORTED_COMPRESSED_TEXTURE_FORMATS_TO_CONSOLE = false;
+    constexpr const bool REPORT_SUPPORTED_COMPRESSED_TEXTURE_FORMATS_TO_CONSOLE = false; //Move this declaration somewhere more visible
     if constexpr (REPORT_SUPPORTED_COMPRESSED_TEXTURE_FORMATS_TO_CONSOLE) {
         GLint* supportedCompTexFormats = new GLint[numSupportedCompressedTextureFormats];
         if (!supportedCompTexFormats) {
@@ -683,9 +706,22 @@ void Application::runTeapotExplosionDemo() {
 //                        been created/allocated by the Application.
 //                   
 void Application::safeCrash() noexcept {
+    OPTICK_CATEGORY("SafeCrashInitiated", Optick::Category::Debug)
     OPTICK_EVENT("SafeCrashInitiated");
-    try {
 
+    //todo Look into this more first before acting but I feel like
+    //most of the 'clean-up' code for this project's dependencies 
+    //(i.e. such as for GLFW or Optick) never gets called if the 
+    //process finds itself at this point in it's execution. Since 
+    //knowing the states of these dependencies is important, perhaps
+    //have the dependency clean-up happen in a non-static function which
+    //then calls this function to finalize everything. (actually though if
+    //the clean-up takes any nominal length of time, the render window isn't 
+    //minimized until this function runs. Perhaps the minimizing of the render
+    //window should get moved up to the start of all the cleanup processes)
+
+
+    try {
         //First, attempt to iconify (minimize) any Application window 
         //so that it isn't in the way of allowing our console error messages
         //to be displayed
@@ -707,5 +743,14 @@ void Application::safeCrash() noexcept {
         fprintf(ERRLOG, "\n\n"
             "An Error Occurred While Preparing For A Controlled Crash\n");
     }
+
+
+    //WARNING!!! Calling 'std::exit(EXIT_FAILURE)' (seems to) skip all destructor
+    //calls. However, safeCrash has been documented as guaranteeing the termination
+    //of the process. So really I need to either make sure none of my clean-up
+    //routines are dependent on any object destructor functions getting called
+    //(which unfortunately several rather-major clean-up requirements currently
+    //do) or I need to rethink error-handling entirely so this safeCrash() function
+    //is no longer required.
     std::exit(EXIT_FAILURE);
 }

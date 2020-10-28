@@ -35,6 +35,7 @@ using namespace GL_ENUM_TO_STRING_INTERNAL_NAMESPACE;
 
 
 std::string convertGLEnumToString(GLenum hexEnum) noexcept {
+    OPTICK_EVENT();
     std::string enumName;
     try {
         static DictionaryOfGLEnums dictionary;
@@ -49,6 +50,7 @@ std::string convertGLEnumToString(GLenum hexEnum) noexcept {
 
 
 DictionaryOfGLEnums::DictionaryOfGLEnums() {
+    OPTICK_EVENT();
     float loadFactor;
     if constexpr (TARGET_MAXIMUM_LOAD_FACTOR < 0.5f)
         loadFactor = 0.5f;
@@ -73,6 +75,7 @@ DictionaryOfGLEnums::~DictionaryOfGLEnums() noexcept {
 
 
 std::string DictionaryOfGLEnums::lookup(GLenum hexEnum) noexcept {
+    OPTICK_EVENT();
     auto result = mDictionary_.find(hexEnum);
     if (result != mDictionary_.end())
         return result->second; //String is the second member of each bucket
@@ -80,9 +83,12 @@ std::string DictionaryOfGLEnums::lookup(GLenum hexEnum) noexcept {
 }
 
 void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) {
+    OPTICK_EVENT();
     const auto res = mDictionary_.insert(std::make_pair(hexEnum, name));
     assert(res.second); //This checks the second parameter of the return pair which
-    //represents a boolean representing whether our insertion was unique or not.
+    //represents a boolean representing whether our insertion was unique or not. This
+    //check is helpful while the dictionary is still potentially growing in development
+    //because any duplicated values will quickly be detected
 }
 
 
@@ -91,7 +97,7 @@ void DictionaryOfGLEnums::insert(GLenum hexEnum, std::string name) {
 
 
 void DictionaryOfGLEnums::buildDictionary()  {
-
+    OPTICK_EVENT();
     //The first 2 we insert are special because there are multiple GLenums that
     //share the same value. All five enums in the set {GL_FALSE, GL_ZERO,
     //GL_POINTS, GL_NONE, GL_NO_ERROR} are defined to be '0' while likewise 
