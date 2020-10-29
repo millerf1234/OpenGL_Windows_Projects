@@ -418,7 +418,7 @@ bool AssetLoadingDemo::loadShaders() {
     sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
 
-#define USE_RUBYMINE
+#define USE_RUBYMINE 
 
 #ifdef USE_RUBYMINE
     /////////////////////////
@@ -2190,11 +2190,14 @@ void AssetLoadingDemo::drawVerts() {
     OPTICK_EVENT();
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
-    //if (sceneShader)
-    //	sceneShader->use();
-
     if (quadTextureTestShader)
         quadTextureTestShader->use();
+    else if (sceneShader)
+        sceneShader->use();
+    else {
+        fprintf(ERRLOG, "\nERROR: No Shader present! Unable to draw vertices!\n");
+        assert(false);
+    }
 
     glBindVertexArray(vao);
 
@@ -2294,7 +2297,7 @@ void AssetLoadingDemo::prepareGLContextForNextFrame() noexcept {
         glfwSetWindowShouldClose(mainRenderWindow, GLFW_TRUE);
         return;
     }
-    glBindVertexArray(0);
+    glBindVertexArray(0); 
     glUseProgram(0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
