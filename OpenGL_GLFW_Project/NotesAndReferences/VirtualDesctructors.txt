@@ -10,7 +10,9 @@
 //virtual as such when needed anyways. 
 
 
-There are still some open questions I think I have about virtual destructors but I am not sure yet how exactly to ask them/test them.  I'm not even sure if the example I wrote here back whenever it was I first wrote this document (I'm sure Github knows when) counts as a valid example. MSVC may be implicitly patching memory leaks from my buggy code without me even realizing.     
+There are still some open questions I think I have about virtual destructors but I am not sure yet how exactly to ask them/test them.
+I'm not even sure if the example I wrote here back whenever it was I first wrote this document (I'm sure Github knows when) counts as a valid example.
+MSVC may be implicitly patching memory leaks from my buggy code without me even realizing.     
 
 
 
@@ -133,7 +135,9 @@ There are still some open questions I think I have about virtual destructors but
 [[[[               modern 'new/delete' allocators in lieu of the more traditional 'malloc/free.'
 [[[[               My thinking was they should be more portable. 
 [[[[               In hindsight, this was probably quite the bad idea because it detracts from
-[[[[               the purpose of the code. 
+[[[[               the purpose of the code. AND ACTUALLY HAHA I TOTALLY USE UNIQUE_PTR ANYWAYS SO
+[[[[               MY INITIAL REASON FOR GOING WITH MALLOC/FREE IS NOT EVEN SLIGHTLY JUSTIFIED.
+[[[[                  
 
 
 
@@ -226,7 +230,7 @@ public:
     }
 }
 
-class Derived final: public Base {
+class Derived final: public Base { //Note the usage of the keyword 'final' which allows destructor here to not be virtual 
     void * derivedAllocatedMemory;  
 public:
     Derived() : Base() {
