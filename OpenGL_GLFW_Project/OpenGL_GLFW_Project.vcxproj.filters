@@ -583,6 +583,9 @@
     <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture">
       <UniqueIdentifier>{13b0fc9e-2942-4e28-af17-0485bf29e058}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\RandomAbstractCreations">
+      <UniqueIdentifier>{40a28c2e-196e-4a06-928d-7c61630c58e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1856,6 +1859,12 @@
     </None>
     <None Include="optick\README.md">
       <Filter>Third Party\optick</Filter>
+    </None>
+    <None Include="obj\RandomAbstractCreation_0.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample\RandomAbstractCreations</Filter>
+    </None>
+    <None Include="obj\RandomAbstractCreation_0.obj">
+      <Filter>Asset Files\Models\OBJ\Sample\RandomAbstractCreations</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

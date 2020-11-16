@@ -554,6 +554,7 @@
     <None Include="obj\LargeSphere.mtl" />
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
+    <None Include="obj\RandomAbstractCreation_0.mtl" />
     <None Include="obj\ScrewTornadoThing.mtl" />
     <None Include="obj\SimpleSkyDome.mtl" />
     <None Include="obj\SimpleSkyDome_ReExport.mtl" />
@@ -888,6 +889,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\AlienWorldSkybox.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\RandomAbstractCreation_0.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
