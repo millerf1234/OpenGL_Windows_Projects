@@ -1,10 +1,169 @@
-This is imporant enough (and I have forgotten the rule enough) that I am going to write down
-here the difference between a virtual and non-virtual desctructor. 
 
-Bascially, destructors should be virtual unless it is guarenteed that a class will not be 
+//                                    NOTES FROM THE FUTURE 
+//I wrote this back sometime in 2018... Returning to the topic in Nov 2020 I found that there is perhaps a
+//better discussion of this same topic than my own here at: https://www.geeksforgeeks.org/virtual-destructor/
+//
+
+
+//I think I tested my code here but I can't be sure... It may also be the C++ compiler I am using [MSVC] 
+//is aware of programmers incorrectly accounting for this issue and marks any destructor that should be 
+//virtual as such when needed anyways. 
+
+
+There are still some open questions I think I have about virtual destructors but I am not sure yet how exactly to ask them/test them.  I'm not even sure if the example I wrote here back whenever it was I first wrote this document (I'm sure Github knows when) counts as a valid example. MSVC may be implicitly patching memory leaks from my buggy code without me even realizing.     
+
+
+
+//My examples below here differ in what their 'main()' function does compared with the 'main()' in the geekforgeeks examples. 
+//The difference is great enough that I think it will be worth copying their examples into this file. Here they are
+
+            // CPP program without virtual destructor  
+            // causing undefined behavior 
+            #include<iostream> 
+            
+            using namespace std; 
+            
+            class base { 
+              public: 
+                base()      
+                { cout<<"Constructing base \n"; } 
+                ~base() 
+                { cout<<"Destructing base \n"; }      
+            }; 
+            
+            class derived: public base { 
+              public: 
+                derived()      
+                { cout<<"Constructing derived \n"; } 
+                ~derived() 
+                { cout<<"Destructing derived \n"; } 
+            }; 
+            
+            int main(void) 
+            { 
+              derived *d = new derived();   
+              base *b = d; 
+              delete b; 
+              getchar(); 
+              return 0; 
+            } 
+
+
+
+                                                                                                                                              
+                                                                                                        // A program with virtual destructor 
+                                                                                                        #include<iostream> 
+                                                                                                        
+                                                                                                        using namespace std;  
+                                                                                                         
+                                                                                                        class base { 
+                                                                                                          public: 
+                                                                                                            base()      
+                                                                                                            { cout<<"Constructing base \n"; } 
+                                                                                                            virtual ~base() 
+                                                                                                            { cout<<"Destructing base \n"; }      
+                                                                                                        };  
+                                                                                                         
+                                                                                                        class derived: public base { 
+                                                                                                          public: 
+                                                                                                            derived()      
+                                                                                                            { cout<<"Constructing derived \n"; } 
+                                                                                                            ~derived() 
+                                                                                                            { cout<<"Destructing derived \n"; } 
+                                                                                                        };   
+                                                                                                           
+                                                                                                        int main(void) 
+                                                                                                        { 
+                                                                                                          derived *d = new derived();   
+                                                                                                          base *b = d; 
+                                                                                                          delete b; 
+                                                                                                          getchar(); 
+                                                                                                          return 0; 
+                                                                                                        } 
+                                                                                                                                                
+
+
+
+
+
+                                                     
+ /\/\/\ /\/\/\ /\/\/\  /\/\/\ /\/\/\ /\/\/\  /\/\/\ /\/\/\ /\/\/\  /\/\/\ /\/\/\ /\/\/\  /\/\/\ /\/\/\ /\/\/\ /\/\/\ /\/\/\ /\/\/\ 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+                                             EVERYTHING ABOVE HERE     NOV 2020 
+
+
+
+
+
+
+
+
+                                             EVERYTHING BELOW HERE   PRE-NOV 2020         [Well everything except the '\/' delimiters]
+\/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  
+  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/
+\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/
+\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/\/\/  \/
+                                                  
+
+~~~~~                                                                                              ~~~~~
+~~~~~  >> >> >> >>  Virtual Destructors: Yet Another One of C++'s Hidden "Gotchya's"  << << << <<  ~~~~~
+~~~~~                                                                                              ~~~~~
+~~~~~      This topic is important enough (and I have forgotten this rule enough) that I           ~~~~~
+~~~~~      created the following short discussion. The goal is to demonstrate the correct          ~~~~~
+~~~~~      usage of the keyword 'virtual' when writing destructors for both base and               ~~~~~
+~~~~~      derived classes. I start by first showing an example of some code implementing a        ~~~~~
+~~~~~      base and a derived class which may at first glance appear pretty reasonable but         ~~~~~
+~~~~~      unfortunately leaks memory. The culprit is found at where the code fails to             ~~~~~
+~~~~~      properly use the keyword 'virtual', resulting in a potentially pretty grievous          ~~~~~
+~~~~~      memory leak with the derived class. I then give a corrected implementation of the       ~~~~~
+~~~~~      same base and derived classes which should not leak*.                                   ~~~~~
+~~~~~                                                                                              ~~~~~
+~~~~~      This is far from the only pitfall when implementing class inheritance. There also       ~~~~~ 
+~~~~~      probably is a lot more depth and nuance to this issue than what I am able to tocuh      ~~~~~
+~~~~~      on here.                                                                                ~~~~~
+~~~~~                                                                                              ~~~~~
+
+                                            *It may help to copy and run the code yourself to see it
+
+
+[[[[ Side Comment: When I was writing this discussion, I wanted to keep the sample code as 
+[[[[               simple as possible while still allowing it to compile, so to avoid requiring
+[[[[               any extra '#include' statement lines at the top I forwent the use of the 
+[[[[               modern 'new/delete' allocators in lieu of the more traditional 'malloc/free.'
+[[[[               My thinking was they should be more portable. 
+[[[[               In hindsight, this was probably quite the bad idea because it detracts from
+[[[[               the purpose of the code. 
+
+
+
+
+
+
+
+
+~~~~~  >> >> >> >>     THE GENERAL RULE OF THUMB FOR VIRTUAL ON A DESTRUCTOR
+  
+     Any class that could ever potentially be inherited from should declare its Destructor
+     as virtual. 
+                                   or in my own words, 
+     Any class not declared with the keyword "final" should have its destructor declared as virtual    <---- [ IS THERE A PERFORMANCE HIT FOR THIS THOUGH? EVEN IF THERE IS, THERE WILL      ]
+                                                                                                             [ PROBABLY ONLY EVER BE AT MOST A HANDFUL OF OBJECTS WHICH BOTH ACTUALLY USE    ]
+                                                                                                             [ VIRTUAL INHERITANCE YET ARE DELETED ENOUGH TO WARRANT A PERFORMANCE HIT       ]
+                                                                                                             [ FROM TIME WASTED IN THE V-TABLE LOOKING UP THE DESTRUCTOR                     ] 
+
+
+
+
+
+
+
+~~~~~  >> >> >> >>  The Difference Between Including/Omitting the Keyword 'Virtual' When Writing The Desctructor 
+
+As stated above, destructors should be virtual unless it is guaranteed that a class will not be 
 inherited from. This is because destructors will always be called going up the inheritance 
 chain, but will not be called down the inheritance chain without being virtual. However, if
-it is known that the class will definitly not be a base class, then the class's destructor
+it is known that the class will definitely not be a base class, then the class's destructor
 should not be virtual. See: https://www.quora.com/Why-arent-all-destructors-in-C++-virtual-by-default
 IMPORTANT: DESCTRUCTORS SHOULD (PRETTY MUCH ALWAYS) NEVER BE MARKED 'OVERRIDE'.
 
@@ -17,36 +176,36 @@ For why a base class should have virtual destructors, consider the following exa
 **************************************************
 
 class Base {   //Let's pretend this code checks malloc for NULL and other such necessities
-	void * baseAllocatedMemory;
+    void * baseAllocatedMemory;
 public:
-	Base () {
-		baseAllocatedMemory = malloc(10);  //Something like this 
-	}
-	~Base() {
-		free(baseAllocatedMemory);
-	}
+    Base () {
+        baseAllocatedMemory = malloc(10);  //Something like this 
+    }
+    ~Base() {
+        free(baseAllocatedMemory);
+    }
 }
 
 class Derived: public Base {
-	void * derivedAllocatedMemory;  
+    void * derivedAllocatedMemory;  
 public:
-	Derived() : Base() {
-		derivedAllocatedMemory = malloc(10);  
-	}
-	~Derived() {
-		free(derivedAllocatedMemory);
-	}
-	
+    Derived() : Base() {
+        derivedAllocatedMemory = malloc(10);  
+    }
+    ~Derived() {
+        free(derivedAllocatedMemory);
+    }
+    
 }
 
 int main() {
-	//Have a Base pointer enter scope
-	if (true) {
-		std::unique_ptr<Base> base = std::make_unique<Derived>();
-	} //LEAK!
-	//Once base pointer leaves scope, the desctructor for Base will be called. However, since 
-	//the destructor for Base was not virtual, there is no way for the destructor for Derived to
-	//be called, and thus a memory leak ensues. 
+    //Have a Base pointer enter scope
+    if (true) {
+        std::unique_ptr<Base> base = std::make_unique<Derived>();
+    } //LEAK!
+    //Once base pointer leaves scope, the destructor for Base will be called. However, since 
+    //the destructor for Base was not virtual, there is no way for the destructor for Derived to
+    //be called, and thus a memory leak ensues. 
 }
 
 
@@ -57,34 +216,34 @@ int main() {
 **************************************************
 
 class Base {   //Again, let's pretend this code checks malloc for NULL and other such necessities
-	void * baseAllocatedMemory;
+    void * baseAllocatedMemory;
 public:
-	Base () {
-		baseAllocatedMemory = malloc(10);  //Something like this 
-	}
-	virtual ~Base() {
-		free(baseAllocatedMemory);
-	}
+    Base () {
+        baseAllocatedMemory = malloc(10);  //Something like this 
+    }
+    virtual ~Base() {
+        free(baseAllocatedMemory);
+    }
 }
 
 class Derived final: public Base {
-	void * derivedAllocatedMemory;  
+    void * derivedAllocatedMemory;  
 public:
-	Derived() : Base() {
-		derivedAllocatedMemory = malloc(10);  
-	}
-	~Derived() {
-		free(derivedAllocatedMemory);
-	}
-	
+    Derived() : Base() {
+        derivedAllocatedMemory = malloc(10);  
+    }
+    ~Derived() {
+        free(derivedAllocatedMemory);
+    }
+    
 }
 
 int main() {
-	//Have a Base pointer enter scope
-	if (true) {
-		std::unique_ptr<Base> base = std::make_unique<Derived>();
-	} //No More Leak!
-	//Once base pointer leaves scope, the desctructor for Base will be called. Since the 
-	//destructor for Base is now virtual, the destructor for Derived will be called when 
-	//the base pointer leaves scope. Thus no more memory leak.
+    //Have a Base pointer enter scope
+    if (true) {
+        std::unique_ptr<Base> base = std::make_unique<Derived>();
+    } //No More Leak!
+    //Once base pointer leaves scope, the destructor for Base will be called. Since the 
+    //destructor for Base is now virtual, the destructor for Derived will be called when 
+    //the base pointer leaves scope. Thus no more memory leak.
 }
