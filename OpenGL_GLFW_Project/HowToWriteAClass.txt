@@ -1,0 +1,148 @@
+
+How To Write A Class circa August 2019
+
+[These are not yet in any particular order]
+
+  -)Have all constructors delegate object initialization
+    to a class-internal initialization constructor. 
+
+  -)
+
+  -)Use pImpl idiom with a std::unique_ptr for
+    all classes which are intended to be permanent 
+    fixtures. Experimental and RenderDemo Specific 
+    classes are highly encouraged to use pImpl (it
+    often is the case that these experiments wind
+    up proving to be useful enough to not warrant a
+    rewrite. Having the implementation be hidden 
+    behind the opaque pointer allows for the
+    implementation to be easily updated as necessary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              ( this next one is more of a todo than a rule, but still... )
+
+    -) Come up with a consistent style for how exception                                                      [  To reacquaint myself with this topic in the future,
+       handling will come into play for both implementation [internal] code and                                          look into why constructors should not be labeled with 'noexcept' ]
+       client [external] code. My thinking thus far on this issue is essentially
+       it all boils down to which of the following 2 options proves the more annoying
+       for client code to account for: 
+
+                 i)   [EXCEPTION HANDLING] Expecting cleint code to Accurately and Appropriately use try/catch statements
+                                          (including accounting for catching everything expected to be caught by client code
+                                           across potentially numerous situations which may each have unique exception risks)
+                                           [This can be compounded on by the usage of introducing new exception types]
+                                           
+                                                        Perhaps I should say I believe with proper coding discipline, good design and 
+                                                        perhaps most importantly, "perfected documentation" [I use quotes because there is no such thing],
+                                                        the complexity of error handling
+                                                        can be minimized to enough of an extent to actually achieve 
+
+          or       
+
+                ii)   [TWO-PHASE CONSTRUCTION] Always expecting client code to use 2-phase construction when creating objects
+
+
+
+
+  Here's some more thoughts:
+                       ____________________________                    
+                      |   TWO-PHASE CONSTRUCTION   |
+----------------------^----------------------------^------------------------
+                                 PROS              
+----------------------------------------------------------------------------
+                                   
+   ***    Easy rule for client code to remember (i.e the client just needs to
+             know 'Always do this' whenever creating objects rather than 
+             a potential labyrinth of rules brought about by exception handling) 
+                          
+            
+   ***    Exception handling has changed a lot over the past, with quite a lot of
+             older components being deprecated and removed. Perhaps even exception handling
+             has undergone the most deprecation of any area within C++ 
+                          
+            
+   ***   Error Handling is a complete mess. Structured Error Handling? Vectored Error Handling? 
+             There's like different compiler settings for error handling even [at least within MSVC]
+             which means the behavior of code may (in fact almost certainly) become dependent on 
+             having specific compiler settings configured. (For big single projects this is less of 
+             an issue but don't forget the larger goal here is to come up with a general universal set
+             of rules for writing classes)
+             
+            
+   ***   Exception handling can very quickly exponentiate the number of valid paths through code. Remember
+             that one Guru-of-the-Week blog post from the early 2000's. I'm sure this hasn't changed. 
+
+             See:  
+                   http://www.gotw.ca/gotw/047.htm   [Note that 'std::uncaught_exception()' is deprecated as of C++17. I am including this link for completion]
+                   http://www.gotw.ca/gotw/056.htm  (He rewrote this one (#056) for modern C++:  https://herbsutter.com/gotw/_102/ )              
+                AND HERE IS WHERE THE REAL DISCUSSIONS BEGIN
+                   http://www.gotw.ca/gotw/059.htm
+                   http://www.gotw.ca/gotw/060.htm
+               AND THIS SEEMS LIKE SOME BONUS MATERIAL
+                   http://www.gotw.ca/gotw/061.htm
+
+              MOST DEFINITLY READ THOSE BLOG POSTS, BUT REMEMBER THEY WERE WRITTEN 20-25 YEARS AGO. DEFINITELY ALSO LOOK AT MORE RECENT DISCUSSIONS ON THIS ISSUE
+
+                                   
+--------------------------------------------------------------------------
+                                    CONS              
+--------------------------------------------------------------------------
+
+   ***    How the heck do you construct unique_ptr's using 2-phase? What about placing 
+          objects in collections such as vectors/arrays/stacks/queues/etc? 
+
+   ***   It's just so much darn clean to write code which uses the normal construction syntax
+         if a dynamic allocation isn't involved. [IS THIS TRUE? CAN A STACK CONSTRUCTED               <----------------------------- I actually think answering these questions should provide a key
+         OBJECT STILL THROW? IF YES, COULD IT BE WRITTEN SO A STACK CONSTRUCTED OBJECT                <----------------------------- part in determining the least-worst approach
+         WILL NEVER THROW?]
+
+   ***  Client code will most likely at some point forget that two-phase construction is required
+
+   ***  Worst of all, 2-phase construction just kinda sucks. It makes simple code a lot more ugly.
+        (Just go take a look at the Generator.cpp code from Star Suzerian to see sorta what I mean)
+
+   ***  Two-phase construction doesn't necessarily replace the requirements for 
+        client code to detect and report errors beyond failures to an object's construction. Thus,
+        there is very much a chance exception handling will still be required by the client code anyways.
+        If 'try/catch' statements are still used/required frequently, having to then
+        construct objects with 2-phase-construction gives the worst of both worlds. 
+
+           In other words, if error handling is going to be present regardless, it in theory 
+           should be a lot more convenient to use it and not have to use 2-phase construction.
+
+
+       Basically what I am saying is any code that HAS ABSOLUTLY NO other choice than to use exception handling
+       is already in a bad position but will not be made much worse by expecting it to check for object construction failure.
+
+
+
+
+
+
+
+
+
+
+
+
+       CONCLUSION
+       Two-Phase Initialization is the better choice. No way around it. Avoid Exception Handling at all costs. Nothing sucks the fun or aesthetic simplicity out of code than the words 'try' and 'catch'.
+                  (I still have enough uncertainty though that I'm not fully ready to stand behind my conclusion. This is where having those years and years of experience would really pay off)
+                  
+
+      Honestly the best way to figure this out would be to try projects using both and observing the pros/cons of actually having to do both. Anything besides this will be speculation at best. Since this isn't
+      practical though, I should find someone who has had the experience of using both and getting their opinion. 
+
