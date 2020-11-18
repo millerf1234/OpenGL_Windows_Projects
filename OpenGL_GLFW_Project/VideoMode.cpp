@@ -53,8 +53,8 @@
 					return false;
 				else {
 					//Compute sum of bit depths
-					int bitDepthThis = mRedBits_ + mGreenBits_ + mBlueBits_;
-					int bitDepthThat = that.mRedBits_ + that.mGreenBits_ + that.mBlueBits_;
+					const int bitDepthThis = mRedBits_ + mGreenBits_ + mBlueBits_;
+					const int bitDepthThat = that.mRedBits_ + that.mGreenBits_ + that.mBlueBits_;
 					if (bitDepthThis < bitDepthThat) 
 						return true;
 					else if (bitDepthThis > bitDepthThat) 
@@ -235,19 +235,19 @@
 	}
 	
 	double VideoMode::getPhysicalDisplaySizeMillimeters() const {
-		double heightSquared = pow(static_cast<double>(mHeight_), 2.0);
-		double widthSquared = pow(static_cast<double>(mWidth_), 2.0);
+		const double heightSquared = pow(static_cast<double>(mHeight_), 2.0);
+		const double widthSquared = pow(static_cast<double>(mWidth_), 2.0);
 		return sqrt(heightSquared + widthSquared);
 	}
 	
 	double VideoMode::getPhysicalDisplaySizeInches() const {
-		double heightSquared = pow(getPhysicalHeightInches(), 2.0);
-		double widthSquared = pow(getPhysicalWidthInches(), 2.0);
+		const double heightSquared = pow(getPhysicalHeightInches(), 2.0);
+		const double widthSquared = pow(getPhysicalWidthInches(), 2.0);
 		return sqrt(heightSquared + widthSquared);
 	}
 
 	double VideoMode::getDPI_Height() const {
-		double heightInches = getPhysicalHeightInches();
+		const double heightInches = getPhysicalHeightInches();
 		if (heightInches == 0) {
 			return 0;
 		}
@@ -257,7 +257,7 @@
 	}
 
 	double VideoMode::getDPI_Width() const {
-		double widthInches = getPhysicalWidthInches();
+		const double widthInches = getPhysicalWidthInches();
 		if (widthInches == 0) {
 			return 0;
 		}
