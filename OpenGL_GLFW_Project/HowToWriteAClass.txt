@@ -137,6 +137,88 @@ How To Write A Class circa August 2019
 
 
 
+[[[[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]]]]]
+[[[[[                                               Here's another way to look at it                                                            ]]]]]
+[[[[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]]]]]
+
+Okay I've been thinking about this for a while now and I recently had the thought that perhaps it could be useful to approach this issue through
+the lens of how I (and maybe other programmers [one day]) will be using/interacting with the resulting code for the vast majority of its existence.
+For the type of code I am planning to write (or rewrite), chances are if the code is part of a class then the intention is to have it be something 
+I can reuse in the future to have future code interact with as 'clients'.  
+
+What I am trying to say is that when writing classes (and dealing with their APIs), I should always be thinking how any challanges/hardships should be
+ideally dealt with internally since the majority of the time other code interacts with it, the other code will be a client.  Hmm I don't think my 
+wording here exactly captures what I am trying to say... 
+
+To do this, I ask myself "What if I ranked the potential consequences/characteristics/setbacks of the possible decisions relative
+to each other on a scale from  
+
+                                  (anything slightly above 'straight-up-will-not-compile' would fit here, e.g. perhaps this
+        WORST                         decision will guarantee any client code using my code will always leak all of a user's 
+                                      stored credit-card information, SSNs and passwords) 
+
+
+
+         
+
+
+
+                                  (this will have less of an impact on [future events/client code] (note 2 self: choose 1 or the other) 
+      INCIDENTAL                      than the impact a medium sized butterfly currently alive somewhere in Argentina will have on the
+                                      ambient temperature of the room you are currently in by way of a single flap of its wings)                     "
+                                      
+
+                                                 !!!!!!!!!!!!!!!!!!!
+                                                 !!   HERE GOES   !!
+                                                 !!!!!!!!!!!!!!!!!!!
+  +---------+
+  |  WORST  |
+  +---------+
+
+    * The class is subject to frequent memory leaks without any course of remedy for client code to prevent
+   
+    * There become so many possible paths of execution through the client code (including perhaps routes it takes
+      for recovering from a variety of thrown exceptions) that it becomes impossible to reason/work with it in 
+      a debugger. 
+
+    * A client must devote more lines of code to try/catch statements than to the actual code itself
+  
+    * Client code has to remember multiple non-trivial combinations of thrown error objects based off 
+      various states of execution.
+
+    * Client code must frequently consult documentation when working with this class
+
+    * Using objects of this class results in client code which no longer legible without intense study
+
+    * Two-phase construction prevents/breaks many common coding idioms from being possible
+
+    * Working with objects of this class can single-handily remove all elegance from client code
+
+    * Try/Catch statements will be required in only a handful of places
+    
+    * Two-Phase construction requires an additional line of code each time an object is constructed
+
+  +--------------+
+  |  INCIDENTAL  |
+  +--------------+
+
+
+[[[[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]]]]]
+[[[[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]]]]]
+[[[[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]]]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        CONCLUSION
        Two-Phase Initialization is the better choice. No way around it. Avoid Exception Handling at all costs. Nothing sucks the fun or aesthetic simplicity out of code than the words 'try' and 'catch'.
