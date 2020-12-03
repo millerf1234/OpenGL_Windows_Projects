@@ -3,6 +3,18 @@
 //I wrote this back sometime in 2018... Returning to the topic in Nov 2020 I found that there is perhaps a
 //better discussion of this same topic than my own here at: https://www.geeksforgeeks.org/virtual-destructor/
 //
+  For additional discussion, see:
+          * https://www.fi.muni.cz/usr/jkucera/tic/tic0163.html
+
+          * This link reiterates the same information, but part way through it provides a list of
+              many differnt tools to help detect memory leaks such as 
+              leaks which may arise from imporper use of 'virtual' with class's destructor.
+                  https://wiki.sei.cmu.edu/confluence/display/cplusplus/OOP52-CPP.+Do+not+delete+a+polymorphic+object+without+a+virtual+destructor
+
+
+// These are useful to know:
+           * that C++20 has: https://en.cppreference.com/w/cpp/types/is_abstract
+           * that C++11 has: https://en.cppreference.com/w/cpp/types/has_virtual_destructor
 
 
 //I think I tested my code here but I can't be sure... It may also be the C++ compiler I am using [MSVC] 
@@ -10,7 +22,7 @@
 //virtual as such when needed anyways. 
 
 
-There are still some open questions I think I have about virtual destructors but I am not sure yet how exactly to ask them/test them.
+There are still some open questions I think I have about a virtual destructor but I am not sure yet how exactly to ask them/test them.
 I'm not even sure if the example I wrote here back whenever it was I first wrote this document (I'm sure Github knows when) counts as a valid example.
 MSVC may be implicitly patching memory leaks from my buggy code without me even realizing.     
 
@@ -86,6 +98,21 @@ MSVC may be implicitly patching memory leaks from my buggy code without me even 
 
 
 
+																																				
+																																				
+         ONE NICHE SUB-TOPIC TO THIS TOPIC           [ see:  https://www.geeksforgeeks.org/pure-virtual-destructor-c/ ]
+		                                             [ also: (i can't anymore find the blog post I was going to link here) ]
+There is a surprising intersect between the various sections of inheritance rules found within the C++ standard. It turns
+out it is perfectly valid to declare a class' destructor as both pure and virtual, resulting in an perhaps unexpected implementation.
+A class can be made 'pure abstract' simply by declaring it's destructor with the '=0' notation   
+    (i.e. if our class looks like
+           class PureAbstractFoo {
+           public:
+               virtual ~PureAbstractFoo = 0; //the '= 0' means make this function pure abstract
+           }
+
+          * And of course the world's #1 homie Raymond Chen of Mictosoft has written a blog post about this
+                 https://devblogs.microsoft.com/oldnewthing/20131011-00/?p=2953
 
 
                                                      
