@@ -113,7 +113,7 @@ static constexpr const GLsizei DEFAULT_GENERATED_IMAGE_WIDTH = 64;
 static constexpr const GLsizei DEFAULT_IMAGE_DIMENSIONS = 4;
 
 //Specify default image colors that comprise the checkerboard pattern
-static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 138u, 255u/201u };
+static const glm::u8vec4 DEFAULT_IMAGE_COLOR_1 = { 145u, 18u, 138u, 255u };
 static const glm::u8vec4 DEFAULT_IMAGE_COLOR_2 = { 165u, 195u, 248u, 225u };
 
 
