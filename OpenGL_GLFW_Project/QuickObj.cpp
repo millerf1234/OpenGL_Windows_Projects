@@ -55,7 +55,7 @@ QuickObj::QuickObj(std::string filepath, float scale, bool generateMissingCompon
     //Load the file as an AsciiAsset object
     mFile_ = std::make_unique<AssetLoadingInternal::AsciiAsset>(filepath);
 
-    if (mFile_->getStoredTextLength() > 0u) {
+    if (mFile_->getStoredTextLength() > 1u) { //Was 0u
         //preparseFile(); //This is unnecessary 
         parseFile();
     }
