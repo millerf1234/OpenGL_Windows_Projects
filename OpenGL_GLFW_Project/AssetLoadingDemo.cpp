@@ -404,6 +404,10 @@ bool AssetLoadingDemo::loadShaders() {
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
+
+    //This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
+    //goto SKIP_QUADTEXTURE_TEST_SHADER;
+
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
         return false;//std::exit(EXIT_FAILURE);
@@ -414,6 +418,10 @@ bool AssetLoadingDemo::loadShaders() {
             return false; //std::exit(EXIT_FAILURE);
         }
     }
+
+SKIP_QUADTEXTURE_TEST_SHADER:
+
+
 
     sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
@@ -524,7 +532,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
@@ -535,7 +543,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
     //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
 
 
@@ -697,7 +705,9 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
+   // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_2_01_03a.obj", 1.0f));
 
     ///for (int i = 0; i < 3; i++) 
        // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
