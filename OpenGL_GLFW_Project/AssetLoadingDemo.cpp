@@ -400,13 +400,13 @@ void AssetLoadingDemo::loadAssets() {
 
 bool AssetLoadingDemo::loadShaders() { 
     OPTICK_EVENT();
-    const std::string shadersRFP = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
+    const std::string SHADERS_PATH = FILEPATH_TO_SHADERS;   //Relative Filepath to location of Shaders
 
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
 
     //This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
-    //goto SKIP_QUADTEXTURE_TEST_SHADER;
+    goto SKIP_QUADTEXTURE_TEST_SHADER;
 
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
@@ -434,10 +434,10 @@ SKIP_QUADTEXTURE_TEST_SHADER:
     /////////////////////////
     
     //Attach the main shader stages to the sceneShader
-    sceneShader->attachVert(shadersRFP + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
-    shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
-    sceneShader->attachFrag(shadersRFP + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
-    shaderSources.emplace_back(shadersRFP + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
+    sceneShader->attachVert(SHADERS_PATH + "Sample\\RubyMine.vert"); //Attach Vertex shader to scene
+    shaderSources.emplace_back(SHADERS_PATH + "Sample\\RubyMine.vert", true, ShaderInterface::ShaderType::VERTEX);
+    sceneShader->attachFrag(SHADERS_PATH + "Sample\\RubyMine.frag"); //Attach Fragment shader to scene
+    shaderSources.emplace_back(SHADERS_PATH + "Sample\\RubyMine.frag", true, ShaderInterface::ShaderType::FRAGMENT);
     
 
 
@@ -448,27 +448,27 @@ SKIP_QUADTEXTURE_TEST_SHADER:
     /////////////////////////
 
     //Attach the main shader stages to the sceneShader
-    sceneShader->attachVert(shadersRFP + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
-    shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.vert", true, ShaderInterface::ShaderType::VERTEX);
-    sceneShader->attachFrag(shadersRFP + "AssetLoadingDemo.frag"); //Attach Fragment shader to scene
-    shaderSources.emplace_back(shadersRFP + "AssetLoadingDemo.frag", true, ShaderInterface::ShaderType::FRAGMENT);
+    sceneShader->attachVert(SHADERS_PATH + "AssetLoadingDemo.vert"); //Attach Vertex shader to scene
+    shaderSources.emplace_back(SHADERS_PATH + "AssetLoadingDemo.vert", true, ShaderInterface::ShaderType::VERTEX);
+    sceneShader->attachFrag(SHADERS_PATH + "AssetLoadingDemo.frag"); //Attach Fragment shader to scene
+    shaderSources.emplace_back(SHADERS_PATH + "AssetLoadingDemo.frag", true, ShaderInterface::ShaderType::FRAGMENT);
 
     // [Each shader stage requires its own set of secondary functions]
     //Create and attach a secondary vertex shader containing implementations for some noise functions
     std::unique_ptr<ShaderInterface::VertexShader> vertexNoiseShader =
-        std::make_unique<ShaderInterface::VertexShader>(shadersRFP + "ShaderNoiseFunctions.glsl");
+        std::make_unique<ShaderInterface::VertexShader>(SHADERS_PATH + "ShaderNoiseFunctions.glsl");
     vertexNoiseShader->makeSecondary();
     sceneShader->attachSecondaryVert(vertexNoiseShader.get());
-    shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::VERTEX);
-    ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
+    shaderSources.emplace_back(SHADERS_PATH + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::VERTEX);
+    ///shaderSources.emplace_back(SHADERS_PATH + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::VERTEX);
 
     //Create and attach a secondary fragment shader containing implementations for some noise functions 
     std::unique_ptr<ShaderInterface::FragmentShader> fragmentNoiseShader =
-        std::make_unique<ShaderInterface::FragmentShader>(shadersRFP + std::string("ShaderNoiseFunctions.glsl"));
+        std::make_unique<ShaderInterface::FragmentShader>(SHADERS_PATH + std::string("ShaderNoiseFunctions.glsl"));
     fragmentNoiseShader->makeSecondary();
     sceneShader->attachSecondaryFrag(fragmentNoiseShader.get()); //the '.get()' function converts the unique_ptr to a raw pointer
-    shaderSources.emplace_back(shadersRFP + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
-    ///shaderSources.emplace_back(shadersRFP + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+    shaderSources.emplace_back(SHADERS_PATH + "ShaderNoiseFunctions.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
+    ///shaderSources.emplace_back(SHADERS_PATH + "VoronoiNoise.glsl", false, ShaderInterface::ShaderType::FRAGMENT);
 
 #endif //ifdef USE_RUBYMINE or NORMAL
 
@@ -532,7 +532,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
@@ -540,7 +540,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
@@ -674,11 +674,11 @@ void AssetLoadingDemo::loadModels() {
 
 
     //A very simple large sphere [may take a bit to load]
-    //worldMeshName = "LargeSphere.obj";
+    worldMeshName = "LargeSphere.obj";
 
 
     //My First Attempt at a skybox cube 
-    worldMeshName = "AlienWorldSkybox.obj";
+    //worldMeshName = "AlienWorldSkybox.obj";
 
     if (!worldMeshName.empty())
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
@@ -690,9 +690,9 @@ void AssetLoadingDemo::loadModels() {
     /////////////
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "blockThing_Quads.obj", blockThing_QuadsScale));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BeveledCube.obj", beveledCubeScale));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockshipSampleExports\\BlockShipSample_01_3DCoatExport01.obj", blockShipScale, true, true, 0.3f, 0.4f));
     
-     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "BlockShip_UvMap.obj", blockShipScale));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SubdivisionCube.obj", subdivisionCubeScale)); //Has no text coords
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "AbstractShape.obj", abstractShapeScale)); //Only position data
     
@@ -705,13 +705,13 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
 
-   // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_2_01_03a.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_2_01_03a.obj", 1.0f));
 
     ///for (int i = 0; i < 3; i++) 
        // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
 
@@ -721,7 +721,7 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 
     //
@@ -747,7 +747,7 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
-    ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
 
     //////////////////////
     //  Less-Well-Behaved models\
@@ -763,10 +763,10 @@ void AssetLoadingDemo::loadModels() {
 
 
     //Report to console how many models were loaded
-    const size_t loadedModlCount = sceneObjects.size();
-    if (loadedModlCount == 0u) 
+    const uint64_t loadedModlCount = static_cast<uint64_t>(sceneObjects.size());
+    if (loadedModlCount == 0) 
         fprintf(MSGLOG, "\nNo models were loaded!\n");
-    else if (loadedModlCount == 1u) 
+    else if (loadedModlCount == 1) 
         fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
     else 
         fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
@@ -996,6 +996,8 @@ bool AssetLoadingDemo::checkKeyboardInput() {
     rotate();
     changeZoom();
     translate();
+
+    return true;
 }
 
 //   ***\______+============+______/***
