@@ -18,10 +18,6 @@ RenderDemoBase::RenderDemoBase() {
 
 RenderDemoBase::~RenderDemoBase() noexcept {
     OPTICK_EVENT();
-#ifdef _DEBUG
-   // fprintf(MSGLOG, "\n\n[DEBUG]  "
-   //     "Confirming that \'~RenderDemoBase()\' has been called!\n\n");
-#endif 
 }
 
 
