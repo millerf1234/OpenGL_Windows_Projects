@@ -555,6 +555,7 @@
     <None Include="obj\MultiPrimitiveTest.mtl" />
     <None Include="obj\ParentedPrimatives.mtl" />
     <None Include="obj\RandomAbstractCreation_0.mtl" />
+    <None Include="obj\RandomAbstractCreation_2_01_03a.mtl" />
     <None Include="obj\ScrewTornadoThing.mtl" />
     <None Include="obj\SimpleSkyDome.mtl" />
     <None Include="obj\SimpleSkyDome_ReExport.mtl" />
@@ -649,6 +650,7 @@
     <Text Include="Shaders\AshimaArts_NoiseCollection\Description.txt" />
     <Text Include="Shadertoy_SinCosTimeMacro.txt" />
     <Text Include="TGASDK_GithubLink.txt" />
+    <Text Include="Things_I_Seem_To_Still_Not_Understand_Adequately.txt" />
     <Text Include="UserInputConsiderationsAndNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -894,6 +896,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\RandomAbstractCreation_0.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\RandomAbstractCreation_2_01_03a.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

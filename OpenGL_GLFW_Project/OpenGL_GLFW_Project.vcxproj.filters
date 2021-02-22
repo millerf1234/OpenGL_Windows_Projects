@@ -1866,6 +1866,12 @@
     <None Include="obj\RandomAbstractCreation_0.obj">
       <Filter>Asset Files\Models\OBJ\Sample\RandomAbstractCreations</Filter>
     </None>
+    <None Include="obj\RandomAbstractCreation_2_01_03a.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+    </None>
+    <None Include="obj\RandomAbstractCreation_2_01_03a.obj">
+      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1973,6 +1979,9 @@
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\DrawTexture</Filter>
     </Text>
     <Text Include="Shadertoy_SinCosTimeMacro.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="Things_I_Seem_To_Still_Not_Understand_Adequately.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
