@@ -31,8 +31,10 @@ How To Write A Class circa August 2019
 
 
 
+                              {  THIS LINK SUMS THE MOTIVATION FOR THIS NEXT PART UP PRETTY WELL: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-design  }
 
               ( this next one is more of a todo than a rule, but still... )
+                  
 
     -) Come up with a consistent style for how exception                                                      [  To reacquaint myself with this topic in the future,
        handling will come into play for both implementation [internal] code and                                          look into why constructors should not be labeled with 'noexcept' ]
