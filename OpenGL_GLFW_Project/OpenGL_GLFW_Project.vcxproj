@@ -617,6 +617,9 @@
     <None Include="Shaders\VertMath.vert" />
     <None Include="obj\Engine2_Textured.mtl" />
     <None Include="Shaders\VoronoiNoise.glsl" />
+    <None Include="Weblinks_To_OpenGL_Related_Topics.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf" />

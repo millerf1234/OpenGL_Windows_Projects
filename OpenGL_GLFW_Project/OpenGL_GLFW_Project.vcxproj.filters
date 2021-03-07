@@ -586,6 +586,9 @@
     <Filter Include="Asset Files\Models\OBJ\Sample\RandomAbstractCreations">
       <UniqueIdentifier>{40a28c2e-196e-4a06-928d-7c61630c58e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\SpikyStarThing">
+      <UniqueIdentifier>{5703f01f-b913-4d09-a8ef-1747be623901}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1873,7 +1876,10 @@
       <Filter>Asset Files\Models\OBJ\Sample</Filter>
     </None>
     <None Include="obj\SpikyStarThing.mtl">
-      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+      <Filter>Asset Files\Models\OBJ\Sample\SpikyStarThing</Filter>
+    </None>
+    <None Include="obj\SpikyStarThing.obj">
+      <Filter>Asset Files\Models\OBJ\Sample\SpikyStarThing</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1985,6 +1991,9 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="Things_I_Seem_To_Still_Not_Understand_Adequately.txt">
+      <Filter>NotesAndReferences</Filter>
+    </Text>
+    <Text Include="Weblinks_To_OpenGL_Related_Topics.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
@@ -2291,10 +2300,5 @@
     <ResourceCompile Include="OpenGL_GLFW_Project.rc">
       <Filter>Asset Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="obj\SpikyStarThing.obj">
-      <Filter>Asset Files\Models\OBJ\Sample</Filter>
-    </Object>
   </ItemGroup>
 </Project>

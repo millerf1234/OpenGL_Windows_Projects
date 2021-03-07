@@ -1,0 +1,25 @@
+
+//This file is a total work in progress. 
+
+Created March 7, 2021
+Created by Forrest Miller
+
+
+
+
+
+  Out of date (was last updated in 2001). Discusses 16 common OpenGL pitfalls
+  to be aware of. I doubt all 16 of these pitfalls it lists are still relevant
+  now that it is >20 years later. Still worth being aware of these, none-the-less.
+https://www.opengl.org/archives/resources/features/KilgardTechniques/oglpitfall/
+
+
+
+
+
+
+                  [More coming as time continues]
+
+
+
+
