@@ -666,7 +666,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    //worldMeshName = "DemoSceneInsideABox00.obj";
+    worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -674,7 +674,7 @@ void AssetLoadingDemo::loadModels() {
 
 
     //A very simple large sphere [may take a bit to load]
-    worldMeshName = "LargeSphere.obj";
+    //worldMeshName = "LargeSphere.obj";
 
 
     //My First Attempt at a skybox cube 
@@ -721,8 +721,10 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "DrillThing00.obj", 1.0));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
 
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {

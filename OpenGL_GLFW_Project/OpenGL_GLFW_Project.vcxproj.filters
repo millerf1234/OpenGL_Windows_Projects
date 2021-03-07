@@ -1872,6 +1872,9 @@
     <None Include="obj\RandomAbstractCreation_2_01_03a.obj">
       <Filter>Asset Files\Models\OBJ\Sample</Filter>
     </None>
+    <None Include="obj\SpikyStarThing.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -2288,5 +2291,10 @@
     <ResourceCompile Include="OpenGL_GLFW_Project.rc">
       <Filter>Asset Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="obj\SpikyStarThing.obj">
+      <Filter>Asset Files\Models\OBJ\Sample</Filter>
+    </Object>
   </ItemGroup>
 </Project>
