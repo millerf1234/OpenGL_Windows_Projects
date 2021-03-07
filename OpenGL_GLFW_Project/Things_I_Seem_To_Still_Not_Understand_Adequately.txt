@@ -1,0 +1,43 @@
+
+
+This file is just a list of things I don't feel I yet understand all the way,
+in that I think there is still room for growth. Perhaps a better way to introduce this
+list is to describe these as things which I don't really at all feel comfortable talking 
+about beyond maybe a few general statements. Another common theme amongst these topics is 
+generally I feel like I would one day like to understand them better. 
+
+
+That's not to say I haven't ever tried understanding these things, more this list is 
+of reoccurring topics have me saying "what the heck topic, why are you so convoluted/unclear/straight-up hard"
+
+
+Topic 1)  Unicode, UCS2, UTF-8, UTF-16  and might as well lump how they fit in with WIN32 as well 
+
+Topic 2)  WIN32  (this one is a doozy)
+
+Topic 3)  C Sockets and how to program with them
+
+Topic 4) Blocking/Non-Blocking operations. Every time I read about them they make complete sense but then whenever I try to code with them, nothing ever seems to work... So clearly they don't make sense...
+
+Topic 5) Structured Error-Handling
+
+Topic 6) The Scissor's Test in the GPU Pipeline    (how is the Scissor test different from viewport/clipping; or perhaps more importantly, not what it does but WHY DOES IT EXIST )
+
+Topic 7) Multi-Threading
+
+Topic 8) Templates (aka the dark arts within the dark arts)
+
+Topic 9) Lambda statements (they just haven't clicked for me, probably most due to a lack of effort on my part. There's just something so forbidden feeling about functors/function pointers)
+
+Topic 10a) x86 Assembly
+
+Topic 10b) x86-64 Assembly
+
+Topic 10c) Processor Vector extensions and programming to use them (i.e. SIMD)  (e.g. SSEE, AVX, etc...)
+
+Topic 11) Still feel like I only have a vague understanding of IEEE floating-point  implementation and behavior. (Man it would be nice to go retake the numerical methods course I had in college)
+
+
+
+MORE TOPICS COMING
+
