@@ -589,6 +589,9 @@
     <Filter Include="Asset Files\Models\OBJ\Sample\SpikyStarThing">
       <UniqueIdentifier>{5703f01f-b913-4d09-a8ef-1747be623901}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Topology_SubDMesh_Experiments">
+      <UniqueIdentifier>{dbe77140-605b-484a-ac89-afc606ac6dd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1881,6 +1884,31 @@
     <None Include="obj\SpikyStarThing.obj">
       <Filter>Asset Files\Models\OBJ\Sample\SpikyStarThing</Filter>
     </None>
+    <None Include="Weblinks_To_OpenGL_Related_Topics.txt" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -1991,9 +2019,6 @@
       <Filter>NotesAndReferences</Filter>
     </Text>
     <Text Include="Things_I_Seem_To_Still_Not_Understand_Adequately.txt">
-      <Filter>NotesAndReferences</Filter>
-    </Text>
-    <Text Include="Weblinks_To_OpenGL_Related_Topics.txt">
       <Filter>NotesAndReferences</Filter>
     </Text>
   </ItemGroup>
@@ -2300,5 +2325,13 @@
     <ResourceCompile Include="OpenGL_GLFW_Project.rc">
       <Filter>Asset Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </Object>
+    <Object Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </Object>
   </ItemGroup>
 </Project>

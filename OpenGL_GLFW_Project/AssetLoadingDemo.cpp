@@ -406,7 +406,7 @@ bool AssetLoadingDemo::loadShaders() {
 
 
     //This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
-    goto SKIP_QUADTEXTURE_TEST_SHADER;
+    //goto SKIP_QUADTEXTURE_TEST_SHADER;
 
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
@@ -527,7 +527,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
+    ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
     //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
@@ -540,7 +540,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
@@ -549,6 +549,20 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
 
+    //ImageData_UByte testDefaultImage2(R"(Images\Screenshots\526870_20210303035102_1.png)");
+    //ImageData_UByte testDefaultImage3(R"(Images\Screenshots\526870_20210303035059_1.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
+    //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
+
+
+    /*
+           8294454 witcher3op_2015_05_23_15_29_58_757.bmp
+         8294454 witcher3op_2015_05_23_15_40_13_719.bmp
+        8294454 witcher3op_2015_05_23_16_13_47_894.bmp
+        8294454 witcher3op_2015_05_23_19_56_47_220.bmp
+         8294454 witcher3op_2015_05_25_14_12_32_259.bmp
+         8294454 witcher3op_2015_05_25_17_14_44_142.bmp
+        */
     Timepoint imageLoadEnd("Image Load End!\n");
 
     fprintf(MSGLOG, "\n\nTime to load image: %f seconds\n", imageLoadEnd - imageLoadStart);
@@ -666,7 +680,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    //worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -724,7 +738,7 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
 
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
@@ -750,6 +764,13 @@ void AssetLoadingDemo::loadModels() {
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
+
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest.obj", 1.0));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj", 1.0));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj", 1.0));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj", 1.0));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj", 1.0));
 
     //////////////////////
     //  Less-Well-Behaved models\
@@ -2011,14 +2032,20 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
 
             //Only do d-pad left/right input if drawing instanced
             if (drawMultipleInstances) {
+
                 if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]) {
                     instanceCount++;
+                    fprintf(MSGLOG, "Rendered Instances increased to: %d\n", instanceCount);
                 }
                 if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]) {
                     instanceCount--;
                     if (instanceCount < 1)
                         instanceCount = 1;
+                    else 
+                        fprintf(MSGLOG, "Rendered Instances decreased to: %d\n", instanceCount);
                 }
+
+
             }
 
             if (gamepadInput.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {

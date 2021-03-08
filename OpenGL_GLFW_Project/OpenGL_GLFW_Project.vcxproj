@@ -557,6 +557,11 @@
     <None Include="obj\RandomAbstractCreation_0.mtl" />
     <None Include="obj\RandomAbstractCreation_2_01_03a.mtl" />
     <None Include="obj\ScrewTornadoThing.mtl" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest.mtl" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.mtl" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.mtl" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.mtl" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.mtl" />
     <None Include="obj\SimpleSkyDome.mtl" />
     <None Include="obj\SimpleSkyDome_ReExport.mtl" />
     <None Include="obj\SpikyStarThing.mtl" />
@@ -910,6 +915,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\SpikyStarThing.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
