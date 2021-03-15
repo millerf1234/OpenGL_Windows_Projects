@@ -592,6 +592,12 @@
     <Filter Include="Asset Files\Models\OBJ\Topology_SubDMesh_Experiments">
       <UniqueIdentifier>{dbe77140-605b-484a-ac89-afc606ac6dd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\GLSL Sandbox">
+      <UniqueIdentifier>{6d11b3e5-ff74-4f05-9e4d-e4535b5e8275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\Models\OBJ\Sample\IrregularCube Variations">
+      <UniqueIdentifier>{3a5668a8-c90c-49db-83a9-9a974d25d0e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1909,6 +1915,53 @@
     <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj">
       <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
     </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level1obj.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level2.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level3.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level6_HighPrecision_ScaleExpanded.mtl">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level1obj.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level2.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level3.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level6_HighPrecision_ScaleExpanded.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj" />
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj" />
+    <None Include="ModifiedWorleyNoiseShaderFromGLSLSandbox.glsl">
+      <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\GLSL Sandbox</Filter>
+    </None>
+    <None Include="obj\IrregularCube.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\IrregularCube_SkyboxScale.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\IrregularCube_TriangulatedFaces.mtl">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\IrregularCube_TriangulatedFaces.obj">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\IrregularCube_SkyboxScale.obj">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\IrregularCube.obj">
+      <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -2325,13 +2378,5 @@
     <ResourceCompile Include="OpenGL_GLFW_Project.rc">
       <Filter>Asset Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj">
-      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
-    </Object>
-    <Object Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj">
-      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
-    </Object>
   </ItemGroup>
 </Project>
