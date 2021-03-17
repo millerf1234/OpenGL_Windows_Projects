@@ -71,8 +71,8 @@ static constexpr const uint64_t FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15;
 //////////////////////////////////////////////////////
 
 static constexpr const uint64_t FRAMES_TO_WAIT_BEFORE_CHECKING_TO_UPDATE_SHADERS = 60;
-static constexpr const GLsizei NUM_VERTEX_COMPONENTS = 9;
-static constexpr const GLsizei TRIANGLE_SIDES_AMOUNTAGE = 3;
+static constexpr const GLsizei NUM_VERTEX_COMPONENTS = 9; //This is a pretty important invariant, really do not modify. Should always be 9
+static constexpr const GLsizei TRIANGLE_SIDES_AMOUNTAGE = 3; //Duh
 
 
 

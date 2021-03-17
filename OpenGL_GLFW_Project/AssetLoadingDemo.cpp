@@ -181,7 +181,7 @@ constexpr const glm::vec2 CHANGE_BETWEEN_OBJECTS(0.139599f, 0.1439995f);
 
 //Camera Parameters
 const glm::vec3 CAMERA_POSITION = glm::vec3(0.0f, 0.0f, 8.0f);
-const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 CAMERA_LOOK_DIRECTION = glm::vec3(0.0f, 0.0f, -1.0f);
 const glm::vec3 CAMERA_UP_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 constexpr const float CAMERA_DEFAULT_FOV = 1.342f;//65.0f * 3.14159f / 180.0f;//1.5f;
 constexpr const float CAMERA_MAXIMUM_FOV = 3.14159f*10.0f;
@@ -405,7 +405,7 @@ bool AssetLoadingDemo::loadShaders() {
     fprintf(MSGLOG, "\nInitializing Shaders!\n");
 
 
-    //This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
+    //~This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
     //goto SKIP_QUADTEXTURE_TEST_SHADER;
 
     if (!buildQuadTextureTestShader()) {
@@ -527,16 +527,21 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
-    ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
+    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
     //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.tga)"); 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00022.jpg)"); //THIS ONE IS COOL!
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00028.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00043.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)");  //Snowy Mountain Planet/Lots of shades of white
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //GIANT Gas giant on horizon over rocky planet surface -- REALLY COOL
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00082.jpg)"); //A Planet almost eclipsing a star/All the action here is in the middle
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00098.jpg)"); //Faint-ish Blue star in distance above blue planet
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
@@ -544,7 +549,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
-    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");
+   // ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //BRIGHT COLORS!
 
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
@@ -620,8 +625,8 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
 
 
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    //glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
 
 
 
@@ -692,7 +697,11 @@ void AssetLoadingDemo::loadModels() {
 
 
     //My First Attempt at a skybox cube 
-    //worldMeshName = "AlienWorldSkybox.obj";
+    worldMeshName = "AlienWorldSkybox.obj";
+
+
+    //This one is new
+    //worldMeshName = "IrregularCube_SkyboxScale.obj";
 
     if (!worldMeshName.empty())
         sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + worldMeshName, 1.0f));
@@ -760,20 +769,35 @@ void AssetLoadingDemo::loadModels() {
     //    */
     //}
 
+    
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
 
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest.obj", 1.0));
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj", 1.0));
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj", 1.0));
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj", 1.0));
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "IrregularCube.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "IrregularCube_TriangulatedFaces.obj", 1.0f));
+    
+
+
+    ////sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest.obj", 0.1));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj", 0.05));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj", 0.5));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj", 2.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj", 1.0));s
+
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality2.obj", 1.0));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality3.obj", 1.0));
+
+    //This file is too big for github 
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level6_HighPrecision_ScaleExpanded.obj", 0.06));
+    
 
     //////////////////////
-    //  Less-Well-Behaved models\
+    //  Less-Well-Behaved models
     ////////////
 
     //File is defined in terms of splines instead of triangles. This may not be able to display properly.
@@ -829,10 +853,12 @@ void AssetLoadingDemo::renderLoop() {
     assert(mainRenderWindow);
 
     //Make sure we still have a context
-    if ((glfwGetCurrentContext() != mainRenderWindow)) {
+    if (glfwGetCurrentContext() != mainRenderWindow) {
         fprintf(ERRLOG,
             "\n\n\t\t\t!!!!\t[ERROR OCCURED]\t!!!!\a\n"
-            "\tCause: Window Lost Graphics Context / Context Is ");
+            "\tCause: Window Lost Graphics Context / Context Is Not Current For This Window");
+        //fprintf(ERRLOG, "\n\t\t[PRESS ENTER TO CLOSE PROCESS]\n");
+        //std::cin.get();
         return;
     }
 
@@ -1914,7 +1940,7 @@ void AssetLoadingDemo::propagateTime()  {
 void AssetLoadingDemo::updateTaggedVariablesWithOptick() const {
 
     std::stringstream ss;
-    ss << "0x" << std::hex << mainRenderWindow /*<< std::dec*/;
+    ss << "0x" << std::hex << static_cast<void*>(mainRenderWindow); //<< std::dec;
 
     OPTICK_TAG("WINDOW HANDLE", ss.str().c_str());
     OPTICK_TAG("FRAME #", frameCounter);
@@ -1998,15 +2024,26 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             constexpr float HEAD_SPEED = 0.035f;
             constexpr float ROLL_SPEED = 0.035f;
             constexpr float PITCH_SPEED = 0.035f;
+            
+            constexpr float LS_DEADZONE_X = 0.08f; //0.08 works pretty well for most controllers I've tried. If anything, value could be a little larger
+            constexpr float LS_DEADZONE_Y = 0.08f;
+            constexpr float LS_SENSITIVITY_X = 0.165f;
+            constexpr float LS_SENSITIVITY_Y = 0.165f;
+
 
             //~~~~~~~~~~~~
             //    LEFT THUMB STICK
             //~~~~~~~~~~~~
             //If stick's value is greater than the neutral dead zone
-            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]) > 0.08f) 
-                cameraPos += (0.185f * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] * glm::normalize(lookAtOrgin));
-            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X]) > 0.08f)
-                cameraPos += (0.185f * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X] * glm::cross(glm::normalize(lookAtOrgin), glm::normalize(upDirection)));
+            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]) > LS_DEADZONE_Y) {
+                const float leftStickDelta_Y = LS_SENSITIVITY_Y * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
+                cameraPos += leftStickDelta_Y * glm::normalize(lookAtOrgin);
+            }
+            if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X]) > LS_DEADZONE_X) {
+                const float leftStickDelta_X = LS_SENSITIVITY_X * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X];
+                cameraPos += leftStickDelta_X * glm::cross(glm::normalize(lookAtOrgin), glm::normalize(upDirection)));
+            }
+
 
             //~~~~~~~~~~~~
             //    RIGHT THUMB STICK
