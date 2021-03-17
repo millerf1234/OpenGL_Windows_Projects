@@ -1890,7 +1890,6 @@
     <None Include="obj\SpikyStarThing.obj">
       <Filter>Asset Files\Models\OBJ\Sample\SpikyStarThing</Filter>
     </None>
-    <None Include="Weblinks_To_OpenGL_Related_Topics.txt" />
     <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest.mtl">
       <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
     </None>
@@ -1939,8 +1938,6 @@
     <None Include="obj\Section2_Part1_IsolatedTriangles_Subdivision_SimpleMethod_Level6_HighPrecision_ScaleExpanded.obj">
       <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
     </None>
-    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj" />
-    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj" />
     <None Include="ModifiedWorleyNoiseShaderFromGLSLSandbox.glsl">
       <Filter>Asset Files\Shaders\RenderProjects\AssetLoadingDemo\Sample\GLSL Sandbox</Filter>
     </None>
@@ -1961,6 +1958,15 @@
     </None>
     <None Include="obj\IrregularCube.obj">
       <Filter>Asset Files\Models\OBJ\Sample\IrregularCube Variations</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality_Off.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="obj\Section2_Part1_IsolatedTriangles_ExportTest_SubDQuality1.obj">
+      <Filter>Asset Files\Models\OBJ\Topology_SubDMesh_Experiments</Filter>
+    </None>
+    <None Include="Weblinks_To_OpenGL_Related_Topics.txt">
+      <Filter>NotesAndReferences</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2371,6 +2377,9 @@
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00067.jpg">
+      <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="Images\OuterSpaceScreenshots\scr00082.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
     </Image>
   </ItemGroup>
