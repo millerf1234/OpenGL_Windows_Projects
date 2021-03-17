@@ -89,6 +89,11 @@ namespace WindowCallbackInternal {
 		}
 	}
 
+    //IMPORTANT NOTICE: I'VE HAD A CRASH WHERE ONE OF THE STRINGS CURRENTLY DECLARED WITHIN THIS FUNCTION FAILS TO 
+	//                  ALLOCATE MEMORY (PROBABLY DUE TO A MEMORY RACE OR SOMETHING SINCE THIS IS TECHNICALLY RUN 
+	//                  AS AN ASYNCRONUS CALLBACK... WHICH IS JUST GREAT...  SO I NEED TO FIND A WAY TO GET IT SO
+	//                  THAT NO MEMORY ALLOCATIONS ARE REQUIRED WITHIN THIS FUNCTION. 
+	//                     I'm going to put this down as a 'to-do' item for now....
 	void joystickConnectionCallback(int joyID, int connected) {
 		fprintf(MSGLOG, "\n-----------------------------------------------------------------\n");
 		fprintf(MSGLOG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n");
