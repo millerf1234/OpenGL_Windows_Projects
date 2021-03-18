@@ -89,11 +89,12 @@ namespace WindowCallbackInternal {
 		}
 	}
 
-    //IMPORTANT NOTICE: I'VE HAD A CRASH WHERE ONE OF THE STRINGS CURRENTLY DECLARED WITHIN THIS FUNCTION FAILS TO 
-	//                  ALLOCATE MEMORY (PROBABLY DUE TO A MEMORY RACE OR SOMETHING SINCE THIS IS TECHNICALLY RUN 
-	//                  AS AN ASYNCRONUS CALLBACK... WHICH IS JUST GREAT...  SO I NEED TO FIND A WAY TO GET IT SO
-	//                  THAT NO MEMORY ALLOCATIONS ARE REQUIRED WITHIN THIS FUNCTION. 
-	//                     I'm going to put this down as a 'to-do' item for now....
+    //IMPORTANT NOTICE: I thought there was a memory race in the function, but it turns out that is not the case. Rather,
+	//                  GLFW has a few functions I call within the course of this function that GLFW specifically restricts
+	//                  to only being called on the main execution thread. Since this is a callback function, it is violating
+	//                  GLFW's API.
+	//                  To remedy this issue, I am removing the offending API calls. Please note that this will lessen the 
+	//                  usefulness of this code.
 	void joystickConnectionCallback(int joyID, int connected) {
 		fprintf(MSGLOG, "\n-----------------------------------------------------------------\n");
 		fprintf(MSGLOG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n");
@@ -135,9 +136,16 @@ namespace WindowCallbackInternal {
 		//	return;
 		//}
 
-		
+#ifdef IGNORE_THE_GLFW_API_AND_CALL_FUNCTIONS_WHICH_ARE_NOT_THREAD_SAFE_FROM_THIS_CALLBACK
+		//Most of the GLFW functions I call in this following section of code are in fact not at all thread safe and 
+		//thus have no business what-so-ever being called from within this callback function. Funnily enough, I was
+		//calling those functions as part of this code for nearly 3 whole years and only quite recently did I find 
+		//there was a problem with them. I an going to do the correct thing for now by disabling this whole section 
+		//of offending function calls, but really it seems to be quite rare that these did actually cause a problem
+		//so I've left them disabled behind a macro which means it would be quite easy to re-enabled them again
 		int isGamepad = glfwJoystickIsGamepad(joyID);
 		std::string name = glfwGetJoystickName(joyID);
+		
 		int buttonCount = 0;
 		const unsigned char* buttons = glfwGetJoystickButtons(joyID, &buttonCount);
 		int axisStates = 0;
@@ -160,6 +168,7 @@ namespace WindowCallbackInternal {
 			std::string gamepadName = glfwGetGamepadName(joyID);
 			fprintf(MSGLOG, "\nGamepad name is %s\n", gamepadName.c_str());
 		}
+#endif //
 	}
 
 
