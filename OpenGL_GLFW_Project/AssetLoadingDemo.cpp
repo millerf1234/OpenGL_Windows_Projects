@@ -112,6 +112,14 @@
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
+//  |              'L'                |                        Toggle Customizable Line Width                          |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
+//  |           ';' & '''             |                       Increase/Decrease Custom Line Width                      |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
 //  |              'b'                |                               Toggle Blending                                  |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
@@ -199,26 +207,29 @@ void AssetLoadingDemo::initialize() {
     error = false;
 
     //Set FrameCounter-related variables (Note that these must all be reset in the 'reset()' function as well)
-    frameCounter = 0ULL;
-    frameUnpaused = 0ULL;
-    frameLineTypeLastSwitched = 0ULL;  
-    frameInstancedDrawingBehaviorLastToggled = 0ULL;
-    frameInstancedDrawingCountLastModified = 0ULL;
-    frameTimeFreezeLastToggled = 0ULL;
-    frameBlendOperationLastToggled = 0ULL;
-    frameDepthClampLastToggled = 0ULL;
-    frameThatTimePropogationWasLastReversed = 0ULL;
-    frameThatCustomShaderParameter1LastModified = 0ULL;
-    frameThatCustomShaderParameter2LastModified = 0ULL;
-    frameThatCustomShaderParameter3LastModified = 0ULL;
-    framePerformanceReportingLastToggled = 0ULL;
+    frameCounter = 0U;
+    frameUnpaused = 0U;
+    frameLineTypeLastSwitched = 0U;  
+    frameInstancedDrawingBehaviorLastToggled = 0U;
+    frameInstancedDrawingCountLastModified = 0U;
+    frameTimeFreezeLastToggled = 0U;
+    frameBlendOperationLastToggled = 0U;
+    frameCustomLineWidthLastToggled = 0U;
+    frameDepthClampLastToggled = 0U;
+    frameThatTimePropogationWasLastReversed = 0U;
+    frameThatCustomShaderParameter1LastModified = 0U;
+    frameThatCustomShaderParameter2LastModified = 0U;
+    frameThatCustomShaderParameter3LastModified = 0U;
+    framePerformanceReportingLastToggled = 0U;
     counter = 0.0f;
     timeTickRateModifier = 0.0f;
     vao = 0U;
     sceneBufferVBO = 0U;
     triangleOutlineEBO = 0U;
-    practiceTexture = 0u;
+    practiceTexture = 0U;
 
+    //Set the initial custom line width 
+    customLineWidth = CUSTOM_LINE_WIDTH_INITIAL;
 
     //Set the starting input primitive type
     currentPrimitiveInputType = PIPELINE_PRIMITIVE_INPUT_TYPE::DISCRETE_TRIANGLES;
@@ -232,6 +243,8 @@ void AssetLoadingDemo::initialize() {
     reverseTimePropogation = false;
     enableBlending = false;
     enableDepthClamping = false;
+
+    enableCustomLineWidth = static_cast<bool>(glIsEnabled(GL_LINE_SMOOTH));
 
     customShaderParameter1 = 0U;
     customShaderParameter2 = 0U;
@@ -546,7 +559,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
    // ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //BRIGHT COLORS!
@@ -556,7 +569,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage2(R"(Images\Screenshots\526870_20210303035102_1.png)");
     //ImageData_UByte testDefaultImage3(R"(Images\Screenshots\526870_20210303035059_1.png)");
-    //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
+    ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
     //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
 
 
@@ -693,11 +706,11 @@ void AssetLoadingDemo::loadModels() {
 
 
     //A very simple large sphere [may take a bit to load]
-    //worldMeshName = "LargeSphere.obj";
+    worldMeshName = "LargeSphere.obj";
 
 
     //My First Attempt at a skybox cube 
-    worldMeshName = "AlienWorldSkybox.obj";
+    //worldMeshName = "AlienWorldSkybox.obj";
 
 
     //This one is new
@@ -1018,7 +1031,15 @@ bool AssetLoadingDemo::checkKeyboardInput() {
         toggleDepthClamping();
 
     if (checkIfShouldUpdateFieldOfView())
-        updateFieldOfView();
+        updateFieldOfView(); 
+
+    if (checkIfShouldToggleCustomLineWidth())
+        toggleCustomLineWidth();
+
+    //if (enableCustomLineWidth) { 
+        if (checkIfShouldModifyCustomLineWidth())
+            changeCustomLineWidth();
+    //}
 
     //CUSTOM SHADER PARAMETERS
     if (checkIfShouldIncreaseCustomShaderParameter1())
@@ -1153,6 +1174,28 @@ inline bool AssetLoadingDemo::checkIfShouldToggleDepthClamping() const noexcept 
     return false;
 }
 
+inline bool AssetLoadingDemo::checkIfShouldToggleCustomLineWidth() const noexcept {
+    if ((frameCounter - frameCustomLineWidthLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS)
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_L) == GLFW_PRESS) {
+            return true;
+        }
+    return false;
+}
+
+inline bool AssetLoadingDemo::checkIfShouldModifyCustomLineWidth() const noexcept {
+    if ((currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) ||
+        (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) ||
+        (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE)) {
+        if (!enableCustomLineWidth)
+            return false;
+        if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS)
+            return true;
+        else if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS)
+            return true;
+    }
+    return false;
+}
+
 inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
     if (glfwGetKey(mainRenderWindow, GLFW_KEY_9) == GLFW_PRESS) 
         return true;
@@ -1161,7 +1204,6 @@ inline bool AssetLoadingDemo::checkIfShouldUpdateFieldOfView() const noexcept {
     return false;
 
 }
-
 
 
 inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter1() const noexcept {
@@ -1286,24 +1328,30 @@ void AssetLoadingDemo::reset() noexcept {
     yTranslation = 0.0f;
     zTranslation = 0.0f;
     backgroundColor = glm::vec3(0.15f, 0.5f, 0.75f);
-    frameCounter = 0ull;
-    frameUnpaused = 0ull;
-    frameLineTypeLastSwitched = 0ull;
-    frameInstancedDrawingBehaviorLastToggled = 0ull;
-    frameInstancedDrawingCountLastModified = 0ull;
-    frameTimeFreezeLastToggled = 0ull;
-    frameBlendOperationLastToggled = 0ull;
-    frameDepthClampLastToggled = 0ull;
-    frameThatTimePropogationWasLastReversed = 0ULL;
-    frameThatCustomShaderParameter1LastModified = 0ULL;
-    frameThatCustomShaderParameter2LastModified = 0ULL;
-    frameThatCustomShaderParameter3LastModified = 0ULL;
-    framePerformanceReportingLastToggled = 0ULL;
+    frameCounter = 0U;
+    frameUnpaused = 0U;
+    frameLineTypeLastSwitched = 0U;
+    frameInstancedDrawingBehaviorLastToggled = 0U;
+    frameInstancedDrawingCountLastModified = 0U;
+    frameTimeFreezeLastToggled = 0U;
+    frameBlendOperationLastToggled = 0U;
+    frameCustomLineWidthLastToggled = 0U;
+    frameDepthClampLastToggled = 0U;
+    frameThatTimePropogationWasLastReversed = 0U;
+    frameThatCustomShaderParameter1LastModified = 0U;
+    frameThatCustomShaderParameter2LastModified = 0U;
+    frameThatCustomShaderParameter3LastModified = 0U;
+    framePerformanceReportingLastToggled = 0U;
     zoom = 1.0f;
     if (drawMultipleInstances) 
         instanceCount = STARTING_INSTANCE_COUNT;
-    
-    
+
+    //Only reset customLineWidth when drawing lines
+    if ((currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE) ||
+        (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::LINE_STRIP) ||
+        (currentPrimitiveInputType == PIPELINE_PRIMITIVE_INPUT_TYPE::TRIANGLE_OUTLINE)) {
+        customLineWidth = CUSTOM_LINE_WIDTH_INITIAL;
+    }
     recomputeProjectionMatrix();
 }
 
@@ -1395,6 +1443,96 @@ void AssetLoadingDemo::toggleDepthClamping() noexcept {
     }
     frameDepthClampLastToggled = frameCounter;
 }
+
+
+void AssetLoadingDemo::toggleCustomLineWidth() noexcept {
+    const bool INITIAL_STATE = enableCustomLineWidth;
+    if (enableCustomLineWidth) {
+        glDisable(GL_LINE_SMOOTH);
+        enableCustomLineWidth = static_cast<bool>(glIsEnabled(GL_LINE_SMOOTH));
+    }
+    else {
+        glEnable(GL_LINE_SMOOTH);
+        enableCustomLineWidth = static_cast<bool>(glIsEnabled(GL_LINE_SMOOTH));
+    }
+
+    //Reference this:
+    //     https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glLineWidth.xhtml
+
+    //Make sure that line Width actually changed within the GL Context
+    if (enableCustomLineWidth != INITIAL_STATE) {
+        fprintf(MSGLOG, "Lines Now Being Drawn With ");
+        //Record that behavior was toggled on this frame
+        frameCustomLineWidthLastToggled = frameCounter; 
+        //Print a message based upon the state change
+        if (enableCustomLineWidth) {
+            fprintf(MSGLOG, "Default Width\n");
+        }
+        else {
+            fprintf(MSGLOG, "Custom Width [Width=%f]\n", customLineWidth);
+
+            constexpr int ITERATIONS_BETWEEN_REPORTING_SYSTEM_LIMITS = 5U;
+            static int reportImplementationLimitsCounter = 0;
+            if ((reportImplementationLimitsCounter++ % ITERATIONS_BETWEEN_REPORTING_SYSTEM_LIMITS) == 0) {
+                GLfloat range[2] = { 0.0f, 1.0f };
+                fprintf(MSGLOG, "\t  Line Width Ranges Supported By Platform:\n");
+                glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, range);
+                fprintf(MSGLOG, "\t\tStyle \'Aliased\' --> MIN: %4f   MAX: %4f\n",
+                    range[0], range[1]);
+                glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, range);
+                fprintf(MSGLOG, "\t\tStyle \'Smooth\'  --> MIN: %4f   MAX: %4f\n",
+                    range[0], range[1]);
+                GLint granularity = 0;
+                glGetIntegerv(GL_SMOOTH_LINE_WIDTH_GRANULARITY, &granularity);
+                fprintf(MSGLOG, "\t\tSmooth Line Granularity: %d\n", granularity);
+            }
+        }
+    }
+}
+
+//Helper function called by function 'changeCustomLineWidth'
+void getLineWidthBounds(GLfloat* min, GLfloat* max) {
+    GLfloat range[2] = { 0.0,0.0 };
+    glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, range);
+
+    //Assign min based off larger of these two values
+    (range[0] > CUSTOM_LINE_WIDTH_MINIMUM) ? *min = range[0] : *min = CUSTOM_LINE_WIDTH_MINIMUM;
+    //Assign max based off smaller of these two values
+    (range[1] < CUSTOM_LINE_WIDTH_MAXIMUM) ? *max = range[1] : *max = CUSTOM_LINE_WIDTH_MAXIMUM;
+}
+
+void AssetLoadingDemo::changeCustomLineWidth() noexcept {
+    static bool haveSetLineWidthMinMax = false;
+    static GLfloat limitMin = 0.0f;
+    static GLfloat limitMax = 1.0f;
+
+    //The idea is this will only trigger the first time this function is called
+    if (!haveSetLineWidthMinMax) {
+        getLineWidthBounds(&limitMin, &limitMax);
+        haveSetLineWidthMinMax = true;
+    }
+
+    const GLfloat previousLineWidth = customLineWidth;
+
+    //Change the value of the customLineWidth
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS) 
+        customLineWidth -= CUSTOM_LINE_WIDTH_DELTA;
+    if (glfwGetKey(mainRenderWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS)
+        customLineWidth += CUSTOM_LINE_WIDTH_DELTA;
+
+    //Make sure the value of customLineWidth remains in bounds
+    if (customLineWidth < limitMin)
+        customLineWidth = limitMin;
+    if (customLineWidth > limitMax)
+        customLineWidth = limitMax;
+
+    //Tell the OpenGL Context to start using the new line width
+    glLineWidth(customLineWidth);
+
+    //If the line width has changed, print out the new line width value
+    fprintf(MSGLOG, "Custom line width changed to: %f\n", customLineWidth);
+}
+
 
 void AssetLoadingDemo::updateFieldOfView() noexcept {
     OPTICK_EVENT();

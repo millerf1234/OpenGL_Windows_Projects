@@ -58,11 +58,18 @@ static constexpr const bool ASSIGN_TEXTURE_COORDS_RANDOMLY = true;
 
 static constexpr const GLsizei STARTING_INSTANCE_COUNT = 5;
 
+//The maximum and minimum values are suggestions, if the implementation says it only
+//supports a higher minimum or lower maximum, the value reported by the implementation
+//becomes the cutoff
+static constexpr const GLfloat CUSTOM_LINE_WIDTH_MINIMUM = 0.0f;
+static constexpr const GLfloat CUSTOM_LINE_WIDTH_MAXIMUM = 30.0f; //This may be WAY too big
+static constexpr const GLfloat CUSTOM_LINE_WIDTH_INITIAL = 1.0f;
+static constexpr const GLfloat CUSTOM_LINE_WIDTH_DELTA = 0.025f; //May be too small...
 
 //To see what 'FRAMES_TO_WAIT_BETWEEN_INPUT_READS' does, set it to 1ull and then run the
 //RenderDemo and try to change settings  [unfortunately this constant has not yet been 
 //universally implemented for all controls]
-static constexpr const uint64_t FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 15;
+static constexpr const uint64_t FRAMES_TO_WAIT_BETWEEN_INPUT_READS = 2*15;
 
 
 
@@ -96,11 +103,13 @@ protected: //private:
     float timeTickRateModifier;
     uint32_t frameCounter;
     uint32_t frameUnpaused, frameLineTypeLastSwitched, frameInstancedDrawingBehaviorLastToggled,
-        frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled,
+        frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled, frameCustomLineWidthLastToggled,
         frameDepthClampLastToggled, frameThatTimePropogationWasLastReversed, 
         frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified,
         frameThatCustomShaderParameter3LastModified;
     mutable uint32_t framePerformanceReportingLastToggled;
+
+    GLfloat customLineWidth;
 
     glm::vec3 backgroundColor;
 
@@ -120,6 +129,8 @@ protected: //private:
     bool reverseTimePropogation;
     bool enableBlending;
     mutable bool enableDepthClamping;
+
+    bool enableCustomLineWidth;
 
     //These next 3 variables allow for various configurations to be alternated 
     //between within a ShaderProgram while the Application is running. It is up to
@@ -312,6 +323,8 @@ protected: //private:
     bool checkIfShouldDecreasePassageOfTime() const noexcept;
     bool checkIfShouldToggleBlending() const noexcept;
     bool checkIfShouldToggleDepthClamping() const noexcept;
+    bool checkIfShouldToggleCustomLineWidth() const noexcept;
+    bool checkIfShouldModifyCustomLineWidth() const noexcept;
     bool checkIfShouldUpdateFieldOfView() const noexcept;
     
     bool checkIfShouldIncreaseCustomShaderParameter1() const noexcept;
@@ -343,6 +356,8 @@ protected: //private:
     void decreasePassageToTime() noexcept;
     void toggleBlending() noexcept;
     void toggleDepthClamping() noexcept;
+    void toggleCustomLineWidth() noexcept;
+    void changeCustomLineWidth() noexcept;
     void updateFieldOfView() noexcept;
     void recomputeProjectionMatrix() noexcept;  
     void changePrimitiveType();
