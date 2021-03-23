@@ -4,8 +4,10 @@
 //Programmer:           Forrest Miller
 //Date:                 July - November(and beyond) 2018
 
-#include <thread>
+//#include <thread>
 //#include <cstddef> //NOTE: Might not be necessary anymore to include <cstddef>
+
+
 
 #include "Application.h"
 
@@ -100,15 +102,78 @@ void Application::initialize() {
 #ifdef __STDCPP_DEFAULT_NEW_ALIGNMENT__
         static constexpr const uint64_t defaultAlignmentForDynamicMemoryAllocations =
             static_cast<uint64_t>(__STDCPP_DEFAULT_NEW_ALIGNMENT__);
-        const std::string defaultDynMemAllignmentMessage = std::string(""
+        const std::string defaultDynMemAlignmentMessage = std::string(""
             "[ ~DEBUG~ ] Current Default Alignment Of Every Dynamic Memory\n"
             "            Allocation Which Doesn't Use 'align_as':          ") +
             std::to_string(defaultAlignmentForDynamicMemoryAllocations);
-        fprintf(MSGLOG, "\n%s-bits\n", defaultDynMemAllignmentMessage.c_str());
+        fprintf(MSGLOG, "\n%s-bits\n", defaultDynMemAlignmentMessage.c_str());
 #endif // __STDCPP_DEFAULT_NEW_ALIGNMENT__
     }
     
+
+    //I've decided to leave the fancy FP behavior stuff alone for now...
+#ifdef GET_FANCY_WITH_RESTRICTING_FLOATING_POINT_BEHAVIOR
+    //Apparently this project has a file found at source->utility->math->'FloatingPointTolerance.h'
+    //The stuff I started here might be more at home over in this file
+#ifdef ADD_THESE_TO_TOP_OF_THE_FILE_TO_ENABLE_FANCY_FP_CUSTOMIZATION_OPTIONS 
+#pragma STDC FENV_ACCESS ON 
+#include <cfloat>
+    //Look into <cfenv> as well: https://en.cppreference.com/w/cpp/header/cfenv
+#endif //ADD_THESE_TO_TOP_OF_THE_FILE_TO_ENABLE_FANCY_FP_CUSTOMIZATION_OPTIONS 
     
+    fprintf(MSGLOG, "Floating Point Behavior: \n");
+
+        //----------------------------------------------------------------
+        // [Requires C++11 or newer plus the header <cfloat> must be included]
+        // Find out from the implementation what the precision in which all
+        // floating-point arithmetic operations other than assignment and cast
+        // are done at. Note this applies only on the CPU side, how OpenGL 
+        // and the GPU are performing their floating point calculations is 
+        // dependent on the OpenGL implementation and not the compiler. Also,
+        // I'm not sure but there is a good chance the GLM library may 
+        // have some additional influence over how it's FP operations are 
+        // performed beyond what is reported here. 
+        // Reference: https://en.cppreference.com/w/cpp/types/climits/FLT_EVAL_METHOD
+#ifdef FLT_EVAL_METHOD 
+    //Don't use unsigned types here because FLT_EVAL_METHOD may be negative
+    static constexpr const int64_t DEFAULT_FP_EVAL_METHOD = 
+        static_cast<int64_t>(FLT_EVAL_METHOD);
+    static constexpr const int64_t FLT_EVAL_METHOD_UNKNOWN = static_cast<int64_t>(-1);
+    static constexpr const int64_t FLT_EVAL_METHOD_RESPECT_STORAGE_TYPE = static_cast<int64_t>(0);
+    static constexpr const int64_t FLT_EVAL_METHOD_FORCE_DOUBLE = static_cast<int64_t>(1);
+    static constexpr const int64_t FLT_EVAL_METHOD_FORCE_LONG_DOUBLE = static_cast<int64_t>(2);
+    std::ostringstream fltEvalMessage;
+    fltEvalMessage << std::string("FP operations and constants evaluate to minimum precision level of: ");
+    switch (DEFAULT_FP_EVAL_METHOD + 1) { //I feel like there should be a way to make this switch 
+    case FLT_EVAL_METHOD_UNKNOWN:     //statement take advantage of the types being constexpr
+        fltEvalMessage << "Unspecified/Unknown";
+        break;
+    case FLT_EVAL_METHOD_RESPECT_STORAGE_TYPE:
+        fltEvalMessage << "Respect Storage Type";
+        break;
+    case FLT_EVAL_METHOD_FORCE_DOUBLE:
+        fltEvalMessage << "Force to double";
+        break;
+    case FLT_EVAL_METHOD_FORCE_LONG_DOUBLE:
+        fltEvalMessage << "Force to long double";
+        break;
+    default:
+        if (DEFAULT_FP_EVAL_METHOD < FLT_EVAL_METHOD_UNKNOWN)
+            fltEvalMessage << "Implementation Controlled";
+        else
+            fltEvalMessage << "Implementation Response Invalid";
+        break;
+    }
+    fprintf(MSGLOG, "%s\n", fltEvalMessage.str().c_str());
+#endif //FLT_EVAL_METHOD
+
+        //----------------------------------------------------------------
+        //  FP Rounding Behavior   [To do]  (this is LOW LOW LOW priority)
+        //https://en.cppreference.com/w/cpp/types/climits/FLT_ROUNDS
+
+#endif //GET_FANCY_WITH_RESTRICTING_FLOATING_POINT_BEHAVIOR
+
+
     fprintf(MSGLOG, "Application is loading...\n");
     
     // STEP 1     INITIALIZE GLFW, Create an OpenGL Context and Acquire Our
