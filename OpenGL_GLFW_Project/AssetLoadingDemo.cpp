@@ -539,14 +539,14 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00045.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00062.jpg)");  //Snowy Mountain Planet/Lots of shades of white
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00067.jpg)"); //GIANT Gas giant on horizon over rocky planet surface -- REALLY COOL
-    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00082.jpg)"); //A Planet almost eclipsing a star/All the action here is in the middle
+    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00082.jpg)"); //A Planet almost eclipsing a star/All the action here is in the middle
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00088.jpg)"); //[Dark and Blue]Star On Horizon Of Wide Angle Shot Above Blue Planet 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00098.jpg)"); //Faint-ish Blue star in distance above blue planet
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00111.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00163.jpg)"); //Green Planet Surface
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00173.jpg)");
-    //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
+    ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
    // ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //BRIGHT COLORS!
@@ -726,7 +726,7 @@ void AssetLoadingDemo::loadModels() {
     //for (int i = 0; i < 3; i++) 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
 
@@ -773,7 +773,7 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "2DTexturedQuadPlane.obj", 1.0f));
 
     //Several different objects were given a parent-child relationship in Blender and then saved into the same file
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ParentedPrimatives.obj", 1.0f));
 
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "IrregularCube.obj", 1.0f));
@@ -2041,7 +2041,7 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             }
             if (fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X]) > LS_DEADZONE_X) {
                 const float leftStickDelta_X = LS_SENSITIVITY_X * gamepadInput.axes[GLFW_GAMEPAD_AXIS_LEFT_X];
-                cameraPos += leftStickDelta_X * glm::cross(glm::normalize(lookAtOrgin), glm::normalize(upDirection)));
+                cameraPos += leftStickDelta_X * glm::cross(glm::normalize(lookAtOrgin), glm::normalize(upDirection));
             }
 
 
@@ -2049,10 +2049,10 @@ void AssetLoadingDemo::readJoystick0State_AssumingXInput_AndThenProcessAllInput(
             //    RIGHT THUMB STICK
             //~~~~~~~~~~~~
             //Read head and pitch from axes 2 and 3 (which are x-y directions of right thumbstick)
-            if (!(fabsf(gamepadInput.axes[2]) <= 0.08f)) //If stick's value is greater than the neutral dead zone
-                head += gamepadInput.axes[2] * HEAD_SPEED;
-            if (!(fabsf(gamepadInput.axes[3]) <= 0.08f)) 
-                pitch += gamepadInput.axes[3] * PITCH_SPEED;
+            if (!(fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]) <= 0.08f)) //If stick's value is greater than the neutral dead zone
+                head += gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] * HEAD_SPEED;
+            if (!(fabsf(gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]) <= 0.08f))
+                pitch += gamepadInput.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] * PITCH_SPEED;
             roll += (((gamepadInput.axes[4] + 1.0f) / 2.0f) * ROLL_SPEED);
             roll -= (((gamepadInput.axes[5] + 1.0f) / 2.0f) * ROLL_SPEED);
 
