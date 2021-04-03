@@ -2,12 +2,12 @@
 //               (for instance '.obj' and '.mtl' assets are ASCII-based) which provides
 //               provides a simple interface for dealing with the data.
 //               This class has no notion of what type of file it is wrapping, its only job is
-//               to manage filetext aquisition and management. It is the responsibility of code
-//               using this class to make sure that the aquired filetext is not an empty string.
+//               to manage filetext acquisition and management. It is the responsibility of code
+//               using this class to make sure that the acquired filetext is not an empty string.
 //
 // (NOTE ON HOW THIS FITS INTO OVERALL PROJECT): This class is designed to be held by other classes
 //                                               which manage parsing and storing the loaded data. 
-//                                               Thus this class is seperate from the whole 'AssetInterface'
+//                                               Thus this class is separate from the whole 'AssetInterface'
 //                                               inheritance structure.
 //
 // Programmer:   Forrest Miller
@@ -32,7 +32,7 @@
 //                                treat the first line of text of the filetext string as line 0. 
 //                                However this might not match up properly with both general 
 //                                intuition and the member variable 'mFileTextLineCount_'.
-//                                Basically just be carful when using these functions to ensure
+//                                Basically just be careful when using these functions to ensure
 //                                the correct line of text is being accessed.
 //                             
 //     
@@ -41,9 +41,9 @@
 //                         its implementation more coherent and make more sense. For example, 
 //                         this class manages its filepath itself instead of relying on the FilepathWrapper
 //                         object type, but still uses the static functionality of the FilepathWrapper 
-//                         class to verify a files existance. 
+//                         class to verify a files existence. 
 //                         Basically this class is functional as is but it's implementation could 
-//                         desperatly use an overhaul and some refactoring. 
+//                         desperately use an overhaul and some refactoring. 
 
 #pragma once
 
@@ -78,23 +78,23 @@ namespace AssetLoadingInternal {
 		//Creates an AsciiAsset object based off the provided filepath. On
 		//construction, an attempt will be made to open the file at the provided
 		//filepath. The file will be automatically loaded into an object-local C++
-		//std::string unless specifially told not to through the parameter 
+		//std::string unless specifically told not to through the parameter 
 		//'storeLocalCopy'.
 		//   Parameters:
-		//     const char * fp       --  A filepath to an ascii-encoded resource
+		//     const char * fp       --  A filepath to an ASCII-encoded resource
 		//     bool storeLocalCopy   --  Dictates whether an object-local copy of
-		//                                  the resource should be aquired
+		//                                  the resource should be acquired
 		AsciiAsset(const char * fp, bool storeLocalCopy = true);
 
 		//Creates an AsciiAsset object based off the provided filepath. On
 		//construction, an attempt will be made to open the file at the provided
 		//filepath. The file will be automatically loaded into an object-local C++
-		//std::string unless specifially told not to through the parameter 'storeLocalCopy'
+		//std::string unless specifically told not to through the parameter 'storeLocalCopy'
 		//
 		//  Parameters:
-		//        std::string fp      --  A filepath to an ascii-encoded resource
+		//        std::string fp      --  A filepath to an ASCII-encoded resource
 		//        bool storeLocalCopy --  Dictates whether an object-local copy of
-		//                                     the resource should be aquired
+		//                                     the resource should be acquired
 		AsciiAsset(const std::string& fp, bool storeLocalCopy = true);
 
 		//Creates a copy of another AsciiAsset object
@@ -123,7 +123,7 @@ namespace AssetLoadingInternal {
 		/*  Note: This is a bad idea
 		//Object will be cast to a string containing whatever is stored in its 
 		//local copy of the filetext. If the file is invalid or no local file-text
-		//copy was aquired, then this will just be an empty string.
+		//copy was acquired, then this will just be an empty string.
 		operator std::string() const { return (std::move(this->getTextCopy())); }
 		*/
 
@@ -138,7 +138,7 @@ namespace AssetLoadingInternal {
 		//                          Getters
 		//------------------------------------------------------------
 
-		//Retrieves the text aquired from the file at the stored filepath. This function's
+		//Retrieves the text acquired from the file at the stored filepath. This function's
 		//implementation is state dependent according to the following: 
 		//		(i)    If this object has a valid filepath and already has a local copy of
 		//             the filetext, then this function will just create and return a copy of 
@@ -146,7 +146,7 @@ namespace AssetLoadingInternal {
 		//      (ii)   If this object has a valid filepath but does not have a stored local
 		//             copy of the filetext, the file will be opened and parsed (without a
 		//             local copy being saved in the process). Note that this means multiple
-		//             calls to this function without a localally stored copy will result in
+		//             calls to this function without a locally stored copy will result in
 		//             multiple file accesses
 		//      (iii)  If this object was provided an invalid filepath (or if a filepath was 
 		//             never specified after this object was constructed by the default 
@@ -157,8 +157,8 @@ namespace AssetLoadingInternal {
 		//then this function will return 0.
 		int getNumberOfLines() const;
 		
-		//Returns the number of lines that begin with the specified character. Whitespaces (' ') and tabs
-		//('\t') are skipped over at the start of a line. 
+		//Returns the number of lines that begin with the specified character. Ignores any 
+		//Whitespace (' ') and/or Tab ('\t') characters at the start of the line. 
 		int getNumberOfLinesThatBeginWith(char c) const;
 
 		//Finds all lines that begin with the character c and stores their line number in the
@@ -210,14 +210,14 @@ namespace AssetLoadingInternal {
 		//------------------------------------------------------------
 
 		//Loads a string copy of the filetext into this object's memory. Intended to 
-		//allow finer control over if/when this class aquires filetext. Has no effect if
-		//a copy of the FileText has already been aquired.
+		//allow finer control over if/when this class acquires filetext. Has no effect if
+		//a copy of the FileText has already been acquired.
 		void aquireLocalCopyOfFileText();
 		
 
 		//This function will remove all of the lines of the filetext string held within this
 		//object that begin with the specified character. Note that doing so will reset this 
-		//object's internel LineOffset vector, which may cause issues with iterators and such
+		//object's internal LineOffset vector, which may cause issues with iterators and such
 		//set before this function was called. This function will ignore whitespace and tabs
 		//when searching for a first character.
 		//Requires locally-stored filetext. The characters ' ', '\n' and '\t' are illegal.
@@ -229,7 +229,7 @@ namespace AssetLoadingInternal {
 		//It is illegal to specify a substring containing any newline characters.
 		//std::vector<int> findAllLinesThatContainSubstr(const std::string& substr) const;
 
-		//Returns the filepath for the Ascii-file wrapped by this class
+		//Returns the filepath for the ASCII-file wrapped by this class
 		std::string getFilepath() const { return mFilepath_; }
 
 
