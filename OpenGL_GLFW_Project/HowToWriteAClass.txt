@@ -1,7 +1,21 @@
 
 How To Write A Class circa August 2019
 
+
 [These are not yet in any particular order]
+
+
+
+OH WOW THIS IS SMART! Look at this: https://github.com/GPSnoopy/RayTracingInVulkan/blob/master/src/Vulkan/Vulkan.hpp
+Instead of wasting a ton of space deleting copy/move constructors and operators, have them all be condensed into
+one line via a macro. Here's what this might look like:
+         #define TYPE_NON_COPIABLE(ClassName) \
+             ClassName(const ClassName&) = delete; \
+             ClassName(ClassName&&) = delete; \
+             ClassName& operator= (const ClassName&) = delete; \
+             ClassName& operator = (ClassName&&) = delete;
+
+
 
   -)Have all constructors delegate object initialization
     to a class-internal initialization constructor. 

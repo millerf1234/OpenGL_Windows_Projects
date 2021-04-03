@@ -15,6 +15,8 @@
 #ifndef GLFW_INIT_REPORT_H_
 #define GLFW_INIT_REPORT_H_
 
+//Variant will become part of the global namespace for
+//any code which includes this header.
 #include <variant> 
 
 //Forward declare the internal GLFW types

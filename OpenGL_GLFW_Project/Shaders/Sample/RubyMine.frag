@@ -66,6 +66,7 @@ vec3 color2 = vec3(cosinePartialSummation(90.01*time+gl_FragCoord.x+gl_FragCoord
 // Permutation polynomial: (34x^2 + x) mod 289
 vec3 permute(vec3 x) {
     return mod((34.0 * x + 1.0) * x, 289.0);
+    //return mod((34.0 * x + 1.0) * x, 289.0 + (17.0 * float(customParameter1)));
 }
 
 vec3 dist(vec3 x, vec3 y, vec3 z) {

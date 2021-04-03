@@ -163,6 +163,10 @@ RANDOM NOTES  (read later to remind self):
 
 
 
+//What's the difference between OLE, DDM and COM? Can't remember? This Stack Overflow answer is
+// here to save the day:  https://stackoverflow.com/a/8929732
+
+
 
 
 
