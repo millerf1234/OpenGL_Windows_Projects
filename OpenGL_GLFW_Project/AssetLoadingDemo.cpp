@@ -419,7 +419,7 @@ bool AssetLoadingDemo::loadShaders() {
 
 
     //~This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
-    //goto SKIP_QUADTEXTURE_TEST_SHADER;
+    goto SKIP_QUADTEXTURE_TEST_SHADER;
 
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
@@ -562,14 +562,14 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
-   // ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //BRIGHT COLORS!
+    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //I made this in paint, BRIGHT COLORS!
 
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
 
-    //ImageData_UByte testDefaultImage2(R"(Images\Screenshots\526870_20210303035102_1.png)");
+    ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210303035102_1.png)");
     //ImageData_UByte testDefaultImage3(R"(Images\Screenshots\526870_20210303035059_1.png)");
-    ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
     //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
 
 
@@ -706,11 +706,11 @@ void AssetLoadingDemo::loadModels() {
 
 
     //A very simple large sphere [may take a bit to load]
-    worldMeshName = "LargeSphere.obj";
+    //worldMeshName = "LargeSphere.obj";
 
 
     //My First Attempt at a skybox cube 
-    //worldMeshName = "AlienWorldSkybox.obj";
+    worldMeshName = "AlienWorldSkybox.obj";
 
 
     //This one is new
@@ -739,7 +739,7 @@ void AssetLoadingDemo::loadModels() {
     //for (int i = 0; i < 3; i++) 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "CargoSpaceshipIdeaThing02.obj", 1.0f));
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SciFiSphereThingAlpha.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_0.obj", 1.0f));
 
