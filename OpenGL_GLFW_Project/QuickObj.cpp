@@ -11,6 +11,12 @@
 //                     and others to not. The way this class is currently implemented did not account for this possibility,
 //                     and at this point there does not seem to me to be an easy way to remedy this.
 //
+//                    [Adding this one after having been using this class within my codebase for some time now]
+//                     WAY TOO MUCH OVER-RELIANCE ON THE SIZE_T TYPE FOR INTEGERS. This code has very different 
+//                     compiled results between x86 and x64. Ideally all appearances of size_t should be changed
+//                     to instead be fixed int types. The issue though is just the sheer volume of locations size_t
+//                     is used. It will not be an easy task to switch this code over to fixed-width int types...
+//
 // Programmer:          Forrest Miller
 // Date:                November 2018
 
