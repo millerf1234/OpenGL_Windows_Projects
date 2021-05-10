@@ -419,7 +419,7 @@ bool AssetLoadingDemo::loadShaders() {
 
 
     //~This is really hacky, but comment/uncomment this statement to use/not-use the QuadTextureTestShader
-    goto SKIP_QUADTEXTURE_TEST_SHADER;
+    //goto SKIP_QUADTEXTURE_TEST_SHADER;
 
     if (!buildQuadTextureTestShader()) {
         fprintf(ERRLOG, "\nError occurred building the Quad Texture Test shader!\n");
@@ -567,11 +567,13 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
 
-    ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210303035102_1.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210303035102_1.png)");
     //ImageData_UByte testDefaultImage3(R"(Images\Screenshots\526870_20210303035059_1.png)");
     //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210222033220_1.png)");
     //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
 
+    //For use with the model SomeSortOfThing.obj
+    ImageData_UByte testDefaultImage(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png)");
 
     /*
            8294454 witcher3op_2015_05_23_15_29_58_757.bmp
@@ -710,7 +712,7 @@ void AssetLoadingDemo::loadModels() {
 
 
     //My First Attempt at a skybox cube 
-    worldMeshName = "AlienWorldSkybox.obj";
+    //worldMeshName = "AlienWorldSkybox.obj";
 
 
     //This one is new
@@ -761,6 +763,10 @@ void AssetLoadingDemo::loadModels() {
     /// sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
+
+
+    sceneObjects.emplace_back(std::make_unique<QuickObj>(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj)", abstractShapeScale));
+
 
     //
     //for (float f0 = 0.001f; f0 < 9.001f; f0 += (5.14159f / 19.3f)) {
