@@ -412,7 +412,7 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(generateImgDataCallbackFunc genera
     
     //todo
 
-    printf("\nConstructor not yet implemented! Reverting to\n"
+    fprintf(ERRLOG,"\nConstructor not yet implemented! Reverting to\n"
         "default construction!\n");
     resetSelfFromInternalDefaultImage();
 }
@@ -424,7 +424,7 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& image
     assert(!imageFile.empty());
     
     static constexpr const int REQUESTED_COMPONENTS = 0;
-
+    //fprintf(MSGLOG, "Attmepting to open image file: \"%s\"\n", imageFile.c_str());
     try {
         if (!std::filesystem::exists(imageFile)) {
             throw std::exception("Dude what are you doing!\n"
@@ -438,17 +438,17 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& image
 #if defined(_MSC_VER) && _MSC_VER >= 1400
 #if defined(STBI_WINDOWS_UTF8)
         const wchar_t* cstrFilenameWide = imageFile.c_str();
-        static constexpr const size_t FILENAME_CONVERSION_BUFFER_SIZE = 2048;
+        static constexpr const size_t FILENAME_CONVERSION_BUFFER_SIZE = 2048; //Todo: add a check to make sure filename string fits into this buffer?
         char cstrFilename[FILENAME_CONVERSION_BUFFER_SIZE] = { '\0' };
         int conversionResult = stbi_convert_wchar_to_utf8(cstrFilename,
             FILENAME_CONVERSION_BUFFER_SIZE,
             cstrFilenameWide);
 
         const errno_t fileOpeningError = fopen_s(&fileHandle, cstrFilename, "rb");
-        printf("File Open Attempt returned result: %d\n", fileOpeningError);
+        fprintf(MSGLOG,"    [ImageData_UByte] fopen() returned result: %d\n", fileOpeningError);
         if (fileOpeningError) {
             fileHandle = nullptr;
-            throw std::exception("Error! Unable to open image file!\n");
+            throw std::exception("Error! Unable to open image file!\n"); //Exception will be caught below within constructor
         }
 
 #else 
@@ -484,7 +484,7 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(const std::filesystem::path& image
 
         mImgData_.resize(mAttributes_.sizeInBytes());
         std::memcpy(mImgData_.data(), dataFromStbi.get(), mAttributes_.sizeInBytes());
-        printf("\nLoaded Successfully!\n");
+        fprintf(MSGLOG,"\nLoaded Successfully!\n");
 
         setInternalFormatFromAttributes();
         selectAnExternalFormat();
@@ -526,13 +526,13 @@ ImageData_UByte::ImageDataImpl::ImageDataImpl(GLsizei width,
     
     //todo
 
-    printf("\nConstructor not yet implemented! Reverting to\n"
+    fprintf(WRNLOG, "\nConstructor not yet implemented! Reverting to\n"
         "default construction!\n");
     resetSelfFromInternalDefaultImage();
 }
 
 ImageData_UByte::ImageDataImpl::~ImageDataImpl() noexcept {
-    fprintf(MSGLOG, "\nDestroying Image Data!\n");
+    //printf(MSGLOG, "\nDestroying Image Data!\n");
 }
 
 
@@ -627,21 +627,87 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
     static const auto MaxSupportedWidth =
         getMaximumWidthForInternalFormat(GL_TEXTURE_2D,
                                          mInternalFormat_);
-    if (MaxSupportedWidth > mAttributes_.width) {
-        fprintf(WRNLOG, "\nWarning! The Requested Image\n"
-            "exceeds this implementation's reported maximum supported width\n"
-            "for 2D textures!\n"
-            "One day this Application may be able to break your image down\n"
-            "into more manageable chunks, but for now it must simply fail at\n"
-            "loading thus reseting itself using the default image...\n");
+    if (MaxSupportedWidth < mAttributes_.width) {
+        fprintf(WRNLOG, "\n\n\a"
+            "**************************************************************\n"
+            "                 ****     Warning!     ****                   \n"
+            "**************************************************************\n"
+            "  The requested image file exceeds this OpenGL implementation's\n"
+            "  reported maximum supported width for 2D textures.           \n\n"
+            "                         *** sigh ***                          \n"
+            "  Perhaps one day this project may be able to break larger images \n"
+            "  down into more manageable chunks that can then be loaded into \n"
+            "  multiple 2D textures which then get recombined when rendering, \n"
+            "  but for now feautures as advanced as this are just wishful     \n"
+            "  thinking...                                                  \n\n"
+            "  Alas, for now the best that can be done is to inform you that\n"
+            "  your image is too large and thus loading it as a texture has \n"
+            "  failed.                                                      \n\n"
+            "  Unable to use requested image as 2D texture. Texture data will\n"
+            "  fallback to loading from the default image...                \n"
+            "**************************************************************\n"
+            "**************************************************************\n\n\n");
         return false;
+    }
+    else {
+        fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
+            "OpenGL implementation's maxiumum supported width!");
     }
     
     //Check Height
     static const auto MaxSupportedHeight =
         getMaximumHeightForInternalFormat(GL_TEXTURE_2D, 
                                           mInternalFormat_);
-    if (MaxSupportedHeight > mAttributes_.height) {
+    if (MaxSupportedHeight < mAttributes_.height) {
+        fprintf(WRNLOG, "\n\n\a"
+            "**************************************************************\n"
+            "                 ****     Warning!     ****                   \n"
+            "**************************************************************\n"
+            "  The requested image file exceeds this OpenGL implementation's\n"
+            "  reported maximum supported height for 2D textures.           \n\n"
+            "                         *** sigh ***                          \n"
+            "  Perhaps one day this project may be able to break larger images \n"
+            "  down into more manageable chunks that can then be loaded into \n"
+            "  multiple 2D textures which then get recombined when rendering, \n"
+            "  but for now feautures as advanced as this are just wishful     \n"
+            "  thinking...                                                  \n\n"
+            "  Alas, for now the best that can be done is to inform you that\n"
+            "  your image is too large and thus loading it as a texture has \n"
+            "  failed.                                                      \n\n"
+            "  Unable to use requested image as 2D texture. Texture data will\n"
+            "  fallback to loading from the default image...                  \n"
+            "**************************************************************\n"
+            "**************************************************************\n\n\n");
+        return false;
+    }
+    else {
+        fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
+            "OpenGL implementation's maxiumum supported height!");
+    }
+
+    /// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetInternalformat.xhtml
+
+    ///Check Depth          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH DEPTH
+    /*static const auto MaxSupportedDepth =
+        getMaximumDepthForInternalFormat(GL_TEXTURE_2D,
+                                         mInternalFormat_);
+    if (MaxSupportedDepth > mAttributes_.depth) {
+        fprintf(WRNLOG, "\nWarning! The Requested Image\n"
+            "exceeds this implementation's reported maximum supported depth\n"
+            "for 2D textures!\n"
+            "One day this Application may be able to break your image down\n"
+            "into more manageable chunks, but for now it must simply fail at\n"
+            "loading thus reseting itself using the default image...\n");
+        return false;
+    } */
+
+
+    ///Check Layers          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH LAYERS
+    /* 
+    static const auto MaxSupportedLayers =
+        getMaximumLayersForInternalFormat(GL_TEXTURE_2D,
+                                          mInternalFormat_);
+    if (MaxSupportedLayers > mAttributes_.layers) {
         fprintf(WRNLOG, "\nWarning! The Requested Image\n"
             "exceeds this implementation's reported maximum supported height\n"
             "for 2D textures!\n"
@@ -649,36 +715,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
             "into more manageable chunks, but for now it must simply fail at\n"
             "loading thus reseting itself using the default image...\n");
         return false;
-    }
-
-    //Check Depth          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH DEPTH
-    static const auto MaxSupportedDepth =
-        getMaximumDepthForInternalFormat(GL_TEXTURE_2D,
-                                         mInternalFormat_);
-    //if (MaxSupportedDepth > mAttributes_.depth) {
-    //    fprintf(WRNLOG, "\nWarning! The Requested Image\n"
-    //        "exceeds this implementation's reported maximum supported depth\n"
-    //        "for 2D textures!\n"
-    //        "One day this Application may be able to break your image down\n"
-    //        "into more manageable chunks, but for now it must simply fail at\n"
-    //        "loading thus reseting itself using the default image...\n");
-    //    return false;
-    //}
-
-
-    //Check Layers          //IT TURNS OUT THAT THIS CLASS WON'T BE CONCERNED WITH DEPTH
-    static const auto MaxSupportedLayers =
-        getMaximumLayersForInternalFormat(GL_TEXTURE_2D,
-                                          mInternalFormat_);
-    //if (MaxSupportedLayers > mAttributes_.layers) {
-    //    fprintf(WRNLOG, "\nWarning! The Requested Image\n"
-    //        "exceeds this implementation's reported maximum supported height\n"
-    //        "for 2D textures!\n"
-    //        "One day this Application may be able to break your image down\n"
-    //        "into more manageable chunks, but for now it must simply fail at\n"
-    //        "loading thus reseting itself using the default image...\n");
-    //    return false;
-    //}
+    } */
 
     return true;
 }
