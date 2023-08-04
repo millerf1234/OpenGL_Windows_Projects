@@ -647,7 +647,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
             "  fallback to loading from the default image...                \n"
             "**************************************************************\n"
             "**************************************************************\n\n\n");
-        return false;
+        return true;
     }
     else {
         fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
@@ -678,7 +678,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
             "  fallback to loading from the default image...                  \n"
             "**************************************************************\n"
             "**************************************************************\n\n\n");
-        return false;
+        return true;
     }
     else {
         fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
@@ -717,7 +717,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
         return false;
     } */
 
-    return true;
+    return false;
 }
 
 void ImageData_UByte::ImageDataImpl::setInternalFormatFromAttributes() noexcept {
