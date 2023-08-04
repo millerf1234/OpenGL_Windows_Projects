@@ -651,7 +651,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
     }
     else {
         fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
-            "OpenGL implementation's maxiumum supported width!");
+            "OpenGL implementation's maxiumum supported width!\n");
     }
     
     //Check Height
@@ -682,7 +682,7 @@ bool ImageData_UByte::ImageDataImpl::checkIfImageDimensionsExceedImplementationM
     }
     else {
         fprintf(MSGLOG, "[ImageData_UByte] Requested image fits within this \n"
-            "OpenGL implementation's maxiumum supported height!");
+            "OpenGL implementation's maxiumum supported height!\n");
     }
 
     /// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetInternalformat.xhtml
