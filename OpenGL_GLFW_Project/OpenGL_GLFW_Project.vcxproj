@@ -530,6 +530,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assessment.md" />
+    <None Include="..\EXECUTION_SUMMARY.md" />
     <None Include="..\plan.md" />
     <None Include="AssetLoadingDemo_CoolEffect.frag" />
     <None Include="AssetLoadingDemo_CoolEffect.vert" />
