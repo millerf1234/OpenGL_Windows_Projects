@@ -536,7 +536,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_diffuse.png)");
     //ImageData_UByte testDefaultImage(R"(Images\2DTexture\BlockShip_UvMap_WorldNrmlMap.png)");
 
-    ///ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
+    //ImageData_UByte testDefaultImage(R"(obj\BeveledCube.png)");
 
     ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
@@ -562,10 +562,11 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
-    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //I made this in paint, BRIGHT COLORS!
+    ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //I made this in paint, BRIGHT COLORS!
 
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
+    //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\severnayazemlya_oli_2018221.jpg)");
 
     //ImageData_UByte testDefaultImage(R"(Images\Screenshots\526870_20210303035102_1.png)");
     //ImageData_UByte testDefaultImage3(R"(Images\Screenshots\526870_20210303035059_1.png)");
@@ -573,7 +574,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
 
     //For use with the model SomeSortOfThing.obj
-    ImageData_UByte testDefaultImage(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png)");
+    //ImageData_UByte testDefaultImage(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png)");
 
     /*
            8294454 witcher3op_2015_05_23_15_29_58_757.bmp
@@ -700,7 +701,7 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    //worldMeshName = "DemoSceneInsideABox00.obj";
+    worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
@@ -747,8 +748,8 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_2_01_03a.obj", 1.0f));
 
-    ///for (int i = 0; i < 3; i++) 
-       // sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //for (int i = 0; i < 5; i++) 
+        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
@@ -765,7 +766,7 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
 
 
-    sceneObjects.emplace_back(std::make_unique<QuickObj>(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj)", abstractShapeScale));
+    //sceneObjects.emplace_back(std::make_unique<QuickObj>(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj)", abstractShapeScale));
 
 
     //

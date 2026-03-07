@@ -1,0 +1,43 @@
+*********************************************************************************************************************************
+*   Conversation with Cursor on how to go about using it to assist with an already existing codebase/project in Visual Studio   *
+*********************************************************************************************************************************
+
+
+*********************************************************************************************************************************
+*     Me: Can you load Visual Studio solution files? Or what would be the best way to use you to work on a project currently    *
+*        I have been working on in visual studio                                                                                *
+*********************************************************************************************************************************
+
+
++---------------------+
+|  Cursor's Response  |
++---------------------+
+
+Can I “load” a Visual Studio solution?
+I can read and edit .sln and .vcxproj files like any other text file, but I don’t “open” a solution the way Visual Studio does (no designer, no project tree UI from VS itself).
+What I can do is work directly on the same folder that your Visual Studio solution uses: C++ source files, headers, project files, shaders, etc.
+Best way to use me with your existing VS project
+Since you’re already in Cursor with your repo:
+Keep using Visual Studio for:
+Building and running (F5, debugging, profiler).
+Managing NuGet, property pages, etc., if you prefer the GUI.
+Use me in Cursor for:
+Implementing features/refactors: “Add a camera class to Camera.h/Camera.cpp and hook it into AssetLoadingDemo.cpp to control with WASD + mouse.”
+Fixing compiler errors: paste the error(s) from Visual Studio and say which file you’re building; I’ll open/edit those files and adjust code.
+Understanding legacy code: “Explain how rendering is set up in this project” and I’ll read the relevant .cpp/.h and summarize.
+Project configuration tweaks: I can edit .vcxproj / .filters if you want to add source files, change preprocessor definitions, include directories, etc.
+Practical workflow that works well
+1. Open the same folder in both tools
+Visual Studio: open OpenGL_GLFW_Project.sln.
+Cursor: open c:\Users\4estm\source\repos\OpenGL_GLFW_Project.
+2. Tell me what you want, not just “edit this line”
+Describe the goal: “Make the mesh loader handle OBJ normals and tangents”, etc.
+If you know the file(s), mention them (e.g. AssetLoadingDemo.cpp, Timepoint.h).
+If not, I can search through the repo.
+3. Build/run in Visual Studio, fix here
+Build in VS → copy errors/warnings into chat.
+I’ll adjust the C++ / project files accordingly.
+Rebuild in VS and iterate.
+4. If you need me to touch the solution/project
+You can say things like “Add this new .cpp to the project so it builds in all configurations” and I’ll edit the .vcxproj / .filters for you.
+If you’d like, tell me the next concrete thing you want to change in this OpenGL/GLFW project (e.g. “add a basic FPS camera”, “fix delta-time timing in Timepoint.h”), and I’ll walk through it on your existing solution.

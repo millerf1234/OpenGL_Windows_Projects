@@ -598,6 +598,12 @@
     <Filter Include="Asset Files\Models\OBJ\Sample\IrregularCube Variations">
       <UniqueIdentifier>{3a5668a8-c90c-49db-83a9-9a974d25d0e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset Files\PaintedModels">
+      <UniqueIdentifier>{6b616c65-7ef0-4b86-9e78-2b9812c33df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset Files\PaintedModels\SomeSortOfThing">
+      <UniqueIdentifier>{4669b443-d4a0-4715-a8c0-179af4464d3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -867,14 +873,14 @@
     <ClCompile Include="optick\src\optick_server.cpp">
       <Filter>Third Party\optick\src</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderDemoBase.cpp">
       <Filter>Source Files\Projects\RenderDemos</Filter>
     </ClCompile>
     <ClCompile Include="ShaderDefinedUniform.cpp">
       <Filter>Source Files\Utility\RenderTools\Shader Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1968,6 +1974,12 @@
     <None Include="Weblinks_To_OpenGL_Related_Topics.txt">
       <Filter>NotesAndReferences</Filter>
     </None>
+    <None Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.mtl">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </None>
+    <None Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\Roboto-Black.ttf">
@@ -2381,6 +2393,30 @@
     </Image>
     <Image Include="Images\OuterSpaceScreenshots\scr00082.jpg">
       <Filter>Asset Files\Images\OuterSpaceScreenshots</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_curvature.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_emissive.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_emissive_power.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_gloss.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_metalness.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_nmap.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </Image>
+    <Image Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_specular_color.png">
+      <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
