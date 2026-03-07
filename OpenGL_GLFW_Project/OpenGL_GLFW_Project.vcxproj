@@ -137,6 +137,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
+      <FloatingPointModel>Default</FloatingPointModel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(SolutionDir)OpenGL_GLFW_Project\glfw_64\lib-vc2022\glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -192,7 +193,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\release;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\sources;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Default</FloatingPointModel>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
