@@ -145,6 +145,21 @@
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)glfw_64\lib-vc2022\glfw3.dll" "$(SolutionDir)x64\Release\" /Y /I;
+if exist "$(SolutionDir)x64\Release\shaders" rmdir /s /q "$(SolutionDir)x64\Release\shaders";
+
+if exist "$(SolutionDir)x64\Release\images" rmdir /s /q "$(SolutionDir)x64\Release\images";
+
+if exist "$(SolutionDir)x64\Release\obj" rmdir /s /q "$(SolutionDir)x64\Release\obj";
+
+
+xcopy /s /e /i /y "$(ProjectDir)shaders" "$(SolutionDir)x64\Release\shaders\"
+;
+xcopy /s /e /i /y "$(ProjectDir)images" "$(SolutionDir)x64\Release\images\"
+;
+xcopy /s /e /i /y "$(ProjectDir)obj" "$(SolutionDir)x64\Release\obj\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -207,6 +222,21 @@
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)glfw_64\lib-vc2022\glfw3.dll" "$(SolutionDir)x64\Release\" /Y /I;
+if exist "$(SolutionDir)x64\Release\shaders" rmdir /s /q "$(SolutionDir)x64\Release\shaders";
+
+if exist "$(SolutionDir)x64\Release\images" rmdir /s /q "$(SolutionDir)x64\Release\images";
+
+if exist "$(SolutionDir)x64\Release\obj" rmdir /s /q "$(SolutionDir)x64\Release\obj";
+
+
+xcopy /s /e /i /y "$(ProjectDir)shaders" "$(SolutionDir)x64\Release\shaders\"
+;
+xcopy /s /e /i /y "$(ProjectDir)images" "$(SolutionDir)x64\Release\images\"
+;
+xcopy /s /e /i /y "$(ProjectDir)obj" "$(SolutionDir)x64\Release\obj\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
