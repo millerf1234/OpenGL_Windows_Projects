@@ -536,9 +536,6 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
 
     ///ImageData_UByte testDefaultImage(R"(Images\Cubemap\green\green_ft.tga)");
 
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship03_albedo.png)"); //Thia file no longer exists
-    //ImageData_UByte testDefaultImage(R"(Images\Spaceship02_color.png)");
-
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00004.tga)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.tga)"); 
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00020.jpg)"); 
@@ -558,7 +555,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00176.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00207.jpg)");
     //ImageData_UByte testDefaultImage(R"(Images\OuterSpaceScreenshots\scr00253.jpg)");
-    ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //I made this in paint, BRIGHT COLORS!
+    //ImageData_UByte testDefaultImage(R"(obj\2DTexturedQuadPlaneTexture.png)");  //I made this in paint, BRIGHT COLORS!
 
 
     //ImageData_UByte testDefaultImage(R"(Images\Samples\LandsatTestImages\SevernayaZemlyaArchipelago\SevernayaZemlya_map_2018.png)");
@@ -570,7 +567,7 @@ bool AssetLoadingDemo::loadTexture2DFromImageFile() {
     //ImageData_UByte testDefaultImage4(R"(Images\Screenshots\AoE2DE_s_2020_04_26_23_52_05_505.png)");
 
     //For use with the model SomeSortOfThing.obj
-    //ImageData_UByte testDefaultImage(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png)");
+    ImageData_UByte testDefaultImage(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SSOT__SomeSortOfThing_UV_set1_color.png)");
 
     /*
            8294454 witcher3op_2015_05_23_15_29_58_757.bmp
@@ -745,7 +742,7 @@ void AssetLoadingDemo::loadModels() {
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "RandomAbstractCreation_2_01_03a.obj", 1.0f));
 
     //for (int i = 0; i < 5; i++) 
-        //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
+    //    sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Spaceship.obj", 1.0f));
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "Interceptor00.obj", 1.0f));
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "thing.obj", 1.0f));  
     ///sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "ExperimentalEngine.obj", 1.0f));
@@ -761,8 +758,8 @@ void AssetLoadingDemo::loadModels() {
 
     //sceneObjects.emplace_back(std::make_unique<QuickObj>(modelsRFP + "SpikyStarThing.obj", 1.0f));
 
-
-    //sceneObjects.emplace_back(std::make_unique<QuickObj>(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj)", abstractShapeScale));
+    for ( int i = 0; i < 3; i++ )
+        sceneObjects.emplace_back(std::make_unique<QuickObj>(R"(obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj)", abstractShapeScale));
 
 
     //
@@ -2009,7 +2006,8 @@ void AssetLoadingDemo::reportStatistics() {
     timeFromDrawCommandsToFlipBuffersTotal = 0.0;
     timeFromFlipBuffersToNextFrameBeginTotal = 0.0;
 
-    while (framePerformance.framePerformanceListHead != framePerformance.framePerformanceListCurrent) {
+    while ((framePerformance.framePerformanceListHead != nullptr) && 
+           (framePerformance.framePerformanceListHead != framePerformance.framePerformanceListCurrent)) {
 
         //We need to make sure that this object has all of its Timepoints
         if ((nullptr == (framePerformance.framePerformanceListHead->timepointBeginRender)) ||
@@ -2022,28 +2020,36 @@ void AssetLoadingDemo::reportStatistics() {
             continue;
         }
 
-        else {
-            const double t0 = framePerformance.framePerformanceListHead->tStart.timepoint;
-            capturedFramesCounter += 1.0;
-            tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
-            timeFromLoopBeginToDrawCommandsTotal +=
-                (framePerformance.framePerformanceListHead->timepointBeginRender->timepoint - t0);
-            timeFromDrawCommandsToFlipBuffersTotal +=
-                (framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint -
-                    framePerformance.framePerformanceListHead->timepointBeginRender->timepoint);
-            timeFromFlipBuffersToNextFrameBeginTotal +=
-                (framePerformance.framePerformanceListHead->next->tStart.timepoint -
-                    framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint);
-
+        // Ensure we have a next frame before attempting to access it
+        if ( nullptr == framePerformance.framePerformanceListHead->next ) {
+            //If next is nullptr, we cannot safely process this frame since we need next for calculations
             auto next = framePerformance.framePerformanceListHead->next;
             delete framePerformance.framePerformanceListHead;
             framePerformance.framePerformanceListSize--;
             framePerformance.framePerformanceListHead = next;
+            continue;
         }
+
+        const double t0 = framePerformance.framePerformanceListHead->tStart.timepoint;
+        capturedFramesCounter += 1.0;
+        tBeginSum += (framePerformance.framePerformanceListHead->next->tStart.timepoint - t0);
+        timeFromLoopBeginToDrawCommandsTotal +=
+            (framePerformance.framePerformanceListHead->timepointBeginRender->timepoint - t0);
+        timeFromDrawCommandsToFlipBuffersTotal +=
+            (framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint -
+                framePerformance.framePerformanceListHead->timepointBeginRender->timepoint);
+        timeFromFlipBuffersToNextFrameBeginTotal +=
+            (framePerformance.framePerformanceListHead->next->tStart.timepoint -
+                framePerformance.framePerformanceListHead->timepointFlipBuffers->timepoint);
+
+        auto next = framePerformance.framePerformanceListHead->next;
+        delete framePerformance.framePerformanceListHead;
+        framePerformance.framePerformanceListSize--;
+        framePerformance.framePerformanceListHead = next;
     }
 
     //Make sure we have at least one frame to prevent division by 0
-    if (capturedFramesCounter == 0ULL) 
+    if (0.0 == capturedFramesCounter) //Note: If you are getting an invalid instruction exception here, it is because you compiled with an Advanced Instruction Set (such as SSE2 or AVX512) that is not supported by your processor. 
         return; 
 
     if (reportPerformance) {
@@ -2856,7 +2862,8 @@ void AssetLoadingDemo::uploadSceneBufferToGPU(GLuint& targetVBO, const std::vect
     fprintf(MSGLOG, "  [TRANSFER STATISTICS]\n");
     fprintf(MSGLOG, "There are %d vertices total in the scene, or %d 32-bit floating point values\n\n", vertexCount, vertexCount * NUM_VERTEX_COMPONENTS);
 
-    glBufferData(GL_ARRAY_BUFFER, sceneBuf.size() * sizeof(sceneBuf.data()), sceneBuf.data(), GL_STATIC_DRAW);
+    //fprintf(MSGLOG, "  [DEBUG]  sizeof(sceneBuf.data()) is \"%d\"     and    static_cast<GLsizeiptr>(sceneBuf.size() * sizeof(sceneBuf.data())) is \"%d\"\n\n", static_cast<GLsizeiptr>(sizeof(sceneBuf.data())), static_cast<GLsizeiptr>(sceneBuf.size() * sizeof(sceneBuf.data())));
+    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sceneBuf.size() * sizeof(*sceneBuf.data())), sceneBuf.data(), GL_STATIC_DRAW);
 
 }
 
