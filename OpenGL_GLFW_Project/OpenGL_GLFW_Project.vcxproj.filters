@@ -604,6 +604,9 @@
     <Filter Include="Asset Files\PaintedModels\SomeSortOfThing">
       <UniqueIdentifier>{4669b443-d4a0-4715-a8c0-179af4464d3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ai_assisted_rewrite">
+      <UniqueIdentifier>{ff2e02bf-1843-46b0-94a2-d87a7ace7875}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathFunctions.cpp">
@@ -1979,6 +1982,12 @@
     </None>
     <None Include="obj\3D_Coat_Samples\SomeSortOfThing_Painted\SomeSortOfThing.obj">
       <Filter>Asset Files\PaintedModels\SomeSortOfThing</Filter>
+    </None>
+    <None Include="..\assessment.md">
+      <Filter>ai_assisted_rewrite</Filter>
+    </None>
+    <None Include="..\plan.md">
+      <Filter>ai_assisted_rewrite</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

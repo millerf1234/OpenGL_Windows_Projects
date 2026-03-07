@@ -2,7 +2,7 @@
 //Class:                                                         RenderDemoBase
 //Namespace:                                                                N/A
 //Programmer:                                                    Forrest Miller
-//                            \____________________\                           
+//                            \____________________\
 //                            [\#+==================\#+]                       
 //                            [X\x   File History   X\x]                       
 //                            [+#\==================+#\]                       

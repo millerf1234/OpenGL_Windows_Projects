@@ -36,8 +36,9 @@ void TGAVariable::read(void* pBuf, unsigned __int64 sizeBlock)
   unsigned __int64 chunk = size() - m_pos;
   if (sizeBlock > chunk)
     throw TGAError("sizeBlock out of range", eTGAResult_ReadBlockFail);
-  int read = m_pFile->read(pBuf, sizeBlock);
-  if (read != sizeBlock)
+  int readSize = static_cast<int>(sizeBlock);
+  int read = m_pFile->read(pBuf, readSize);
+  if (read != readSize)
     throw TGAError("TAGVariable::read has been failed", eTGAResult_ReadBlockFail);
   m_pos += sizeBlock;
 

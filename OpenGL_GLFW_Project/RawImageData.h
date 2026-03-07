@@ -36,13 +36,17 @@ namespace ImageDataInternal {
 
     enum class ImageDataFormat { ui8, ui16 };
     union RawData {
-        mutable std::vector<uint8_t> uint8Data;
-        mutable std::vector<uint16_t> uint16Data;
+        // store vectors via pointers to keep union trivially destructible
+        mutable std::vector<uint8_t>* uint8Data;
+        mutable std::vector<uint16_t>* uint16Data;
+        RawData() : uint8Data(nullptr) {}
+        ~RawData() {}
     };
 
     struct RawImgData {
         const ImageDataFormat format;
-        const RawData data;
+        RawData data;
+        RawImgData(ImageDataFormat fmt) : format(fmt), data() {}
     };
 
 
@@ -52,10 +56,30 @@ namespace ImageDataInternal {
         RawImageData() = delete;
         RawImageData(ImageDataFormat format);
 
-        ~RawImageData() noexcept = default;
-        
+        ~RawImageData() noexcept;
 
         const RawImgData mData_;
+    };
+
+    inline RawImageData::RawImageData(ImageDataFormat format)
+        : mData_(format)
+    {
+        // initialize underlying pointers
+        if (mData_.format == ImageDataFormat::ui8)
+            mData_.data.uint8Data = new std::vector<uint8_t>();
+        else
+            mData_.data.uint16Data = new std::vector<uint16_t>();
+    }
+
+    inline RawImageData::~RawImageData() noexcept
+    {
+        if (mData_.format == ImageDataFormat::ui8) {
+            delete mData_.data.uint8Data;
+            mData_.data.uint8Data = nullptr;
+        } else {
+            delete mData_.data.uint16Data;
+            mData_.data.uint16Data = nullptr;
+        }
     };
 
 

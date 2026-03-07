@@ -432,10 +432,6 @@ bool AssetLoadingDemo::loadShaders() {
         }
     }
 
-SKIP_QUADTEXTURE_TEST_SHADER:
-
-
-
     sceneShader = std::make_unique<ShaderProgram>(); //Create the scene shader
 
 
@@ -831,12 +827,12 @@ void AssetLoadingDemo::loadModels() {
 
     //Report to console how many models were loaded
     const uint64_t loadedModlCount = static_cast<uint64_t>(sceneObjects.size());
-    if (loadedModlCount == 0) 
+    if (loadedModlCount == 0)
         fprintf(MSGLOG, "\nNo models were loaded!\n");
-    else if (loadedModlCount == 1) 
-        fprintf(MSGLOG, "\n%u model has been loaded!\n", loadedModlCount);
-    else 
-        fprintf(MSGLOG, "\n%u models were loaded!\n", loadedModlCount);
+    else if (loadedModlCount == 1)
+        fprintf(MSGLOG, "\n%llu model has been loaded!\n", (unsigned long long)loadedModlCount);
+    else
+        fprintf(MSGLOG, "\n%llu models were loaded!\n", (unsigned long long)loadedModlCount);
     
 
 }
@@ -2586,14 +2582,14 @@ void AssetLoadingDemo::generateTriangleOutlineElementOrdering() noexcept {
     //                  ORDERING OF VERTEX DATA IN VERTEX BUFFER                 
     //                                                                           
     //                      v0                                 v3                
-    //                     /  \                               /  \               
-    //                    /    \                             /    \              
-    //                   /      \                           /      \             
-    //                  /        \                         /        \            
-    //                 /          \                       /          \           
-    //                /            \                     /            \          
-    //               /  Triangle 0  \                   /  Triangle 1  \         
-    //              /                \                 /                \        
+    //                     /  \                               /  \
+    //                    /    \                             /    \
+    //                   /      \                           /      \
+    //                  /        \                         /        \
+    //                 /          \                       /          \
+    //                /            \                     /            \
+    //               /  Triangle 0  \                   /  Triangle 1  \
+    //              /                \                 /                \
     //            v1 ---------------- v2             v4 ----------------  v5     
     //                                                                           
     //                                                                           

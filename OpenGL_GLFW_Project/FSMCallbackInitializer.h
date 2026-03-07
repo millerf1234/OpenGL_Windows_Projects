@@ -20,55 +20,55 @@
 
 
 // Table of every GLFW callback
-// +=======================================+=======================================+============================================================+ \\ 
-// |                                       |                                       |                                                            | \\ 
-// |                Event                  |  Function Used For Setting Callback   |                  Callback Function Signature               | \\ 
-// |                                       |        'glfwSet______Callback()'      |                                                            | \\ 
-// +=======================================+=======================================+============================================================+ \\ 
-// |                                                                                                                                            | \\ 
-// |                                                                                                                                            | \\ 
-// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                     | \\ 
-// |           |  CATEGORY: PRE-INITIALIZATION CALLBACKS  |       (These callbacks should be set before the GLFW library is initialized)        | \\ 
+// +=======================================+=======================================+============================================================+ \\
+// |                                       |                                       |                                                            | \\
+// |                Event                  |  Function Used For Setting Callback   |                  Callback Function Signature               | \\
+// |                                       |        'glfwSet______Callback()'      |                                                            | \\
+// +=======================================+=======================================+============================================================+ \\
+// |                                                                                                                                            | \\
+// |                                                                                                                                            | \\
 // |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                     | \\
-// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\    
-// |                                       |                                       |                                                            | \\ 
-// |             GLFW_ERROR                |         glfwSetErrorCallback()        |     error_callback(int error, const char * description)    | \\ 
-// |                                       |                                       |                                                            | \\ 
-// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\ 
-// |                                                                                                                                            | \\ 
-// |                                                                                                                                            | \\ 
-// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                    | \\ 
-// |           |  CATEGORY: POST-INITIALIZATION CALLBACKS  |     (These callback functions require the GLFW library to have been initialized)   | \\ 
-// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                    | \\ 
-// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\ 
-// |                                       |                                       |                                                            | \\ 
+// |           |  CATEGORY: PRE-INITIALIZATION CALLBACKS  |       (These callbacks should be set before the GLFW library is initialized)        | \\
+// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                     | \\
+// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
+// |                                       |                                       |                                                            | \\
+// |             GLFW_ERROR                |         glfwSetErrorCallback()        |     error_callback(int error, const char * description)    | \\
+// |                                       |                                       |                                                            | \\
+// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
+// |                                                                                                                                            | \\
+// |                                                                                                                                            | \\
+// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                    | \\
+// |           |  CATEGORY: POST-INITIALIZATION CALLBACKS  |     (These callback functions require the GLFW library to have been initialized)   | \\
+// |           +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+                                                                                    | \\
+// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
+// |                                       |                                       |                                                            | \\
 // |   JOYSTICK_CONNECTION_STATUS_UPDATE   |        glfwSetJoystickCallback()      |             joystick_callback(int joy, int event)          | \\ 'event' will be either GLFW_CONNECTED or GLFW_DISCONNECTED
-// |                                       |                                       |                                                            | \\  
-// |      MONITOR_CONNECTION_EVENT         |        glfwSetMonitorCallback()       |                                                            | \\ 
-// |                                       |                                       |                                                            | \\  
-// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\ 
+// |                                       |                                       |                                                            | \\
+// |      MONITOR_CONNECTION_EVENT         |        glfwSetMonitorCallback()       |                                                            | \\
+// |                                       |                                       |                                                            | \\
+// +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
 //
 //
 //            +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 //            |    CATEGORY: PER-WINDOW CALLBACKS    |     (These callback functions are set on a per-window basis)
 //            +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 // +---------------------------------------+---------------------------------------+------------------------------------------------------------+ \\
-// |                                       |                                       |                                                            | \\ 
+// |                                       |                                       |                                                            | \\
 // |           KEYBOARD_PRESS              |                                       |                                                            | \\
 // |           KEYBOARD_RELEASE            |          glfwSetKeyCallback()         | key_callback(GLFWwindow* window, int key, int scancode,    | \\
 // |           KEYBOARD_REPEAT             |                                       |                                      int action, int mods) | \\
-// |                                       |                                       |                                                            | \\ 
+// |                                       |                                       |                                                            | \\
 // |         MOUSE_BUTTON_PRESS            |      glfwSetMouseButtonCallback()     | mouse_button_callback(GLFWwindow* window, int button,      | \\
-// |        MOUSE_BUTTON_RELEASE           |                                       |                                      int action, int mods) | \\ 
+// |        MOUSE_BUTTON_RELEASE           |                                       |                                      int action, int mods) | \\
 // |                                       |                                       |                                                            | \\
 // |            MOUSE_SCROLL               |         glfwSetScrollCallback()       | scroll_callback(GLFWwindow* window, double xoffset,        | \\
 // |                                       |                                       |                                            double yoffset) | \\
 // |            CURSER_ENTER               |      glfwSetCursorEnterCallback()     |  cursor_enter_callback(GLFWwindow* window, int entered)    | \\
-// |                                       |                                       |                                                            | \\ 
-// |           CURSER_POSITION             |      glfwSetCursorPosCallback()       | cursor_position_callback(GLFWwindow* window,               | \\ //NOTE: GLFW has the cursor position callback function 
+// |                                       |                                       |                                                            | \\
+// |           CURSER_POSITION             |      glfwSetCursorPosCallback()       | cursor_position_callback(GLFWwindow* window,               | \\ //NOTE: GLFW has the cursor position callback function
 // |                                       |                                       |                                 double xpos, double ypos)  | \\ //       declared as 'static void cursor_position_callback(...)'
-// |              FILE_DROP                |          glfwSetDropCallback()        |   drop_callback(GLFWwindow* window, int count,             | \\ 
-// |                                       |                                       |                                       const char** paths)  | \\ 
+// |              FILE_DROP                |          glfwSetDropCallback()        |   drop_callback(GLFWwindow* window, int count,             | \\
+// |                                       |                                       |                                       const char** paths)  | \\
 // |       WINDOW_POSITION_UPDATE          |       glfwSetWindowPosCallback()      | window_pos_callback(GLFWwindow* window, int xpos, int ypos)| \\
 // |                                       |                                       |                                                            | \\
 // |       WINDOW_REFRESH_REQUIRED         |    glfwSetWindowRefreshCallback()     |          window_refresh_callback(GLFWwindow* window)       | \\

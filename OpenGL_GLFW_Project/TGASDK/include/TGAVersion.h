@@ -5,6 +5,15 @@
 
 #pragma once
 
+#ifndef TGA_EXPORT
+#if defined(_WINDLL) || defined(TGASDK_BUILD_DLL)
+#define TGA_EXPORT __declspec(dllexport)
+#elif defined(TGASDK_USE_DLL)
+#define TGA_EXPORT __declspec(dllimport)
+#else
+#define TGA_EXPORT
+#endif
+#endif
 #define MPV_TGA_VER_MAJOR   1
 #define MPV_TGA_VER_MINOR   0
 #define MPV_TGA_VER_PATCH   0
