@@ -31,7 +31,7 @@ namespace AssetLoadingInternal {
 
 			if (!mValidData_) {
 				fprintf(ERRLOG, "\nERROR! Unable to fix indexing for line [%u, %u] because\n"
-					"an index is already '0'!\n", endpoints[0], endpoints[1]);
+					"an index is already '0'!\n", static_cast<uint32_t>(endpoints[0]), static_cast<uint32_t>(endpoints[1]));
 			}
 		}
 	}
@@ -43,8 +43,8 @@ namespace AssetLoadingInternal {
 		//Make sure the line is actually a line
 		if ((*lineIterator != 'l') && (*lineIterator != 'L')) {
 			fprintf(ERRLOG, "\nError parsing line %s!\nLine must begin with the character 'l'!\n", lineLine);
-			mEndpoints_[0] = 0u;
-			mEndpoints_[1] = 0u;
+			mEndpoints_[0] = static_cast<Offset>(0);
+			mEndpoints_[1] = static_cast<Offset>(0);
 			return;
 		}
 		else { //Else we read an 'l', so we can advance to the next character
