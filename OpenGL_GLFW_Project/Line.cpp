@@ -15,15 +15,15 @@ namespace AssetLoadingInternal {
 		mValidData_ = true;
 		
 		if (fixIndexing) {
-			if (mEndpoints_[0u] != 0u) {  //Can't decrement Offset below 0
-				mEndpoints_[0u]--;
+			if (mEndpoints_[0] != static_cast<Offset>(0)) {  //Can't decrement Offset below 0
+				mEndpoints_[0]--;
 			}
 			else {
 				mValidData_ = false;
 			}
 
-			if (mEndpoints_[1u] != 0u) {
-				mEndpoints_[1u]--;
+			if (mEndpoints_[1] != static_cast<Offset>(0)) {
+				mEndpoints_[1]--;
 			}
 			else {
 				mValidData_ = false;
@@ -31,7 +31,7 @@ namespace AssetLoadingInternal {
 
 			if (!mValidData_) {
 				fprintf(ERRLOG, "\nERROR! Unable to fix indexing for line [%u, %u] because\n"
-					"an index is already '0'!\n", static_cast<uint32_t>(endpoints[0]), static_cast<uint32_t>(endpoints[1]));
+					"an index is already \'0\'!\n", static_cast<uint32_t>(endpoints[0]), static_cast<uint32_t>(endpoints[1]));
 			}
 		}
 	}
@@ -68,8 +68,8 @@ namespace AssetLoadingInternal {
 						fprintf(ERRLOG, "\nERROR! Parsed an index of 0 from the line %s\nLine indexing is expected to begin at 1!\n",
 							lineLine);
 						mValidData_ = false;
-						mEndpoints_[0] = 0u;
-						mEndpoints_[1] = 0u;
+						mEndpoints_[0] = static_cast<Offset>(0);
+						mEndpoints_[1] = static_cast<Offset>(0);
 						return;
 					}
 				}
