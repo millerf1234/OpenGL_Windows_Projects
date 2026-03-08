@@ -108,7 +108,8 @@ namespace AssetLoadingInternal {
 		//                      Destructor
 		//------------------------------------------------------------
 
-		~AsciiAsset() { }
+		//~AsciiAsset() { }
+		~AsciiAsset() = default;
 
 		//------------------------------------------------------------
 		//                          Operators
