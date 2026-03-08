@@ -2507,19 +2507,23 @@ void AssetLoadingDemo::drawVerts() {
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
     /*
-    if (quadTextureTestShader)
-        quadTextureTestShader->use();
-    else if (sceneShader)
-        sceneShader->use();
-    else {
-        fprintf(ERRLOG, "\nERROR: No Shader present! Unable to draw vertices!\n");
-        assert(false, "");
-    }
+
     */
     GLint currentProgram = -1;
     glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    if ( frameCounter % 300 == 0 ) {
-        fprintf(MSGLOG, "    [DEBUG] Current Shader Program is: %d\n", currentProgram);
+    //if ( frameCounter % 300 == 0 ) {
+    //    fprintf(MSGLOG, "    [DEBUG] Current Shader Program is: %d\n", currentProgram);
+    //}
+    if ( 0 == currentProgram ) {
+        if ( quadTextureTestShader )
+            quadTextureTestShader->use();
+        else if ( sceneShader )
+            sceneShader->use();
+        else {
+            fprintf(ERRLOG, "\nERROR: No Shader present! Unable to draw vertices!\n");
+            assert(false, "ERROR: No Shader present! Unable to draw vertices!");
+            throw std::exception("ERROR: No Shader present! Unable to draw vertices!");
+        }
     }
     
 
