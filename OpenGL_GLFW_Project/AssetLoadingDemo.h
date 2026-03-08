@@ -106,7 +106,7 @@ protected: //private:
         frameInstancedDrawingCountLastModified, frameTimeFreezeLastToggled, frameBlendOperationLastToggled, frameCustomLineWidthLastToggled,
         frameDepthClampLastToggled, frameThatTimePropogationWasLastReversed, 
         frameThatCustomShaderParameter1LastModified, frameThatCustomShaderParameter2LastModified,
-        frameThatCustomShaderParameter3LastModified;
+        frameThatCustomShaderParameter3LastModified, frameThatShaderProgramWasLastToggled;
     mutable uint32_t framePerformanceReportingLastToggled;
 
     GLfloat customLineWidth;
@@ -128,6 +128,7 @@ protected: //private:
     bool freezeTimeToggle; 
     bool reverseTimePropogation;
     bool enableBlending;
+    bool toggleShaderProgram;
     mutable bool enableDepthClamping;
 
     bool enableCustomLineWidth;
@@ -334,6 +335,7 @@ protected: //private:
     //bool checkIfShouldResetCustomShaderParameter2() const noexcept;
     //bool checkIfShouldResetCustomShaderParameter3() const noexcept;
     bool checkIfShouldResetCustomShaderParameters() const noexcept;
+    bool checkIfShouldToggleShaderProgram() const noexcept;
 
     //   ***\______+============+______/***
     //       ______|  JOYSTICK  |______
@@ -368,6 +370,7 @@ protected: //private:
     void resetCustomShaderParameter1() noexcept;
     void resetCustomShaderParameter2() noexcept;
     void resetCustomShaderParameter3() noexcept;
+    void flipToggleShaderProgram() noexcept;
     void rotate() noexcept;
     void changeZoom() noexcept;
     void translate() noexcept;

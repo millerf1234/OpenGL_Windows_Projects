@@ -132,6 +132,10 @@
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
 //  |                                 |                                                                                |
+//  |              'p'                |                         Change between shader programs                         |
+//  |                                 |                                                                                |
+//  +---------------------------------+--------------------------------------------------------------------------------+
+//  |                                 |                                                                                |
 //  |          CNTRL + 'S'            |             Enabled/Disabled Performance Reporting to Console                  |
 //  |                                 |                                                                                |
 //  +---------------------------------+--------------------------------------------------------------------------------+
@@ -220,6 +224,7 @@ void AssetLoadingDemo::initialize() {
     frameThatCustomShaderParameter1LastModified = 0U;
     frameThatCustomShaderParameter2LastModified = 0U;
     frameThatCustomShaderParameter3LastModified = 0U;
+    frameThatShaderProgramWasLastToggled = 0U;
     framePerformanceReportingLastToggled = 0U;
     counter = 0.0f;
     timeTickRateModifier = 0.0f;
@@ -694,11 +699,11 @@ void AssetLoadingDemo::loadModels() {
     
     //An Irregular Cube Which The Scene Will Take Place Inside Of. Has Some 
     //Primitives Inside The Cube To Keep Things Interesting.
-    worldMeshName = "DemoSceneInsideABox00.obj";
+    //worldMeshName = "DemoSceneInsideABox00.obj";
 
     //A Simple Hemispherical Dome Interior Created By Starting With A Sphere Then
     //Intersecting A Plane Horizontally Through The Middle
-    //worldMeshName = "SimpleSkyDome_ReExport.obj";
+    worldMeshName = "SimpleSkyDome_ReExport.obj";
 
 
     //A very simple large sphere [may take a bit to load]
@@ -1059,6 +1064,9 @@ bool AssetLoadingDemo::checkKeyboardInput() {
         resetCustomShaderParameter2();
         resetCustomShaderParameter3();
     }
+    if ( checkIfShouldToggleShaderProgram() ) {
+        flipToggleShaderProgram();
+    }
 
     //More Input Checking
     changePrimitiveType();
@@ -1227,6 +1235,15 @@ inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter2() cons
 inline bool AssetLoadingDemo::checkIfShouldIncreaseCustomShaderParameter3() const noexcept {
     if ((frameCounter - frameThatCustomShaderParameter3LastModified) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS) {
         if (glfwGetKey(mainRenderWindow, GLFW_KEY_7) == GLFW_PRESS) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AssetLoadingDemo::checkIfShouldToggleShaderProgram() const noexcept {
+    if ( (frameCounter - frameThatShaderProgramWasLastToggled) > FRAMES_TO_WAIT_BETWEEN_INPUT_READS ) {
+        if ( glfwGetKey(mainRenderWindow, GLFW_KEY_P) == GLFW_PRESS ) {
             return true;
         }
     }
@@ -1700,6 +1717,14 @@ void AssetLoadingDemo::resetCustomShaderParameter3() noexcept {
     frameThatCustomShaderParameter3LastModified = frameCounter;
     fprintf(MSGLOG, "Custom Shader Parameter 3 is now %u\n", customShaderParameter3);
 }
+
+void AssetLoadingDemo::flipToggleShaderProgram() noexcept {
+    toggleShaderProgram = !toggleShaderProgram;
+    frameThatShaderProgramWasLastToggled = frameCounter;
+    fprintf(MSGLOG, "Changed Active Shader Program!\n");
+}
+
+
 
 
 void AssetLoadingDemo::rotate() noexcept {
@@ -2355,14 +2380,75 @@ void AssetLoadingDemo::updateFrameClearColor() {
 void AssetLoadingDemo::updateBaseUniforms() noexcept {
     OPTICK_EVENT();
     //quadTextureTestShader = nullptr;
-    if (quadTextureTestShader) {
+
+    if ( quadTextureTestShader && sceneShader ) {
+        if ( toggleShaderProgram ) {
+            quadTextureTestShader->use();
+            //Update the quadTextureTestShader uniforms
+            quadTextureTestShader->uniforms.updateUniform1f("time", counter);
+            quadTextureTestShader->uniforms.updateUniform1f("zoom", zoom);
+            rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
+            quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+
+            glm::mat4 MVP; //Model-View-Projection matrix 
+            MVP = perspective * (view * (rotation));
+            const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+                                                        0.0f, 1.0f, 0.0f, 0.0f,
+                                                        0.0f, 0.0f, 1.0f, 0.0f,
+                                                        xTranslation, yTranslation, zTranslation, 1.0f);
+            MVP *= userTranslation;//* MVP;
+
+
+            quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+
+            quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+            quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+            quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+
+            return;
+        }
+        else {
+            sceneShader->use();
+
+         //glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+         //sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
+
+            sceneShader->uniforms.updateUniform1f("time", counter);
+            sceneShader->uniforms.updateUniform1f("zoom", zoom);
+
+            rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
+            sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+
+            glm::mat4 MVP; //Model-View-Projection matrix 
+            MVP = perspective * (view * (rotation));
+            const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+                                                        0.0f, 1.0f, 0.0f, 0.0f,
+                                                        0.0f, 0.0f, 1.0f, 0.0f,
+                                                        xTranslation, yTranslation, zTranslation, 1.0f);
+            MVP *= userTranslation;//* MVP;
+
+
+            sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+
+            sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+            sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+            sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+
+            return;
+        }
+    } 
+    
+    
+    //ELSE 
+    
+    else if ( quadTextureTestShader ) {
         quadTextureTestShader->use();
-        //Update the quadTextureTestShader uniforms
+            //Update the quadTextureTestShader uniforms
         quadTextureTestShader->uniforms.updateUniform1f("time", counter);
         quadTextureTestShader->uniforms.updateUniform1f("zoom", zoom);
         rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
         quadTextureTestShader->uniforms.updateUniformMat4x4("rotation", &rotation);
-        
+
         glm::mat4 MVP; //Model-View-Projection matrix 
         MVP = perspective * (view * (rotation));
         const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
@@ -2370,48 +2456,49 @@ void AssetLoadingDemo::updateBaseUniforms() noexcept {
                                                     0.0f, 0.0f, 1.0f, 0.0f,
                                                     xTranslation, yTranslation, zTranslation, 1.0f);
         MVP *= userTranslation;//* MVP;
-        
-        
+
+
         quadTextureTestShader->uniforms.updateUniformMat4x4("MVP", &MVP);
-        
+
         quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
         quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
         quadTextureTestShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
 
         return;
+
     }
-    
-    //ELSE 
-    
-    if (!sceneShader)
-        return;
-    
-    sceneShader->use(); 
-    
-    //glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
-    
-    sceneShader->uniforms.updateUniform1f("time", counter);
-    sceneShader->uniforms.updateUniform1f("zoom", zoom);
-    
-    rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
-    sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
-    
-    glm::mat4 MVP; //Model-View-Projection matrix 
-    MVP = perspective * (view * (rotation));
-    const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
-                                                0.0f, 1.0f, 0.0f, 0.0f,
-                                                0.0f, 0.0f, 1.0f, 0.0f,
-                                                xTranslation, yTranslation, zTranslation, 1.0f);
-    MVP *= userTranslation;//* MVP;
-    
-    
-    sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
-    
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
-    sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
-    
+    else {
+        if ( !sceneShader ) {
+            fprintf(ERRLOG, "No valid shader program available!");
+            return;
+        }
+
+        sceneShader->use();
+
+        //glm::mat4 proj = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        //sceneShader->uniforms->updateUniformMat4x4("projection", &proj);  //;(const float*)glm::value_ptr(transform));
+
+        sceneShader->uniforms.updateUniform1f("time", counter);
+        sceneShader->uniforms.updateUniform1f("zoom", zoom);
+
+        rotation = MathFunc::computeRotationMatrix4x4(head, pitch, roll);
+        sceneShader->uniforms.updateUniformMat4x4("rotation", &rotation);
+
+        glm::mat4 MVP; //Model-View-Projection matrix 
+        MVP = perspective * (view * (rotation));
+        const glm::mat4 userTranslation = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,             //Translation from user input
+                                                    0.0f, 1.0f, 0.0f, 0.0f,
+                                                    0.0f, 0.0f, 1.0f, 0.0f,
+                                                    xTranslation, yTranslation, zTranslation, 1.0f);
+        MVP *= userTranslation;//* MVP;
+
+
+        sceneShader->uniforms.updateUniformMat4x4("MVP", &MVP);
+
+        sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_1_UNIFORM_NAME, customShaderParameter1);
+        sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_2_UNIFORM_NAME, customShaderParameter2);
+        sceneShader->uniforms.updateUniform1u(CUSTOM_SHADER_PARAMETER_3_UNIFORM_NAME, customShaderParameter3);
+    }
 }
 
 
@@ -2419,14 +2506,22 @@ void AssetLoadingDemo::drawVerts() {
     OPTICK_EVENT();
     const GLsizei BUFFER_SIZE = computeNumberOfVerticesInSceneBuffer(sceneBuffer);
 
+    /*
     if (quadTextureTestShader)
         quadTextureTestShader->use();
     else if (sceneShader)
         sceneShader->use();
     else {
         fprintf(ERRLOG, "\nERROR: No Shader present! Unable to draw vertices!\n");
-        assert(false);
+        assert(false, "");
     }
+    */
+    GLint currentProgram = -1;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
+    if ( frameCounter % 300 == 0 ) {
+        fprintf(MSGLOG, "    [DEBUG] Current Shader Program is: %d\n", currentProgram);
+    }
+    
 
     glBindVertexArray(vao);
 
