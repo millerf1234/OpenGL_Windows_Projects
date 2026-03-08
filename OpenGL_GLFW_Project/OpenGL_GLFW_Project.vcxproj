@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -131,13 +131,14 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\debug;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\sources;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TGA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <FloatingPointModel>Default</FloatingPointModel>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(SolutionDir)OpenGL_GLFW_Project\glfw_64\lib-vc2022\glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -207,12 +208,13 @@ xcopy /s /e /i /y "$(ProjectDir)obj" "$(SolutionDir)x64\Release\obj\"</Command>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glad\release;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\glm\glm;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\sources;C:\Users\4estm\source\repos\OpenGL_GLFW_Project\OpenGL_GLFW_Project\TGASDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Default</FloatingPointModel>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <OpenMPSupport>true</OpenMPSupport>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
